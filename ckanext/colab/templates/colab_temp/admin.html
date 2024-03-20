@@ -1,0 +1,135 @@
+{% extends "page.html" %}
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="/adminuserform.css" />
+{% endblock %}
+{% block secondary %}
+
+{% endblock  %}
+
+{% block primary %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Función para cambiar el enlace y el texto al hacer clic
+    function changeToApproved(event) {
+        // Evitar la acción por defecto del enlace
+        event.preventDefault();
+
+        // Obtener el enlace actual
+        var approveLink = event.target;
+        var approveUrl = approveLink.href;
+
+        // Obtener las variables a mostrar
+        var fullName = approveLink.getAttribute('data-fullname');
+        var winsUsername = approveLink.getAttribute('data-wins-username');
+        var organizationName = approveLink.getAttribute('data-organization-name');
+        var titleWithinOrganization = approveLink.getAttribute('data-title-within-organization');
+        var email = approveLink.getAttribute('data-email');
+        var approved = approveLink.getAttribute('data-approved');
+        var newOrgDescription = approveLink.getAttribute('new-org-description');
+
+        // Construir una cadena con las variables
+        var variablesContent = "Name: " + fullName + "\n" +
+                               "User: " + winsUsername + "\n" +
+                               "Organization or Group: " + organizationName + "\n" +
+                               "Organization Title: " + titleWithinOrganization + "\n" +
+                               "Organization Description: " + newOrgDescription + "\n" +
+                               "Email: " + email + "\n" +
+                               "Status: " + approved;
+
+        // Mostrar las variables en un alert
+        var userConfirmation = confirm("Variables to send:\n\n" + variablesContent + "\n\nDo you want to approve?");
+        if (userConfirmation) {
+            // Realizar la petición fetch para obtener el JSON
+            fetch(approveUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Mostrar los datos en la consola para depuración
+                    console.log(data);
+
+                    // Construir una cadena con el contenido del JSON
+                    var jsonContent = "";
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            jsonContent += key + ": " + data[key] + "\n";
+                        }
+                    }
+
+                    // Mostrar el contenido del JSON en un alert
+                    alert(jsonContent);
+
+                    // Cambiar el enlace y el texto
+                    approveLink.href = "#"; // Puedes cambiar "#" con la nueva URL si es necesario
+                    approveLink.innerHTML = "Approved"; // Cambiar el texto a "approved"
+                })
+                .catch(error => {
+                    console.error('Error to get the JSON:', error);
+                });
+        }
+    }
+
+    // Obtener todos los enlaces con la clase "approve-link" y asignar el evento clic a cada uno
+    var approveLinks = document.querySelectorAll('.approve-link');
+    approveLinks.forEach(function(link) {
+        link.addEventListener('click', changeToApproved);
+    });
+});
+</script>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Nationality</th>
+
+        <th>User</th>
+        <th>Org.</th>
+        <th>Org. Type</th>
+        <th>Org. Description</th>
+        <th>Org. Title</th>
+        <th>Email</th>
+        <th>Org. Action</th>
+    </tr>
+    {% for result in results %}
+        
+        <tr>
+            <td class="fullname">{{result.fullname}}</td>
+            <td class="age">{{result.age}}</td>
+            <td class="gender">{{result.gender}}</td>
+            <td class="nationality">{{result.nationality}}</td>
+
+
+            <td class="wins-username">{{result.wins_username}}</td>
+            <td class="organization-name">{{result.organization_name}}</td>
+            <td class="organizationType">{{result.organizationType}}</td>
+
+            <td class="new-org-description">{{result.new_organization_description}}</td>
+            
+            <td class="title-within-organization">{{result.title_within_organization}}</td>
+            <td class="email">{{result.email}}</td>
+            
+            {% if "approved by" in result.approved %}
+            <td>
+                {{result.approved}}
+            </td>
+            {% else %}
+            <td>
+                <a href="/colab/admin/approve/{{result.wins_username}}/{{result.organization_name}}/{{result.new_organization_name}}/{{result.new_organization_description}}"
+                   class="approve-link"
+                   data-fullname="{{result.fullname}}"
+                   data-wins-username="{{result.wins_username}}"
+                   data-organization-name="{{result.organization_name}}"
+                   data-title-within-organization="{{result.title_within_organization}}"
+                   new-org-description="{{result.new_organization_description}}"
+                   data-email="{{result.email}}"
+                   data-approved="{{result.approved}}">
+                    approve
+                </a>
+            </td>
+            {% endif %}
+
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

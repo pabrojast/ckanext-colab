@@ -1,0 +1,7 @@
+
+        [ckan.plugins]
+        colab=ckanext.colab.plugin:ColabPlugin
+
+        [babel.extractors]
+        ckan = ckan.lib.extract:extract_ckan
+    

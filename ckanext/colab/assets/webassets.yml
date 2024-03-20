@@ -1,0 +1,14 @@
+# colab-js:
+#   filter: rjsmin
+#   output: ckanext-colab/%(version)s-colab.js
+#   contents:
+#     - js/colab.js
+#   extra:
+#     preload:
+#       - base/main
+
+# colab-css:
+#   filter: cssrewrite
+#   output: ckanext-colab/%(version)s-colab.css
+#   contents:
+#     - css/colab.css

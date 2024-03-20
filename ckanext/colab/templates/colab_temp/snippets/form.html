@@ -1,0 +1,234 @@
+{#
+
+    Show a form to become a Data Contributor
+    
+#}
+
+<div class="containerform">
+
+<h1>Enroll as a Data Contributor for Your Organization </h1>
+<p>Welcome to the Data Upload Form. By completing this form, you request to contribute datasets on behalf of your organization. Please provide the required information regarding the datasets you intend to upload onto the IHP-WINS platform. This will enhance our data resources for the mutual benefit of your organization. </p>
+
+<p>Kindly note that your submission will undergo an email verification process, requiring your organization's official email address. This verification step ensures the security and authenticity of the data you submit. </p>
+
+<form method="POST" action="" id="data-contributor-form">
+    
+    <label for="fullname">Full Name (Optional)</label><br>
+    <input type="text" id="fullname" name="fullname" required><br><br>
+
+    <label for="wins_username">Username WINS *</label><br>
+    <small>Your username should consist solely of lowercase letters and numbers.</small><br>
+    <input type="text" id="wins_username" name="wins_username" pattern="[a-z0-9]*" minlength="4" maxlength="100" required><br><br>
+
+    <label for="password">Password *</label><br>
+    <small>Your password must be 8 characters or longer</small><br>
+    <input type="password" id="wins_password" name="wins_password" minlength="8" required><br><br>
+    <label for="confirm-password">Confirm password *</label><br>
+    <input type="password" id="confirm-password" name="confirm-password" minlength="8" required />
+    <p id="match-message"></p><br>
+
+    <label for="email">Email *</label><br>
+    <input type="email" id="email" name="email" required><br>
+
+    <small style="display:block; margin-bottom: 10px;">
+        <h3>Demography </h3> 
+        UNESCO's overarching priorities encompass gender equality, age inclusivity, and geographic diversity. Accordingly, we kindly request your input in the demography fields of this form to ensure we understand who our diverse data contributors are. 
+    </small>
+
+    <label for="age">Age*</label><br>
+    <input type="number" id="age" name="age" required><br><br>
+
+    <label for="gender">Gender *</label><br>
+    <select name="gender" id="genderSelect" onchange="toggleOtherField()">
+      <option value="woman">Woman</option>
+      <option value="man">Man</option>
+      <option value="other" id="genderOtherOption">Other (to fill in)</option>
+      <option value="preferNotToSay">Prefer not to say</option>
+    </select>
+    <br>
+    <input type="text" id="genderOtherText" name="genderOther" placeholder="Please specify" disabled>
+    <br><br>
+
+
+    <label for="nationality">Nationality *</label><br>
+    <input type="text" id="nationality" name="nationality" required><br><br>
+
+
+    <small style="display:block; margin-bottom: 10px;">
+        <h3>Organization </h3> 
+        An organization are those related to the Water Family such as programmes, UNESCO centers, chairs, research institutes, UN agencies, etc., with a wide range of activities and objectives. Typically, organizations comprise multiple teams, divisions or sectors. Structuring data by organizations and and their respective teams/divisions/sectors allows for streamlined management and targeted collaboration. Depending on your role as a data contributor, your data is either uploaded to the overall institutional data or to the data repository specific to your designated team.  
+    </small>
+
+    <label for="organizationType">Organization Type</label>
+    <select name="organizationType" id="organizationType">
+        <option value="unesco_ihp_secretariat">UNESCO IHP Secretariat</option>
+        <option value="unesco_field_office">UNESCO Field Office</option>
+        <option value="ihp_national_committee">IHP National Committee</option>
+        <option value="unesco_category_i_center">UNESCO Category I Center</option>
+        <option value="unesco_category_ii_center">UNESCO Category II Center</option>
+        <option value="unesco_chair_or_unitwin">UNESCO Chair or UNITWIN</option>
+        <option value="nongovernmental_organization">Non-Governmental Organization</option>
+        <option value="governmental_organization">Governmental Organization</option>
+        <option value="university">University</option>
+        <option value="private_partner">Private Partner</option>
+        <option value="research_institution">Research Institution</option>
+        <option value="other">Other</option>
+    </select><br><br>
+
+    <label for="organization_name">Organization Name *</label><br>
+    <small>Select your organization in the dropdown list or add a new organization.</small><br>
+    
+    <select name="organization_name"  id="organization_name"  onchange="toggleNewOrganizationField()" required>
+        <option value="" selected></option>
+		<option value="new" ><strong>Create New Organization</strong></option>
+        {% for item in organization_list %}
+        <option value="{{item['display_name']}}" >{{item['display_name']}}</option>       
+        {% endfor %}
+      </select><br><br>
+
+      <div id="newOrganizationField" style="display: none;">
+        <label for="new_organization_name">New Organization Name *</label><br>
+        <input type="text" id="new_organization_name" name="new_organization_name"><br><br>
+        <label for="new_organization_description">Organization Description</label><br>
+        <textarea id="new_organization_description" name="new_organization_description" rows="4" cols="50"></textarea>
+        <br><br>
+    </div>
+
+    <label for="title_within_organization">Title Within Represented Organization *</label><br>
+    <input type="text" id="title_within_organization" name="title_within_organization" required><br><br>
+
+
+    <label>
+        <input type="checkbox" id="accept_guidelines" name="accept_guidelines" required>
+         
+ 
+Accept and acknowledge the responsibilities and guidelines that the authorized user must follow when uploading data on behalf of the organization.
+    </label><br><br>
+
+    <input type="submit" value="Submit">
+</form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initially hide the 'genderOtherText' field
+  document.getElementById('genderOtherText').style.display = 'none';
+
+  function toggleOtherField() {
+    var otherOptionSelected = document.getElementById('genderOtherOption').selected;
+    var genderOtherText = document.getElementById('genderOtherText');
+    if (otherOptionSelected) {
+      genderOtherText.style.display = 'block'; // Show
+      genderOtherText.disabled = false; // Enable
+    } else {
+      genderOtherText.style.display = 'none'; // Hide
+      genderOtherText.value = ''; // Clear the field
+      genderOtherText.disabled = true; // Disable
+    }
+  }
+
+  // Set the onchange event listener for the gender select dropdown
+  document.getElementById('genderSelect').addEventListener('change', toggleOtherField);
+});
+
+    function toggleNewOrganizationField() {
+        var organizationSelect = document.getElementById("organization_name");
+        var newOrganizationField = document.getElementById("newOrganizationField");
+        var newOrganizationNameField = document.getElementById("new_organization_name");
+
+        if (organizationSelect.value === "new") {
+            newOrganizationField.style.display = "block";
+            newOrganizationNameField.required = true;
+        } else {
+            newOrganizationField.style.display = "none";
+            newOrganizationNameField.required = false;
+        }
+    }
+
+    function toggleNewGroupField() {
+        var groupSelect = document.getElementById("group");
+        var newGroupField = document.getElementById("newGroupField");
+        var newGroupNameField = document.getElementById("new_group_name");
+
+        if (groupSelect.value === "new_group") {
+            newGroupField.style.display = "block";
+            newGroupNameField.required = true;
+        } else {
+            newGroupField.style.display = "none";
+            newGroupNameField.required = false;
+        }
+    }
+
+    document.getElementById("wins_password").addEventListener("input", function () {
+        checkPasswordMatch();
+    });
+
+    document.getElementById("confirm-password").addEventListener("input", function () {
+        checkPasswordMatch();
+    });
+
+    function checkPasswordMatch() {
+        var password = document.getElementById("wins_password").value;
+        var confirmPassword = document.getElementById("confirm-password").value;
+        var matchMessage = document.getElementById("match-message");
+
+        if (password === confirmPassword) {
+            matchMessage.innerHTML = "Passwords match!";
+            matchMessage.style.color = "green";
+        } else {
+            matchMessage.innerHTML = "Passwords do not match";
+            matchMessage.style.color = "red";
+        }
+    }
+
+    // Function to check if the new organization name already exists in the dropdown
+    function checkDuplicateOrganization() {
+            var organizationSelect = document.getElementById("organization_name");
+            var newOrganizationNameField = document.getElementById("new_organization_name");
+
+            var existingOrganizations = Array.from(organizationSelect.options).map(function(option) {
+                return option.value;
+            });
+
+            var newOrganizationName = newOrganizationNameField.value;
+
+            if (existingOrganizations.includes(newOrganizationName)) {
+                alert("This organization already exists in the list.");
+                newOrganizationNameField.value = ""; // Clear the input
+                return false;
+            }
+
+            return true;
+        }
+
+// Función para verificar si el nuevo nombre de grupo ya existe en el menú desplegable
+function checkDuplicateGroup() {
+            var groupSelect = document.getElementById("group");
+            var newGroupNameField = document.getElementById("new_group_name");
+
+            var existingGroups = Array.from(groupSelect.options).map(function(option) {
+                return option.value;
+            });
+
+            var newGroupName = newGroupNameField.value;
+
+            if (existingGroups.includes(newGroupName)) {
+                alert("This group already exists in the list.");
+                newGroupNameField.value = ""; // Borrar el valor de entrada
+                return false;
+            }
+
+            return true;
+        }
+
+// Attach the checkDuplicateOrganization and checkDuplicateGroup function to the form submission event
+document.getElementById("data-contributor-form").addEventListener("submit", function(event) {
+if (document.getElementById("organization_name").value === "new" && !checkDuplicateOrganization()) {
+    event.preventDefault(); // Prevent form submission if the organization name is a duplicate
+}
+if (document.getElementById("group").value === "new_group" && !checkDuplicateGroup()) {
+    event.preventDefault(); // Evitar el envío del formulario si el nombre del grupo es un duplicado
+}
+});
+
+</script>

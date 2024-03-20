@@ -1,0 +1,67 @@
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Estilos generales para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /* max-width: 90%; /* Si prefieres mantener el 90% de ancho como en tu estilo original */
+    margin:auto;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px !important;
+    text-align: left;
+}
+
+th {
+    background-color: #fff;
+}
+
+/* Estilos para los enlaces manteniendo sus clases originales */
+.approve-link {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    text-decoration: none; /* quita subrayado de los enlaces */
+    display: inline-block;
+}
+
+/* Estilos específicos para los diferentes estados de los enlaces */
+.approve-link[data-approved="approved"] {
+    background-color: green;
+}
+
+.approve-link:not([data-approved="approved"]) {
+    background-color: red;
+}
+a.approve-link:hover {
+    font-weight: 700;
+    text-decoration: none;
+    color: white;
+}
+
+/* Responsividad */
+@media screen and (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+    display: block;
+    }
+
+    th, td {
+    text-align: right;
+    }
+
+    td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    }
+}
+tr:nth-child(2n) {
+    background-color: #f2f2f2;
+}

@@ -1,0 +1,22 @@
+{% extends "page.html" %}
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="/newuserform.css" />
+{% endblock %}
+{% block secondary %}
+
+{% endblock  %}
+
+{% block primary %}
+    {%if not newuser and not errornewuserform %}
+    {% snippet "snippets/form.html", groups = groups, organization_list = organization_list %}
+    {% endif %}
+    {%if newuser and not errornewuserform %}
+    {% snippet "snippets/thanks.html", input = newuser %}
+    {% endif %}
+    {%if errornewuserform %}
+    {% snippet "snippets/error-user-create.html" %}
+    {% endif %}
+    <br/>
+
+{% endblock %}}
