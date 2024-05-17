@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </td>
             {% else %}
             <td>
-                <a href="/colab/admin/approve/{{result.wins_username}}/{{result.organization_name}}/{{result.new_organization_name}}/{{result.new_organization_description}}"
+                <a href="/colab/admin/approve/{{result.wins_username}}/{{result.organization_name}}/{{result.new_organization_name}}/{{result.new_organization_description or 'NA'}}"
                    class="approve-link"
                    data-fullname="{{result.fullname}}"
                    data-wins-username="{{result.wins_username}}"

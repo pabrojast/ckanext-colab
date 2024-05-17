@@ -26,13 +26,13 @@ def upgrade():
         sa.Column('title_within_organization', sa.String),
 		sa.Column('approved', sa.String),
         sa.Column('approvedgroup', sa.String),
-        sa.Column('gender', sa.String),
+        sa.Column('estimated_space', sa.Integer),
         sa.Column('organization_name', sa.String), 
         sa.Column('new_organization_name', sa.Integer),
         sa.Column('new_organization_description', sa.String), 
-		sa.Column('age', sa.Integer),
-		sa.Column('organizationType', sa.String),
-		sa.Column('nationality', sa.String),
+		sa.Column('group', sa.Integer),
+		sa.Column('new_group_name', sa.String),
+		sa.Column('new_group_description', sa.String),
         # Add more columns as needed
     )
 
