@@ -6,7 +6,7 @@
 <p>{{ _('Welcome to the Data Upload Form. By completing this form, you request to contribute datasets on behalf of your organization. Please provide the required information regarding the datasets you intend to upload onto the IHP-WINS platform. This will enhance our data resources for the mutual benefit of your organization.') }}</p>
 
 <p>{{ _('Kindly note that your submission will undergo an email verification process, requiring your organization\'s official email address. This verification step ensures the security and authenticity of the data you submit.') }}</p>
-<p>{{ _('If your organization is already listed on the site, you can create a regular user account so that your organization\'s administrator can add you to their team at the following link: ') }} <a href="/user/register">{{ _('Register for a Normal User Account') }}</a></p>
+<p>{{ _('If your organization is already listed on the site, you can create a regular user account so that your organization\'s administrator can add you to their team at the following link: ') }} <a href="{{ h.url_for('/user/register') }}">{{ _('Register for a Normal User Account') }}</a></p>
 
 <p></p>
 <form method="POST" action="" id="data-contributor-form">
