@@ -1,13 +1,15 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import ckan.model as model
+from ckan.lib.plugins import DefaultTranslation
 from flask import Blueprint
 from ckanext.colab.controller import MyLogic
 
 
-class ColabPlugin(plugins.SingletonPlugin):
+class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IBlueprint)
+    plugins.implements(plugins.ITranslation)   # Implementar ITemplateHelpers
     #plugins.implements(plugins.ITemplateHelpers)
 
     # IConfigurer
