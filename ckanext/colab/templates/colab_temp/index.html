@@ -11,6 +11,9 @@
     {%if not newuser and not errornewuserform %}
     {% snippet "snippets/form.html", groups = groups, organization_list = organization_list %}
     {% endif %}
+    {%if not newuser and not errornewuserform and normaluser%}
+    {% snippet "snippets/new-user-not-admin.html", data=data, errors=errors, error_summary=error_summary %}
+    {% endif %}
     {%if newuser and not errornewuserform %}
     {% snippet "snippets/thanks.html", input = newuser %}
     {% endif %}

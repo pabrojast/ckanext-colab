@@ -1,0 +1,287 @@
+# Translations template for ckanext-colab.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the ckanext-colab project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-colab 0.0.1\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-07-03 14:58-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:4
+msgid ""
+"We're sorry, but we couldn't complete your registration at this time due to a"
+" possible error. This may be because the username or email address you "
+"provided is already in use on our website."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:6
+msgid ""
+"Please double-check that you have entered the information correctly and make "
+"sure you're not attempting to create a duplicate account. If you believe you "
+"already have an account with us, try logging in instead of registering again."
+" If you've forgotten your password, you can reset it through the \"Forgot my "
+"password\" option."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:8
+msgid ""
+"If you continue to experience issues or have any questions, please don't "
+"hesitate to contact us through our support page. We're here to help you "
+"resolve any concerns you may have."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:10
+msgid ""
+"We apologize for any confusion or inconvenience this may have caused and "
+"appreciate your interest in joining our community. We hope to see you soon on"
+" our website!"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:5
+msgid "Enroll as a Data Contributor for Your Organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:6
+msgid ""
+"Welcome to the Data Upload Form. By completing this form, you request to "
+"contribute datasets on behalf of your organization. Please provide the "
+"required information regarding the datasets you intend to upload onto the "
+"IHP-WINS platform. This will enhance our data resources for the mutual "
+"benefit of your organization."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:8
+msgid ""
+"Kindly note that your submission will undergo an email verification process, "
+"requiring your organization's official email address. This verification step "
+"ensures the security and authenticity of the data you submit."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:9
+msgid ""
+"If your organization is already listed on the site, you can create a regular "
+"user account so that your organization's administrator can add you to their "
+"team at the following link: "
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:9
+msgid "Register for a Normal User Account"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:14
+msgid "Full Name (Optional)"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:17
+msgid "Username WINS *"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:18
+msgid "Your username should consist solely of lowercase letters and numbers."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:21
+msgid "Password *"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:22
+msgid "Your password must be 8 characters or longer"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:24
+msgid "Confirm password *"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:28
+msgid "Email *"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:32
+msgid "Demography"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:33
+msgid ""
+"UNESCO's overarching priorities encompass gender equality, age inclusivity, "
+"and geographic diversity. Accordingly, we kindly request your input in the "
+"demography fields of this form to ensure we understand who our diverse data "
+"contributors are."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:36
+msgid "Age*"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:39
+msgid "Gender *"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:41
+msgid "Woman"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:42
+msgid "Man"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:43
+msgid "Other (to fill in)"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:44
+msgid "Prefer not to say"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:47
+msgid "Please specify"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:50
+msgid "Nationality *"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:54
+msgid "Organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:55
+msgid ""
+"An organization are those related to the Water Family such as programmes, "
+"UNESCO centers, chairs, research institutes, UN agencies, etc., with a wide "
+"range of activities and objectives. Typically, organizations comprise "
+"multiple teams, divisions or sectors. Structuring data by organizations and "
+"their respective teams/divisions/sectors allows for streamlined management "
+"and targeted collaboration. Depending on your role as a data contributor, "
+"your data is either uploaded to the overall institutional data or to the data"
+" repository specific to your designated team."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:58
+msgid "Organization Type"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:60
+msgid "UNESCO IHP Secretariat"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:61
+msgid "UNESCO Field Office"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:62
+msgid "IHP National Committee"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:63
+msgid "UNESCO Category I Center"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:64
+msgid "UNESCO Category II Center"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:65
+msgid "UNESCO Chair or UNITWIN"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:66
+msgid "Non-Governmental Organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:67
+msgid "Governmental Organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:68
+msgid "University"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:69
+msgid "Private Partner"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:70
+msgid "Research Institution"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:71
+msgid "Other"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:74
+msgid "Organization Name *"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:75
+msgid "Select your organization in the dropdown list or add a new organization."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:79
+msgid "Create New Organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:86
+msgid "New Organization Name *"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:88
+msgid "Organization Description"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:93
+msgid "Title Within Represented Organization *"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:98
+msgid ""
+"Accept and acknowledge the responsibilities and guidelines that the "
+"authorized user must follow when uploading data on behalf of the "
+"organization."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:101
+msgid "Submit"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:169
+msgid "Passwords match!"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:172
+msgid "Passwords do not match"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:189
+msgid "This organization already exists in the list."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:209
+msgid "This group already exists in the list."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:4
+msgid "Thank you for registering with us!"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:5
+msgid "Your details have been received, and we appreciate your interest."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:6
+msgid "Our team will review your request shortly."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:7
+msgid "If you have any questions, feel free to reach out."
+msgstr ""
+
