@@ -1,0 +1,291 @@
+# Arabic translations for ckanext-colab.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the ckanext-colab
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-colab 0.0.1\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-07-03 15:43-0400\n"
+"PO-Revision-Date: 2024-07-10 08:56-0400\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ar\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:4
+msgid ""
+"We're sorry, but we couldn't complete your registration at this time due "
+"to a possible error. This may be because the username or email address "
+"you provided is already in use on our website."
+msgstr "نعتذر، ولكن لم نتمكن من إتمام تسجيلك في هذا الوقت بسبب خطأ محتمل. قد يكون السبب هو أن اسم المستخدم أو عنوان البريد الإلكتروني الذي قدمته مستخدم بالفعل على موقعنا."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:6
+msgid ""
+"Please double-check that you have entered the information correctly and "
+"make sure you're not attempting to create a duplicate account. If you "
+"believe you already have an account with us, try logging in instead of "
+"registering again. If you've forgotten your password, you can reset it "
+"through the \"Forgot my password\" option."
+msgstr "يرجى التحقق من إدخال المعلومات بشكل صحيح والتأكد من أنك لا تحاول إنشاء حساب مكرر. إذا كنت تعتقد أنك تمتلك حسابًا بالفعل معنا، جرب تسجيل الدخول بدلاً من التسجيل مرة أخرى. إذا نسيت كلمة المرور، يمكنك إعادة تعيينها من خلال خيار \"نسيت كلمة المرور\"."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:8
+msgid ""
+"If you continue to experience issues or have any questions, please don't "
+"hesitate to contact us through our support page. We're here to help you "
+"resolve any concerns you may have."
+msgstr "إذا استمرت المشكلة أو كان لديك أي أسئلة، لا تتردد في الاتصال بنا من خلال صفحة الدعم الخاصة بنا. نحن هنا لمساعدتك في حل أي مشكلات قد تواجهها."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:10
+msgid ""
+"We apologize for any confusion or inconvenience this may have caused and "
+"appreciate your interest in joining our community. We hope to see you "
+"soon on our website!"
+msgstr "نعتذر عن أي ارتباك أو إزعاج قد تسببه هذه المشكلة ونقدر اهتمامك بالانضمام إلى مجتمعنا. نأمل أن نراك قريبًا على موقعنا!"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:5
+msgid "Enroll as a Data Contributor for Your Organization"
+msgstr "سجل كمساهم بيانات لمنظمتك"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:6
+msgid ""
+"Welcome to the Data Upload Form. By completing this form, you request to "
+"contribute datasets on behalf of your organization. Please provide the "
+"required information regarding the datasets you intend to upload onto the"
+" IHP-WINS platform. This will enhance our data resources for the mutual "
+"benefit of your organization."
+msgstr "مرحبًا بك في نموذج تحميل البيانات. من خلال إكمال هذا النموذج، تطلب المساهمة بمجموعات البيانات نيابة عن منظمتك. يرجى تقديم المعلومات المطلوبة بشأن مجموعات البيانات التي تنوي تحميلها على منصة IHP-WINS. سيعزز هذا من موارد بياناتنا لتحقيق الفائدة المتبادلة لمنظمتك."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:8
+msgid ""
+"Kindly note that your submission will undergo an email verification "
+"process, requiring your organization's official email address. This "
+"verification step ensures the security and authenticity of the data you "
+"submit."
+msgstr "يرجى ملاحظة أن تقديمك سيخضع لعملية تحقق عبر البريد الإلكتروني، مما يتطلب عنوان البريد الإلكتروني الرسمي لمنظمتك. تضمن هذه الخطوة الأمنية صحة البيانات التي تقدمها."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:9
+msgid ""
+"If your organization is already listed on the site, you can create a "
+"regular user account so that your organization's administrator can add "
+"you to their team at the following link: "
+msgstr "إذا كانت منظمتك مدرجة بالفعل في الموقع، يمكنك إنشاء حساب مستخدم عادي حتى يتمكن مدير منظمتك من إضافتك إلى فريقهم عبر الرابط التالي:"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:9
+msgid "Register for a Normal User Account"
+msgstr "سجل للحصول على حساب مستخدم عادي"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:14
+msgid "Full Name (Optional)"
+msgstr "الاسم الكامل (اختياري)"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:17
+msgid "Username WINS *"
+msgstr "اسم المستخدم WINS *"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:18
+msgid "Your username should consist solely of lowercase letters and numbers."
+msgstr "يجب أن يتكون اسم المستخدم الخاص بك فقط من حروف صغيرة وأرقام."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:21
+msgid "Password *"
+msgstr "كلمة المرور *"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:22
+msgid "Your password must be 8 characters or longer"
+msgstr "يجب أن تكون كلمة المرور الخاصة بك 8 أحرف أو أطول"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:24
+msgid "Confirm password *"
+msgstr "تأكيد كلمة المرور *"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:28
+msgid "Email *"
+msgstr "البريد الإلكتروني *"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:32
+msgid "Demography"
+msgstr "الديموغرافيا"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:33
+msgid ""
+"UNESCO's overarching priorities encompass gender equality, age "
+"inclusivity, and geographic diversity. Accordingly, we kindly request "
+"your input in the demography fields of this form to ensure we understand "
+"who our diverse data contributors are."
+msgstr "تشمل أولويات اليونسكو الشاملة المساواة بين الجنسين، وشمول الفئات العمرية، والتنوع الجغرافي. بناءً على ذلك، نطلب منك بلطف إدخال بياناتك في حقول الديموغرافيا في هذا النموذج لضمان فهمنا لمن هم مساهمونا المتنوعون في البيانات."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:36
+msgid "Age*"
+msgstr "العمر*"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:39
+msgid "Gender *"
+msgstr "الجنس *"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:41
+msgid "Woman"
+msgstr "امرأة"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:42
+msgid "Man"
+msgstr "رجل"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:43
+msgid "Other (to fill in)"
+msgstr "آخر (للتعبئة)"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:44
+msgid "Prefer not to say"
+msgstr "أفضل عدم القول"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:47
+msgid "Please specify"
+msgstr "يرجى التحديد"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:50
+msgid "Nationality *"
+msgstr "الجنسية *"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:54
+msgid "Organization"
+msgstr "المنظمة"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:55
+msgid ""
+"An organization are those related to the Water Family such as programmes,"
+" UNESCO centers, chairs, research institutes, UN agencies, etc., with a "
+"wide range of activities and objectives. Typically, organizations "
+"comprise multiple teams, divisions or sectors. Structuring data by "
+"organizations and their respective teams/divisions/sectors allows for "
+"streamlined management and targeted collaboration. Depending on your role"
+" as a data contributor, your data is either uploaded to the overall "
+"institutional data or to the data repository specific to your designated "
+"team."
+msgstr "تشمل المنظمة تلك المرتبطة بعائلة المياه مثل البرامج، مراكز اليونسكو، الكراسي، معاهد البحوث، وكالات الأمم المتحدة، إلخ، مع مجموعة واسعة من الأنشطة والأهداف. عادةً ما تتكون المنظمات من فرق متعددة، أقسام أو قطاعات. يسمح هيكلة البيانات حسب المنظمات وفرقها/أقسامها/قطاعاتها ذات الصلة بإدارة مبسطة وتعاون مستهدف. اعتمادًا على دورك كمساهم في البيانات، يتم تحميل بياناتك إما إلى البيانات المؤسسية العامة أو إلى مستودع البيانات الخاص بالفريق المحدد."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:58
+msgid "Organization Type"
+msgstr "نوع المنظمة"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:60
+msgid "UNESCO IHP Secretariat"
+msgstr "أمانة برنامج المياه الدولية لليونسكو"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:61
+msgid "UNESCO Field Office"
+msgstr "مكتب ميداني لليونسكو"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:62
+msgid "IHP National Committee"
+msgstr "اللجنة الوطنية لبرنامج المياه الدولية"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:63
+msgid "UNESCO Category I Center"
+msgstr "مركز اليونسكو من الفئة الأولى"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:64
+msgid "UNESCO Category II Center"
+msgstr "مركز اليونسكو من الفئة الثانية"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:65
+msgid "UNESCO Chair or UNITWIN"
+msgstr "كرسي اليونسكو أو UNITWIN"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:66
+msgid "Non-Governmental Organization"
+msgstr "منظمة غير حكومية"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:67
+msgid "Governmental Organization"
+msgstr "منظمة حكومية"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:68
+msgid "University"
+msgstr "جامعة"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:69
+msgid "Private Partner"
+msgstr "شريك خاص"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:70
+msgid "Research Institution"
+msgstr "مؤسسة بحثية"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:71
+msgid "Other"
+msgstr "آخر"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:74
+msgid "Organization Name *"
+msgstr "اسم المنظمة *"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:75
+msgid "Select your organization in the dropdown list or add a new organization."
+msgstr "حدد منظمتك من القائمة المنسدلة أو أضف منظمة جديدة."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:79
+msgid "Create New Organization"
+msgstr "إنشاء منظمة جديدة"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:86
+msgid "New Organization Name *"
+msgstr "اسم المنظمة الجديدة *"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:88
+msgid "Organization Description"
+msgstr "وصف المنظمة"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:93
+msgid "Title Within Represented Organization *"
+msgstr "اللقب داخل المنظمة الممثلة *"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:98
+msgid ""
+"Accept and acknowledge the responsibilities and guidelines that the "
+"authorized user must follow when uploading data on behalf of the "
+"organization."
+msgstr "قبول والاعتراف بالمسؤوليات والإرشادات التي يجب على المستخدم المفوض اتباعها عند تحميل البيانات نيابة عن المنظمة."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:101
+msgid "Submit"
+msgstr "إرسال"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:169
+msgid "Passwords match!"
+msgstr "كلمات المرور متطابقة!"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:172
+msgid "Passwords do not match"
+msgstr "كلمات المرور غير متطابقة"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:189
+msgid "This organization already exists in the list."
+msgstr "هذه المنظمة موجودة بالفعل في القائمة."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:209
+msgid "This group already exists in the list."
+msgstr "هذه المجموعة موجودة بالفعل في القائمة."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:4
+msgid "Thank you for registering with us!"
+msgstr "شكرًا لتسجيلك معنا!"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:5
+msgid "Your details have been received, and we appreciate your interest."
+msgstr "تم استلام تفاصيلك، ونحن نقدر اهتمامك."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:6
+msgid "Our team will review your request shortly."
+msgstr "سوف يقوم فريقنا بمراجعة طلبك قريبًا."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:7
+msgid "If you have any questions, feel free to reach out."
+msgstr "إذا كان لديك أي أسئلة، لا تتردد في التواصل معنا."
