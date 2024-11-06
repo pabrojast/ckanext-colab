@@ -13,6 +13,12 @@ import json
 # import smtplib
 # from email.mime.multipart import MIMEMultipart
 # from email.mime.text import MIMEText
+import logging
+from ckanext.colab.lib.email_notifications import send_admin_notification
+
+# Configuración de logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 Base = declarative_base()
 
@@ -260,15 +266,11 @@ class MyLogic():
     def show_something():
         errornewuserform = False
         if request.method == 'GET':
-            #get the groups
-            groups = toolkit.get_action('group_list')(
-            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit' : 1000})
+            # Eliminamos la consulta innecesaria de groups
             newuser = False
             organization_list = toolkit.get_action('organization_list')(
-            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit' : 1000})
-            #you will get something like
-            #[{'approval_status': 'approved', 'created': '2023-11-15T17:04:44.712875', 'description': '', 'display_name': 'ukgov', 'id': 'ff5b411d-dedd-4560-ac93-b59621644e61', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'ukgov', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': '', 'type': 'group'}, {'approval_status': 'approved', 'created': '2023-11-15T17:04:44.713652', 'description': '', 'display_name': 'test1', 'id': 'c1738e32-ced0-41dd-bb7d-251df5aa46b1', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'test1', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': '', 'type': 'group'}, {'approval_status': 'approved', 'created': '2023-11-15T17:04:44.714297', 'description': '', 'display_name': 'test2', 'id': 'cc89cb78-cfb1-47ff-9f17-e9551fa0f1ac', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'test2', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': '', 'type': 'group'}, {'approval_status': 'approved', 'created': '2023-11-15T17:04:44.714706', 'description': '', 'display_name': 'penguin', 'id': '9670daa2-0b07-4a8a-87e4-6313400c40df', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'penguin', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': '', 'type': 'group'}, {'approval_status': 'approved', 'created': '2023-11-15T17:03:48.152620', 'description': 'These are books that David likes.', 'display_name': "Dave's books", 'id': '4f25f1e7-48c9-4bc0-81f7-044a91b8d527', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'david', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': "Dave's books", 'type': 'group'}, {'approval_status': 'approved', 'created': '2023-11-15T17:03:48.153429', 'description': 'Roger likes these books.', 'display_name': "Roger's books", 'id': 'ff2f73ff-dff5-4de6-8f46-efc5dc44cd43', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'roger', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': "Roger's books", 'type': 'group'}]
-            return render_template("index.html", groups=groups, organization_list = organization_list , errornewuserform = errornewuserform )
+                data_dict={'include_dataset_count': True, 'all_fields': True, 'limit' : 1000})
+            return render_template("index.html", organization_list=organization_list, errornewuserform=errornewuserform)
         if request.method == 'POST':
             email = request.form['email']
             #aseguramos minuscula
@@ -346,6 +348,18 @@ class MyLogic():
                 data_dict={'name': name, 'email': email, 'password': password, 'fullname': fullname  })
                 #print(groups)
 
+                # Preparar datos para la notificación
+                user_data = {
+                    'fullname': fullname,
+                    'wins_username': name,
+                    'email': email,
+                    'organization_name': organization_name,
+                    'title_within_organization': title_within_organization,
+                    'organizationType': organizationType
+                }
+                
+                # Enviar notificación a los administradores
+                send_admin_notification(user_data)
 
                 # # Obtener la configuración SMTP de CKAN
                 # smtp_server = config_option_show(context, {'key': 'smtp.server'})
@@ -467,3 +481,42 @@ class MyLogic():
         
     #     dataset_id = request.form.get('dataset_id')
     #     return "Hello Admin with Dataset {}!".format(dataset_id)
+
+    def reject(name, organization, reason):
+        logger.debug(f"Iniciando rechazo para usuario: {name}, organización: {organization}, razón: {reason}")
+        try:
+            context = {'model': model, 'user': toolkit.c.user}
+            try:
+                logic.check_access('organization_create', context)
+            except logic.NotAuthorized:
+                logger.error("Usuario no autorizado para rechazar usuarios")
+                toolkit.abort(403, 'Not authorized to reject users')
+
+            db_session = model.Session()
+            try:
+                cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
+                    wins_username=name, 
+                    organization_name=organization
+                ).first()
+                
+                if not cool_plugin_instance:
+                    logger.error("No se encontró la instancia correspondiente en CoolPluginTable")
+                    return json.dumps({'error': 'Registro no encontrado'})
+
+                cool_plugin_instance.rejected = f'rejected by {toolkit.g.user}'
+                cool_plugin_instance.rejection_reason = reason
+                logger.debug(f"Actualizando instancia: {cool_plugin_instance}")
+                
+                db_session.commit()
+                logger.debug("Commit exitoso")
+                
+                return json.dumps({'success': True, 'message': 'User rejected successfully'})
+            except Exception as e:
+                logger.error(f"Error en el rechazo: {e}")
+                db_session.rollback()
+                return json.dumps({'error': str(e)})
+            finally:
+                db_session.close()
+        except Exception as e:
+            logger.error(f"Error general en el rechazo: {e}")
+            return json.dumps({'error': str(e)})

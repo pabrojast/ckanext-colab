@@ -1,0 +1,16 @@
+New User Registration at {{ site_title }}
+
+A new user has registered and is waiting for approval:
+
+Full Name: {{ user_data.fullname }}
+Username: {{ user_data.wins_username }}
+Email: {{ user_data.email }}
+Organization: {{ user_data.organization_name }}
+Title: {{ user_data.title_within_organization }}
+Organization Type: {{ user_data.organizationType }}
+
+To approve or reject this request, please visit:
+{{ site_url }}/colab/admin
+
+--
+Message sent by {{ site_title }} ({{ site_url }})

@@ -10,16 +10,16 @@
 {% block primary %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Función para cambiar el enlace y el texto al hacer clic
+    // Function to change the link and text on click
     function changeToApproved(event) {
-        // Evitar la acción por defecto del enlace
+        // Prevent default link action
         event.preventDefault();
 
-        // Obtener el enlace actual
+        // Get current link
         var approveLink = event.target;
         var approveUrl = approveLink.href;
 
-        // Obtener las variables a mostrar
+        // Get variables to display
         var fullName = approveLink.getAttribute('data-fullname');
         var winsUsername = approveLink.getAttribute('data-wins-username');
         var organizationName = approveLink.getAttribute('data-organization-name');
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var approved = approveLink.getAttribute('data-approved');
         var newOrgDescription = approveLink.getAttribute('new-org-description');
 
-        // Construir una cadena con las variables
+        // Build a string with the variables
         var variablesContent = "Name: " + fullName + "\n" +
                                "User: " + winsUsername + "\n" +
                                "Organization or Group: " + organizationName + "\n" +
@@ -37,99 +37,270 @@ document.addEventListener('DOMContentLoaded', function() {
                                "Email: " + email + "\n" +
                                "Status: " + approved;
 
-        // Mostrar las variables en un alert
+        // Show variables in an alert
         var userConfirmation = confirm("Variables to send:\n\n" + variablesContent + "\n\nDo you want to approve?");
         if (userConfirmation) {
-            // Realizar la petición fetch para obtener el JSON
+            // Make fetch request to get JSON
             fetch(approveUrl)
                 .then(response => response.json())
                 .then(data => {
-                    // Mostrar los datos en la consola para depuración
-                    console.log(data);
-
-                    // Construir una cadena con el contenido del JSON
-                    var jsonContent = "";
-                    for (var key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            jsonContent += key + ": " + data[key] + "\n";
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                    } else {
+                        // Update cell content without reloading the page
+                        const cell = approveLink.parentElement;
+                        cell.innerHTML = `approved by ${data.user || 'admin'}`;
+                        alert('User successfully approved');
+                        // Build a string with JSON content
+                        var jsonContent = "";
+                        for (var key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                jsonContent += key + ": " + data[key] + "\n";
+                            }
                         }
+
+                        // Show JSON content in an alert
+                        alert(jsonContent);
+
                     }
-
-                    // Mostrar el contenido del JSON en un alert
-                    alert(jsonContent);
-
-                    // Cambiar el enlace y el texto
-                    approveLink.href = "#"; // Puedes cambiar "#" con la nueva URL si es necesario
-                    approveLink.innerHTML = "Approved"; // Cambiar el texto a "approved"
                 })
                 .catch(error => {
                     console.error('Error to get the JSON:', error);
+                    alert('An error occurred while processing the approval');
                 });
         }
     }
 
-    // Obtener todos los enlaces con la clase "approve-link" y asignar el evento clic a cada uno
+    // Get all links with class "approve-link" and assign click event to each
     var approveLinks = document.querySelectorAll('.approve-link');
     approveLinks.forEach(function(link) {
         link.addEventListener('click', changeToApproved);
     });
+
+    function handleReject(event) {
+        event.preventDefault();
+        const link = event.target;
+        const username = link.getAttribute('data-wins-username');
+        const organization = link.getAttribute('data-organization-name');
+        
+        const reason = prompt("Please enter the reason for rejection:");
+        if (reason) {
+            fetch(`/colab/admin/reject/${username}/${organization}/${encodeURIComponent(reason)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                    } else {
+                        // Update cell content without page reload
+                        const cell = link.parentElement;
+                        cell.innerHTML = `rejected by ${data.user || 'admin'}: ${reason}`;
+                        alert('User successfully rejected');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while processing the rejection');
+                });
+        }
+    }
+
+    document.querySelectorAll('.reject-link').forEach(link => {
+        link.addEventListener('click', handleReject);
+    });
+
+    // Tabs functionality 
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked button and its corresponding content
+            button.classList.add('active');
+            const tabId = button.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
 });
 </script>
 
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Gender</th>
-        <th>Nationality</th>
+<div class="tabs">
+    <div class="tab-buttons">
+        <button class="tab-button active" data-tab="pending">Pending</button>
+        <button class="tab-button" data-tab="approved">Approved</button>
+        <button class="tab-button" data-tab="rejected">Rejected</button>
+    </div>
 
-        <th>User</th>
-        <th>Org.</th>
-        <th>Org. Type</th>
-        <th>Org. Description</th>
-        <th>Org. Title</th>
-        <th>Email</th>
-        <th>Org. Action</th>
-    </tr>
-    {% for result in results %}
-        
-        <tr>
-            <td class="fullname">{{result.fullname}}</td>
-            <td class="age">{{result.age}}</td>
-            <td class="gender">{{result.gender}}</td>
-            <td class="nationality">{{result.nationality}}</td>
+    <div id="pending" class="tab-content active">
+        <table>
+            <tr>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Nationality</th>
+                <th>Username</th>
+                <th>Organization</th>
+                <th>Organization Type</th>
+                <th>Organization Description</th>
+                <th>Organization Title</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            {% for result in results %}
+                {% if result.approved == 'Pending' and not result.rejected %}
+                    <tr>
+                        <td class="fullname">{{result.fullname}}</td>
+                        <td class="age">{{result.age}}</td>
+                        <td class="gender">{{result.gender}}</td>
+                        <td class="nationality">{{result.nationality}}</td>
 
 
-            <td class="wins-username">{{result.wins_username}}</td>
-            <td class="organization-name">{{result.organization_name}}</td>
-            <td class="organizationType">{{result.organizationType}}</td>
+                        <td class="wins-username">{{result.wins_username}}</td>
+                        <td class="organization-name">{{result.organization_name}}</td>
+                        <td class="organizationType">{{result.organizationType}}</td>
 
-            <td class="new-org-description">{{result.new_organization_description}}</td>
-            
-            <td class="title-within-organization">{{result.title_within_organization}}</td>
-            <td class="email">{{result.email}}</td>
-            
-            {% if "approved by" in result.approved %}
-            <td>
-                {{result.approved}}
-            </td>
-            {% else %}
-            <td>
-                <a href="/colab/admin/approve/{{result.wins_username}}/{{result.organization_name}}/{{result.new_organization_name}}/{{result.new_organization_description or 'NA'}}"
-                   class="approve-link"
-                   data-fullname="{{result.fullname}}"
-                   data-wins-username="{{result.wins_username}}"
-                   data-organization-name="{{result.organization_name}}"
-                   data-title-within-organization="{{result.title_within_organization}}"
-                   new-org-description="{{result.new_organization_description}}"
-                   data-email="{{result.email}}"
-                   data-approved="{{result.approved}}">
-                    approve
-                </a>
-            </td>
-            {% endif %}
+                        <td class="new-org-description">{{result.new_organization_description}}</td>
+                        
+                        <td class="title-within-organization">{{result.title_within_organization}}</td>
+                        <td class="email">{{result.email}}</td>
+                        
+                        {% if result.approved and "approved by" in result.approved %}
+                        <td>
+                            {{result.approved}}
+                        </td>
+                        {% else %}
+                        <td>
+                            <a href="/colab/admin/approve/{{result.wins_username}}/{{result.organization_name}}/{{result.new_organization_name}}/{{result.new_organization_description or 'NA'}}"
+                               class="approve-link"
+                               data-fullname="{{result.fullname}}"
+                               data-wins-username="{{result.wins_username}}"
+                               data-organization-name="{{result.organization_name}}"
+                               data-title-within-organization="{{result.title_within_organization}}"
+                               new-org-description="{{result.new_organization_description}}"
+                               data-email="{{result.email}}"
+                               data-approved="{{result.approved}}">
+                                approve
+                            </a>
+                            |
+                            <a href="#"
+                               class="reject-link"
+                               data-wins-username="{{result.wins_username}}"
+                               data-organization-name="{{result.organization_name}}">
+                                reject
+                            </a>
+                        </td>
+                        {% endif %}
 
-        </tr>
-    {% endfor %}
-</table>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+
+    <div id="approved" class="tab-content">
+        <table>
+            <tr>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Nationality</th>
+                <th>Username</th>
+                <th>Organization</th>
+                <th>Organization Type</th>
+                <th>Organization Description</th>
+                <th>Organization Title</th>
+                <th>Email</th>
+                <th>Status</th>
+            </tr>
+            {% for result in results %}
+                {% if result.approved and "approved by" in result.approved %}
+                    <tr>
+                        <td class="fullname">{{result.fullname}}</td>
+                        <td class="age">{{result.age}}</td>
+                        <td class="gender">{{result.gender}}</td>
+                        <td class="nationality">{{result.nationality}}</td>
+
+
+                        <td class="wins-username">{{result.wins_username}}</td>
+                        <td class="organization-name">{{result.organization_name}}</td>
+                        <td class="organizationType">{{result.organizationType}}</td>
+
+                        <td class="new-org-description">{{result.new_organization_description}}</td>
+                        
+                        <td class="title-within-organization">{{result.title_within_organization}}</td>
+                        <td class="email">{{result.email}}</td>
+                        
+                        {% if result.approved and "approved by" in result.approved %}
+                        <td>
+                            {{result.approved}}
+                        </td>
+                        {% else %}
+                        <td>
+                            <a href="/colab/admin/approve/{{result.wins_username}}/{{result.organization_name}}/{{result.new_organization_name}}/{{result.new_organization_description or 'NA'}}"
+                               class="approve-link"
+                               data-fullname="{{result.fullname}}"
+                               data-wins-username="{{result.wins_username}}"
+                               data-organization-name="{{result.organization_name}}"
+                               data-title-within-organization="{{result.title_within_organization}}"
+                               new-org-description="{{result.new_organization_description}}"
+                               data-email="{{result.email}}"
+                               data-approved="{{result.approved}}">
+                                approve
+                            </a>
+                            |
+                            <a href="#"
+                               class="reject-link"
+                               data-wins-username="{{result.wins_username}}"
+                               data-organization-name="{{result.organization_name}}">
+                                reject
+                            </a>
+                        </td>
+                        {% endif %}
+
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+
+    <div id="rejected" class="tab-content">
+        <table>
+            <tr>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Nationality</th>
+                <th>Username</th>
+                <th>Organization</th>
+                <th>Organization Type</th>
+                <th>Organization Description</th>
+                <th>Organization Title</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Rejection Reason</th>
+            </tr>
+            {% for result in results %}
+                {% if result.rejected and "rejected by" in result.rejected %}
+                    <tr>
+                        <td class="fullname">{{result.fullname}}</td>
+                        <td class="age">{{result.age}}</td>
+                        <td class="gender">{{result.gender}}</td>
+                        <td class="nationality">{{result.nationality}}</td>
+                        <td class="wins-username">{{result.wins_username}}</td>
+                        <td class="organization-name">{{result.organization_name}}</td>
+                        <td class="organizationType">{{result.organizationType}}</td>
+                        <td class="new-org-description">{{result.new_organization_description}}</td>
+                        <td class="title-within-organization">{{result.title_within_organization}}</td>
+                        <td class="email">{{result.email}}</td>
+                        <td>{{result.rejected}}</td>
+                        <td>{{result.rejection_reason}}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+</div>
 {% endblock %}

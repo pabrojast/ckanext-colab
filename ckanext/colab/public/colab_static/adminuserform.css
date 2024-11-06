@@ -1,67 +1,137 @@
 .container {
     max-width: 1100px;
     margin: 0 auto;
+    padding: 0 15px;
 }
 
-/* Estilos generales para la tabla */
+/* General table styles */
 table {
     width: 100%;
     border-collapse: collapse;
-    /* max-width: 90%; /* Si prefieres mantener el 90% de ancho como en tu estilo original */
-    margin:auto;
+    margin: auto;
+    table-layout: fixed;
 }
 
 th, td {
     border: 1px solid #ddd;
-    padding: 8px !important;
+    padding: 12px !important;
     text-align: left;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
 }
 
 th {
     background-color: #fff;
 }
 
-/* Estilos para los enlaces manteniendo sus clases originales */
-.approve-link {
+/* General link styles */
+.approve-link, .reject-link {
     padding: 5px 10px;
     border: none;
     border-radius: 4px;
     color: white;
-    text-decoration: none; /* quita subrayado de los enlaces */
+    text-decoration: none;
     display: inline-block;
+    margin: 0 3px;
 }
 
-/* Estilos específicos para los diferentes estados de los enlaces */
+/* Specific link styles */
 .approve-link[data-approved="approved"] {
-    background-color: green;
+    background-color: #28a745;
 }
 
 .approve-link:not([data-approved="approved"]) {
-    background-color: red;
+    background-color: #28a745;
 }
-a.approve-link:hover {
+
+.reject-link {
+    background-color: #dc3545;
+}
+
+/* Link hover styles */
+a.approve-link:hover, a.reject-link:hover {
     font-weight: 700;
     text-decoration: none;
     color: white;
+    opacity: 0.9;
 }
 
-/* Responsividad */
+/* Responsive styles */
 @media screen and (max-width: 600px) {
     table, thead, tbody, th, td, tr {
-    display: block;
+        display: block;
+        width: 100%;
     }
 
-    th, td {
-    text-align: right;
+    th {
+        display: none;
+    }
+
+    td {
+        text-align: left;
+        padding-left: 50% !important;
+        position: relative;
+        border-bottom: 1px solid #ddd;
     }
 
     td:before {
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        width: 45%;
+        font-weight: bold;
+        text-transform: uppercase;
     }
 }
+
 tr:nth-child(2n) {
     background-color: #f2f2f2;
+}
+
+/* Tab styles */
+.tabs {
+    margin: 40px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.tab-button {
+    padding: 12px 24px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.tab-button:hover {
+    background-color: #e0e0e0;
+}
+
+.tab-button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+}
+
+.tab-content.active {
+    display: block;
 }

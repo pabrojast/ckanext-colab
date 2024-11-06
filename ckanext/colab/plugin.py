@@ -50,48 +50,13 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             MyLogic.approvegroup,
             methods=['GET']
         )
-        # blueprint.add_url_rule(
-        #     u'/cool_plugin/add',
-        #     u'add',
-        #     MyLogic.add,
-        #     methods=['GET']
-        # )
 
-        # blueprint.add_url_rule(
-        #     u'/cool_plugin/get',
-        #     u'get',
-        #     MyLogic.get,
-        #     methods=['GET']
-        # )
-
-        # blueprint.add_url_rule(
-        #     u'/cool_plugin/update',
-        #     u'update',
-        #     MyLogic.update,
-        #     methods=['GET']
-        # )
-
-        # blueprint.add_url_rule(
-        #     u'/cool_plugin/delete',
-        #     u'delete',
-        #     MyLogic.delete,
-        #     methods=['GET']
-        # )
-
-        # blueprint.add_url_rule(
-        #     u'/cool_plugin/do_something/<name>',
-        #     u'do_something',
-        #     MyLogic.do_something,
-        #     methods=['GET']
-        # )
-
-        # blueprint.add_url_rule(
-        #     u'/cool_plugin/only_admin_can_access_me',
-        #     u'only_admin_can_access_me',
-        #     MyLogic.only_admin_can_access_me,
-        #     methods=['POST']
-        # )
-
+        blueprint.add_url_rule(
+            u'/colab/admin/reject/<name>/<organization>/<reason>',
+            u'reject',
+            MyLogic.reject,
+            methods=['GET']
+        )
 
         return blueprint
     

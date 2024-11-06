@@ -92,6 +92,13 @@
     <label for="title_within_organization">{{ _('Title Within Represented Organization *') }}</label><br>
     <input type="text" id="title_within_organization" name="title_within_organization" required><br><br>
 
+    <label for="user_role">{{ _('Role in Organization *') }}</label><br>
+    <select name="user_role" id="user_role" required>
+        <option value="member">{{ _('Member') }}</option>
+        <option value="editor">{{ _('Editor') }}</option>
+        <option value="admin">{{ _('Admin') }}</option>
+    </select><br><br>
+
     <label>
         <input type="checkbox" id="accept_guidelines" name="accept_guidelines" required>
         {{ _('Accept and acknowledge the responsibilities and guidelines that the authorized user must follow when uploading data on behalf of the organization.') }}
@@ -127,13 +134,19 @@ function toggleNewOrganizationField() {
     var organizationSelect = document.getElementById("organization_name");
     var newOrganizationField = document.getElementById("newOrganizationField");
     var newOrganizationNameField = document.getElementById("new_organization_name");
+    var userRoleSelect = document.getElementById("user_role");
 
     if (organizationSelect.value === "new") {
         newOrganizationField.style.display = "block";
         newOrganizationNameField.required = true;
+        // Establecer rol como admin y deshabilitar el selector
+        userRoleSelect.value = "admin";
+        userRoleSelect.disabled = true;
     } else {
         newOrganizationField.style.display = "none";
         newOrganizationNameField.required = false;
+        // Habilitar el selector de roles
+        userRoleSelect.disabled = false;
     }
 }
 
