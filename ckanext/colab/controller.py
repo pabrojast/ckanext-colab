@@ -137,114 +137,56 @@ class MyLogic():
     
 
     def approve(name, organization, new, new_organization_description):
-
-        # ckan.logic.action.create.organization_create(context: Context, data_dict: dict[str, Any])→ Union[str, dict[str, Any]]¶
-        # Create a new organization.
-
-        # You must be authorized to create organizations.
-
-        # Plugins may change the parameters of this function depending on the value of the type parameter, see the IGroupForm plugin interface.
-
-        # Parameters:
-        # name (string) – the name of the organization, a string between 2 and 100 characters long, containing only lowercase alphanumeric characters, - and _
-        # id (string) – the id of the organization (optional)
-        # title (string) – the title of the organization (optional)
-        # description (string) – the description of the organization (optional)
-        # image_url (string) – the URL to an image to be displayed on the organization’s page (optional)
-        # state (string) – the current state of the organization, e.g. 'active' or 'deleted', only active organizations show up in search results and other lists of organizations, this parameter will be ignored if you are not authorized to change the state of the organization (optional, default: 'active')
-        # approval_status (string) – (optional)
-        # extras (list of dataset extra dictionaries) – the organization’s extras (optional), extras are arbitrary (key: value) metadata items that can be added to organizations, each extra dictionary should have keys 'key' (a string), 'value' (a string), and optionally 'deleted'
-        # packages (list of dictionaries) – the datasets (packages) that belong to the organization, a list of dictionaries each with keys 'name' (string, the id or name of the dataset) and optionally 'title' (string, the title of the dataset)
-        # users (list of dictionaries) – the users that belong to the organization, a list of dictionaries each with key 'name' (string, the id or name of the user) and optionally 'capacity' (string, the capacity in which the user is a member of the organization)
-
-        # Returns:
-        # the newly created organization (unless ‘return_id_only’ is set to True in the context, in which case just the organization id will be returned)
-
-        # Return type:
-        # dictionary
         try:
             context = {'model': model, 'user': toolkit.c.user}
             try:
                 logic.check_access('organization_create', context)
             except logic.NotAuthorized:
                 toolkit.abort(403, 'Not authorized to create organization')
+            
             # Primero obtenemos la instancia antes de usarla
             db_session = model.Session()
-            cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(organization_name=organization).first()
+            
+            # Modificamos la consulta para ser más específica
+            cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
+                wins_username=name,
+                organization_name=organization
+            ).first()
             
             if not cool_plugin_instance:
                 return json.dumps({'error': 'User registration not found'})
+
             #generamos la url 
             CleanTitle = organization.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
-            #mantenemos los - 
             CleanTitleStep2 = re.sub('[^A-Za-z0-9\-]+', '', CleanTitle)
-            #agregamos al usuario
             users = [{'name': format(name),'capacity': cool_plugin_instance.user_role }]
-            #si es una organizacion nueva creamos la organizacion
-            if(int(new) == 1):
-                organizationapi = toolkit.get_action('organization_create')(
-                data_dict={'name': CleanTitleStep2, 'description': new_organization_description, 'title': organization, 'users':users  })
-                db_session = model.Session()
-                try:
-                    # Recuperamos la instancia del objeto desde la base de datos
-                    cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(organization_name=organization).first()
-                    
-                    # Modificamos el campo 'approved'
-                    cool_plugin_instance.approved = 'approved by '+toolkit.g.user
-                    
-                    # Guardamos los cambios en la base de datos
-                    db_session.commit()
-                    
-                    # Devolvemos el objeto modificado
-                    #return json.dumps(cool_plugin_instance.__dict__)
-                except Exception as e:
-                    # Manejar errores según sea necesario
-                    db_session.rollback()
-                    #return json.dumps({'error': str(e)})
-                finally:
-                    db_session.close()
-            #si no es una nueva organizacion agregamos al usuario
-            if(int(new) == 0):
-                # ckan.logic.action.create.organization_member_create(context, data_dict)
-                # Make a user a member of an organization.
 
-                # You must be authorized to edit the organization.
+            try:
+                if int(new) == 1:
+                    # Crear nueva organización
+                    organizationapi = toolkit.get_action('organization_create')(
+                        data_dict={'name': CleanTitleStep2, 'description': new_organization_description, 
+                                  'title': organization, 'users': users})
+                else:
+                    # Agregar usuario a organización existente
+                    organizationapi = toolkit.get_action('organization_member_create')(
+                        data_dict={'id': CleanTitleStep2, 'username': format(name), 
+                                  'role': cool_plugin_instance.user_role})
 
-                # Parameters:	
-                # id (string) – the id or name of the organization
-                # username (string) – name or id of the user to be made member of the organization
-                # role (string) – role of the user in the organization. One of member, editor, or admin
-                # Returns:	
-                # the newly created (or updated) membership
-
-                # Return type:	
-                # dictionary
-                organizationapi = toolkit.get_action('organization_member_create')(
-                data_dict={'id': CleanTitleStep2, 'username': format(name), 'role': cool_plugin_instance.user_role   })
-                db_session = model.Session()
-                try:
-                    # Recuperamos la instancia del objeto desde la base de datos
-                    cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(organization_name=organization).first()
-                    
-                    # Modificamos el campo 'approved'
-                    cool_plugin_instance.approved = 'approved by '+toolkit.g.user
-                    
-                    # Guardamos los cambios en la base de datos
-                    db_session.commit()
-                    
-                    # Devolvemos el objeto modificado
-                    #return json.dumps(cool_plugin_instance.__dict__)
-                except Exception as e:
-                    # Manejar errores según sea necesario
-                    db_session.rollback()
-                    #return json.dumps({'error': str(e)})
-                finally:
-                    db_session.close()
-            return json.dumps(organizationapi)
-        
+                # Actualizar status después de cualquier operación exitosa
+                cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
+                db_session.commit()
+                
+                return json.dumps(organizationapi)
+                
+            except Exception as e:
+                db_session.rollback()
+                return json.dumps({'error': str(e)})
+            finally:
+                db_session.close()
+                
         except Exception as e:
-            jsonerror={'error': str(e)}
-            return json.dumps(jsonerror)
+            return json.dumps({'error': str(e)})
         
     def show_admin():
         context = {'model': model,
@@ -403,64 +345,6 @@ class MyLogic():
 
             return render_template("index.html", newuser=newuser , errornewuserform = errornewuserform)
 
-    # def do_something(name):
-    #     return "Welcome to ckan !".format(name)
-    
-
-    # def help_it(num):
-    #     return random.randint(num, num + 100)
-    
-    # def add():
-    #     db_model = CoolPluginTable(
-    #         random_number=random.randint(1, 10000),
-    #         name="random thing",
-    #         dataset_name="test-dataset",
-    #         created_at= _time.now()
-    #     )
-
-    #     db_model.save()
-
-    #     return "Success!"
-    
-
-    # def get():
-    #     dataset = "test-dataset"
-    #     result = CoolPluginTable().get_by_package(name=dataset)
-
-    #     return str(result[0].random_number)
-    
-
-    # def update():
-    #     dataset = "test-dataset"
-    #     result = CoolPluginTable().get_by_package(name=dataset)
-    #     for res in result:
-    #         res.random_number=random.randint(1, 10000)
-    #         res.commit()
-        
-    #     return "Success!"
-    
-
-    # def delete():
-    #     dataset = "test-dataset"
-    #     result = CoolPluginTable().get_by_package(name=dataset)
-    #     for res in result:
-    #         res.random_number=random.randint(1, 10000)
-    #         res.delete()
-    #         res.commit()
-        
-    #     return "Success!"
-
-
-    # def only_admin_can_access_me():
-    #     context = {'model': model,
-    #                'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
-    #     try:
-    #         logic.check_access('sysadmin', context, {})
-    #     except logic.NotAuthorized:
-    #         toolkit.abort(403, 'Need to be system administrator to administer')
-        
-    #     dataset_id = request.form.get('dataset_id')
-    #     return "Hello Admin with Dataset {}!".format(dataset_id)
 
     def reject(name, organization, reason):
         logger.debug(f"Iniciando rechazo para usuario: {name}, organización: {organization}, razón: {reason}")
