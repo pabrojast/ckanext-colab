@@ -2,122 +2,89 @@
 
 # ckanext-colab
 
-**TODO:** Put a description of your extension here:  What does it do? What features does it have? Consider including some screenshots or embedding a video!
+A CKAN extension that provides user management and organization approval workflow functionality.
 
+## Features
+
+- **User Registration Form**: Extended profile information collection.
+- **Admin Approval Workflow**: Manage new users and organizations with ease.
+- **Email Notifications**: Automated alerts for administrators upon new registrations.
+- **Multi-Tab Interface**: Efficiently handle pending, approved, and rejected requests.
+- **Organization Support**: Compatible with both new and existing organizations.
+- **Demographic Data Collection**: Gather age, gender, and nationality information.
 
 ## Requirements
 
-**TODO:** For example, you might want to mention here which versions of CKAN this
-extension works with.
+- **CKAN**: Version 2.9+
+- **Python**: Version 3.7+
 
-If your extension works across different versions you can add the following table:
+### Compatibility with Core CKAN Versions
 
-Compatibility with core CKAN versions:
-
-| CKAN version    | Compatible?   |
-| --------------- | ------------- |
-| 2.6 and earlier | not tested    |
-| 2.7             | not tested    |
-| 2.8             | not tested    |
-| 2.9             | not tested    |
-
-Suggested values:
-
-* "yes"
-* "not tested" - I can't think of a reason why it wouldn't work
-* "not yet" - there is an intention to get it working
-* "no"
-
+| CKAN version | Compatible    |
+|--------------|---------------|
+| 2.9          | Yes           |
+| 2.10         | Not Tested    |
 
 ## Installation
 
-**TODO:** Add any additional install steps to the list below.
-   For example installing any non-Python dependencies or adding any required
-   config settings.
+1. **Activate Your CKAN Virtual Environment**:
 
-To install ckanext-colab:
+    ```bash
+    . /usr/lib/ckan/default/bin/activate
+    ```
 
-1. Activate your CKAN virtual environment, for example:
+2. **Clone the Repository and Install the Extension**:
 
-     . /usr/lib/ckan/default/bin/activate
-
-2. Clone the source and install it on the virtualenv
-
-    git clone https://github.com/pabrojst/ckanext-colab.git
+    ```bash
+    git clone https://github.com/pabrojast/ckanext-colab.git
     cd ckanext-colab
     pip install -e .
-	pip install -r requirements.txt
+    pip install -r requirements.txt
+    ```
 
-3. Add `colab` to the `ckan.plugins` setting in your CKAN
-   config file (by default the config file is located at
-   `/etc/ckan/default/ckan.ini`).
+3. **Configure CKAN**:
 
-4. Restart CKAN. For example if you've deployed CKAN with Apache on Ubuntu:
+    Add `colab` to the `ckan.plugins` setting in your CKAN configuration file (default location: `/etc/ckan/default/ckan.ini`).
 
-     sudo service apache2 reload
+4. **Initialize the Database**:
 
+    ```bash
+    ckan db init -p colab
+    ```
 
-## Config settings
+5. **Restart CKAN**:
 
-None at present
+    For example, if deployed with Apache on Ubuntu:
 
-**TODO:** Document any optional config settings here. For example:
+    ```bash
+    sudo service apache2 reload
+    ```
 
-	# The minimum number of hours to wait before re-checking a resource
-	# (optional, default: 24).
-	ckanext.colab.some_setting = some_default_value
+## Configuration Settings
 
+Currently, there are no configurable settings. 
 
-## Developer installation
+**TODO:** Document any optional configuration settings here. For example:
 
-To install ckanext-colab for development, activate your CKAN virtualenv and
-do:
+```ini
+# The minimum number of hours to wait before re-checking a resource
+# (optional, default: 24).
+ckanext.colab.some_setting = some_default_value
+```
 
-    git clone https://github.com/pabrojst/ckanext-colab.git
-    cd ckanext-colab
-    python setup.py develop
-    pip install -r dev-requirements.txt
+## Migration and Upgrade
 
+After making changes to the database schema or updating the extension, perform the following steps to apply migrations:
 
-## Tests
+1. **Generate Migration Scripts**:
 
-To run the tests, do:
+    ```bash
+    ckan generate migration -p colab -m 'member as option added'
+    ```
 
-    pytest --ckan-ini=test.ini
+2. **Upgrade the Database**:
 
+    ```bash
+    ckan db upgrade -p colab
+    ```
 
-## Releasing a new version of ckanext-colab
-
-If ckanext-colab should be available on PyPI you can follow these steps to publish a new version:
-
-1. Update the version number in the `setup.py` file. See [PEP 440](http://legacy.python.org/dev/peps/pep-0440/#public-version-identifiers) for how to choose version numbers.
-
-2. Make sure you have the latest version of necessary packages:
-
-    pip install --upgrade setuptools wheel twine
-
-3. Create a source and binary distributions of the new version:
-
-       python setup.py sdist bdist_wheel && twine check dist/*
-
-   Fix any errors you get.
-
-4. Upload the source distribution to PyPI:
-
-       twine upload dist/*
-
-5. Commit any outstanding changes:
-
-       git commit -a
-       git push
-
-6. Tag the new release of the project on GitHub with the version number from
-   the `setup.py` file. For example if the version number in `setup.py` is
-   0.0.1 then do:
-
-       git tag 0.0.1
-       git push --tags
-
-## License
-
-[AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html)
