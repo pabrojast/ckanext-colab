@@ -168,18 +168,18 @@ class MyLogic():
                 logic.check_access('organization_create', context)
             except logic.NotAuthorized:
                 toolkit.abort(403, 'Not authorized to create organization')
-            
             # Primero obtenemos la instancia antes de usarla
             db_session = model.Session()
             cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(organization_name=organization).first()
             
             if not cool_plugin_instance:
                 return json.dumps({'error': 'User registration not found'})
-            
+            #generamos la url 
             CleanTitle = organization.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
+            #mantenemos los - 
             CleanTitleStep2 = re.sub('[^A-Za-z0-9\-]+', '', CleanTitle)
+            #agregamos al usuario
             users = [{'name': format(name),'capacity': cool_plugin_instance.user_role }]
-            
             #si es una organizacion nueva creamos la organizacion
             if(int(new) == 1):
                 organizationapi = toolkit.get_action('organization_create')(
@@ -355,38 +355,22 @@ class MyLogic():
                 data_dict={'name': name, 'email': email, 'password': password, 'fullname': fullname  })
                 #print(groups)
 
-
-                # # Obtener la configuración SMTP de CKAN
-                # smtp_server = config_option_show(context, {'key': 'smtp.server'})
-                # smtp_user = config_option_show(context, {'key': 'smtp.user'})
-                # smtp_password = config_option_show(context, {'key': 'smtp.password'})
-                # smtp_mail_from = config_option_show(context, {'key': 'smtp.mail_from'})
-
-                # # Configuración del correo electrónico
-                # email_destinatario = "projas@cazalac.org"  # Dirección del destinatario
-
-                # # Función para enviar correo electrónico
-                # def enviar_correo(asunto, mensaje):
-                #     msg = MIMEMultipart()
-                #     msg['From'] = smtp_mail_from
-                #     msg['To'] = email_destinatario
-                #     msg['Subject'] = asunto
-
-                #     msg.attach(MIMEText(mensaje, 'plain'))
-
-                #     server = smtplib.SMTP(smtp_server)
-                #     server.starttls()
-                #     server.login(smtp_user, smtp_password)
-                #     server.sendmail(smtp_mail_from, email_destinatario, msg.as_string())
-                #     server.quit()
-
-                # # Ejemplo de uso
-                # enviar_correo("New User", "Este es un mensaje de prueba.")
-
-
+                # Preparar datos para la notificación
+                user_data = {
+                    'fullname': fullname,
+                    'wins_username': name,
+                    'email': email,
+                    'organization_name': organization_name,
+                    'title_within_organization': title_within_organization,
+                    'organizationType': organizationType
+                }
+                
+                # Enviar notificación a los administradores
+                send_admin_notification(user_data)
+                
             except:
                 errornewuserform = True
-                return render_template("index.html", errornewuserform = errornewuserform, newuser=False)
+                return render_template("index.html", errornewuserform=errornewuserform, newuser=False)
             # Add data to CoolPluginTable
             engine = create_engine(toolkit.config.get('sqlalchemy.url'))
             Base.metadata.create_all(engine)
@@ -477,3 +461,42 @@ class MyLogic():
         
     #     dataset_id = request.form.get('dataset_id')
     #     return "Hello Admin with Dataset {}!".format(dataset_id)
+
+    def reject(name, organization, reason):
+        logger.debug(f"Iniciando rechazo para usuario: {name}, organización: {organization}, razón: {reason}")
+        try:
+            context = {'model': model, 'user': toolkit.c.user}
+            try:
+                logic.check_access('organization_create', context)
+            except logic.NotAuthorized:
+                logger.error("Usuario no autorizado para rechazar usuarios")
+                toolkit.abort(403, 'Not authorized to reject users')
+
+            db_session = model.Session()
+            try:
+                cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
+                    wins_username=name, 
+                    organization_name=organization
+                ).first()
+                
+                if not cool_plugin_instance:
+                    logger.error("No se encontró la instancia correspondiente en CoolPluginTable")
+                    return json.dumps({'error': 'Registro no encontrado'})
+
+                cool_plugin_instance.rejected = f'rejected by {toolkit.g.user}'
+                cool_plugin_instance.rejection_reason = reason
+                logger.debug(f"Actualizando instancia: {cool_plugin_instance}")
+                
+                db_session.commit()
+                logger.debug("Commit exitoso")
+                
+                return json.dumps({'success': True, 'message': 'User rejected successfully'})
+            except Exception as e:
+                logger.error(f"Error en el rechazo: {e}")
+                db_session.rollback()
+                return json.dumps({'error': str(e)})
+            finally:
+                db_session.close()
+        except Exception as e:
+            logger.error(f"Error general en el rechazo: {e}")
+            return json.dumps({'error': str(e)})
