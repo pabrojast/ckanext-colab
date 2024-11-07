@@ -220,7 +220,7 @@ class MyLogic():
                 # Return type:	
                 # dictionary
                 organizationapi = toolkit.get_action('organization_member_create')(
-                data_dict={'id': CleanTitleStep2, 'username': format(name), 'role': 'admin'   })
+                data_dict={'id': CleanTitleStep2, 'username': format(name), 'role': cool_plugin_instance.user_role   })
                 db_session = model.Session()
                 try:
                     # Recuperamos la instancia del objeto desde la base de datos
