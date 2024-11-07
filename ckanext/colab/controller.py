@@ -156,10 +156,13 @@ class MyLogic():
             if not cool_plugin_instance:
                 return json.dumps({'error': 'User registration not found'})
 
-            #generamos la url 
+            # Establecer user_role como 'admin' si es None
+            user_role = cool_plugin_instance.user_role or 'admin'
+
+            # Generamos la URL
             CleanTitle = organization.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
             CleanTitleStep2 = re.sub('[^A-Za-z0-9\-]+', '', CleanTitle)
-            users = [{'name': format(name),'capacity': cool_plugin_instance.user_role }]
+            users = [{'name': format(name), 'capacity': user_role}]
 
             try:
                 if int(new) == 1:
@@ -171,7 +174,7 @@ class MyLogic():
                     # Agregar usuario a organización existente
                     organizationapi = toolkit.get_action('organization_member_create')(
                         data_dict={'id': CleanTitleStep2, 'username': format(name), 
-                                  'role': cool_plugin_instance.user_role})
+                                  'role': user_role})
 
                 # Actualizar status después de cualquier operación exitosa
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
