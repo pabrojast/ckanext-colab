@@ -10,16 +10,16 @@
 {% block primary %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Function to change the link and text on click
+    // Función para cambiar el enlace y el texto al hacer clic
     function changeToApproved(event) {
-        // Prevent default link action
+        // Evitar la acción por defecto del enlace
         event.preventDefault();
 
-        // Get current link
+        // Obtener el enlace actual
         var approveLink = event.target;
         var approveUrl = approveLink.href;
 
-        // Get variables to display
+        // Obtener las variables a mostrar
         var fullName = approveLink.getAttribute('data-fullname');
         var winsUsername = approveLink.getAttribute('data-wins-username');
         var organizationName = approveLink.getAttribute('data-organization-name');
@@ -27,31 +27,33 @@ document.addEventListener('DOMContentLoaded', function() {
         var email = approveLink.getAttribute('data-email');
         var approved = approveLink.getAttribute('data-approved');
         var newOrgDescription = approveLink.getAttribute('new-org-description');
+        var userRole = approveLink.getAttribute('data-user-role');
 
-        // Build a string with the variables
+        // Construir una cadena con las variables
         var variablesContent = "Name: " + fullName + "\n" +
                                "User: " + winsUsername + "\n" +
                                "Organization or Group: " + organizationName + "\n" +
                                "Organization Title: " + titleWithinOrganization + "\n" +
                                "Organization Description: " + newOrgDescription + "\n" +
                                "Email: " + email + "\n" +
+                               "Role: " + userRole + "\n" +
                                "Status: " + approved;
 
-        // Show variables in an alert
+        // Mostrar las variables en un alert
         var userConfirmation = confirm("Variables to send:\n\n" + variablesContent + "\n\nDo you want to approve?");
         if (userConfirmation) {
-            // Make fetch request to get JSON
+            // Realizar la petición fetch para obtener el JSON
             fetch(approveUrl)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
                         alert('Error: ' + data.error);
                     } else {
-                        // Update cell content without reloading the page
+                        // Actualizar el contenido de la celda sin recargar la página
                         const cell = approveLink.parentElement;
                         cell.innerHTML = `approved by ${data.user || 'admin'}`;
                         alert('User successfully approved');
-                        // Build a string with JSON content
+                         // Construir una cadena con el contenido del JSON
                         var jsonContent = "";
                         for (var key in data) {
                             if (data.hasOwnProperty(key)) {
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                         }
 
-                        // Show JSON content in an alert
+                        // Mostrar el contenido del JSON en un alert
                         alert(jsonContent);
 
                     }
@@ -71,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Get all links with class "approve-link" and assign click event to each
+    // Obtener todos los enlaces con la clase "approve-link" y asignar el evento clic a cada uno
     var approveLinks = document.querySelectorAll('.approve-link');
     approveLinks.forEach(function(link) {
         link.addEventListener('click', changeToApproved);
@@ -108,17 +110,17 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', handleReject);
     });
 
-    // Tabs functionality 
+    // Funcionalidad de pestañas
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
 
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Remove active class from all buttons and contents
+            // Remover clase active de todos los botones y contenidos
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
 
-            // Add active class to clicked button and its corresponding content
+            // Agregar clase active al botón clickeado y su contenido correspondiente
             button.classList.add('active');
             const tabId = button.getAttribute('data-tab');
             document.getElementById(tabId).classList.add('active');
@@ -147,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <th>Organization Description</th>
                 <th>Organization Title</th>
                 <th>Email</th>
+                <th>Role</th>
                 <th>Actions</th>
             </tr>
             {% for result in results %}
@@ -166,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         <td class="title-within-organization">{{result.title_within_organization}}</td>
                         <td class="email">{{result.email}}</td>
+                        <td class="user-role">{{result.user_role}}</td>
                         
                         {% if result.approved and "approved by" in result.approved %}
                         <td>
@@ -181,7 +185,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                data-title-within-organization="{{result.title_within_organization}}"
                                new-org-description="{{result.new_organization_description}}"
                                data-email="{{result.email}}"
-                               data-approved="{{result.approved}}">
+                               data-approved="{{result.approved}}"
+                               data-user-role="{{result.user_role}}">
                                 approve
                             </a>
                             |
