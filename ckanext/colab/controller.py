@@ -9,10 +9,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import re 
 import json 
-# from ckan.logic.action.get import config_option_show
-# import smtplib
-# from email.mime.multipart import MIMEMultipart
-# from email.mime.text import MIMEText
 import logging
 from ckanext.colab.lib.email_notifications import send_admin_notification
 
@@ -177,7 +173,7 @@ class MyLogic():
             #mantenemos los - 
             CleanTitleStep2 = re.sub('[^A-Za-z0-9\-]+', '', CleanTitle)
             #agregamos al usuario
-            users = [{'name': format(name),'capacity': 'admin' }]
+            users = [{'name': format(name),'capacity': cool_plugin_instance.user_role }]
             #si es una organizacion nueva creamos la organizacion
             if(int(new) == 1):
                 organizationapi = toolkit.get_action('organization_create')(
@@ -266,11 +262,15 @@ class MyLogic():
     def show_something():
         errornewuserform = False
         if request.method == 'GET':
-            # Eliminamos la consulta innecesaria de groups
+            #get the groups
+            groups = toolkit.get_action('group_list')(
+            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit' : 1000})
             newuser = False
             organization_list = toolkit.get_action('organization_list')(
-                data_dict={'include_dataset_count': True, 'all_fields': True, 'limit' : 1000})
-            return render_template("index.html", organization_list=organization_list, errornewuserform=errornewuserform)
+            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit' : 1000})
+            #you will get something like
+            #[{'approval_status': 'approved', 'created': '2023-11-15T17:04:44.712875', 'description': '', 'display_name': 'ukgov', 'id': 'ff5b411d-dedd-4560-ac93-b59621644e61', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'ukgov', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': '', 'type': 'group'}, {'approval_status': 'approved', 'created': '2023-11-15T17:04:44.713652', 'description': '', 'display_name': 'test1', 'id': 'c1738e32-ced0-41dd-bb7d-251df5aa46b1', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'test1', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': '', 'type': 'group'}, {'approval_status': 'approved', 'created': '2023-11-15T17:04:44.714297', 'description': '', 'display_name': 'test2', 'id': 'cc89cb78-cfb1-47ff-9f17-e9551fa0f1ac', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'test2', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': '', 'type': 'group'}, {'approval_status': 'approved', 'created': '2023-11-15T17:04:44.714706', 'description': '', 'display_name': 'penguin', 'id': '9670daa2-0b07-4a8a-87e4-6313400c40df', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'penguin', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': '', 'type': 'group'}, {'approval_status': 'approved', 'created': '2023-11-15T17:03:48.152620', 'description': 'These are books that David likes.', 'display_name': "Dave's books", 'id': '4f25f1e7-48c9-4bc0-81f7-044a91b8d527', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'david', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': "Dave's books", 'type': 'group'}, {'approval_status': 'approved', 'created': '2023-11-15T17:03:48.153429', 'description': 'Roger likes these books.', 'display_name': "Roger's books", 'id': 'ff2f73ff-dff5-4de6-8f46-efc5dc44cd43', 'image_display_url': '', 'image_url': '', 'is_organization': False, 'name': 'roger', 'num_followers': 0, 'package_count': 0, 'state': 'active', 'title': "Roger's books", 'type': 'group'}]
+            return render_template("index.html", groups=groups, organization_list = organization_list , errornewuserform = errornewuserform )
         if request.method == 'POST':
             email = request.form['email']
             #aseguramos minuscula
@@ -288,6 +288,7 @@ class MyLogic():
             nationality = request.form['nationality']
             organizationType = request.form['organizationType']
             gender = request.form['gender']
+            user_role = request.form['user_role']
 
             if (group_form == "new_group"):
                 group_form = 1
@@ -360,38 +361,10 @@ class MyLogic():
                 
                 # Enviar notificación a los administradores
                 send_admin_notification(user_data)
-
-                # # Obtener la configuración SMTP de CKAN
-                # smtp_server = config_option_show(context, {'key': 'smtp.server'})
-                # smtp_user = config_option_show(context, {'key': 'smtp.user'})
-                # smtp_password = config_option_show(context, {'key': 'smtp.password'})
-                # smtp_mail_from = config_option_show(context, {'key': 'smtp.mail_from'})
-
-                # # Configuración del correo electrónico
-                # email_destinatario = "projas@cazalac.org"  # Dirección del destinatario
-
-                # # Función para enviar correo electrónico
-                # def enviar_correo(asunto, mensaje):
-                #     msg = MIMEMultipart()
-                #     msg['From'] = smtp_mail_from
-                #     msg['To'] = email_destinatario
-                #     msg['Subject'] = asunto
-
-                #     msg.attach(MIMEText(mensaje, 'plain'))
-
-                #     server = smtplib.SMTP(smtp_server)
-                #     server.starttls()
-                #     server.login(smtp_user, smtp_password)
-                #     server.sendmail(smtp_mail_from, email_destinatario, msg.as_string())
-                #     server.quit()
-
-                # # Ejemplo de uso
-                # enviar_correo("New User", "Este es un mensaje de prueba.")
-
-
+                
             except:
                 errornewuserform = True
-                return render_template("index.html", errornewuserform = errornewuserform, newuser=False)
+                return render_template("index.html", errornewuserform=errornewuserform, newuser=False)
             # Add data to CoolPluginTable
             engine = create_engine(toolkit.config.get('sqlalchemy.url'))
             Base.metadata.create_all(engine)
@@ -412,7 +385,8 @@ class MyLogic():
                 age = age,
                 gender = gender,
                 organizationType = organizationType,
-                nationality = nationality
+                nationality = nationality,
+                user_role=user_role,
             )
 
             session.add(db_model)
