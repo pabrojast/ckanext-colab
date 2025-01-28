@@ -79,12 +79,12 @@ After making changes to the database schema or updating the extension, perform t
 1. **Generate Migration Scripts**:
 
     ```bash
-    ckan generate migration -p colab -m 'member as option added'
+    ckan -c production.inigenerate migration -p colab -m 'member as option added'
     ```
 
 2. **Upgrade the Database**:
 
     ```bash
-    ckan db upgrade -p colab
+    ckan -c production.ini db upgrade -p colab
     ```
 

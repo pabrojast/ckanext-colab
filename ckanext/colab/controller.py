@@ -239,7 +239,7 @@ class MyLogic():
             nationality = request.form['nationality']
             organizationType = request.form['organizationType']
             gender = request.form['gender']
-            user_role = request.form['user_role']
+            user_role = request.form.get('user_role', 'admin')  # Default to 'admin' if not specified
 
             if (group_form == "new_group"):
                 group_form = 1
@@ -253,6 +253,7 @@ class MyLogic():
             if(organization_name == "new"):
                 organization_name = new_organization_name
                 new_organization_name = 1
+                user_role = 'admin'  # Force admin role for new organization creators
             else:
                 new_organization_name = 0
                 new_organization_description = "NA"
