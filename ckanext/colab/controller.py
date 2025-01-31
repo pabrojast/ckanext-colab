@@ -362,7 +362,7 @@ class MyLogic():
         
 
 
-        def reject(name, organization, reason):
+    def reject(name, organization, reason):
             logger.debug(f"Starting rejection for user: {name}, organization: {organization}, reason: {reason}")
             try:
                 context = {'model': model, 'user': toolkit.c.user}
