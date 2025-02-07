@@ -287,11 +287,13 @@ class MyLogic():
                 #         }
                 #     }
                 # }
-                # Verificar la autorización antes de crear un usuario
-                context = {'model': model, 'user': toolkit.c.user, 'session': None}
                 # Check if user already exists
                 try:
-                    toolkit.get_validator('user_id_or_name_exists')(name, context)
+                    context = {'model': model, 'user': toolkit.c.user}
+                    # Instead of using the validator directly, use get_action to check if user exists
+                    existing_user = toolkit.get_action('user_show')(
+                        context, {'id': name}
+                    )
                     # User exists - skip user creation but continue with organization registration
                     logger.info(f"User {name} already exists, proceeding with organization registration")
                     user_data = {
@@ -333,11 +335,10 @@ class MyLogic():
                     send_admin_notification(user_data)
                     return render_template("index.html", newuser=True, errornewuserform=False)
 
-                except toolkit.Invalid:
+                except toolkit.ObjectNotFound:
                     # User doesn't exist - continue with original user creation flow
-                    print("User doesn't exist - continue with original user creation flow")
+                    logger.info(f"User {name} doesn't exist - continuing with user creation")
                     try:
-                        context = {'model': model, 'user': toolkit.c.user}
                         logic.check_access('user_create', context)
                         groups = toolkit.get_action('user_create')(
                         data_dict={'name': name, 'email': email, 'password': password, 'fullname': fullname  })
