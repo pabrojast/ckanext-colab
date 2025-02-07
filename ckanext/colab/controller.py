@@ -288,7 +288,7 @@ class MyLogic():
                 #     }
                 # }
                 # Verificar la autorización antes de crear un usuario
-                context = {'model': model, 'user': toolkit.c.user}
+                context = {'model': model, 'user': toolkit.c.user, 'session': None}
                 # Check if user already exists
                 try:
                     toolkit.get_validator('user_id_or_name_exists')(name, context)
@@ -337,6 +337,7 @@ class MyLogic():
                     # User doesn't exist - continue with original user creation flow
                     print("User doesn't exist - continue with original user creation flow")
                     try:
+                        context = {'model': model, 'user': toolkit.c.user}
                         logic.check_access('user_create', context)
                         groups = toolkit.get_action('user_create')(
                         data_dict={'name': name, 'email': email, 'password': password, 'fullname': fullname  })
