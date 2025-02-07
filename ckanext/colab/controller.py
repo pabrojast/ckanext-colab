@@ -293,7 +293,8 @@ class MyLogic():
                 # Check if user already exists
                 try:
                     toolkit.get_validator('user_id_or_name_exists')(name, context)
-                    # If we get here, user exists
+                    # User exists - skip user creation but continue with organization registration
+                    logger.info(f"User {name} already exists, proceeding with organization registration")
                     user_data = {
                         'fullname': fullname,
                         'wins_username': name,
@@ -303,11 +304,38 @@ class MyLogic():
                         'organizationType': organizationType
                     }
                     
-                    # Enviar notificación a los administradores
+                    # Add data to CoolPluginTable for existing user
+                    engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+                    Base.metadata.create_all(engine)
+                    Session = sessionmaker(bind=engine)
+                    session = Session()
+
+                    db_model = CoolPluginTable(
+                        fullname=fullname,
+                        wins_username=name,
+                        email=email,
+                        title_within_organization=title_within_organization,
+                        approved="Pending",
+                        approvedgroup="Pending",
+                        organization_name=organization_name,
+                        new_organization_name=new_organization_name,
+                        new_organization_description=new_organization_description,
+                        age=age,
+                        gender=gender,
+                        organizationType=organizationType,
+                        nationality=nationality,
+                        user_role=user_role,
+                    )
+
+                    session.add(db_model)
+                    session.commit()
+                    
+                    # Send notification to admins
                     send_admin_notification(user_data)
+                    return render_template("index.html", newuser=True, errornewuserform=False)
 
                 except toolkit.Invalid:
-                    # User doesn't exist, continue with user creation
+                    # User doesn't exist - continue with original user creation flow
                     try:
                         logic.check_access('user_create', context)
                         groups = toolkit.get_action('user_create')(
@@ -321,36 +349,37 @@ class MyLogic():
                             'title_within_organization': title_within_organization,
                             'organizationType': organizationType
                         }
+                        # Add data to CoolPluginTable
+                        engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+                        Base.metadata.create_all(engine)
+                        Session = sessionmaker(bind=engine)
+                        session = Session()
+
+                        db_model = CoolPluginTable(
+                            fullname=fullname,
+                            wins_username=name,
+                            email=email,
+                            title_within_organization=title_within_organization,
+                            approved="Pending",
+                            approvedgroup="Pending",
+                            organization_name = organization_name,
+                            new_organization_name = new_organization_name,
+                            new_organization_description = new_organization_description,
+                            age = age,
+                            gender = gender,
+                            organizationType = organizationType,
+                            nationality = nationality,
+                            user_role=user_role,
+                        )
+
+                        session.add(db_model)
+                        session.commit()
                         # Enviar notificación a los administradores
                         send_admin_notification(user_data)
+                        return render_template("index.html", newuser=True, errornewuserform=False)
+
                     except logic.NotAuthorized:
                         toolkit.abort(403, 'Not authorized to create users')               
-                # Add data to CoolPluginTable
-                engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-                Base.metadata.create_all(engine)
-                Session = sessionmaker(bind=engine)
-                session = Session()
-
-                db_model = CoolPluginTable(
-                    fullname=fullname,
-                    wins_username=name,
-                    email=email,
-                    title_within_organization=title_within_organization,
-                    approved="Pending",
-                    approvedgroup="Pending",
-                    organization_name = organization_name,
-                    new_organization_name = new_organization_name,
-                    new_organization_description = new_organization_description,
-                    age = age,
-                    gender = gender,
-                    organizationType = organizationType,
-                    nationality = nationality,
-                    user_role=user_role,
-                )
-
-                session.add(db_model)
-                session.commit()
-                return render_template("index.html", newuser=newuser, errornewuserform=errornewuserform)
             except Exception as e:
                 if session:
                     session.rollback()
