@@ -220,7 +220,6 @@ class MyLogic():
                 abort(500)
 
         if request.method == 'POST':
-            session = None
             try:
                 email = request.form['email']
                 # Ensure lowercase
