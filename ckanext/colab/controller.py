@@ -336,6 +336,7 @@ class MyLogic():
 
                 except toolkit.Invalid:
                     # User doesn't exist - continue with original user creation flow
+                    print("User doesn't exist - continue with original user creation flow")
                     try:
                         logic.check_access('user_create', context)
                         groups = toolkit.get_action('user_create')(
