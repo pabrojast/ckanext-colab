@@ -11,12 +11,28 @@ import re
 import json 
 import logging
 from ckanext.colab.lib.email_notifications import send_admin_notification
+import requests
 
 # Logging configuration
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 Base = declarative_base()
+
+def verify_recaptcha(recaptcha_response):
+    """Verify the reCAPTCHA response"""
+    secret_key = toolkit.config.get('ckan.recaptcha.privatekey')
+    verify_url = 'https://www.google.com/recaptcha/api/siteverify'
+    
+    data = {
+        'secret': secret_key,
+        'response': recaptcha_response
+    }
+    
+    response = requests.post(verify_url, data=data)
+    result = response.json()
+    
+    return result.get('success', False) and result.get('score', 0) > 0.5
 
 class MyLogic():
 
@@ -221,6 +237,13 @@ class MyLogic():
 
         if request.method == 'POST':
             try:
+                # Verificar reCAPTCHA primero
+                recaptcha_response = request.form.get('recaptcha_response')
+                if not recaptcha_response or not verify_recaptcha(recaptcha_response):
+                    logger.error("reCAPTCHA verification failed")
+                    return render_template("index.html", errornewuserform=True, 
+                                        error_message="reCAPTCHA verification failed")
+
                 email = request.form['email']
                 # Ensure lowercase
                 name = request.form['wins_username'].lower()

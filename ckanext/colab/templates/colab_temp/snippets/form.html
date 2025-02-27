@@ -1,6 +1,10 @@
 {# Show a form to become a Data Contributor #}
 <div class="containerform">
 
+<head>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ h.get_site_key() }}"></script>
+</head>
+
 <h1>{{ _('Enroll as a Data Contributor for Your Organization') }}</h1>
 <p>{{ _('Welcome to the Data Upload Form. By completing this form, you request to contribute datasets on behalf of your organization. Please provide the required information regarding the datasets you intend to upload onto the IHP-WINS platform. This will enhance our data resources for the mutual benefit of your organization.') }}</p>
 
@@ -103,7 +107,9 @@
         {{ _('Accept and acknowledge the responsibilities and guidelines that the authorized user must follow when uploading data on behalf of the organization.') }}
     </label><br><br>
 
-    <input type="submit" value="{{ _('Submit') }}">
+    <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
+    
+    <input type="submit" value="{{ _('Submit') }}" id="submit-button">
 </form>
 </div>
 
@@ -233,5 +239,16 @@ if (document.getElementById("organization_name").value === "new" && !checkDuplic
 if (document.getElementById("group").value === "new_group" && !checkDuplicateGroup()) {
     event.preventDefault(); // Evitar el envío del formulario si el nombre del grupo es un duplicado
 }
+});
+
+// Agregar el código de reCAPTCHA
+document.getElementById('data-contributor-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ h.get_site_key() }}', {action: 'submit'}).then(function(token) {
+            document.getElementById('recaptchaResponse').value = token;
+            document.getElementById('data-contributor-form').submit();
+        });
+    });
 });
 </script>

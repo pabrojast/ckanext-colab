@@ -10,7 +10,7 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.ITranslation)   # Implementar ITemplateHelpers
-    #plugins.implements(plugins.ITemplateHelpers)
+    plugins.implements(plugins.ITemplateHelpers)
 
     # IConfigurer
 
@@ -63,5 +63,7 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
 
     #ITemplateHelpers
 
-    # def get_helpers(self):
-    #     return {'help_me': MyLogic.help_it}
+    def get_helpers(self):
+        return {
+            'get_site_key': lambda: toolkit.config.get('ckan.recaptcha.publickey')
+        }
