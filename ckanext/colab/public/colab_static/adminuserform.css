@@ -41,7 +41,7 @@ th {
 
 /* Specific link styles */
 .approve-link[data-approved="approved"] {
-    background-color: #28a745;
+    background-color: #0077d4;
 }
 
 .approve-link:not([data-approved="approved"]) {

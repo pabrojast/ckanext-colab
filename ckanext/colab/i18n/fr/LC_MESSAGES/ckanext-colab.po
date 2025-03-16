@@ -345,3 +345,10 @@ msgstr ""
 msgid "If you have any questions, feel free to reach out."
 msgstr ""
 "Si vous avez des questions, n'hésitez pas à nous contacter."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:102
+msgid "For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets."
+msgstr ""
+"Pour les nouvelles organisations, le rôle Admin est disponible par défaut. Pour les organisations existantes, choisissez Editeur si vous souhaitez télécharger des ensembles de données, ou Membre si vous n'avez besoin que de consulter les ensembles de données privés."
+
+

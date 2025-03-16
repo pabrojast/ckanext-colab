@@ -96,6 +96,7 @@
     <input type="text" id="title_within_organization" name="title_within_organization" required><br><br>
 
     <label for="user_role">{{ _('Role in Organization *') }}</label><br>
+    <small>{{ _('For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets.') }}</small><br>
     <select name="user_role" id="user_role" required>
         <option value="member">{{ _('Member') }}</option>
         <option value="editor">{{ _('Editor') }}</option>
