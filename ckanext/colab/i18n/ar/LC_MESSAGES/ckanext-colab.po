@@ -73,10 +73,8 @@ msgstr "يرجى ملاحظة أن تقديمك سيخضع لعملية تحقق
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:9
 msgid ""
-"If your organization is already listed on the site, you can create a "
-"regular user account so that your organization's administrator can add "
-"you to their team at the following link: "
-msgstr "إذا كانت منظمتك مدرجة بالفعل في الموقع، يمكنك إنشاء حساب مستخدم عادي حتى يتمكن مدير منظمتك من إضافتك إلى فريقهم عبر الرابط التالي:"
+"If you encounter any issues with the registration process, please contact us at ihp-unesco@unesco.org for assistance."
+msgstr "إذا واجهت أي مشاكل في عملية التسجيل، يرجى الاتصال بنا على ihp-unesco@unesco.org للمساعدة."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:9
 msgid "Register for a Normal User Account"

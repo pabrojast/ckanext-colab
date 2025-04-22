@@ -79,7 +79,12 @@ msgstr ""
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:9
 msgid ""
-"If your organization is already listed on the site, you can create a "
+"If you encounter any issues with the registration process, please contact us at ihp-unesco@unesco.org for assistance."
+msgstr ""
+"Si vous rencontrez des problèmes avec le processus d'inscription, veuillez nous contacter à ihp-unesco@unesco.org pour obtenir de l'aide."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:9
+msgid "If your organization is already listed on the site, you can create a "
 "regular user account so that your organization's administrator can add "
 "you to their team at the following link: "
 msgstr ""
