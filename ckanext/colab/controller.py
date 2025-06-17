@@ -225,55 +225,19 @@ class MyLogic():
         errornewuserform = False
         if request.method == 'GET':
             try:
-                # Obtener parámetros de paginación
-                page = request.args.get('page', 1, type=int)
-                per_page = 50  # Número de items por página
-                
-                # Obtener el total de grupos y organizaciones
-                groups_count = toolkit.get_action('group_list')(data_dict={'count': True})
-                orgs_count = toolkit.get_action('organization_list')(data_dict={'count': True})
-                
-                # Calcular el offset para la paginación
-                offset = (page - 1) * per_page
-                
-                # Obtener grupos y organizaciones paginados
                 groups = toolkit.get_action('group_list')(
-                    data_dict={
-                        'include_dataset_count': True,
-                        'all_fields': True,
-                        'limit': per_page,
-                        'offset': offset
-                    })
+                    data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 1000})
                 organization_list = toolkit.get_action('organization_list')(
-                    data_dict={
-                        'include_dataset_count': True,
-                        'all_fields': True,
-                        'limit': per_page,
-                        'offset': offset
-                    })
-                
-                # Calcular el número total de páginas
-                total_pages = max(
-                    (groups_count + per_page - 1) // per_page,
-                    (orgs_count + per_page - 1) // per_page
-                )
-                
-                return render_template(
-                    "index.html",
-                    groups=groups,
-                    organization_list=organization_list,
-                    errornewuserform=errornewuserform,
-                    current_page=page,
-                    total_pages=total_pages,
-                    per_page=per_page
-                )
+                    data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 1000})
+                return render_template("index.html", groups=groups, organization_list=organization_list, 
+                                     errornewuserform=errornewuserform)
             except Exception as e:
                 logger.error(f"Error in GET method: {e}")
                 abort(500)
 
         if request.method == 'POST':
             try:
-                # Verificar reCAPTCHA solo en POST
+                # Verificar reCAPTCHA primero
                 recaptcha_response = request.form.get('recaptcha_response')
                 if not recaptcha_response or not verify_recaptcha(recaptcha_response):
                     logger.error("reCAPTCHA verification failed")
