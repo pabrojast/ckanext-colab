@@ -13,17 +13,17 @@
 {% endblock %}
 
 {% block content %}
-<div class="homepage layout-data-contributor">
+
+<div class="homepage layout-{{ homepage_style }}">
     <div id="content" class="container">
-        {{ self.flash() }}
+      {{ self.flash() }}
     </div>
-    
     {% block primary_content %}
+
     <div class="main">
 
         <div class="container">
             
-            <!-- Breadcrumb Navigation -->
             <div class="toolbar" role="navigation" aria-label="Breadcrumb">
                 <ol class="breadcrumb">                 
                     <li class="home"><a href="/" aria-label="Home"><i class="fa fa-home"></i><span> Home</span></a></li>
@@ -31,168 +31,89 @@
                 </ol>
             </div>
 
-            <!-- Banner Section with overlay -->
+            <!-- Banner with overlay text using same structure as FeaturedPublications -->
             {% if not newuser and not errornewuserform %}
             <section class="module module-narrow module-shallow">
-                <div class="section-title">
-                    <div class="section-title-bg" style="background-image: url('/colab_static/images/colab.jpg');"></div>
-                    <div class="section-title-overlay"></div>
-                    <div class="section-title-content">
-                        <h2>{{ _('Become a Data Contributor') }}</h2>
-                        <p class="section-title-description">{{ _('Join our community of data contributors and help enhance water resources management through collaborative data sharing.') }}</p>
-                    </div>
+              <div class="section-title" style="margin-bottom: 2rem;">
+                <div class="section-title-bg" style="background-image: url('/colab_static/images/colab.jpg');"></div>
+                <div class="section-title-overlay"></div>
+                <div class="section-title-content">
+                  <h2>{{ _('Become a Data Contributor') }}</h2>
+                  <p class="section-title-description">{{ _('Join our community of data contributors and help enhance water resources management through collaborative data sharing.') }}</p>
                 </div>
+              </div>
             </section>
             {% endif %}
 
             <!-- Success Banner -->
             {% if newuser and not errornewuserform %}
             <section class="module module-narrow module-shallow">
-                <div class="section-title">
-                    <div class="section-title-bg" style="background-image: url('/colab_static/images/colab.jpg');"></div>
-                    <div class="section-title-overlay success-overlay"></div>
-                    <div class="section-title-content">
-                        <h2>{{ _('Registration Successful') }}</h2>
-                        <p class="section-title-description">{{ _('Welcome to the IHP-WINS platform! Your application has been submitted successfully.') }}</p>
-                    </div>
+              <div class="section-title" style="margin-bottom: 2rem;">
+                <div class="section-title-bg" style="background-image: url('/colab_static/images/colab.jpg');"></div>
+                <div class="section-title-overlay success-overlay"></div>
+                <div class="section-title-content">
+                  <h2>{{ _('Registration Successful') }}</h2>
+                  <p class="section-title-description">{{ _('Welcome to the IHP-WINS platform! Your application has been submitted successfully.') }}</p>
                 </div>
+              </div>
             </section>
             {% endif %}
 
             <!-- Error Banner -->
             {% if errornewuserform %}
             <section class="module module-narrow module-shallow">
-                <div class="section-title">
-                    <div class="section-title-bg" style="background-image: url('/colab_static/images/colab.jpg');"></div>
-                    <div class="section-title-overlay error-overlay"></div>
-                    <div class="section-title-content">
-                        <h2>{{ _('Registration Error') }}</h2>
-                        <p class="section-title-description">{{ _('We encountered an issue processing your registration. Please review the information below.') }}</p>
-                    </div>
+              <div class="section-title" style="margin-bottom: 2rem;">
+                <div class="section-title-bg" style="background-image: url('/colab_static/images/colab.jpg');"></div>
+                <div class="section-title-overlay error-overlay"></div>
+                <div class="section-title-content">
+                  <h2>{{ _('Registration Error') }}</h2>
+                  <p class="section-title-description">{{ _('We encountered an issue processing your registration. Please review the information below.') }}</p>
                 </div>
+              </div>
             </section>
             {% endif %}
-        </div>
+          </div>
         
-        <!-- Main Content Container -->
-        <div class="container">
+          <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <!-- Form Section -->
-                    {% if not newuser and not errornewuserform %}
-                        {% snippet "snippets/form.html", groups = groups, organization_list = organization_list %}
-                    {% endif %}
+              <div class="col-md-12">
+                
+                <!-- Form Section -->
+                {% if not newuser and not errornewuserform %}
+                  {% snippet "snippets/form.html", groups = groups, organization_list = organization_list %}
+                {% endif %}
 
-                    {% if not newuser and not errornewuserform and normaluser %}
-                        {% snippet "snippets/new-user-not-admin.html", data=data, errors=errors, error_summary=error_summary %}
-                    {% endif %}
+                {% if not newuser and not errornewuserform and normaluser %}
+                  {% snippet "snippets/new-user-not-admin.html", data=data, errors=errors, error_summary=error_summary %}
+                {% endif %}
 
-                    <!-- Success Section -->
-                    {% if newuser and not errornewuserform %}
-                        {% snippet "snippets/thanks.html", input = newuser %}
-                    {% endif %}
+                <!-- Success Section -->
+                {% if newuser and not errornewuserform %}
+                  {% snippet "snippets/thanks.html", input = newuser %}
+                {% endif %}
 
-                    <!-- Error Section -->
-                    {% if errornewuserform %}
-                        {% snippet "snippets/error-user-create.html" %}
-                    {% endif %}
-                </div>
+                <!-- Error Section -->
+                {% if errornewuserform %}
+                  {% snippet "snippets/error-user-create.html" %}
+                {% endif %}
+
+              </div>
             </div>
-        </div>
+          </div>
 
     </div>
     {% endblock %}
 </div>
 
 <style>
-/* Reset and clean base styles */
-.homepage.layout-data-contributor {
-    background: #f0f0f0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* Remove all default CKAN spacing and backgrounds */
-.homepage.layout-data-contributor #content {
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-.homepage.layout-data-contributor .main {
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-}
-
-.homepage.layout-data-contributor .container {
-    background: transparent !important;
-    max-width: 1200px !important;
-    padding-left: 15px !important;
-    padding-right: 15px !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* Breadcrumb styles - exactly like Citizen Science Portal */
-.toolbar {
-    margin-bottom: 0 !important;
-    padding: 15px 0 !important;
-    background: transparent !important;
-    border: none !important;
-}
-
-.breadcrumb {
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-}
-
-.breadcrumb li {
-    font-size: 14px;
-    display: inline-block;
-}
-
-.breadcrumb li a {
-    color: #0077d4;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.breadcrumb li a:hover {
-    color: #004c8c;
-}
-
-.breadcrumb li.active a {
-    color: #666;
-    font-weight: 600;
-}
-
-.breadcrumb .fa-home {
-    margin-right: 5px;
-}
-
-/* Banner section - exactly like Citizen Science Portal */
+/* Portal-specific styles - Conservative approach */
 .section-title {
     position: relative;
     min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0 !important;
     overflow: hidden;
-    margin: 0 !important;
-    margin-bottom: 30px !important;
-    box-shadow: none !important;
-    border: none !important;
 }
 
 .section-title-bg {
@@ -249,60 +170,6 @@
     line-height: 1.5;
 }
 
-/* Module cleanup */
-.module {
-    border: none !important;
-    box-shadow: none !important;
-    background: transparent !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.module-narrow,
-.module-shallow {
-    border: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: transparent !important;
-}
-
-/* Content area - clean white background like Citizen Science Portal */
-.col-md-12 {
-    background: white !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* Form container cleanup */
-.containerform {
-    background: white !important;
-    border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    padding: 30px !important;
-    margin: 0 !important;
-}
-
-/* Thanks and error container adjustments */
-.thanks-container,
-.error-container {
-    border: none !important;
-    box-shadow: none !important;
-    background: white !important;
-    margin: 0 !important;
-    padding: 30px !important;
-}
-
-/* Row cleanup */
-.row {
-    margin: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    background: transparent !important;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .section-title {
@@ -316,33 +183,6 @@
     .section-title-description {
         font-size: 1rem;
     }
-    
-    .homepage.layout-data-contributor .container {
-        padding-left: 10px !important;
-        padding-right: 10px !important;
-    }
-    
-    .containerform {
-        padding: 20px !important;
-    }
-}
-
-/* Force clean layout - override any CKAN defaults */
-.homepage *,
-.homepage .primary,
-.homepage .secondary,
-.homepage .content,
-.homepage .wrapper {
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* Ensure content flows naturally */
-.homepage .primary {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: transparent !important;
 }
 </style>
 
