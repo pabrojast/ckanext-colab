@@ -1,25 +1,233 @@
 {% extends "page.html" %}
+
+{% block title %}
+{% trans %}Data Contributor Portal{% endtrans %} - {{ super() }}
+{% endblock %}
+
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="/newuserform.css" />
 {% endblock %}
-{% block secondary %}
 
-{% endblock  %}
+{% block secondary %}
+{% endblock %}
 
 {% block primary %}
-    {%if not newuser and not errornewuserform %}
-    {% snippet "snippets/form.html", groups = groups, organization_list = organization_list %}
-    {% endif %}
-    {%if not newuser and not errornewuserform and normaluser%}
-    {% snippet "snippets/new-user-not-admin.html", data=data, errors=errors, error_summary=error_summary %}
-    {% endif %}
-    {%if newuser and not errornewuserform %}
-    {% snippet "snippets/thanks.html", input = newuser %}
-    {% endif %}
-    {%if errornewuserform %}
-    {% snippet "snippets/error-user-create.html" %}
-    {% endif %}
-    <br/>
+<div class="homepage layout-data-contributor">
+    <div id="content" class="container">
+      {{ self.flash() }}
+    </div>
+    
+    <div class="main">
+        <div class="container">
+            
+            <!-- Breadcrumb Navigation -->
+            <div class="toolbar" role="navigation" aria-label="Breadcrumb">
+                <ol class="breadcrumb">                 
+                    <li class="home"><a href="/" aria-label="Home"><i class="fa fa-home"></i><span> Home</span></a></li>
+                    <li class="active"><a href="{{ h.url_for('colab.index') }}">{% trans %}Data Contributor Portal{% endtrans %}</a></li>
+                </ol>
+            </div>
 
-{% endblock %}}
+            <!-- Banner Section with overlay -->
+            {% if not newuser and not errornewuserform %}
+            <section class="module module-narrow module-shallow">
+              <div class="section-title" style="margin-bottom: 2rem;">
+                <div class="section-title-bg" style="background: linear-gradient(135deg, #0077d4 0%, #004c8c 100%);"></div>
+                <div class="section-title-overlay"></div>
+                <div class="section-title-content">
+                  <h2>{{ _('Become a Data Contributor') }}</h2>
+                  <p class="section-title-description">{{ _('Join our community of data contributors and help enhance water resources management through collaborative data sharing.') }}</p>
+                </div>
+              </div>
+            </section>
+            {% endif %}
+
+            <!-- Success Banner -->
+            {% if newuser and not errornewuserform %}
+            <section class="module module-narrow module-shallow">
+              <div class="section-title" style="margin-bottom: 2rem;">
+                <div class="section-title-bg" style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);"></div>
+                <div class="section-title-overlay"></div>
+                <div class="section-title-content">
+                  <h2>{{ _('Registration Successful') }}</h2>
+                  <p class="section-title-description">{{ _('Welcome to the IHP-WINS platform! Your application has been submitted successfully.') }}</p>
+                </div>
+              </div>
+            </section>
+            {% endif %}
+
+            <!-- Error Banner -->
+            {% if errornewuserform %}
+            <section class="module module-narrow module-shallow">
+              <div class="section-title" style="margin-bottom: 2rem;">
+                <div class="section-title-bg" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);"></div>
+                <div class="section-title-overlay"></div>
+                <div class="section-title-content">
+                  <h2>{{ _('Registration Error') }}</h2>
+                  <p class="section-title-description">{{ _('We encountered an issue processing your registration. Please review the information below.') }}</p>
+                </div>
+              </div>
+            </section>
+            {% endif %}
+        </div>
+        
+        <!-- Main Content Container -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Form Section -->
+                    {% if not newuser and not errornewuserform %}
+                        <div class="form-portal-section">
+                            {% snippet "snippets/form.html", groups = groups, organization_list = organization_list %}
+                        </div>
+                    {% endif %}
+
+                    {% if not newuser and not errornewuserform and normaluser %}
+                        {% snippet "snippets/new-user-not-admin.html", data=data, errors=errors, error_summary=error_summary %}
+                    {% endif %}
+
+                    <!-- Success Section -->
+                    {% if newuser and not errornewuserform %}
+                        <div class="success-portal-section">
+                            {% snippet "snippets/thanks.html", input = newuser %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Error Section -->
+                    {% if errornewuserform %}
+                        <div class="error-portal-section">
+                            {% snippet "snippets/error-user-create.html" %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Portal-specific styles */
+.homepage.layout-data-contributor {
+    background: #f8fafe;
+    min-height: 100vh;
+}
+
+.section-title {
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.section-title-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.section-title-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.section-title-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+}
+
+.section-title-content h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.section-title-description {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin: 0;
+    opacity: 0.95;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+.form-portal-section,
+.success-portal-section,
+.error-portal-section {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 119, 212, 0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+/* Breadcrumb styles */
+.toolbar {
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb {
+    background: transparent;
+    padding: 0.75rem 0;
+    margin: 0;
+    border-radius: 0;
+}
+
+.breadcrumb li {
+    font-size: 14px;
+}
+
+.breadcrumb li a {
+    color: #0077d4;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb li a:hover {
+    color: #004c8c;
+}
+
+.breadcrumb li.active a {
+    color: #666;
+    font-weight: 600;
+}
+
+.breadcrumb .fa-home {
+    margin-right: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .section-title {
+        min-height: 150px;
+    }
+    
+    .section-title-content h2 {
+        font-size: 2rem;
+    }
+    
+    .section-title-description {
+        font-size: 1rem;
+    }
+}
+</style>
+
+{% endblock %}

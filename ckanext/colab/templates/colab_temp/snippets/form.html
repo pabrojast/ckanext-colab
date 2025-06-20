@@ -1,8 +1,8 @@
-{# Show a form to become a Data Contributor #}
+{# Data Contributor Registration Form - Portal Version #}
 <div class="containerform">
 
 <head>
-    <script src="https://www.google.com/recaptcha/api.js?render={{ h.get_site_key() }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ h.get_site_key() }}" async defer></script>
 </head>
 
 <h1>{{ _('Enroll as a Data Contributor for Your Organization') }}</h1>
@@ -15,24 +15,26 @@
     <p>{{ _('If you encounter any issues with the registration process, please contact us at ihp-unesco@unesco.org for assistance.') }}</p>
 </div>
 
-<form method="POST" action="" id="data-contributor-form">
+<form method="POST" action="" id="data-contributor-form" novalidate>
     
     <!-- Personal Information Section -->
     <div class="form-section">
         <h3>{{ _('Personal Information') }}</h3>
         
         <label for="fullname">{{ _('Full Name (Optional)') }}</label>
-        <input type="text" id="fullname" name="fullname">
+        <input type="text" id="fullname" name="fullname" placeholder="{{ _('Enter your full name') }}">
 
         <div class="form-row">
             <div>
                 <label for="wins_username" class="required">{{ _('Username WINS') }}</label>
                 <small>{{ _('Your username should consist solely of lowercase letters and numbers.') }}</small>
-                <input type="text" id="wins_username" name="wins_username" pattern="[a-z0-9]*" minlength="4" maxlength="100" required>
+                <input type="text" id="wins_username" name="wins_username" pattern="[a-z0-9]*" minlength="4" maxlength="100" required placeholder="{{ _('e.g., john_doe123') }}">
+                <div class="field-error" id="username-error"></div>
             </div>
             <div>
                 <label for="email" class="required">{{ _('Email') }}</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" required placeholder="{{ _('your.email@organization.com') }}">
+                <div class="field-error" id="email-error"></div>
             </div>
         </div>
 
@@ -40,12 +42,13 @@
             <div>
                 <label for="wins_password" class="required">{{ _('Password') }}</label>
                 <small>{{ _('Your password must be 8 characters or longer') }}</small>
-                <input type="password" id="wins_password" name="wins_password" minlength="8" required>
+                <input type="password" id="wins_password" name="wins_password" minlength="8" required placeholder="{{ _('Enter a secure password') }}">
+                <div class="password-strength" id="password-strength"></div>
             </div>
             <div>
                 <label for="confirm-password" class="required">{{ _('Confirm password') }}</label>
-                <input type="password" id="confirm-password" name="confirm-password" minlength="8" required>
-                <p id="match-message"></p>
+                <input type="password" id="confirm-password" name="confirm-password" minlength="8" required placeholder="{{ _('Repeat your password') }}">
+                <div id="match-message"></div>
             </div>
         </div>
     </div>
@@ -58,16 +61,17 @@
         <div class="form-row">
             <div>
                 <label for="age" class="required">{{ _('Age') }}</label>
-                <input type="number" id="age" name="age" min="16" max="120" required>
+                <input type="number" id="age" name="age" min="16" max="120" required placeholder="{{ _('Enter your age') }}">
             </div>
             <div>
                 <label for="nationality" class="required">{{ _('Nationality') }}</label>
-                <input type="text" id="nationality" name="nationality" required>
+                <input type="text" id="nationality" name="nationality" required placeholder="{{ _('e.g., French, Canadian, etc.') }}">
             </div>
         </div>
 
         <label for="gender" class="required">{{ _('Gender') }}</label>
-        <select name="gender" id="genderSelect" onchange="toggleOtherField()">
+        <select name="gender" id="genderSelect" required>
+            <option value="">{{ _('Please select your gender') }}</option>
             <option value="woman">{{ _('Woman') }}</option>
             <option value="man">{{ _('Man') }}</option>
             <option value="other" id="genderOtherOption">{{ _('Other (to fill in)') }}</option>
@@ -83,6 +87,7 @@
 
         <label for="organizationType">{{ _('Organization Type') }}</label>
         <select name="organizationType" id="organizationType">
+            <option value="">{{ _('Select organization type') }}</option>
             <option value="unesco_ihp_secretariat">{{ _('UNESCO IHP Secretariat') }}</option>
             <option value="unesco_field_office">{{ _('UNESCO Field Office') }}</option>
             <option value="ihp_national_committee">{{ _('IHP National Committee') }}</option>
@@ -99,31 +104,32 @@
 
         <label for="organization_name" class="required">{{ _('Organization Name') }}</label>
         <small>{{ _('Select your organization in the dropdown list or add a new organization.') }}</small>
-        <select name="organization_name" id="organization_name" onchange="toggleNewOrganizationField()" required>
-            <option value="" selected>{{ _('Select an organization...') }}</option>
+        <select name="organization_name" id="organization_name" required>
+            <option value="">{{ _('Select an organization...') }}</option>
             <option value="new"><strong>{{ _('Create New Organization') }}</strong></option>
             {% for item in organization_list %}
             <option value="{{ item['name'] }}">{{ item['display_name'] }}</option>       
             {% endfor %}
         </select>
 
-        <div id="newOrganizationField" style="display: none;">
+        <div id="newOrganizationField">
             <label for="new_organization_name" class="required">{{ _('New Organization Name') }}</label>
-            <input type="text" id="new_organization_name" name="new_organization_name">
+            <input type="text" id="new_organization_name" name="new_organization_name" placeholder="{{ _('Enter organization name') }}">
             
             <label for="new_organization_description">{{ _('Organization Description') }}</label>
-            <textarea id="new_organization_description" name="new_organization_description" rows="4" cols="50" placeholder="{{ _('Describe your organization\'s mission and activities...') }}"></textarea>
+            <textarea id="new_organization_description" name="new_organization_description" rows="4" placeholder="{{ _('Describe your organization\'s mission and activities...') }}"></textarea>
         </div>
 
         <div class="form-row">
             <div>
                 <label for="title_within_organization" class="required">{{ _('Title Within Represented Organization') }}</label>
-                <input type="text" id="title_within_organization" name="title_within_organization" required>
+                <input type="text" id="title_within_organization" name="title_within_organization" required placeholder="{{ _('e.g., Data Manager, Research Coordinator') }}">
             </div>
             <div>
                 <label for="user_role" class="required">{{ _('Role in Organization') }}</label>
                 <small>{{ _('For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets.') }}</small>
                 <select name="user_role" id="user_role" required>
+                    <option value="">{{ _('Select your role') }}</option>
                     <option value="member">{{ _('Member') }}</option>
                     <option value="editor">{{ _('Editor') }}</option>
                     <option value="admin">{{ _('Admin') }}</option>
@@ -140,6 +146,10 @@
         </label>
     </div>
 
+    <!-- reCAPTCHA -->
+    <div class="g-recaptcha" id="recaptcha-container">
+        <!-- reCAPTCHA will be inserted here by JavaScript -->
+    </div>
     <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
     
     <input type="submit" value="{{ _('Submit Application') }}" id="submit-button">
@@ -147,156 +157,222 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Initially hide the 'genderOtherText' field
-  document.getElementById('genderOtherText').style.display = 'none';
-
-  function toggleOtherField() {
-    var otherOptionSelected = document.getElementById('genderOtherOption').selected;
-    var genderOtherText = document.getElementById('genderOtherText');
-    if (otherOptionSelected) {
-      genderOtherText.style.display = 'block'; // Show
-      genderOtherText.disabled = false; // Enable
-    } else {
-      genderOtherText.style.display = 'none'; // Hide
-      genderOtherText.value = ''; // Clear the field
-      genderOtherText.disabled = true; // Disable
-    }
-  }
-
-  // Set the onchange event listener for the gender select dropdown
-  document.getElementById('genderSelect').addEventListener('change', toggleOtherField);
-});
-
-function toggleNewOrganizationField() {
-    var organizationSelect = document.getElementById("organization_name");
-    var newOrganizationField = document.getElementById("newOrganizationField");
-    var newOrganizationNameField = document.getElementById("new_organization_name");
-    var userRoleSelect = document.getElementById("user_role");
-
-    if (organizationSelect.value === "new") {
-        newOrganizationField.style.display = "block";
-        newOrganizationNameField.required = true;
-        // Establecer rol como admin y deshabilitar el selector
-        userRoleSelect.value = "admin";
-        userRoleSelect.disabled = true;
-    } else {
-        newOrganizationField.style.display = "none";
-        newOrganizationNameField.required = false;
-        // Habilitar el selector de roles
-        userRoleSelect.disabled = false;
-    }
-}
-
-function toggleNewGroupField() {
-    var groupSelect = document.getElementById("group");
-    var newGroupField = document.getElementById("newGroupField");
-    var newGroupNameField = document.getElementById("new_group_name");
-
-    if (groupSelect.value === "new_group") {
-        newGroupField.style.display = "block";
-        newGroupNameField.required = true;
-    } else {
-        newGroupField.style.display = "none";
-        newGroupNameField.required = false;
-    }
-}
-
-document.getElementById("wins_password").addEventListener("input", function () {
-    checkPasswordMatch();
-});
-
-document.getElementById("confirm-password").addEventListener("input", function () {
-    checkPasswordMatch();
-});
-
-function checkPasswordMatch() {
-    var password = document.getElementById("wins_password").value;
-    var confirmPassword = document.getElementById("confirm-password").value;
-    var matchMessage = document.getElementById("match-message");
-
-    if (password === confirmPassword && password.length > 0) {
-        matchMessage.innerHTML = "{{ _('Passwords match!') }}";
-        matchMessage.className = "success-message";
-    } else if (confirmPassword.length > 0) {
-        matchMessage.innerHTML = "{{ _('Passwords do not match') }}";
-        matchMessage.className = "error-message";
-    } else {
-        matchMessage.innerHTML = "";
-        matchMessage.className = "";
-    }
-}
-
-// Function to check if the new organization name already exists in the dropdown
-function checkDuplicateOrganization() {
-    var organizationSelect = document.getElementById("organization_name");
-    var newOrganizationNameField = document.getElementById("new_organization_name");
-
-    var existingOrganizations = Array.from(organizationSelect.options).map(function(option) {
-        return option.value;
-    });
-
-    var newOrganizationName = newOrganizationNameField.value;
-
-    if (existingOrganizations.includes(newOrganizationName)) {
-        alert("{{ _('This organization already exists in the list.') }}");
-        newOrganizationNameField.value = ""; // Clear the input
-        return false;
-    }
-
-    return true;
-}
-
-// Function to check if the new group name already exists in the dropdown
-function checkDuplicateGroup() {
-    var groupSelect = document.getElementById("group");
-    var newGroupNameField = document.getElementById("new_group_name");
-
-    var existingGroups = Array.from(groupSelect.options).map(function(option) {
-        return option.value;
-    });
-
-    var newGroupName = newGroupNameField.value;
-
-    if (existingGroups.includes(newGroupName)) {
-        alert("{{ _('This group already exists in the list.') }}");
-        newGroupNameField.value = ""; // Borrar el valor de entrada
-        return false;
-    }
-
-    return true;
-}
-
-// Attach the checkDuplicateOrganization and checkDuplicateGroup function to the form submission event
-document.getElementById("data-contributor-form").addEventListener("submit", function(event) {
-    var submitButton = document.getElementById("submit-button");
+(function() {
+    'use strict';
     
-    // Add loading state
-    submitButton.classList.add("loading");
-    submitButton.disabled = true;
+    // DOM elements
+    const form = document.getElementById('data-contributor-form');
+    const genderSelect = document.getElementById('genderSelect');
+    const genderOtherText = document.getElementById('genderOtherText');
+    const organizationSelect = document.getElementById('organization_name');
+    const newOrganizationField = document.getElementById('newOrganizationField');
+    const newOrganizationNameField = document.getElementById('new_organization_name');
+    const userRoleSelect = document.getElementById('user_role');
+    const passwordField = document.getElementById('wins_password');
+    const confirmPasswordField = document.getElementById('confirm-password');
+    const matchMessage = document.getElementById('match-message');
+    const submitButton = document.getElementById('submit-button');
     
-    if (document.getElementById("organization_name").value === "new" && !checkDuplicateOrganization()) {
-        event.preventDefault(); // Prevent form submission if the organization name is a duplicate
-        submitButton.classList.remove("loading");
-        submitButton.disabled = false;
-        return;
+    // Initialize form
+    function initializeForm() {
+        // Set initial states
+        genderOtherText.style.display = 'none';
+        newOrganizationField.style.display = 'none';
+        
+        // Add event listeners
+        genderSelect.addEventListener('change', toggleGenderOtherField);
+        organizationSelect.addEventListener('change', toggleNewOrganizationField);
+        passwordField.addEventListener('input', checkPasswordMatch);
+        confirmPasswordField.addEventListener('input', checkPasswordMatch);
+        form.addEventListener('submit', handleFormSubmit);
+        
+        // Initialize reCAPTCHA when ready
+        if (typeof grecaptcha !== 'undefined') {
+            initializeRecaptcha();
+        } else {
+            window.addEventListener('load', initializeRecaptcha);
+        }
     }
-    if (document.getElementById("group") && document.getElementById("group").value === "new_group" && !checkDuplicateGroup()) {
-        event.preventDefault(); // Evitar el envío del formulario si el nombre del grupo es un duplicado
-        submitButton.classList.remove("loading");
-        submitButton.disabled = false;
-        return;
+    
+    // Gender field toggle
+    function toggleGenderOtherField() {
+        const isOtherSelected = genderSelect.value === 'other';
+        
+        if (isOtherSelected) {
+            genderOtherText.style.display = 'block';
+            genderOtherText.disabled = false;
+            genderOtherText.required = true;
+        } else {
+            genderOtherText.style.display = 'none';
+            genderOtherText.disabled = true;
+            genderOtherText.required = false;
+            genderOtherText.value = '';
+        }
     }
-});
-
-// Agregar el código de reCAPTCHA
-document.getElementById('data-contributor-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    grecaptcha.ready(function() {
-        grecaptcha.execute('{{ h.get_site_key() }}', {action: 'submit'}).then(function(token) {
-            document.getElementById('recaptchaResponse').value = token;
-            document.getElementById('data-contributor-form').submit();
+    
+    // Organization field toggle
+    function toggleNewOrganizationField() {
+        const isNewOrganization = organizationSelect.value === 'new';
+        
+        if (isNewOrganization) {
+            newOrganizationField.style.display = 'block';
+            newOrganizationNameField.required = true;
+            // Set role to admin and disable selector
+            userRoleSelect.value = 'admin';
+            userRoleSelect.disabled = true;
+        } else {
+            newOrganizationField.style.display = 'none';
+            newOrganizationNameField.required = false;
+            newOrganizationNameField.value = '';
+            // Enable role selector
+            userRoleSelect.disabled = false;
+        }
+    }
+    
+    // Password matching validation
+    function checkPasswordMatch() {
+        const password = passwordField.value;
+        const confirmPassword = confirmPasswordField.value;
+        
+        if (password === confirmPassword && password.length > 0) {
+            matchMessage.innerHTML = "{{ _('Passwords match!') }}";
+            matchMessage.className = "success-message";
+        } else if (confirmPassword.length > 0) {
+            matchMessage.innerHTML = "{{ _('Passwords do not match') }}";
+            matchMessage.className = "error-message";
+        } else {
+            matchMessage.innerHTML = "";
+            matchMessage.className = "";
+        }
+    }
+    
+    // Duplicate organization check
+    function checkDuplicateOrganization() {
+        if (organizationSelect.value !== 'new') return true;
+        
+        const newOrgName = newOrganizationNameField.value.trim();
+        const existingOrganizations = Array.from(organizationSelect.options)
+            .map(option => option.text.toLowerCase())
+            .filter(name => name !== '');
+        
+        if (existingOrganizations.includes(newOrgName.toLowerCase())) {
+            alert("{{ _('This organization already exists in the list.') }}");
+            newOrganizationNameField.focus();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    // reCAPTCHA initialization
+    function initializeRecaptcha() {
+        if (typeof grecaptcha === 'undefined') {
+            console.warn('reCAPTCHA not loaded');
+            return;
+        }
+        
+        grecaptcha.ready(function() {
+            console.log('reCAPTCHA ready');
         });
-    });
-});
+    }
+    
+    // Form submission handler
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        
+        // Add loading state
+        submitButton.classList.add('loading');
+        submitButton.disabled = true;
+        
+        // Validate form
+        if (!form.checkValidity()) {
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+            return;
+        }
+        
+        // Check for duplicate organization
+        if (!checkDuplicateOrganization()) {
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+            return;
+        }
+        
+        // Execute reCAPTCHA
+        if (typeof grecaptcha !== 'undefined') {
+            grecaptcha.ready(function() {
+                grecaptcha.execute('{{ h.get_site_key() }}', {action: 'submit'})
+                    .then(function(token) {
+                        document.getElementById('recaptchaResponse').value = token;
+                        form.submit();
+                    })
+                    .catch(function(error) {
+                        console.error('reCAPTCHA error:', error);
+                        alert("{{ _('reCAPTCHA verification failed. Please try again.') }}");
+                        submitButton.classList.remove('loading');
+                        submitButton.disabled = false;
+                    });
+            });
+        } else {
+            // Fallback if reCAPTCHA is not available
+            console.warn('reCAPTCHA not available, submitting without verification');
+            form.submit();
+        }
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeForm);
+    } else {
+        initializeForm();
+    }
+    
+})();
 </script>
+
+<style>
+/* Additional form-specific styles */
+.field-error {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.field-error.show {
+    display: block;
+}
+
+.password-strength {
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.password-strength.weak {
+    color: #d32f2f;
+}
+
+.password-strength.medium {
+    color: #ff9800;
+}
+
+.password-strength.strong {
+    color: #4caf50;
+}
+
+/* Placeholder styling */
+::placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    color: #999;
+}
+
+::-ms-input-placeholder {
+    color: #999;
+}
+</style>

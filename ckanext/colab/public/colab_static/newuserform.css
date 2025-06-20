@@ -1,12 +1,36 @@
-/* Modern form styling for CKAN collaboration extension */
+/* Modern form styling for CKAN collaboration extension - Portal Version */
+
+/* Form container integration with portal */
+.form-portal-section .containerform {
+    max-width: none;
+    margin: 0;
+    padding: 40px;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+}
+
+/* For standalone form (non-portal) */
 .containerform {
     max-width: 800px;
     margin: 20px auto;
-    padding: 30px;
+    padding: 40px;
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 119, 212, 0.1);
     border: 1px solid #e3f2fd;
+}
+
+/* Header styling - different for portal vs standalone */
+.form-portal-section .containerform h1 {
+    color: #0077d4;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .containerform h1 {
@@ -19,16 +43,31 @@
     padding-bottom: 15px;
 }
 
-.containerform p {
-    color: #555;
+/* Form intro section */
+.form-intro {
+    background: #e3f2fd;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #0077d4;
+}
+
+.form-intro p {
+    color: #1565c0;
     line-height: 1.6;
     margin-bottom: 15px;
     text-align: justify;
+    font-size: 15px;
 }
 
+.form-intro p:last-child {
+    margin-bottom: 0;
+}
+
+/* Form sections */
 .form-section {
     margin: 30px 0;
-    padding: 20px;
+    padding: 25px;
     background: #f8fafe;
     border-radius: 8px;
     border-left: 4px solid #0077d4;
@@ -36,11 +75,25 @@
 
 .form-section h3 {
     color: #0077d4;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 20px;
     font-weight: 600;
+    display: flex;
+    align-items: center;
 }
 
+.form-section h3::before {
+    content: "";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    background: #0077d4;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Labels */
 label {
     display: block;
     margin-bottom: 8px;
@@ -55,6 +108,7 @@ label.required::after {
     font-weight: bold;
 }
 
+/* Form inputs - improved password field handling */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -70,6 +124,7 @@ textarea {
     transition: all 0.3s ease;
     box-sizing: border-box;
     background: #ffffff;
+    font-family: inherit;
 }
 
 input[type="text"]:focus,
@@ -84,104 +139,39 @@ textarea:focus {
     background: #fafbfc;
 }
 
+/* Small helper text */
 small {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     color: #666;
     font-size: 12px;
     line-height: 1.4;
+    font-style: italic;
 }
 
+/* Form rows - Fixed password alignment issue */
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 25px;
     margin-bottom: 15px;
+    align-items: start;
 }
 
-@media (max-width: 768px) {
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
+.form-row > div {
+    min-height: 0; /* Prevents flex growth issues */
 }
 
-#newOrganizationField,
-#newGroupField {
-    margin-top: 15px;
-    padding: 20px;
-    background: #fff3e0;
-    border-radius: 8px;
-    border: 1px solid #ffb74d;
-}
-
+/* Password match message positioning */
 #match-message {
-    margin-top: 5px;
+    margin-top: -10px;
+    margin-bottom: 15px;
     font-weight: 500;
     font-size: 12px;
+    min-height: 18px; /* Consistent height to prevent jumping */
 }
 
-.password-strength {
-    margin-top: 5px;
-    font-size: 12px;
-}
-
-.checkbox-container {
-    display: flex;
-    align-items: flex-start;
-    margin: 20px 0;
-    padding: 15px;
-    background: #e8f5e8;
-    border-radius: 6px;
-    border: 1px solid #4caf50;
-}
-
-.checkbox-container input[type="checkbox"] {
-    width: auto;
-    margin-right: 10px;
-    margin-top: 2px;
-    transform: scale(1.2);
-}
-
-.checkbox-container label {
-    margin-bottom: 0;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-input[type="submit"] {
-    background: linear-gradient(135deg, #0077d4 0%, #0065b4 100%);
-    color: white;
-    padding: 15px 40px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    width: 100%;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 119, 212, 0.3);
-}
-
-input[type="submit"]:hover {
-    background: linear-gradient(135deg, #0065b4 0%, #004c8c 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 119, 212, 0.4);
-}
-
-input[type="submit"]:active {
-    transform: translateY(0);
-}
-
-/* Special styling for disabled inputs */
-input:disabled,
-select:disabled {
-    background-color: #f5f5f5;
-    color: #999;
-    cursor: not-allowed;
-}
-
-/* Success and error messages */
+/* Success and error message styles */
 .success-message {
     color: #4caf50;
     font-weight: 500;
@@ -196,14 +186,126 @@ select:disabled {
 #genderOtherText {
     margin-top: 10px;
     border-color: #ffb74d;
+    display: none; /* Initially hidden */
 }
 
-/* Organization type specific styling */
+/* Organization fields */
+#newOrganizationField,
+#newGroupField {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff3e0;
+    border-radius: 8px;
+    border: 1px solid #ffb74d;
+    display: none; /* Initially hidden */
+}
+
+#newOrganizationField label,
+#newGroupField label {
+    color: #e65100;
+    font-weight: 600;
+}
+
+/* Organization select styling */
 #organizationType {
     font-weight: 500;
 }
 
-/* Header styling improvements */
+/* Checkbox container */
+.checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    margin: 25px 0;
+    padding: 20px;
+    background: #e8f5e8;
+    border-radius: 8px;
+    border-left: 4px solid #4caf50;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: auto;
+    margin-right: 12px;
+    margin-top: 3px;
+    transform: scale(1.3);
+    accent-color: #4caf50;
+}
+
+.checkbox-container label {
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #2e7d32;
+}
+
+/* reCAPTCHA container styling */
+.g-recaptcha {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Submit button */
+input[type="submit"] {
+    background: linear-gradient(135deg, #0077d4 0%, #0065b4 100%);
+    color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 119, 212, 0.3);
+    margin-top: 20px;
+}
+
+input[type="submit"]:hover {
+    background: linear-gradient(135deg, #0065b4 0%, #004c8c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 119, 212, 0.4);
+}
+
+input[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* Loading state for submit button */
+input[type="submit"].loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+    position: relative;
+}
+
+input[type="submit"].loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Disabled input styling */
+input:disabled,
+select:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+    border-color: #ddd;
+}
+
+/* Header styling improvements for standalone form */
 .containerform h1::before {
     content: "";
     display: block;
@@ -214,19 +316,81 @@ select:disabled {
     border-radius: 2px;
 }
 
-/* Loading state for submit button */
-.loading {
-    opacity: 0.7;
-    cursor: not-allowed;
+/* Remove the ::before for portal version */
+.form-portal-section .containerform h1::before {
+    display: none;
 }
 
-.loading::after {
-    content: "...";
-    animation: loading 1s infinite;
+/* Age input specific styling */
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
-@keyframes loading {
-    0%, 20% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .containerform {
+        margin: 10px;
+        padding: 20px;
+    }
+    
+    .form-portal-section .containerform {
+        padding: 20px;
+    }
+    
+    .form-section {
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .checkbox-container {
+        padding: 15px;
+    }
+}
+
+/* Accessibility improvements */
+input:invalid {
+    border-color: #d32f2f;
+}
+
+input:valid {
+    border-color: #4caf50;
+}
+
+/* Focus styles for better accessibility */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .form-section {
+        border-left-width: 6px;
+    }
+    
+    input, select, textarea {
+        border-width: 3px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
