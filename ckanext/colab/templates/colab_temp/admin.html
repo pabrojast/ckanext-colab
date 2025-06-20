@@ -11,17 +11,56 @@
     }
 
     .admin-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        background: #0074D9;
         color: white;
-        padding: 20px;
-        border-radius: 10px;
         margin-bottom: 30px;
+        border-radius: 0;
+        overflow: hidden;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .admin-header-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #0074D9 0%, #001f3f 100%);
+        opacity: 0.9;
+    }
+
+    .admin-header-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    .admin-header-content {
+        position: relative;
+        z-index: 2;
         text-align: center;
+        max-width: 800px;
+        padding: 20px;
     }
 
     .admin-header h1 {
+        margin: 0 0 10px 0;
+        font-size: 2.8em;
+        font-weight: 400;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .admin-header p {
         margin: 0;
-        font-size: 2.5em;
+        font-size: 1.2em;
+        opacity: 0.95;
         font-weight: 300;
     }
 
@@ -40,13 +79,13 @@
         flex: 1;
         min-width: 200px;
         text-align: center;
-        border-left: 4px solid #667eea;
+        border-left: 4px solid #0074D9;
     }
 
     .stat-number {
         font-size: 2em;
         font-weight: bold;
-        color: #667eea;
+        color: #0074D9;
     }
 
     .stat-label {
@@ -87,7 +126,7 @@
     }
 
     .tab-button.active {
-        color: #667eea;
+        color: #0074D9;
         background: white;
     }
 
@@ -98,7 +137,7 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: #667eea;
+        background: #0074D9;
     }
 
     /* Search and Filter */
@@ -129,7 +168,7 @@
 
     .search-input:focus {
         outline: none;
-        border-color: #667eea;
+        border-color: #0074D9;
     }
 
     .search-icon {
@@ -301,7 +340,7 @@
     }
 
     .modal-header {
-        background: #667eea;
+        background: #0074D9;
         color: white;
         padding: 20px;
         border-radius: 10px 10px 0 0;
@@ -405,7 +444,7 @@
 
     .spinner {
         border: 4px solid #f3f3f3;
-        border-top: 4px solid #667eea;
+        border-top: 4px solid #0074D9;
         border-radius: 50%;
         width: 40px;
         height: 40px;
@@ -455,10 +494,14 @@
 
 {% block primary %}
 <div class="admin-container">
-    <div class="admin-header">
-        <h1>🎯 User Management Dashboard</h1>
-        <p>Manage user registrations and organization memberships</p>
-    </div>
+    <section class="admin-header">
+        <div class="admin-header-bg"></div>
+        <div class="admin-header-overlay"></div>
+        <div class="admin-header-content">
+            <h1>User Management Dashboard</h1>
+            <p>Manage user registrations and organization memberships</p>
+        </div>
+    </section>
 
     <div class="admin-stats">
         <div class="stat-card">
