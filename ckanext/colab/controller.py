@@ -227,6 +227,7 @@ class MyLogic():
             organization_name = request.form.get('organization_name')
             new_organization_name = request.form.get('new_organization_name', '0')
             new_organization_description = request.form.get('new_organization_description', 'NA')
+            selected_user_role = request.form.get('user_role', 'admin')
             
             if not wins_username or not organization_name:
                 return json.dumps({'error': 'Missing required parameters'})
@@ -242,8 +243,11 @@ class MyLogic():
             if not cool_plugin_instance:
                 return json.dumps({'error': 'User registration not found'})
 
-            # Establecer user_role como 'admin' si es None
-            user_role = cool_plugin_instance.user_role or 'admin'
+            # Usar el rol seleccionado por el administrador
+            user_role = selected_user_role
+            
+            # Actualizar el rol en la base de datos
+            cool_plugin_instance.user_role = user_role
 
             # Limpiar el nombre de la organización para URL
             CleanTitle = organization_name.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
