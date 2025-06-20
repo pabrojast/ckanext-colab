@@ -37,6 +37,15 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['GET']
         )
 
+        # New POST route for approve
+        blueprint.add_url_rule(
+            u'/colab/admin/approve',
+            u'approve_post',
+            MyLogic.approve_post,
+            methods=['POST']
+        )
+
+        # Keep the old GET route for backward compatibility
         blueprint.add_url_rule(
             u'/colab/admin/approve/<name>/<organization>/<new>/<new_organization_description>',
             u'approve',

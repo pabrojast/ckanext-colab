@@ -36,6 +36,7 @@ def verify_recaptcha(recaptcha_response):
 
 class MyLogic():
 
+    @staticmethod
     def approvegroup(name, new, group, new_group_description):
         #u'/colab/admin/approvegroup/<name>/<group>/<new>/<new_group_description>',
         # ckan.logic.action.create.group_create(context, data_dict)
@@ -145,6 +146,7 @@ class MyLogic():
             return json.dumps(jsonerror)
     
 
+    @staticmethod
     def approve(name, organization, new, new_organization_description):
         try:
             context = {'model': model, 'user': toolkit.c.user}
@@ -175,10 +177,20 @@ class MyLogic():
 
             try:
                 if int(new) == 1:
-                    # Crear nueva organización
-                    organizationapi = toolkit.get_action('organization_create')(
-                        data_dict={'name': CleanTitleStep2, 'description': new_organization_description, 
-                                  'title': organization, 'users': users})
+                    # Verificar si la organización ya existe antes de crearla
+                    try:
+                        existing_org = toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': CleanTitleStep2})
+                        # Si llegamos aquí, la organización ya existe
+                        # Agregar usuario a organización existente en lugar de crear nueva
+                        logger.warning(f"Organization {CleanTitleStep2} already exists, adding user as member instead")
+                        organizationapi = toolkit.get_action('organization_member_create')(
+                            data_dict={'id': CleanTitleStep2, 'username': format(name), 
+                                      'role': user_role})
+                    except toolkit.ObjectNotFound:
+                        # La organización no existe, podemos crearla
+                        organizationapi = toolkit.get_action('organization_create')(
+                            data_dict={'name': CleanTitleStep2, 'description': new_organization_description, 
+                                      'title': organization, 'users': users})
                 else:
                     # Agregar usuario a organización existente
                     organizationapi = toolkit.get_action('organization_member_create')(
@@ -199,7 +211,94 @@ class MyLogic():
                 
         except Exception as e:
             return json.dumps({'error': str(e)})
+
+    @staticmethod
+    def approve_post():
+        """Handle POST requests for user approval"""
+        try:
+            context = {'model': model, 'user': toolkit.c.user}
+            try:
+                logic.check_access('organization_create', context)
+            except logic.NotAuthorized:
+                toolkit.abort(403, 'Not authorized to create organization')
+            
+            # Obtener datos del formulario POST
+            wins_username = request.form.get('wins_username')
+            organization_name = request.form.get('organization_name')
+            new_organization_name = request.form.get('new_organization_name', '0')
+            new_organization_description = request.form.get('new_organization_description', 'NA')
+            
+            if not wins_username or not organization_name:
+                return json.dumps({'error': 'Missing required parameters'})
+            
+            db_session = model.Session()
+            
+            # Buscar la instancia del usuario
+            cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
+                wins_username=wins_username,
+                organization_name=organization_name
+            ).first()
+            
+            if not cool_plugin_instance:
+                return json.dumps({'error': 'User registration not found'})
+
+            # Establecer user_role como 'admin' si es None
+            user_role = cool_plugin_instance.user_role or 'admin'
+
+            # Limpiar el nombre de la organización para URL
+            CleanTitle = organization_name.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
+            CleanTitleStep2 = re.sub('[^A-Za-z0-9\-]+', '', CleanTitle)
+            users = [{'name': format(wins_username), 'capacity': user_role}]
+
+            try:
+                if new_organization_name == '1':
+                    # Verificar si la organización ya existe antes de crearla
+                    try:
+                        existing_org = toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': CleanTitleStep2})
+                        # Si llegamos aquí, la organización ya existe
+                        # Agregar usuario a organización existente en lugar de crear nueva
+                        logger.warning(f"Organization {CleanTitleStep2} already exists, adding user as member instead")
+                        organizationapi = toolkit.get_action('organization_member_create')(
+                            data_dict={'id': CleanTitleStep2, 'username': format(wins_username), 
+                                      'role': user_role})
+                        organizationapi['message'] = f'User added to existing organization: {organization_name}'
+                    except toolkit.ObjectNotFound:
+                        # La organización no existe, podemos crearla
+                        organizationapi = toolkit.get_action('organization_create')(
+                            data_dict={'name': CleanTitleStep2, 'description': new_organization_description, 
+                                      'title': organization_name, 'users': users})
+                        organizationapi['message'] = f'New organization created: {organization_name}'
+                else:
+                    # Verificar que la organización existe antes de agregar el usuario
+                    try:
+                        existing_org = toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': CleanTitleStep2})
+                        # Agregar usuario a organización existente
+                        organizationapi = toolkit.get_action('organization_member_create')(
+                            data_dict={'id': CleanTitleStep2, 'username': format(wins_username), 
+                                      'role': user_role})
+                        organizationapi['message'] = f'User added to organization: {organization_name}'
+                    except toolkit.ObjectNotFound:
+                        return json.dumps({'error': f'Organization {organization_name} does not exist'})
+
+                # Actualizar status después de cualquier operación exitosa
+                cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
+                organizationapi['user'] = toolkit.g.user
+                db_session.commit()
+                
+                return json.dumps(organizationapi)
+                
+            except Exception as e:
+                db_session.rollback()
+                logger.error(f"Error in approve_post: {e}")
+                return json.dumps({'error': str(e)})
+            finally:
+                db_session.close()
+                
+        except Exception as e:
+            logger.error(f"General error in approve_post: {e}")
+            return json.dumps({'error': str(e)})
         
+    @staticmethod
     def show_admin():
         context = {'model': model,
                    'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
@@ -221,6 +320,7 @@ class MyLogic():
             session.close()
 
 
+    @staticmethod
     def show_something():
         errornewuserform = False
         if request.method == 'GET':
@@ -416,6 +516,7 @@ class MyLogic():
         
 
 
+    @staticmethod
     def reject(name, organization, reason):
             logger.debug(f"Starting rejection for user: {name}, organization: {organization}, reason: {reason}")
             try:

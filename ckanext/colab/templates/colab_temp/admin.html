@@ -2,310 +2,1009 @@
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="/adminuserform.css" />
-{% endblock %}
-{% block secondary %}
+  <style>
+    /* Modern Admin Interface Styles */
+    .admin-container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+    }
 
-{% endblock  %}
+    .admin-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .admin-header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        font-weight: 300;
+    }
+
+    .admin-stats {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        flex: 1;
+        min-width: 200px;
+        text-align: center;
+        border-left: 4px solid #667eea;
+    }
+
+    .stat-number {
+        font-size: 2em;
+        font-weight: bold;
+        color: #667eea;
+    }
+
+    .stat-label {
+        color: #666;
+        margin-top: 5px;
+    }
+
+    /* Enhanced Tabs */
+    .tabs {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .tab-buttons {
+        display: flex;
+        background: #f8f9fa;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .tab-button {
+        flex: 1;
+        padding: 15px 20px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        color: #666;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .tab-button:hover {
+        background: #e9ecef;
+        color: #333;
+    }
+
+    .tab-button.active {
+        color: #667eea;
+        background: white;
+    }
+
+    .tab-button.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #667eea;
+    }
+
+    /* Search and Filter */
+    .controls {
+        padding: 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .search-box {
+        flex: 1;
+        min-width: 250px;
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 10px 15px 10px 40px;
+        border: 2px solid #e9ecef;
+        border-radius: 25px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+
+    .filter-select {
+        padding: 10px 15px;
+        border: 2px solid #e9ecef;
+        border-radius: 20px;
+        background: white;
+        font-size: 14px;
+    }
+
+    /* Enhanced Table */
+    .table-container {
+        overflow-x: auto;
+        padding: 20px;
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        background: white;
+    }
+
+    .admin-table th {
+        background: #f8f9fa;
+        padding: 15px 10px;
+        text-align: left;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 2px solid #e9ecef;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .admin-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #e9ecef;
+        vertical-align: middle;
+    }
+
+    .admin-table tr:hover {
+        background: #f8f9fa;
+    }
+
+    /* Text Truncation */
+    .truncate {
+        max-width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+    }
+
+    .truncate-long {
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .btn-approve {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-approve:hover {
+        background: #218838;
+        transform: translateY(-1px);
+    }
+
+    .btn-reject {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-reject:hover {
+        background: #c82333;
+        transform: translateY(-1px);
+    }
+
+    .btn-view {
+        background: #007bff;
+        color: white;
+    }
+
+    .btn-view:hover {
+        background: #0056b3;
+        transform: translateY(-1px);
+    }
+
+    /* Status Badges */
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-approved {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-rejected {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 0;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        animation: slideIn 0.3s ease;
+    }
+
+    .modal-header {
+        background: #667eea;
+        color: white;
+        padding: 20px;
+        border-radius: 10px 10px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-header h2 {
+        margin: 0;
+        font-size: 1.5em;
+    }
+
+    .close {
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+        opacity: 0.7;
+    }
+
+    .close:hover {
+        opacity: 1;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .detail-group {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .detail-group:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .detail-value {
+        color: #666;
+        word-wrap: break-word;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .admin-stats {
+            flex-direction: column;
+        }
+        
+        .controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .search-box {
+            min-width: auto;
+        }
+        
+        .admin-table {
+            font-size: 12px;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 8px 5px;
+        }
+        
+        .truncate {
+            max-width: 100px;
+        }
+        
+        .truncate-long {
+            max-width: 120px;
+        }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Loading State */
+    .loading {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+    }
+
+    .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Tooltip */
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 300px;
+        background-color: #333;
+        color: #fff;
+        text-align: left;
+        border-radius: 6px;
+        padding: 10px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -150px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+  </style>
+{% endblock %}
+
+{% block secondary %}
+{% endblock %}
 
 {% block primary %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>🎯 User Management Dashboard</h1>
+        <p>Manage user registrations and organization memberships</p>
+    </div>
+
+    <div class="admin-stats">
+        <div class="stat-card">
+            <div class="stat-number" id="pending-count">0</div>
+            <div class="stat-label">Pending Approvals</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="approved-count">0</div>
+            <div class="stat-label">Approved Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="rejected-count">0</div>
+            <div class="stat-label">Rejected Users</div>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab-buttons">
+            <button class="tab-button active" data-tab="pending">
+                📋 Pending (<span id="pending-tab-count">0</span>)
+            </button>
+            <button class="tab-button" data-tab="approved">
+                ✅ Approved (<span id="approved-tab-count">0</span>)
+            </button>
+            <button class="tab-button" data-tab="rejected">
+                ❌ Rejected (<span id="rejected-tab-count">0</span>)
+            </button>
+        </div>
+
+        <div class="controls">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search by name, email, organization..." id="search-input">
+            </div>
+            <select class="filter-select" id="org-filter">
+                <option value="">All Organizations</option>
+            </select>
+            <select class="filter-select" id="role-filter">
+                <option value="">All Roles</option>
+                <option value="admin">Admin</option>
+                <option value="editor">Editor</option>
+                <option value="member">Member</option>
+            </select>
+        </div>
+
+        <div id="pending" class="tab-content active">
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>👤 User</th>
+                            <th>📧 Contact</th>
+                            <th>🏢 Organization</th>
+                            <th>📋 Details</th>
+                            <th>🎭 Role</th>
+                            <th>⚡ Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                            {% if result.approved == 'Pending' and not result.rejected %}
+                                <tr data-user-id="{{ result.wins_username }}" class="user-row">
+                                    <td>
+                                        <div>
+                                            <strong class="truncate" title="{{ result.fullname }}">{{ result.fullname }}</strong>
+                                            <br>
+                                            <small class="text-muted">{{ result.wins_username }}</small>
+                                            <br>
+                                            <small class="text-muted">{{ result.age }}y, {{ result.gender }}, {{ result.nationality }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="truncate" title="{{ result.email }}">{{ result.email }}</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong class="truncate" title="{{ result.organization_name }}">{{ result.organization_name }}</strong>
+                                            <br>
+                                            <small class="text-muted">{{ result.organizationType }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="truncate" title="{{ result.title_within_organization }}">
+                                            {{ result.title_within_organization }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge status-pending">{{ result.user_role or 'admin' }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username }}')">
+                                                👁️ View
+                                            </button>
+                                            <a href="#" class="btn btn-approve approve-link"
+                                               data-fullname="{{ result.fullname }}"
+                                               data-wins-username="{{ result.wins_username }}"
+                                               data-organization-name="{{ result.organization_name }}"
+                                               data-title-within-organization="{{ result.title_within_organization }}"
+                                               data-new-org-description="{{ result.new_organization_description }}"
+                                               data-email="{{ result.email }}"
+                                               data-approved="{{ result.approved }}"
+                                               data-user-role="{{ result.user_role }}"
+                                               data-new-org-name="{{ result.new_organization_name }}">
+                                                ✅ Approve
+                                            </a>
+                                            <a href="#" class="btn btn-reject reject-link"
+                                               data-wins-username="{{ result.wins_username }}"
+                                               data-organization-name="{{ result.organization_name }}">
+                                                ❌ Reject
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="approved" class="tab-content">
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>👤 User</th>
+                            <th>📧 Contact</th>
+                            <th>🏢 Organization</th>
+                            <th>📋 Details</th>
+                            <th>✅ Status</th>
+                            <th>⚡ Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                            {% if result.approved and "approved by" in result.approved %}
+                                <tr data-user-id="{{ result.wins_username }}" class="user-row">
+                                    <td>
+                                        <div>
+                                            <strong class="truncate" title="{{ result.fullname }}">{{ result.fullname }}</strong>
+                                            <br>
+                                            <small class="text-muted">{{ result.wins_username }}</small>
+                                            <br>
+                                            <small class="text-muted">{{ result.age }}y, {{ result.gender }}, {{ result.nationality }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="truncate" title="{{ result.email }}">{{ result.email }}</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong class="truncate" title="{{ result.organization_name }}">{{ result.organization_name }}</strong>
+                                            <br>
+                                            <small class="text-muted">{{ result.organizationType }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="truncate" title="{{ result.title_within_organization }}">
+                                            {{ result.title_within_organization }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge status-approved">{{ result.approved }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username }}')">
+                                                👁️ View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="rejected" class="tab-content">
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>👤 User</th>
+                            <th>📧 Contact</th>
+                            <th>🏢 Organization</th>
+                            <th>📋 Details</th>
+                            <th>❌ Status</th>
+                            <th>📝 Reason</th>
+                            <th>⚡ Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                            {% if result.rejected and "rejected by" in result.rejected %}
+                                <tr data-user-id="{{ result.wins_username }}" class="user-row">
+                                    <td>
+                                        <div>
+                                            <strong class="truncate" title="{{ result.fullname }}">{{ result.fullname }}</strong>
+                                            <br>
+                                            <small class="text-muted">{{ result.wins_username }}</small>
+                                            <br>
+                                            <small class="text-muted">{{ result.age }}y, {{ result.gender }}, {{ result.nationality }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="truncate" title="{{ result.email }}">{{ result.email }}</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong class="truncate" title="{{ result.organization_name }}">{{ result.organization_name }}</strong>
+                                            <br>
+                                            <small class="text-muted">{{ result.organizationType }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="truncate" title="{{ result.title_within_organization }}">
+                                            {{ result.title_within_organization }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge status-rejected">{{ result.rejected }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="truncate" title="{{ result.rejection_reason }}">
+                                            {{ result.rejection_reason }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username }}')">
+                                                👁️ View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Details Modal -->
+<div id="userModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>👤 User Details</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
 <script>
+// Store all users data for filtering
+let allUsers = [
+    {% for result in results %}
+    {
+        fullname: "{{ result.fullname }}",
+        wins_username: "{{ result.wins_username }}",
+        email: "{{ result.email }}",
+        organization_name: "{{ result.organization_name }}",
+        organizationType: "{{ result.organizationType }}",
+        title_within_organization: "{{ result.title_within_organization }}",
+        new_organization_description: "{{ result.new_organization_description }}",
+        user_role: "{{ result.user_role }}",
+        approved: "{{ result.approved }}",
+        rejected: "{{ result.rejected }}",
+        rejection_reason: "{{ result.rejection_reason }}",
+        age: "{{ result.age }}",
+        gender: "{{ result.gender }}",
+        nationality: "{{ result.nationality }}",
+        new_organization_name: "{{ result.new_organization_name }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Función para cambiar el enlace y el texto al hacer clic
-    function changeToApproved(event) {
-        // Evitar la acción por defecto del enlace
-        event.preventDefault();
+    initializeAdmin();
+    setupEventListeners();
+    updateCounts();
+    populateFilters();
+});
 
-        // Obtener el enlace actual
-        var approveLink = event.target;
-        var approveUrl = approveLink.href;
-
-        // Obtener las variables a mostrar
-        var fullName = approveLink.getAttribute('data-fullname');
-        var winsUsername = approveLink.getAttribute('data-wins-username');
-        var organizationName = approveLink.getAttribute('data-organization-name');
-        var titleWithinOrganization = approveLink.getAttribute('data-title-within-organization');
-        var email = approveLink.getAttribute('data-email');
-        var approved = approveLink.getAttribute('data-approved');
-        var newOrgDescription = approveLink.getAttribute('new-org-description');
-        var userRole = approveLink.getAttribute('data-user-role');
-
-        // Construir una cadena con las variables
-        var variablesContent = "Name: " + fullName + "\n" +
-                               "User: " + winsUsername + "\n" +
-                               "Organization or Group: " + organizationName + "\n" +
-                               "Organization Title: " + titleWithinOrganization + "\n" +
-                               "Organization Description: " + newOrgDescription + "\n" +
-                               "Email: " + email + "\n" +
-                               "Role: " + userRole + "\n" +
-                               "Status: " + approved;
-
-        // Mostrar las variables en un alert
-        var userConfirmation = confirm("Variables to send:\n\n" + variablesContent + "\n\nDo you want to approve?");
-        if (userConfirmation) {
-            // Realizar la petición fetch para obtener el JSON
-            fetch(approveUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert('Error: ' + data.error);
-                    } else {
-                        // Actualizar el contenido de la celda sin recargar la página
-                        const cell = approveLink.parentElement;
-                        cell.innerHTML = `approved by ${data.user || 'admin'}`;
-                        alert('User successfully approved');
-                         // Construir una cadena con el contenido del JSON
-                        var jsonContent = "";
-                        for (var key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                jsonContent += key + ": " + data[key] + "\n";
-                            }
-                        }
-
-                        // Mostrar el contenido del JSON en un alert
-                        alert(jsonContent);
-
-                    }
-                })
-                .catch(error => {
-                    console.error('Error to get the JSON:', error);
-                    alert('An error occurred while processing the approval');
-                });
-        }
-    }
-
-    // Obtener todos los enlaces con la clase "approve-link" y asignar el evento clic a cada uno
-    var approveLinks = document.querySelectorAll('.approve-link');
-    approveLinks.forEach(function(link) {
-        link.addEventListener('click', changeToApproved);
-    });
-
-    function handleReject(event) {
-        event.preventDefault();
-        const link = event.target;
-        const username = link.getAttribute('data-wins-username');
-        const organization = link.getAttribute('data-organization-name');
-        
-        const reason = prompt("Please enter the reason for rejection:");
-        if (reason) {
-            fetch(`/colab/admin/reject/${username}/${organization}/${encodeURIComponent(reason)}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert('Error: ' + data.error);
-                    } else {
-                        // Update cell content without page reload
-                        const cell = link.parentElement;
-                        cell.innerHTML = `rejected by ${data.user || 'admin'}: ${reason}`;
-                        alert('User successfully rejected');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while processing the rejection');
-                });
-        }
-    }
-
-    document.querySelectorAll('.reject-link').forEach(link => {
-        link.addEventListener('click', handleReject);
-    });
-
-    // Funcionalidad de pestañas
+function initializeAdmin() {
+    // Tab functionality
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
 
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Remover clase active de todos los botones y contenidos
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
 
-            // Agregar clase active al botón clickeado y su contenido correspondiente
             button.classList.add('active');
             const tabId = button.getAttribute('data-tab');
             document.getElementById(tabId).classList.add('active');
         });
     });
-});
+
+    // Search functionality
+    document.getElementById('search-input').addEventListener('input', filterUsers);
+    document.getElementById('org-filter').addEventListener('change', filterUsers);
+    document.getElementById('role-filter').addEventListener('change', filterUsers);
+}
+
+function setupEventListeners() {
+    // Approve links
+    document.querySelectorAll('.approve-link').forEach(link => {
+        link.addEventListener('click', handleApprove);
+    });
+
+    // Reject links
+    document.querySelectorAll('.reject-link').forEach(link => {
+        link.addEventListener('click', handleReject);
+    });
+
+    // Modal close on outside click
+    window.onclick = function(event) {
+        const modal = document.getElementById('userModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+}
+
+function handleApprove(event) {
+    event.preventDefault();
+    
+    const link = event.target;
+    const fullName = link.getAttribute('data-fullname');
+    const winsUsername = link.getAttribute('data-wins-username');
+    const organizationName = link.getAttribute('data-organization-name');
+    const titleWithinOrganization = link.getAttribute('data-title-within-organization');
+    const email = link.getAttribute('data-email');
+    const approved = link.getAttribute('data-approved');
+    const newOrgDescription = link.getAttribute('data-new-org-description');
+    const userRole = link.getAttribute('data-user-role');
+    const newOrgName = link.getAttribute('data-new-org-name');
+
+    const confirmMessage = `🎯 APPROVE USER\n\n` +
+                          `👤 Name: ${fullName}\n` +
+                          `🔑 Username: ${winsUsername}\n` +
+                          `🏢 Organization: ${organizationName}\n` +
+                          `📋 Title: ${titleWithinOrganization}\n` +
+                          `📧 Email: ${email}\n` +
+                          `🎭 Role: ${userRole || 'admin'}\n\n` +
+                          `Do you want to approve this user?`;
+
+    if (confirm(confirmMessage)) {
+        // Show loading state
+        link.innerHTML = '⏳ Processing...';
+        link.style.pointerEvents = 'none';
+
+        const formData = new FormData();
+        formData.append('wins_username', winsUsername);
+        formData.append('organization_name', organizationName);
+        formData.append('new_organization_name', newOrgName || '0');
+        formData.append('new_organization_description', newOrgDescription || 'NA');
+
+        fetch('/colab/admin/approve', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('❌ Error: ' + data.error);
+                link.innerHTML = '✅ Approve';
+                link.style.pointerEvents = 'auto';
+            } else {
+                const cell = link.closest('td');
+                cell.innerHTML = `<span class="status-badge status-approved">approved by ${data.user || 'admin'}</span>`;
+                
+                // Move row to approved tab
+                const row = link.closest('tr');
+                row.remove();
+                
+                updateCounts();
+                
+                alert('✅ User successfully approved!\n\n' + (data.message || 'User added to organization'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ An error occurred while processing the approval');
+            link.innerHTML = '✅ Approve';
+            link.style.pointerEvents = 'auto';
+        });
+    }
+}
+
+function handleReject(event) {
+    event.preventDefault();
+    
+    const link = event.target;
+    const username = link.getAttribute('data-wins-username');
+    const organization = link.getAttribute('data-organization-name');
+    
+    const reason = prompt("📝 Please enter the reason for rejection:");
+    if (reason && reason.trim()) {
+        // Show loading state
+        link.innerHTML = '⏳ Processing...';
+        link.style.pointerEvents = 'none';
+
+        fetch(`/colab/admin/reject/${encodeURIComponent(username)}/${encodeURIComponent(organization)}/${encodeURIComponent(reason)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('❌ Error: ' + data.error);
+                    link.innerHTML = '❌ Reject';
+                    link.style.pointerEvents = 'auto';
+                } else {
+                    const cell = link.closest('td');
+                    cell.innerHTML = `<span class="status-badge status-rejected">rejected by ${data.user || 'admin'}</span>`;
+                    
+                    // Move row to rejected tab
+                    const row = link.closest('tr');
+                    row.remove();
+                    
+                    updateCounts();
+                    
+                    alert('❌ User successfully rejected');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ An error occurred while processing the rejection');
+                link.innerHTML = '❌ Reject';
+                link.style.pointerEvents = 'auto';
+            });
+    }
+}
+
+function showUserDetails(username) {
+    const user = allUsers.find(u => u.wins_username === username);
+    if (!user) return;
+
+    const modalBody = document.getElementById('modal-body');
+    modalBody.innerHTML = `
+        <div class="detail-group">
+            <div class="detail-label">👤 Personal Information</div>
+            <div class="detail-value">
+                <strong>Full Name:</strong> ${user.fullname}<br>
+                <strong>Username:</strong> ${user.wins_username}<br>
+                <strong>Email:</strong> ${user.email}<br>
+                <strong>Age:</strong> ${user.age} years<br>
+                <strong>Gender:</strong> ${user.gender}<br>
+                <strong>Nationality:</strong> ${user.nationality}
+            </div>
+        </div>
+        
+        <div class="detail-group">
+            <div class="detail-label">🏢 Organization Information</div>
+            <div class="detail-value">
+                <strong>Organization:</strong> ${user.organization_name}<br>
+                <strong>Organization Type:</strong> ${user.organizationType}<br>
+                <strong>Title/Position:</strong> ${user.title_within_organization}<br>
+                <strong>User Role:</strong> ${user.user_role || 'admin'}
+            </div>
+        </div>
+        
+        ${user.new_organization_description ? `
+        <div class="detail-group">
+            <div class="detail-label">📋 Organization Description</div>
+            <div class="detail-value">${user.new_organization_description}</div>
+        </div>
+        ` : ''}
+        
+        <div class="detail-group">
+            <div class="detail-label">📊 Status Information</div>
+            <div class="detail-value">
+                <strong>Approval Status:</strong> ${user.approved || 'Pending'}<br>
+                ${user.rejected ? `<strong>Rejection Status:</strong> ${user.rejected}<br>` : ''}
+                ${user.rejection_reason ? `<strong>Rejection Reason:</strong> ${user.rejection_reason}` : ''}
+            </div>
+        </div>
+    `;
+
+    document.getElementById('userModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('userModal').style.display = 'none';
+}
+
+function updateCounts() {
+    const pendingCount = document.querySelectorAll('#pending .user-row').length;
+    const approvedCount = document.querySelectorAll('#approved .user-row').length;
+    const rejectedCount = document.querySelectorAll('#rejected .user-row').length;
+
+    document.getElementById('pending-count').textContent = pendingCount;
+    document.getElementById('approved-count').textContent = approvedCount;
+    document.getElementById('rejected-count').textContent = rejectedCount;
+    
+    document.getElementById('pending-tab-count').textContent = pendingCount;
+    document.getElementById('approved-tab-count').textContent = approvedCount;
+    document.getElementById('rejected-tab-count').textContent = rejectedCount;
+}
+
+function populateFilters() {
+    const orgFilter = document.getElementById('org-filter');
+    const organizations = [...new Set(allUsers.map(user => user.organization_name))].sort();
+    
+    organizations.forEach(org => {
+        const option = document.createElement('option');
+        option.value = org;
+        option.textContent = org;
+        orgFilter.appendChild(option);
+    });
+}
+
+function filterUsers() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const orgFilter = document.getElementById('org-filter').value;
+    const roleFilter = document.getElementById('role-filter').value;
+    
+    document.querySelectorAll('.user-row').forEach(row => {
+        const username = row.getAttribute('data-user-id');
+        const user = allUsers.find(u => u.wins_username === username);
+        
+        if (!user) return;
+        
+        const matchesSearch = !searchTerm || 
+            user.fullname.toLowerCase().includes(searchTerm) ||
+            user.wins_username.toLowerCase().includes(searchTerm) ||
+            user.email.toLowerCase().includes(searchTerm) ||
+            user.organization_name.toLowerCase().includes(searchTerm);
+            
+        const matchesOrg = !orgFilter || user.organization_name === orgFilter;
+        const matchesRole = !roleFilter || user.user_role === roleFilter;
+        
+        if (matchesSearch && matchesOrg && matchesRole) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
 </script>
 
-<div class="tabs">
-    <div class="tab-buttons">
-        <button class="tab-button active" data-tab="pending">Pending</button>
-        <button class="tab-button" data-tab="approved">Approved</button>
-        <button class="tab-button" data-tab="rejected">Rejected</button>
-    </div>
-
-    <div id="pending" class="tab-content active">
-        <table>
-            <tr>
-                <th>Full Name</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Nationality</th>
-                <th>Username</th>
-                <th>Organization</th>
-                <th>Organization Type</th>
-                <th>Organization Description</th>
-                <th>Organization Title</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Actions</th>
-            </tr>
-            {% for result in results %}
-                {% if result.approved == 'Pending' and not result.rejected %}
-                    <tr>
-                        <td class="fullname">{{result.fullname}}</td>
-                        <td class="age">{{result.age}}</td>
-                        <td class="gender">{{result.gender}}</td>
-                        <td class="nationality">{{result.nationality}}</td>
-
-
-                        <td class="wins-username">{{result.wins_username}}</td>
-                        <td class="organization-name">{{result.organization_name}}</td>
-                        <td class="organizationType">{{result.organizationType}}</td>
-
-                        <td class="new-org-description">{{result.new_organization_description}}</td>
-                        
-                        <td class="title-within-organization">{{result.title_within_organization}}</td>
-                        <td class="email">{{result.email}}</td>
-                        <td class="user-role">{{result.user_role}}</td>
-                        
-                        {% if result.approved and "approved by" in result.approved %}
-                        <td>
-                            {{result.approved}}
-                        </td>
-                        {% else %}
-                        <td>
-                            <a href="/colab/admin/approve/{{result.wins_username}}/{{result.organization_name}}/{{result.new_organization_name}}/{{result.new_organization_description or 'NA'}}"
-                               class="approve-link"
-                               data-fullname="{{result.fullname}}"
-                               data-wins-username="{{result.wins_username}}"
-                               data-organization-name="{{result.organization_name}}"
-                               data-title-within-organization="{{result.title_within_organization}}"
-                               new-org-description="{{result.new_organization_description}}"
-                               data-email="{{result.email}}"
-                               data-approved="{{result.approved}}"
-                               data-user-role="{{result.user_role}}">
-                                approve
-                            </a>
-                            |
-                            <a href="#"
-                               class="reject-link"
-                               data-wins-username="{{result.wins_username}}"
-                               data-organization-name="{{result.organization_name}}">
-                                reject
-                            </a>
-                        </td>
-                        {% endif %}
-
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-    </div>
-
-    <div id="approved" class="tab-content">
-        <table>
-            <tr>
-                <th>Full Name</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Nationality</th>
-                <th>Username</th>
-                <th>Organization</th>
-                <th>Organization Type</th>
-                <th>Organization Description</th>
-                <th>Organization Title</th>
-                <th>Email</th>
-                <th>Status</th>
-            </tr>
-            {% for result in results %}
-                {% if result.approved and "approved by" in result.approved %}
-                    <tr>
-                        <td class="fullname">{{result.fullname}}</td>
-                        <td class="age">{{result.age}}</td>
-                        <td class="gender">{{result.gender}}</td>
-                        <td class="nationality">{{result.nationality}}</td>
-
-
-                        <td class="wins-username">{{result.wins_username}}</td>
-                        <td class="organization-name">{{result.organization_name}}</td>
-                        <td class="organizationType">{{result.organizationType}}</td>
-
-                        <td class="new-org-description">{{result.new_organization_description}}</td>
-                        
-                        <td class="title-within-organization">{{result.title_within_organization}}</td>
-                        <td class="email">{{result.email}}</td>
-                        
-                        {% if result.approved and "approved by" in result.approved %}
-                        <td>
-                            {{result.approved}}
-                        </td>
-                        {% else %}
-                        <td>
-                            <a href="/colab/admin/approve/{{result.wins_username}}/{{result.organization_name}}/{{result.new_organization_name}}/{{result.new_organization_description or 'NA'}}"
-                               class="approve-link"
-                               data-fullname="{{result.fullname}}"
-                               data-wins-username="{{result.wins_username}}"
-                               data-organization-name="{{result.organization_name}}"
-                               data-title-within-organization="{{result.title_within_organization}}"
-                               new-org-description="{{result.new_organization_description}}"
-                               data-email="{{result.email}}"
-                               data-approved="{{result.approved}}">
-                                approve
-                            </a>
-                            |
-                            <a href="#"
-                               class="reject-link"
-                               data-wins-username="{{result.wins_username}}"
-                               data-organization-name="{{result.organization_name}}">
-                                reject
-                            </a>
-                        </td>
-                        {% endif %}
-
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-    </div>
-
-    <div id="rejected" class="tab-content">
-        <table>
-            <tr>
-                <th>Full Name</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Nationality</th>
-                <th>Username</th>
-                <th>Organization</th>
-                <th>Organization Type</th>
-                <th>Organization Description</th>
-                <th>Organization Title</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Rejection Reason</th>
-            </tr>
-            {% for result in results %}
-                {% if result.rejected and "rejected by" in result.rejected %}
-                    <tr>
-                        <td class="fullname">{{result.fullname}}</td>
-                        <td class="age">{{result.age}}</td>
-                        <td class="gender">{{result.gender}}</td>
-                        <td class="nationality">{{result.nationality}}</td>
-                        <td class="wins-username">{{result.wins_username}}</td>
-                        <td class="organization-name">{{result.organization_name}}</td>
-                        <td class="organizationType">{{result.organizationType}}</td>
-                        <td class="new-org-description">{{result.new_organization_description}}</td>
-                        <td class="title-within-organization">{{result.title_within_organization}}</td>
-                        <td class="email">{{result.email}}</td>
-                        <td>{{result.rejected}}</td>
-                        <td>{{result.rejection_reason}}</td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-    </div>
-</div>
 {% endblock %}
