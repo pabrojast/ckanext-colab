@@ -1,8 +1,286 @@
-{# Show a text when a user is registered #}
+{# Show a professional thank you message when a user is registered #}
 
-<div class="container" style="padding: 20px; text-align: center; font-family: Arial, sans-serif; font-size: 18px; max-width: 400px; margin: 20px auto;">
-    <p>{{ _("Thank you for registering with us!") }}</p>
-    <p>{{ _("Your details have been received, and we appreciate your interest.") }}</p>
-    <p>{{ _("Our team will review your request shortly.") }}</p>
-    <p>{{ _("If you have any questions, feel free to reach out.") }}</p>
+<div class="thanks-container">
+    <!-- Success Icon -->
+    <div class="success-icon">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#4CAF50"/>
+            <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+
+    <!-- Main Message -->
+    <div class="thanks-content">
+        <h1>{{ _("Registration Successful!") }}</h1>
+        <h2>{{ _("Thank you for joining as a Data Contributor") }}</h2>
+        
+        <div class="message-section">
+            <p class="main-message">{{ _("Your application has been successfully submitted and is now being reviewed by our team.") }}</p>
+            
+            <div class="info-box">
+                <h3>{{ _("What happens next?") }}</h3>
+                <ul class="next-steps">
+                    <li>
+                        <span class="step-icon">📧</span>
+                        <span>{{ _("Email verification will be sent to your provided email address") }}</span>
+                    </li>
+                    <li>
+                        <span class="step-icon">👥</span>
+                        <span>{{ _("Our team will review your application and organization details") }}</span>
+                    </li>
+                    <li>
+                        <span class="step-icon">✅</span>
+                        <span>{{ _("You'll receive a confirmation email once your account is approved") }}</span>
+                    </li>
+                    <li>
+                        <span class="step-icon">🚀</span>
+                        <span>{{ _("Start contributing valuable datasets to the IHP-WINS platform") }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="contact-section">
+                <h3>{{ _("Need assistance?") }}</h3>
+                <p>{{ _("If you have any questions about the registration process or need support, please don't hesitate to contact us:") }}</p>
+                <div class="contact-info">
+                    <a href="mailto:ihp-unesco@unesco.org" class="contact-link">
+                        <span class="contact-icon">📧</span>
+                        ihp-unesco@unesco.org
+                    </a>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="/" class="btn-primary">{{ _("Return to Home") }}</a>
+                <a href="/dataset" class="btn-secondary">{{ _("Browse Datasets") }}</a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+.thanks-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 40px 30px;
+    background: linear-gradient(135deg, #f8fafe 0%, #ffffff 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 119, 212, 0.15);
+    border: 1px solid #e3f2fd;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.success-icon {
+    margin-bottom: 30px;
+    animation: bounceIn 0.8s ease-out;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    70% { transform: scale(0.9); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.thanks-content h1 {
+    color: #0077d4;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 119, 212, 0.1);
+}
+
+.thanks-content h2 {
+    color: #666;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.message-section {
+    text-align: left;
+}
+
+.main-message {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 20px;
+    background: #e8f5e8;
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+}
+
+.info-box {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 12px rgba(0, 119, 212, 0.08);
+    border: 1px solid #e3f2fd;
+}
+
+.info-box h3 {
+    color: #0077d4;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.next-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.next-steps li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: #f8fafe;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.next-steps li:hover {
+    transform: translateX(5px);
+    background: #f0f7ff;
+}
+
+.step-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    min-width: 24px;
+}
+
+.next-steps li span:last-child {
+    color: #444;
+    line-height: 1.5;
+}
+
+.contact-section {
+    background: #fff3e0;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    border: 1px solid #ffb74d;
+}
+
+.contact-section h3 {
+    color: #f57c00;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.contact-section p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.contact-info {
+    text-align: center;
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 20px;
+    background: #ffffff;
+    color: #0077d4;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    border: 2px solid #0077d4;
+    transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+    background: #0077d4;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 119, 212, 0.3);
+}
+
+.contact-icon {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    min-width: 140px;
+    text-align: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0077d4 0%, #0065b4 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 119, 212, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0065b4 0%, #004c8c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 119, 212, 0.4);
+    color: white;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #0077d4;
+    border: 2px solid #0077d4;
+}
+
+.btn-secondary:hover {
+    background: #0077d4;
+    color: white;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .thanks-container {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+    
+    .thanks-content h1 {
+        font-size: 26px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        width: 200px;
+    }
+}
+</style>

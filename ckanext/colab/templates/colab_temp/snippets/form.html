@@ -6,113 +6,143 @@
 </head>
 
 <h1>{{ _('Enroll as a Data Contributor for Your Organization') }}</h1>
-<p>{{ _('Welcome to the Data Upload Form. By completing this form, you request to contribute datasets on behalf of your organization. Please provide the required information regarding the datasets you intend to upload onto the IHP-WINS platform. This will enhance our data resources for the mutual benefit of your organization.') }}</p>
 
-<p>{{ _('Kindly note that your submission will undergo an email verification process, requiring your organization\'s official email address. This verification step ensures the security and authenticity of the data you submit.') }}</p>
+<div class="form-intro">
+    <p>{{ _('Welcome to the Data Upload Form. By completing this form, you request to contribute datasets on behalf of your organization. Please provide the required information regarding the datasets you intend to upload onto the IHP-WINS platform. This will enhance our data resources for the mutual benefit of your organization.') }}</p>
 
-<p>{{ _('If you encounter any issues with the registration process, please contact us at ihp-unesco@unesco.org for assistance.') }}</p>
+    <p>{{ _('Kindly note that your submission will undergo an email verification process, requiring your organization\'s official email address. This verification step ensures the security and authenticity of the data you submit.') }}</p>
 
-<p></p>
+    <p>{{ _('If you encounter any issues with the registration process, please contact us at ihp-unesco@unesco.org for assistance.') }}</p>
+</div>
+
 <form method="POST" action="" id="data-contributor-form">
     
-    <label for="fullname">{{ _('Full Name (Optional)') }}</label><br>
-    <input type="text" id="fullname" name="fullname" required><br><br>
+    <!-- Personal Information Section -->
+    <div class="form-section">
+        <h3>{{ _('Personal Information') }}</h3>
+        
+        <label for="fullname">{{ _('Full Name (Optional)') }}</label>
+        <input type="text" id="fullname" name="fullname">
 
-    <label for="wins_username">{{ _('Username WINS *') }}</label><br>
-    <small>{{ _('Your username should consist solely of lowercase letters and numbers.') }}</small><br>
-    <input type="text" id="wins_username" name="wins_username" pattern="[a-z0-9]*" minlength="4" maxlength="100" required><br><br>
+        <div class="form-row">
+            <div>
+                <label for="wins_username" class="required">{{ _('Username WINS') }}</label>
+                <small>{{ _('Your username should consist solely of lowercase letters and numbers.') }}</small>
+                <input type="text" id="wins_username" name="wins_username" pattern="[a-z0-9]*" minlength="4" maxlength="100" required>
+            </div>
+            <div>
+                <label for="email" class="required">{{ _('Email') }}</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+        </div>
 
-    <label for="password">{{ _('Password *') }}</label><br>
-    <small>{{ _('Your password must be 8 characters or longer') }}</small><br>
-    <input type="password" id="wins_password" name="wins_password" minlength="8" required><br><br>
-    <label for="confirm-password">{{ _('Confirm password *') }}</label><br>
-    <input type="password" id="confirm-password" name="confirm-password" minlength="8" required />
-    <p id="match-message"></p><br>
-
-    <label for="email">{{ _('Email *') }}</label><br>
-    <input type="email" id="email" name="email" required><br>
-
-    <small style="display:block; margin-bottom: 10px;">
-        <h3>{{ _('Demography') }}</h3> 
-        {{ _('UNESCO\'s overarching priorities encompass gender equality, age inclusivity, and geographic diversity. Accordingly, we kindly request your input in the demography fields of this form to ensure we understand who our diverse data contributors are.') }}
-    </small>
-
-    <label for="age">{{ _('Age*') }}</label><br>
-    <input type="number" id="age" name="age" required><br><br>
-
-    <label for="gender">{{ _('Gender *') }}</label><br>
-    <select name="gender" id="genderSelect" onchange="toggleOtherField()">
-      <option value="woman">{{ _('Woman') }}</option>
-      <option value="man">{{ _('Man') }}</option>
-      <option value="other" id="genderOtherOption">{{ _('Other (to fill in)') }}</option>
-      <option value="preferNotToSay">{{ _('Prefer not to say') }}</option>
-    </select>
-    <br>
-    <input type="text" id="genderOtherText" name="genderOther" placeholder="{{ _('Please specify') }}" disabled>
-    <br><br>
-
-    <label for="nationality">{{ _('Nationality *') }}</label><br>
-    <input type="text" id="nationality" name="nationality" required><br><br>
-
-    <small style="display:block; margin-bottom: 10px;">
-        <h3>{{ _('Organization') }}</h3> 
-        {{ _('An organization are those related to the Water Family such as programmes, UNESCO centers, chairs, research institutes, UN agencies, etc., with a wide range of activities and objectives. Typically, organizations comprise multiple teams, divisions or sectors. Structuring data by organizations and their respective teams/divisions/sectors allows for streamlined management and targeted collaboration. Depending on your role as a data contributor, your data is either uploaded to the overall institutional data or to the data repository specific to your designated team.') }}
-    </small>
-
-    <label for="organizationType">{{ _('Organization Type') }}</label>
-    <select name="organizationType" id="organizationType">
-        <option value="unesco_ihp_secretariat">{{ _('UNESCO IHP Secretariat') }}</option>
-        <option value="unesco_field_office">{{ _('UNESCO Field Office') }}</option>
-        <option value="ihp_national_committee">{{ _('IHP National Committee') }}</option>
-        <option value="unesco_category_i_center">{{ _('UNESCO Category I Center') }}</option>
-        <option value="unesco_category_ii_center">{{ _('UNESCO Category II Center') }}</option>
-        <option value="unesco_chair_or_unitwin">{{ _('UNESCO Chair or UNITWIN') }}</option>
-        <option value="nongovernmental_organization">{{ _('Non-Governmental Organization') }}</option>
-        <option value="governmental_organization">{{ _('Governmental Organization') }}</option>
-        <option value="university">{{ _('University') }}</option>
-        <option value="private_partner">{{ _('Private Partner') }}</option>
-        <option value="research_institution">{{ _('Research Institution') }}</option>
-        <option value="other">{{ _('Other') }}</option>
-    </select><br><br>
-
-    <label for="organization_name">{{ _('Organization Name *') }}</label><br>
-    <small>{{ _('Select your organization in the dropdown list or add a new organization.') }}</small><br>
-    
-    <select name="organization_name"  id="organization_name"  onchange="toggleNewOrganizationField()" required>
-        <option value="" selected></option>
-        <option value="new" ><strong>{{ _('Create New Organization') }}</strong></option>
-        {% for item in organization_list %}
-        <option value="{{ item['name'] }}">{{ item['display_name'] }}</option>       
-        {% endfor %}
-      </select><br><br>
-
-      <div id="newOrganizationField" style="display: none;">
-        <label for="new_organization_name">{{ _('New Organization Name *') }}</label><br>
-        <input type="text" id="new_organization_name" name="new_organization_name"><br><br>
-        <label for="new_organization_description">{{ _('Organization Description') }}</label><br>
-        <textarea id="new_organization_description" name="new_organization_description" rows="4" cols="50"></textarea>
-        <br><br>
+        <div class="form-row">
+            <div>
+                <label for="wins_password" class="required">{{ _('Password') }}</label>
+                <small>{{ _('Your password must be 8 characters or longer') }}</small>
+                <input type="password" id="wins_password" name="wins_password" minlength="8" required>
+            </div>
+            <div>
+                <label for="confirm-password" class="required">{{ _('Confirm password') }}</label>
+                <input type="password" id="confirm-password" name="confirm-password" minlength="8" required>
+                <p id="match-message"></p>
+            </div>
+        </div>
     </div>
 
-    <label for="title_within_organization">{{ _('Title Within Represented Organization *') }}</label><br>
-    <input type="text" id="title_within_organization" name="title_within_organization" required><br><br>
+    <!-- Demographics Section -->
+    <div class="form-section">
+        <h3>{{ _('Demographics') }}</h3>
+        <small>{{ _('UNESCO\'s overarching priorities encompass gender equality, age inclusivity, and geographic diversity. Accordingly, we kindly request your input in the demography fields of this form to ensure we understand who our diverse data contributors are.') }}</small>
 
-    <label for="user_role">{{ _('Role in Organization *') }}</label><br>
-    <small>{{ _('For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets.') }}</small><br>
-    <select name="user_role" id="user_role" required>
-        <option value="member">{{ _('Member') }}</option>
-        <option value="editor">{{ _('Editor') }}</option>
-        <option value="admin">{{ _('Admin') }}</option>
-    </select><br><br>
+        <div class="form-row">
+            <div>
+                <label for="age" class="required">{{ _('Age') }}</label>
+                <input type="number" id="age" name="age" min="16" max="120" required>
+            </div>
+            <div>
+                <label for="nationality" class="required">{{ _('Nationality') }}</label>
+                <input type="text" id="nationality" name="nationality" required>
+            </div>
+        </div>
 
-    <label>
+        <label for="gender" class="required">{{ _('Gender') }}</label>
+        <select name="gender" id="genderSelect" onchange="toggleOtherField()">
+            <option value="woman">{{ _('Woman') }}</option>
+            <option value="man">{{ _('Man') }}</option>
+            <option value="other" id="genderOtherOption">{{ _('Other (to fill in)') }}</option>
+            <option value="preferNotToSay">{{ _('Prefer not to say') }}</option>
+        </select>
+        <input type="text" id="genderOtherText" name="genderOther" placeholder="{{ _('Please specify') }}" disabled>
+    </div>
+
+    <!-- Organization Section -->
+    <div class="form-section">
+        <h3>{{ _('Organization') }}</h3>
+        <small>{{ _('An organization are those related to the Water Family such as programmes, UNESCO centers, chairs, research institutes, UN agencies, etc., with a wide range of activities and objectives. Typically, organizations comprise multiple teams, divisions or sectors. Structuring data by organizations and their respective teams/divisions/sectors allows for streamlined management and targeted collaboration. Depending on your role as a data contributor, your data is either uploaded to the overall institutional data or to the data repository specific to your designated team.') }}</small>
+
+        <label for="organizationType">{{ _('Organization Type') }}</label>
+        <select name="organizationType" id="organizationType">
+            <option value="unesco_ihp_secretariat">{{ _('UNESCO IHP Secretariat') }}</option>
+            <option value="unesco_field_office">{{ _('UNESCO Field Office') }}</option>
+            <option value="ihp_national_committee">{{ _('IHP National Committee') }}</option>
+            <option value="unesco_category_i_center">{{ _('UNESCO Category I Center') }}</option>
+            <option value="unesco_category_ii_center">{{ _('UNESCO Category II Center') }}</option>
+            <option value="unesco_chair_or_unitwin">{{ _('UNESCO Chair or UNITWIN') }}</option>
+            <option value="nongovernmental_organization">{{ _('Non-Governmental Organization') }}</option>
+            <option value="governmental_organization">{{ _('Governmental Organization') }}</option>
+            <option value="university">{{ _('University') }}</option>
+            <option value="private_partner">{{ _('Private Partner') }}</option>
+            <option value="research_institution">{{ _('Research Institution') }}</option>
+            <option value="other">{{ _('Other') }}</option>
+        </select>
+
+        <label for="organization_name" class="required">{{ _('Organization Name') }}</label>
+        <small>{{ _('Select your organization in the dropdown list or add a new organization.') }}</small>
+        <select name="organization_name" id="organization_name" onchange="toggleNewOrganizationField()" required>
+            <option value="" selected>{{ _('Select an organization...') }}</option>
+            <option value="new"><strong>{{ _('Create New Organization') }}</strong></option>
+            {% for item in organization_list %}
+            <option value="{{ item['name'] }}">{{ item['display_name'] }}</option>       
+            {% endfor %}
+        </select>
+
+        <div id="newOrganizationField" style="display: none;">
+            <label for="new_organization_name" class="required">{{ _('New Organization Name') }}</label>
+            <input type="text" id="new_organization_name" name="new_organization_name">
+            
+            <label for="new_organization_description">{{ _('Organization Description') }}</label>
+            <textarea id="new_organization_description" name="new_organization_description" rows="4" cols="50" placeholder="{{ _('Describe your organization\'s mission and activities...') }}"></textarea>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label for="title_within_organization" class="required">{{ _('Title Within Represented Organization') }}</label>
+                <input type="text" id="title_within_organization" name="title_within_organization" required>
+            </div>
+            <div>
+                <label for="user_role" class="required">{{ _('Role in Organization') }}</label>
+                <small>{{ _('For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets.') }}</small>
+                <select name="user_role" id="user_role" required>
+                    <option value="member">{{ _('Member') }}</option>
+                    <option value="editor">{{ _('Editor') }}</option>
+                    <option value="admin">{{ _('Admin') }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms and Conditions -->
+    <div class="checkbox-container">
         <input type="checkbox" id="accept_guidelines" name="accept_guidelines" required>
-        {{ _('Accept and acknowledge the responsibilities and guidelines that the authorized user must follow when uploading data on behalf of the organization.') }}
-    </label><br><br>
+        <label for="accept_guidelines">
+            {{ _('Accept and acknowledge the responsibilities and guidelines that the authorized user must follow when uploading data on behalf of the organization.') }}
+        </label>
+    </div>
 
     <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
     
-    <input type="submit" value="{{ _('Submit') }}" id="submit-button">
+    <input type="submit" value="{{ _('Submit Application') }}" id="submit-button">
 </form>
 </div>
 
@@ -185,12 +215,15 @@ function checkPasswordMatch() {
     var confirmPassword = document.getElementById("confirm-password").value;
     var matchMessage = document.getElementById("match-message");
 
-    if (password === confirmPassword) {
+    if (password === confirmPassword && password.length > 0) {
         matchMessage.innerHTML = "{{ _('Passwords match!') }}";
-        matchMessage.style.color = "green";
-    } else {
+        matchMessage.className = "success-message";
+    } else if (confirmPassword.length > 0) {
         matchMessage.innerHTML = "{{ _('Passwords do not match') }}";
-        matchMessage.style.color = "red";
+        matchMessage.className = "error-message";
+    } else {
+        matchMessage.innerHTML = "";
+        matchMessage.className = "";
     }
 }
 
@@ -236,12 +269,24 @@ function checkDuplicateGroup() {
 
 // Attach the checkDuplicateOrganization and checkDuplicateGroup function to the form submission event
 document.getElementById("data-contributor-form").addEventListener("submit", function(event) {
-if (document.getElementById("organization_name").value === "new" && !checkDuplicateOrganization()) {
-    event.preventDefault(); // Prevent form submission if the organization name is a duplicate
-}
-if (document.getElementById("group").value === "new_group" && !checkDuplicateGroup()) {
-    event.preventDefault(); // Evitar el envío del formulario si el nombre del grupo es un duplicado
-}
+    var submitButton = document.getElementById("submit-button");
+    
+    // Add loading state
+    submitButton.classList.add("loading");
+    submitButton.disabled = true;
+    
+    if (document.getElementById("organization_name").value === "new" && !checkDuplicateOrganization()) {
+        event.preventDefault(); // Prevent form submission if the organization name is a duplicate
+        submitButton.classList.remove("loading");
+        submitButton.disabled = false;
+        return;
+    }
+    if (document.getElementById("group") && document.getElementById("group").value === "new_group" && !checkDuplicateGroup()) {
+        event.preventDefault(); // Evitar el envío del formulario si el nombre del grupo es un duplicado
+        submitButton.classList.remove("loading");
+        submitButton.disabled = false;
+        return;
+    }
 });
 
 // Agregar el código de reCAPTCHA

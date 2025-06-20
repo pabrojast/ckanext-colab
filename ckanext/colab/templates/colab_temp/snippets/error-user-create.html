@@ -1,11 +1,416 @@
-{# Renders an error when creating a user #}
+{# Professional error page when user creation fails #}
 
-<div class="container" style="padding: 20px; text-align: center; font-family: Arial, sans-serif; font-size: 18px; max-width: 400px; margin: 20px auto;">
-    <p>{{ _("We're sorry, but we couldn't complete your registration at this time due to a possible error. This may be because the username or email address you provided is already in use on our website.") }}</p>
-    
-    <p>{{ _("Please double-check that you have entered the information correctly and make sure you're not attempting to create a duplicate account. If you believe you already have an account with us, try logging in instead of registering again. If you've forgotten your password, you can reset it through the \"Forgot my password\" option.") }}</p>
-    
-    <p>{{ _("If you continue to experience issues or have any questions, please don't hesitate to contact us through our support page. We're here to help you resolve any concerns you may have.") }}</p>
-    
-    <p>{{ _("We apologize for any confusion or inconvenience this may have caused and appreciate your interest in joining our community. We hope to see you soon on our website!") }}</p>
+<div class="error-container">
+    <!-- Error Icon -->
+    <div class="error-icon">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#f44336"/>
+            <path d="M15 9l-6 6M9 9l6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+
+    <!-- Main Error Content -->
+    <div class="error-content">
+        <h1>{{ _("Registration Could Not Be Completed") }}</h1>
+        <h2>{{ _("We encountered an issue processing your application") }}</h2>
+        
+        <div class="error-message-section">
+            <div class="main-error-message">
+                <p>{{ _("We're sorry, but we couldn't complete your registration at this time. This is typically due to one of the following reasons:") }}</p>
+            </div>
+            
+            <div class="error-reasons">
+                <h3>{{ _("Common Issues:") }}</h3>
+                <ul class="reasons-list">
+                    <li>
+                        <span class="reason-icon">👤</span>
+                        <div class="reason-content">
+                            <strong>{{ _("Username already exists") }}</strong>
+                            <p>{{ _("The username you chose is already in use. Please try a different username.") }}</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="reason-icon">📧</span>
+                        <div class="reason-content">
+                            <strong>{{ _("Email already registered") }}</strong>
+                            <p>{{ _("This email address is already associated with an account. Try logging in instead.") }}</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="reason-icon">🔒</span>
+                        <div class="reason-content">
+                            <strong>{{ _("Organization restrictions") }}</strong>
+                            <p>{{ _("The organization you selected may have specific registration requirements.") }}</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="reason-icon">⚠️</span>
+                        <div class="reason-content">
+                            <strong>{{ _("Technical issue") }}</strong>
+                            <p>{{ _("A temporary server error occurred. Please try again in a few minutes.") }}</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="solutions-box">
+                <h3>{{ _("What can you do?") }}</h3>
+                <div class="solutions-grid">
+                    <div class="solution-card">
+                        <span class="solution-icon">🔄</span>
+                        <h4>{{ _("Try Again") }}</h4>
+                        <p>{{ _("Review your information and attempt registration again with different details.") }}</p>
+                    </div>
+                    <div class="solution-card">
+                        <span class="solution-icon">🔑</span>
+                        <h4>{{ _("Login Instead") }}</h4>
+                        <p>{{ _("If you already have an account, try logging in with your existing credentials.") }}</p>
+                    </div>
+                    <div class="solution-card">
+                        <span class="solution-icon">🆘</span>
+                        <h4>{{ _("Get Help") }}</h4>
+                        <p>{{ _("Contact our support team for personalized assistance with your registration.") }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-section">
+                <h3>{{ _("Need Additional Support?") }}</h3>
+                <p>{{ _("Our team is here to help you resolve any registration issues. Please don't hesitate to reach out:") }}</p>
+                <div class="contact-info">
+                    <a href="mailto:ihp-unesco@unesco.org" class="contact-link">
+                        <span class="contact-icon">📧</span>
+                        ihp-unesco@unesco.org
+                    </a>
+                </div>
+                <p class="support-note">{{ _("When contacting support, please include the username and email you attempted to register with.") }}</p>
+            </div>
+
+            <div class="action-buttons">
+                <a href="#" onclick="history.back()" class="btn-primary">{{ _("Try Again") }}</a>
+                <a href="/user/login" class="btn-secondary">{{ _("Login Instead") }}</a>
+                <a href="/" class="btn-tertiary">{{ _("Return to Home") }}</a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+.error-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px 30px;
+    background: linear-gradient(135deg, #fef7f0 0%, #ffffff 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(244, 67, 54, 0.15);
+    border: 1px solid #ffebee;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.error-icon {
+    margin-bottom: 30px;
+    animation: shake 0.8s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.error-content h1 {
+    color: #d32f2f;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(211, 47, 47, 0.1);
+}
+
+.error-content h2 {
+    color: #666;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.error-message-section {
+    text-align: left;
+}
+
+.main-error-message {
+    background: #fff3e0;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #ff9800;
+    margin-bottom: 30px;
+}
+
+.main-error-message p {
+    color: #e65100;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    text-align: center;
+    font-weight: 500;
+}
+
+.error-reasons {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 12px rgba(244, 67, 54, 0.08);
+    border: 1px solid #ffebee;
+}
+
+.error-reasons h3 {
+    color: #d32f2f;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.reasons-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.reasons-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fafafa;
+    border-radius: 8px;
+    border-left: 3px solid #ff5722;
+}
+
+.reason-icon {
+    font-size: 24px;
+    margin-right: 15px;
+    min-width: 30px;
+}
+
+.reason-content strong {
+    color: #d32f2f;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.reason-content p {
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.solutions-box {
+    background: #e8f5e8;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    border: 1px solid #4caf50;
+}
+
+.solutions-box h3 {
+    color: #2e7d32;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.solutions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.solution-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #c8e6c9;
+    transition: transform 0.2s ease;
+}
+
+.solution-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+.solution-icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.solution-card h4 {
+    color: #2e7d32;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.solution-card p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.contact-section {
+    background: #e3f2fd;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    border: 1px solid #2196f3;
+}
+
+.contact-section h3 {
+    color: #1976d2;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.contact-section p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.contact-info {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 20px;
+    background: #ffffff;
+    color: #1976d2;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    border: 2px solid #1976d2;
+    transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+    background: #1976d2;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+}
+
+.contact-icon {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.support-note {
+    font-size: 12px;
+    color: #999;
+    font-style: italic;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-tertiary {
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    min-width: 140px;
+    text-align: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #ff5722 0%, #d84315 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #d84315 0%, #bf360c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 87, 34, 0.4);
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #0077d4 0%, #0065b4 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 119, 212, 0.3);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #0065b4 0%, #004c8c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 119, 212, 0.4);
+    color: white;
+}
+
+.btn-tertiary {
+    background: transparent;
+    color: #666;
+    border: 2px solid #ccc;
+}
+
+.btn-tertiary:hover {
+    background: #666;
+    color: white;
+    transform: translateY(-2px);
+    border-color: #666;
+}
+
+@media (max-width: 768px) {
+    .error-container {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+    
+    .error-content h1 {
+        font-size: 26px;
+    }
+    
+    .solutions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-primary,
+    .btn-secondary,
+    .btn-tertiary {
+        width: 200px;
+    }
+}
+</style>
