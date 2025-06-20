@@ -18,6 +18,7 @@
       {{ self.flash() }}
     </div>
     
+    {% block primary_content %}
     <div class="main">
         <div class="container">
             
@@ -33,7 +34,7 @@
             {% if not newuser and not errornewuserform %}
             <section class="module module-narrow module-shallow">
               <div class="section-title" style="margin-bottom: 2rem;">
-                <div class="section-title-bg" style="background: linear-gradient(135deg, #0077d4 0%, #004c8c 100%);"></div>
+                <div class="section-title-bg" style="background-image: url('/assets/images/colab.jpg');"></div>
                 <div class="section-title-overlay"></div>
                 <div class="section-title-content">
                   <h2>{{ _('Become a Data Contributor') }}</h2>
@@ -47,8 +48,8 @@
             {% if newuser and not errornewuserform %}
             <section class="module module-narrow module-shallow">
               <div class="section-title" style="margin-bottom: 2rem;">
-                <div class="section-title-bg" style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);"></div>
-                <div class="section-title-overlay"></div>
+                <div class="section-title-bg" style="background-image: url('/assets/images/colab.jpg');"></div>
+                <div class="section-title-overlay success-overlay"></div>
                 <div class="section-title-content">
                   <h2>{{ _('Registration Successful') }}</h2>
                   <p class="section-title-description">{{ _('Welcome to the IHP-WINS platform! Your application has been submitted successfully.') }}</p>
@@ -61,8 +62,8 @@
             {% if errornewuserform %}
             <section class="module module-narrow module-shallow">
               <div class="section-title" style="margin-bottom: 2rem;">
-                <div class="section-title-bg" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);"></div>
-                <div class="section-title-overlay"></div>
+                <div class="section-title-bg" style="background-image: url('/assets/images/colab.jpg');"></div>
+                <div class="section-title-overlay error-overlay"></div>
                 <div class="section-title-content">
                   <h2>{{ _('Registration Error') }}</h2>
                   <p class="section-title-description">{{ _('We encountered an issue processing your registration. Please review the information below.') }}</p>
@@ -78,25 +79,27 @@
                 <div class="col-md-12">
                     <!-- Form Section -->
                     {% if not newuser and not errornewuserform %}
-                        <div class="form-portal-section">
+                        <div class="content-section">
                             {% snippet "snippets/form.html", groups = groups, organization_list = organization_list %}
                         </div>
                     {% endif %}
 
                     {% if not newuser and not errornewuserform and normaluser %}
-                        {% snippet "snippets/new-user-not-admin.html", data=data, errors=errors, error_summary=error_summary %}
+                        <div class="content-section">
+                            {% snippet "snippets/new-user-not-admin.html", data=data, errors=errors, error_summary=error_summary %}
+                        </div>
                     {% endif %}
 
                     <!-- Success Section -->
                     {% if newuser and not errornewuserform %}
-                        <div class="success-portal-section">
+                        <div class="content-section">
                             {% snippet "snippets/thanks.html", input = newuser %}
                         </div>
                     {% endif %}
 
                     <!-- Error Section -->
                     {% if errornewuserform %}
-                        <div class="error-portal-section">
+                        <div class="content-section">
                             {% snippet "snippets/error-user-create.html" %}
                         </div>
                     {% endif %}
@@ -104,6 +107,7 @@
             </div>
         </div>
     </div>
+    {% endblock %}
 </div>
 
 <style>
@@ -113,15 +117,18 @@
     min-height: 100vh;
 }
 
+/* Banner section styling */
 .section-title {
     position: relative;
     min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: 0;
     overflow: hidden;
     margin-bottom: 2rem;
+    box-shadow: none;
+    border: none;
 }
 
 .section-title-bg {
@@ -141,7 +148,15 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, rgba(0, 119, 212, 0.8) 0%, rgba(0, 76, 140, 0.9) 100%);
+}
+
+.section-title-overlay.success-overlay {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.8) 0%, rgba(46, 125, 50, 0.9) 100%);
+}
+
+.section-title-overlay.error-overlay {
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.8) 0%, rgba(211, 47, 47, 0.9) 100%);
 }
 
 .section-title-content {
@@ -169,14 +184,23 @@
     line-height: 1.5;
 }
 
-.form-portal-section,
-.success-portal-section,
-.error-portal-section {
+/* Content sections */
+.content-section {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 119, 212, 0.1);
-    overflow: hidden;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    overflow: visible;
     margin-bottom: 2rem;
+}
+
+/* Remove extra borders and backgrounds from form container */
+.content-section .containerform {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 2rem 0;
 }
 
 /* Breadcrumb styles */
@@ -189,6 +213,8 @@
     padding: 0.75rem 0;
     margin: 0;
     border-radius: 0;
+    border: none;
+    box-shadow: none;
 }
 
 .breadcrumb li {
@@ -214,6 +240,34 @@
     margin-right: 5px;
 }
 
+/* Module styling cleanup */
+.module {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.module-narrow {
+    border: none;
+}
+
+.module-shallow {
+    border: none;
+}
+
+/* Thanks and error container adjustments */
+.thanks-container {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 119, 212, 0.1);
+    background: white;
+}
+
+.error-container {
+    border: none;
+    box-shadow: 0 2px 10px rgba(244, 67, 54, 0.1);
+    background: white;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .section-title {
@@ -227,6 +281,31 @@
     .section-title-description {
         font-size: 1rem;
     }
+    
+    .content-section .containerform {
+        padding: 1rem 0;
+    }
+}
+
+/* Clean container styling */
+.container {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.row {
+    border: none;
+    box-shadow: none;
+}
+
+/* Remove any unwanted borders from CKAN base styles */
+.homepage .container,
+.homepage .main,
+.homepage .module,
+.homepage .content {
+    border: none !important;
+    box-shadow: none !important;
 }
 </style>
 
