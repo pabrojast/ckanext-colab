@@ -87,7 +87,7 @@ label.required::after {
     font-weight: bold;
 }
 
-/* Form inputs - IMPROVED ALIGNMENT */
+/* Form inputs - BASE STYLES */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -104,7 +104,7 @@ textarea {
     box-sizing: border-box;
     background: #ffffff;
     font-family: inherit;
-    height: 48px; /* Fixed height for consistency */
+    height: 48px;
 }
 
 /* Textarea specific height */
@@ -136,44 +136,72 @@ textarea:focus {
     background: #fafbfc;
 }
 
-/* Small helper text */
+/* Small helper text - FIXED POSITIONING */
 small {
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    margin-top: -15px;
     color: #666;
     font-size: 12px;
     line-height: 1.4;
     font-style: italic;
-    margin-top: -15px; /* Adjust spacing after input */
 }
 
-/* Form rows - IMPROVED GRID */
+/* Form rows - CRITICAL FIX FOR ALIGNMENT */
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     align-items: start;
 }
 
+/* CRITICAL: Each column in form-row should have consistent structure */
 .form-row > div {
     min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Ensure all fields in a row have same height */
+/* Ensure labels in grid rows have consistent spacing */
+.form-row label {
+    margin-bottom: 8px;
+    order: 1;
+}
+
+/* Small text in grid rows */
+.form-row small {
+    order: 2;
+    margin-top: -5px;
+    margin-bottom: 8px;
+}
+
+/* Inputs in grid rows */
 .form-row input,
 .form-row select {
+    order: 3;
     height: 48px;
+    margin-bottom: 10px;
 }
 
-/* Password match message positioning - IMPROVED */
+/* Error messages and status in grid rows */
+.form-row .field-error,
+.form-row .password-strength,
+.form-row #match-message {
+    order: 4;
+    margin-top: -5px;
+    margin-bottom: 0;
+    min-height: 20px;
+    font-size: 12px;
+    padding-left: 5px;
+}
+
+/* Password match message specific styling */
 #match-message {
-    margin-top: -15px;
-    margin-bottom: 15px;
     font-weight: 500;
     font-size: 12px;
-    min-height: 18px;
-    padding-left: 5px;
+    min-height: 20px;
+    margin-bottom: 0;
 }
 
 /* Success and error message styles */
@@ -194,7 +222,7 @@ small {
     display: none;
 }
 
-/* Organization fields - IMPROVED */
+/* Organization fields */
 #newOrganizationField,
 #newGroupField {
     margin-top: 25px;
@@ -216,7 +244,7 @@ small {
     font-weight: 500;
 }
 
-/* Checkbox container - IMPROVED */
+/* Checkbox container */
 .checkbox-container {
     display: flex;
     align-items: flex-start;
@@ -250,7 +278,7 @@ small {
     justify-content: center;
 }
 
-/* Submit button - IMPROVED */
+/* Submit button */
 input[type="submit"] {
     background: linear-gradient(135deg, #0077d4 0%, #0065b4 100%);
     color: white;
@@ -328,8 +356,6 @@ input[type="number"]::-webkit-inner-spin-button {
 .field-error {
     color: #d32f2f;
     font-size: 12px;
-    margin-top: -15px;
-    margin-bottom: 15px;
     display: none;
     padding-left: 5px;
 }
@@ -340,8 +366,6 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .password-strength {
     font-size: 12px;
-    margin-top: -15px;
-    margin-bottom: 15px;
     padding-left: 5px;
 }
 
@@ -371,11 +395,26 @@ input[type="number"]::-webkit-inner-spin-button {
     color: #999;
 }
 
-/* RESPONSIVE DESIGN - IMPROVED */
+/* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
     .form-row {
         grid-template-columns: 1fr;
         gap: 0;
+    }
+    
+    /* Reset order for mobile */
+    .form-row > div {
+        display: block;
+    }
+    
+    .form-row label,
+    .form-row small,
+    .form-row input,
+    .form-row select,
+    .form-row .field-error,
+    .form-row .password-strength,
+    .form-row #match-message {
+        order: unset;
     }
     
     .containerform {
@@ -434,7 +473,7 @@ textarea:focus {
     }
 }
 
-/* ADDITIONAL IMPROVEMENTS FOR BETTER ALIGNMENT */
+/* ADDITIONAL FIXES FOR SPECIFIC ELEMENTS */
 
 /* Ensure consistent spacing for all form elements */
 .form-section > *:last-child {
@@ -448,16 +487,17 @@ textarea:focus {
     margin-bottom: 25px;
 }
 
-/* Improve label spacing */
-.form-section label {
+/* Improve label spacing for non-grid elements */
+.form-section > label:not(.form-row label) {
     margin-top: 5px;
 }
 
-/* Better visual hierarchy */
-.form-section small {
+/* Better visual hierarchy for section-level small text */
+.form-section > small:not(.form-row small) {
     font-size: 13px;
-    margin-top: -10px;
+    margin-top: -5px;
     margin-bottom: 20px;
+    display: block;
 }
 
 /* Organization dropdown improvements */
