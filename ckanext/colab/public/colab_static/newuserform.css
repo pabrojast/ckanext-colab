@@ -1,29 +1,18 @@
 /* Modern form styling for CKAN collaboration extension - Portal Version */
 
 /* Form container integration with portal */
-.form-portal-section .containerform {
+.containerform {
     max-width: none;
     margin: 0;
     padding: 40px;
-    background: transparent;
+    background: white;
     border-radius: 0;
     box-shadow: none;
     border: none;
 }
 
-/* For standalone form (non-portal) */
-.containerform {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 40px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 119, 212, 0.1);
-    border: 1px solid #e3f2fd;
-}
-
-/* Header styling - different for portal vs standalone */
-.form-portal-section .containerform h1 {
+/* Header styling */
+.containerform h1 {
     color: #0077d4;
     text-align: center;
     margin-bottom: 30px;
@@ -31,16 +20,6 @@
     font-weight: 600;
     border-bottom: none;
     padding-bottom: 0;
-}
-
-.containerform h1 {
-    color: #0077d4;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 28px;
-    font-weight: 600;
-    border-bottom: 3px solid #0077d4;
-    padding-bottom: 15px;
 }
 
 /* Form intro section */
@@ -108,7 +87,7 @@ label.required::after {
     font-weight: bold;
 }
 
-/* Form inputs - improved password field handling */
+/* Form inputs */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -149,7 +128,7 @@ small {
     font-style: italic;
 }
 
-/* Form rows - Fixed password alignment issue */
+/* Form rows */
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -159,7 +138,7 @@ small {
 }
 
 .form-row > div {
-    min-height: 0; /* Prevents flex growth issues */
+    min-height: 0;
 }
 
 /* Password match message positioning */
@@ -168,7 +147,7 @@ small {
     margin-bottom: 15px;
     font-weight: 500;
     font-size: 12px;
-    min-height: 18px; /* Consistent height to prevent jumping */
+    min-height: 18px;
 }
 
 /* Success and error message styles */
@@ -186,7 +165,7 @@ small {
 #genderOtherText {
     margin-top: 10px;
     border-color: #ffb74d;
-    display: none; /* Initially hidden */
+    display: none;
 }
 
 /* Organization fields */
@@ -197,7 +176,7 @@ small {
     background: #fff3e0;
     border-radius: 8px;
     border: 1px solid #ffb74d;
-    display: none; /* Initially hidden */
+    display: none;
 }
 
 #newOrganizationField label,
@@ -305,22 +284,6 @@ select:disabled {
     border-color: #ddd;
 }
 
-/* Header styling improvements for standalone form */
-.containerform h1::before {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 4px;
-    background: linear-gradient(90deg, #0077d4, #00bcd4);
-    margin: 0 auto 15px;
-    border-radius: 2px;
-}
-
-/* Remove the ::before for portal version */
-.form-portal-section .containerform h1::before {
-    display: none;
-}
-
 /* Age input specific styling */
 input[type="number"] {
     -moz-appearance: textfield;
@@ -332,6 +295,51 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
 }
 
+/* Field error styling */
+.field-error {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.field-error.show {
+    display: block;
+}
+
+.password-strength {
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.password-strength.weak {
+    color: #d32f2f;
+}
+
+.password-strength.medium {
+    color: #ff9800;
+}
+
+.password-strength.strong {
+    color: #4caf50;
+}
+
+/* Placeholder styling */
+::placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    color: #999;
+}
+
+::-ms-input-placeholder {
+    color: #999;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .form-row {
@@ -340,11 +348,6 @@ input[type="number"]::-webkit-inner-spin-button {
     }
     
     .containerform {
-        margin: 10px;
-        padding: 20px;
-    }
-    
-    .form-portal-section .containerform {
         padding: 20px;
     }
     

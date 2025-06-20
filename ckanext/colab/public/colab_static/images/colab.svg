@@ -1,0 +1,44 @@
+<svg width="1200" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0077d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#004c8c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00bcd4;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#0077d4;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#004c8c;stop-opacity:0.3" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="400" fill="url(#bgGradient)"/>
+  
+  <!-- Abstract water/data visualization elements -->
+  <path d="M0,300 Q200,250 400,280 T800,270 T1200,250 L1200,400 L0,400 Z" fill="url(#waveGradient)" opacity="0.6"/>
+  <path d="M0,320 Q300,270 600,300 T1200,280 L1200,400 L0,400 Z" fill="url(#waveGradient)" opacity="0.4"/>
+  
+  <!-- Data nodes/connections -->
+  <circle cx="200" cy="150" r="8" fill="#00bcd4" opacity="0.8"/>
+  <circle cx="400" cy="120" r="6" fill="#00bcd4" opacity="0.6"/>
+  <circle cx="600" cy="180" r="10" fill="#00bcd4" opacity="0.7"/>
+  <circle cx="800" cy="140" r="7" fill="#00bcd4" opacity="0.8"/>
+  <circle cx="1000" cy="160" r="9" fill="#00bcd4" opacity="0.6"/>
+  
+  <!-- Connection lines -->
+  <line x1="200" y1="150" x2="400" y2="120" stroke="#00bcd4" stroke-width="2" opacity="0.4"/>
+  <line x1="400" y1="120" x2="600" y2="180" stroke="#00bcd4" stroke-width="2" opacity="0.4"/>
+  <line x1="600" y1="180" x2="800" y2="140" stroke="#00bcd4" stroke-width="2" opacity="0.4"/>
+  <line x1="800" y1="140" x2="1000" y2="160" stroke="#00bcd4" stroke-width="2" opacity="0.4"/>
+  
+  <!-- Water drop icons -->
+  <path d="M100,100 Q100,80 110,90 Q120,80 120,100 Q120,120 110,120 Q100,120 100,100 Z" fill="#ffffff" opacity="0.3"/>
+  <path d="M1100,80 Q1100,60 1110,70 Q1120,60 1120,80 Q1120,100 1110,100 Q1100,100 1100,80 Z" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Abstract geometric shapes -->
+  <polygon points="300,200 320,180 340,200 320,220" fill="#ffffff" opacity="0.2"/>
+  <polygon points="900,200 920,180 940,200 920,220" fill="#ffffff" opacity="0.2"/>
+  
+  <!-- Central text area (will be overlaid by HTML text) -->
+  <rect x="300" y="170" width="600" height="80" fill="rgba(0,0,0,0.1)" rx="10"/>
+</svg> 
