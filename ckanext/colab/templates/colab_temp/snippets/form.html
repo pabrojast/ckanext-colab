@@ -1,158 +1,210 @@
 {# Data Contributor Registration Form - Portal Version #}
-<div class="containerform">
+<div class="contributor-registration-form">
 
 <head>
     <script src="https://www.google.com/recaptcha/api.js?render={{ h.get_site_key() }}" async defer></script>
 </head>
 
-<h1>{{ _('Enroll as a Data Contributor for Your Organization') }}</h1>
+<!-- Form Header -->
+<div class="form-header">
+    <h1>{{ _('Enroll as a Data Contributor for Your Organization') }}</h1>
+</div>
 
+<!-- Form Introduction -->
 <div class="form-intro">
-    <p>{{ _('Welcome to the Data Upload Form. By completing this form, you request to contribute datasets on behalf of your organization. Please provide the required information regarding the datasets you intend to upload onto the IHP-WINS platform. This will enhance our data resources for the mutual benefit of your organization.') }}</p>
+    <section class="intro-card">
+        <div class="intro-content">
+            <p>{{ _('Welcome to the Data Upload Form. By completing this form, you request to contribute datasets on behalf of your organization. Please provide the required information regarding the datasets you intend to upload onto the IHP-WINS platform. This will enhance our data resources for the mutual benefit of your organization.') }}</p>
 
-    <p>{{ _('Kindly note that your submission will undergo an email verification process, requiring your organization\'s official email address. This verification step ensures the security and authenticity of the data you submit.') }}</p>
+            <p>{{ _('Kindly note that your submission will undergo an email verification process, requiring your organization\'s official email address. This verification step ensures the security and authenticity of the data you submit.') }}</p>
 
-    <p>{{ _('If you encounter any issues with the registration process, please contact us at ihp-unesco@unesco.org for assistance.') }}</p>
+            <p>{{ _('If you encounter any issues with the registration process, please contact us at ihp-unesco@unesco.org for assistance.') }}</p>
+        </div>
+    </section>
 </div>
 
 <form method="POST" action="" id="data-contributor-form" novalidate>
     
     <!-- Personal Information Section -->
-    <div class="form-section">
-        <h3>{{ _('Personal Information') }}</h3>
-        
-        <label for="fullname">{{ _('Full Name (Optional)') }}</label>
-        <input type="text" id="fullname" name="fullname" placeholder="{{ _('Enter your full name') }}">
-
-        <div class="form-row">
-            <div>
-                <label for="wins_username" class="required">{{ _('Username WINS') }}</label>
-                <small>{{ _('Your username should consist solely of lowercase letters and numbers.') }}</small>
-                <input type="text" id="wins_username" name="wins_username" pattern="[a-z0-9]*" minlength="4" maxlength="100" required placeholder="{{ _('e.g., john_doe123') }}">
-                <div class="field-error" id="username-error"></div>
+    <fieldset class="form-section">
+        <legend>{{ _('Personal Information') }}</legend>
+        <div class="form-section-content">
+            
+            <div class="form-group">
+                <label for="fullname">{{ _('Full Name (Optional)') }}</label>
+                <input type="text" id="fullname" name="fullname" placeholder="{{ _('Enter your full name') }}" class="form-control">
+                <div class="help-text">{{ _('Your full name will help us personalize your experience') }}</div>
             </div>
-            <div>
-                <label for="email" class="required">{{ _('Email') }}</label>
-                <input type="email" id="email" name="email" required placeholder="{{ _('your.email@organization.com') }}">
-                <div class="field-error" id="email-error"></div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="wins_username" class="required">{{ _('Username WINS') }} <span class="text-danger">*</span></label>
+                    <input type="text" id="wins_username" name="wins_username" pattern="[a-z0-9]*" minlength="4" maxlength="100" required placeholder="{{ _('e.g., john_doe123') }}" class="form-control">
+                    <div class="help-text">{{ _('Your username should consist solely of lowercase letters and numbers.') }}</div>
+                    <div class="field-error" id="username-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="required">{{ _('Email') }} <span class="text-danger">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="{{ _('your.email@organization.com') }}" class="form-control">
+                    <div class="help-text">{{ _('Use your official organization email address') }}</div>
+                    <div class="field-error" id="email-error"></div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="wins_password" class="required">{{ _('Password') }} <span class="text-danger">*</span></label>
+                    <input type="password" id="wins_password" name="wins_password" minlength="8" required placeholder="{{ _('Enter a secure password') }}" class="form-control">
+                    <div class="help-text">{{ _('Your password must be 8 characters or longer') }}</div>
+                    <div class="password-strength" id="password-strength"></div>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password" class="required">{{ _('Confirm password') }} <span class="text-danger">*</span></label>
+                    <input type="password" id="confirm-password" name="confirm-password" minlength="8" required placeholder="{{ _('Repeat your password') }}" class="form-control">
+                    <div class="help-text">{{ _('Passwords must match') }}</div>
+                    <div id="match-message"></div>
+                </div>
             </div>
         </div>
-
-        <div class="form-row">
-            <div>
-                <label for="wins_password" class="required">{{ _('Password') }}</label>
-                <small>{{ _('Your password must be 8 characters or longer') }}</small>
-                <input type="password" id="wins_password" name="wins_password" minlength="8" required placeholder="{{ _('Enter a secure password') }}">
-                <div class="password-strength" id="password-strength"></div>
-            </div>
-            <div>
-                <label for="confirm-password" class="required">{{ _('Confirm password') }}</label>
-                <input type="password" id="confirm-password" name="confirm-password" minlength="8" required placeholder="{{ _('Repeat your password') }}">
-                <div id="match-message"></div>
-            </div>
-        </div>
-    </div>
+    </fieldset>
 
     <!-- Demographics Section -->
-    <div class="form-section">
-        <h3>{{ _('Demographics') }}</h3>
-        <small>{{ _('UNESCO\'s overarching priorities encompass gender equality, age inclusivity, and geographic diversity. Accordingly, we kindly request your input in the demography fields of this form to ensure we understand who our diverse data contributors are.') }}</small>
-
-        <div class="form-row">
-            <div>
-                <label for="age" class="required">{{ _('Age') }}</label>
-                <input type="number" id="age" name="age" min="16" max="120" required placeholder="{{ _('Enter your age') }}">
+    <fieldset class="form-section">
+        <legend>{{ _('Demographics') }}</legend>
+        <div class="form-section-content">
+            <div class="demographics-intro">
+                <p class="section-description">{{ _('UNESCO\'s overarching priorities encompass gender equality, age inclusivity, and geographic diversity. Accordingly, we kindly request your input in the demography fields of this form to ensure we understand who our diverse data contributors are.') }}</p>
             </div>
-            <div>
-                <label for="nationality" class="required">{{ _('Nationality') }}</label>
-                <input type="text" id="nationality" name="nationality" required placeholder="{{ _('e.g., French, Canadian, etc.') }}">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="age" class="required">{{ _('Age') }} <span class="text-danger">*</span></label>
+                    <input type="number" id="age" name="age" min="16" max="120" required placeholder="{{ _('Enter your age') }}" class="form-control">
+                    <div class="help-text">{{ _('Must be 16 years or older') }}</div>
+                </div>
+                <div class="form-group">
+                    <label for="nationality" class="required">{{ _('Nationality') }} <span class="text-danger">*</span></label>
+                    <input type="text" id="nationality" name="nationality" required placeholder="{{ _('e.g., French, Canadian, etc.') }}" class="form-control">
+                    <div class="help-text">{{ _('Your country of citizenship') }}</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="gender" class="required">{{ _('Gender') }} <span class="text-danger">*</span></label>
+                <select name="gender" id="genderSelect" required class="form-control">
+                    <option value="">{{ _('Please select your gender') }}</option>
+                    <option value="woman">{{ _('Woman') }}</option>
+                    <option value="man">{{ _('Man') }}</option>
+                    <option value="other" id="genderOtherOption">{{ _('Other (to fill in)') }}</option>
+                    <option value="preferNotToSay">{{ _('Prefer not to say') }}</option>
+                </select>
+                <input type="text" id="genderOtherText" name="genderOther" placeholder="{{ _('Please specify') }}" disabled class="form-control">
+                <div class="help-text">{{ _('This information helps us ensure diverse representation') }}</div>
             </div>
         </div>
-
-        <label for="gender" class="required">{{ _('Gender') }}</label>
-        <select name="gender" id="genderSelect" required>
-            <option value="">{{ _('Please select your gender') }}</option>
-            <option value="woman">{{ _('Woman') }}</option>
-            <option value="man">{{ _('Man') }}</option>
-            <option value="other" id="genderOtherOption">{{ _('Other (to fill in)') }}</option>
-            <option value="preferNotToSay">{{ _('Prefer not to say') }}</option>
-        </select>
-        <input type="text" id="genderOtherText" name="genderOther" placeholder="{{ _('Please specify') }}" disabled>
-    </div>
+    </fieldset>
 
     <!-- Organization Section -->
-    <div class="form-section">
-        <h3>{{ _('Organization') }}</h3>
-        <small>{{ _('An organization are those related to the Water Family such as programmes, UNESCO centers, chairs, research institutes, UN agencies, etc., with a wide range of activities and objectives. Typically, organizations comprise multiple teams, divisions or sectors. Structuring data by organizations and their respective teams/divisions/sectors allows for streamlined management and targeted collaboration. Depending on your role as a data contributor, your data is either uploaded to the overall institutional data or to the data repository specific to your designated team.') }}</small>
-
-        <label for="organizationType">{{ _('Organization Type') }}</label>
-        <select name="organizationType" id="organizationType">
-            <option value="">{{ _('Select organization type') }}</option>
-            <option value="unesco_ihp_secretariat">{{ _('UNESCO IHP Secretariat') }}</option>
-            <option value="unesco_field_office">{{ _('UNESCO Field Office') }}</option>
-            <option value="ihp_national_committee">{{ _('IHP National Committee') }}</option>
-            <option value="unesco_category_i_center">{{ _('UNESCO Category I Center') }}</option>
-            <option value="unesco_category_ii_center">{{ _('UNESCO Category II Center') }}</option>
-            <option value="unesco_chair_or_unitwin">{{ _('UNESCO Chair or UNITWIN') }}</option>
-            <option value="nongovernmental_organization">{{ _('Non-Governmental Organization') }}</option>
-            <option value="governmental_organization">{{ _('Governmental Organization') }}</option>
-            <option value="university">{{ _('University') }}</option>
-            <option value="private_partner">{{ _('Private Partner') }}</option>
-            <option value="research_institution">{{ _('Research Institution') }}</option>
-            <option value="other">{{ _('Other') }}</option>
-        </select>
-
-        <label for="organization_name" class="required">{{ _('Organization Name') }}</label>
-        <small>{{ _('Select your organization in the dropdown list or add a new organization.') }}</small>
-        <select name="organization_name" id="organization_name" required>
-            <option value="">{{ _('Select an organization...') }}</option>
-            <option value="new"><strong>{{ _('Create New Organization') }}</strong></option>
-            {% for item in organization_list %}
-            <option value="{{ item['name'] }}">{{ item['display_name'] }}</option>       
-            {% endfor %}
-        </select>
-
-        <div id="newOrganizationField">
-            <label for="new_organization_name" class="required">{{ _('New Organization Name') }}</label>
-            <input type="text" id="new_organization_name" name="new_organization_name" placeholder="{{ _('Enter organization name') }}">
-            
-            <label for="new_organization_description">{{ _('Organization Description') }}</label>
-            <textarea id="new_organization_description" name="new_organization_description" rows="4" placeholder="{{ _('Describe your organization\'s mission and activities...') }}"></textarea>
-        </div>
-
-        <div class="form-row">
-            <div>
-                <label for="title_within_organization" class="required">{{ _('Title Within Represented Organization') }}</label>
-                <input type="text" id="title_within_organization" name="title_within_organization" required placeholder="{{ _('e.g., Data Manager, Research Coordinator') }}">
+    <fieldset class="form-section">
+        <legend>{{ _('Organization') }}</legend>
+        <div class="form-section-content">
+            <div class="organization-intro">
+                <p class="section-description">{{ _('An organization are those related to the Water Family such as programmes, UNESCO centers, chairs, research institutes, UN agencies, etc., with a wide range of activities and objectives. Typically, organizations comprise multiple teams, divisions or sectors. Structuring data by organizations and their respective teams/divisions/sectors allows for streamlined management and targeted collaboration. Depending on your role as a data contributor, your data is either uploaded to the overall institutional data or to the data repository specific to your designated team.') }}</p>
             </div>
-            <div>
-                <label for="user_role" class="required">{{ _('Role in Organization') }}</label>
-                <small>{{ _('For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets.') }}</small>
-                <select name="user_role" id="user_role" required>
-                    <option value="">{{ _('Select your role') }}</option>
-                    <option value="member">{{ _('Member') }}</option>
-                    <option value="editor">{{ _('Editor') }}</option>
-                    <option value="admin">{{ _('Admin') }}</option>
+
+            <div class="form-group">
+                <label for="organizationType">{{ _('Organization Type') }}</label>
+                <select name="organizationType" id="organizationType" class="form-control">
+                    <option value="">{{ _('Select organization type') }}</option>
+                    <option value="unesco_ihp_secretariat">{{ _('UNESCO IHP Secretariat') }}</option>
+                    <option value="unesco_field_office">{{ _('UNESCO Field Office') }}</option>
+                    <option value="ihp_national_committee">{{ _('IHP National Committee') }}</option>
+                    <option value="unesco_category_i_center">{{ _('UNESCO Category I Center') }}</option>
+                    <option value="unesco_category_ii_center">{{ _('UNESCO Category II Center') }}</option>
+                    <option value="unesco_chair_or_unitwin">{{ _('UNESCO Chair or UNITWIN') }}</option>
+                    <option value="nongovernmental_organization">{{ _('Non-Governmental Organization') }}</option>
+                    <option value="governmental_organization">{{ _('Governmental Organization') }}</option>
+                    <option value="university">{{ _('University') }}</option>
+                    <option value="private_partner">{{ _('Private Partner') }}</option>
+                    <option value="research_institution">{{ _('Research Institution') }}</option>
+                    <option value="other">{{ _('Other') }}</option>
                 </select>
+                <div class="help-text">{{ _('Select the type that best describes your organization') }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="organization_name" class="required">{{ _('Organization Name') }} <span class="text-danger">*</span></label>
+                <select name="organization_name" id="organization_name" required class="form-control">
+                    <option value="">{{ _('Select an organization...') }}</option>
+                    <option value="new"><strong>{{ _('Create New Organization') }}</strong></option>
+                    {% for item in organization_list %}
+                    <option value="{{ item['name'] }}">{{ item['display_name'] }}</option>       
+                    {% endfor %}
+                </select>
+                <div class="help-text">{{ _('Select your organization in the dropdown list or add a new organization.') }}</div>
+            </div>
+
+            <div id="newOrganizationField" class="new-organization-fields">
+                <div class="form-group">
+                    <label for="new_organization_name" class="required">{{ _('New Organization Name') }} <span class="text-danger">*</span></label>
+                    <input type="text" id="new_organization_name" name="new_organization_name" placeholder="{{ _('Enter organization name') }}" class="form-control">
+                    <div class="help-text">{{ _('Enter the official name of your organization') }}</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="new_organization_description">{{ _('Organization Description') }}</label>
+                    <textarea id="new_organization_description" name="new_organization_description" rows="4" placeholder="{{ _('Describe your organization\'s mission and activities...') }}" class="form-control"></textarea>
+                    <div class="help-text">{{ _('Brief description of your organization\'s purpose and activities') }}</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="title_within_organization" class="required">{{ _('Title Within Represented Organization') }} <span class="text-danger">*</span></label>
+                    <input type="text" id="title_within_organization" name="title_within_organization" required placeholder="{{ _('e.g., Data Manager, Research Coordinator') }}" class="form-control">
+                    <div class="help-text">{{ _('Your current position or role in the organization') }}</div>
+                </div>
+                <div class="form-group">
+                    <label for="user_role" class="required">{{ _('Role in Organization') }} <span class="text-danger">*</span></label>
+                    <select name="user_role" id="user_role" required class="form-control">
+                        <option value="">{{ _('Select your role') }}</option>
+                        <option value="member">{{ _('Member') }}</option>
+                        <option value="editor">{{ _('Editor') }}</option>
+                        <option value="admin">{{ _('Admin') }}</option>
+                    </select>
+                    <div class="help-text">{{ _('For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets.') }}</div>
+                </div>
             </div>
         </div>
-    </div>
+    </fieldset>
 
     <!-- Terms and Conditions -->
-    <div class="checkbox-container">
-        <input type="checkbox" id="accept_guidelines" name="accept_guidelines" required>
-        <label for="accept_guidelines">
-            {{ _('Accept and acknowledge the responsibilities and guidelines that the authorized user must follow when uploading data on behalf of the organization.') }}
-        </label>
+    <div class="terms-section">
+        <div class="checkbox-container">
+            <input type="checkbox" id="accept_guidelines" name="accept_guidelines" required>
+            <label for="accept_guidelines" class="checkbox-label">
+                {{ _('Accept and acknowledge the responsibilities and guidelines that the authorized user must follow when uploading data on behalf of the organization.') }}
+            </label>
+        </div>
     </div>
 
     <!-- reCAPTCHA -->
-    <div class="g-recaptcha" id="recaptcha-container">
-        <!-- reCAPTCHA will be inserted here by JavaScript -->
+    <div class="recaptcha-section">
+        <div class="g-recaptcha" id="recaptcha-container">
+            <!-- reCAPTCHA will be inserted here by JavaScript -->
+        </div>
+        <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
     </div>
-    <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
     
-    <input type="submit" value="{{ _('Submit Application') }}" id="submit-button">
+    <!-- Submit Button -->
+    <div class="form-actions">
+        <button type="submit" id="submit-button" class="btn btn-primary btn-lg">
+            <i class="fa fa-paper-plane"></i> {{ _('Submit Application') }}
+        </button>
+        <div class="submit-help-text">
+            {{ _('After submission, you will receive an email verification to complete your registration.') }}
+        </div>
+    </div>
 </form>
 </div>
 
@@ -331,48 +383,423 @@
 </script>
 
 <style>
-/* Additional form-specific styles */
+/* Data Contributor Registration Form - Professional Theme */
+:root {
+  --unesco-blue: #0072BC;
+  --unesco-blue-dark: #005A9C;
+  --unesco-blue-light: #009EE0;
+  --unesco-blue-pale: #E3F2FD;
+  --text-primary: #2c3e50;
+  --text-secondary: #6c757d;
+  --success-color: #4caf50;
+  --error-color: #f44336;
+  --warning-color: #ff9800;
+  --shadow-light: 0 2px 8px rgba(0, 114, 188, 0.08);
+  --shadow-medium: 0 4px 16px rgba(0, 114, 188, 0.12);
+}
+
+.contributor-registration-form {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Form Header */
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h1 {
+  color: var(--unesco-blue-dark);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* Form Introduction */
+.form-intro {
+  margin-bottom: 3rem;
+}
+
+.intro-card {
+  background: linear-gradient(135deg, var(--unesco-blue-pale) 0%, #ffffff 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  border-left: 6px solid var(--unesco-blue);
+  box-shadow: var(--shadow-light);
+}
+
+.intro-content p {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.intro-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 3rem;
+  border: none;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: var(--shadow-medium);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border-left: 6px solid var(--unesco-blue-dark);
+}
+
+.form-section:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.form-section legend {
+  background: linear-gradient(135deg, var(--unesco-blue-pale) 0%, #ffffff 100%);
+  color: var(--unesco-blue-dark);
+  font-weight: 700;
+  padding: 1.5rem 2.5rem;
+  margin: 0;
+  font-size: 1.4rem;
+  border: none;
+  width: 100%;
+  border-bottom: 3px solid var(--unesco-blue-pale);
+}
+
+.form-section-content {
+  padding: 2.5rem;
+}
+
+.section-description {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border-left: 4px solid var(--unesco-blue-light);
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.demographics-intro,
+.organization-intro {
+  margin-bottom: 2rem;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 2rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Labels */
+label {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 1rem;
+}
+
+.required {
+  position: relative;
+}
+
+.text-danger {
+  color: var(--error-color);
+  font-weight: 700;
+}
+
+/* Form Controls */
+.form-control {
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+  padding: 14px 18px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: var(--shadow-light);
+  margin-bottom: 0.5rem;
+}
+
+.form-control:focus {
+  border-color: var(--unesco-blue-dark);
+  box-shadow: 0 0 0 0.2rem rgba(0, 90, 156, 0.25);
+  outline: none;
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.form-control:disabled {
+  background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+  cursor: not-allowed;
+  color: var(--text-secondary);
+}
+
+/* Select Fields */
+select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 12px;
+  cursor: pointer;
+  padding-right: 35px;
+}
+
+/* Help Text */
+.help-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+/* Error Messages */
 .field-error {
-    color: #d32f2f;
-    font-size: 12px;
-    margin-top: -10px;
-    margin-bottom: 10px;
-    display: none;
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: none;
 }
 
 .field-error.show {
-    display: block;
+  display: block;
 }
 
+.error-message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.success-message {
+  color: var(--success-color);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Password Strength */
 .password-strength {
-    font-size: 12px;
-    margin-top: -10px;
-    margin-bottom: 10px;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 
 .password-strength.weak {
-    color: #d32f2f;
+  color: var(--error-color);
 }
 
 .password-strength.medium {
-    color: #ff9800;
+  color: var(--warning-color);
 }
 
 .password-strength.strong {
-    color: #4caf50;
+  color: var(--success-color);
 }
 
-/* Placeholder styling */
+/* New Organization Fields */
+.new-organization-fields {
+  display: none;
+  background: linear-gradient(135deg, var(--unesco-blue-pale) 0%, #ffffff 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  border: 2px solid var(--unesco-blue-light);
+}
+
+/* Terms Section */
+.terms-section {
+  margin: 3rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 16px;
+  border-left: 6px solid var(--unesco-blue);
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-top: 0.25rem;
+  transform: scale(1.2);
+  accent-color: var(--unesco-blue);
+}
+
+.checkbox-label {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+/* reCAPTCHA Section */
+.recaptcha-section {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+/* Form Actions */
+.form-actions {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 16px;
+}
+
+.btn {
+  border-radius: 25px;
+  padding: 14px 32px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--unesco-blue-dark) 0%, var(--unesco-blue) 100%);
+  color: white;
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 90, 156, 0.4);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-lg {
+  padding: 16px 40px;
+  font-size: 1.2rem;
+}
+
+.submit-help-text {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Loading State */
+.btn.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.btn.loading::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Placeholder Styling */
 ::placeholder {
-    color: #999;
-    opacity: 1;
+  color: #999;
+  opacity: 1;
 }
 
 :-ms-input-placeholder {
-    color: #999;
+  color: #999;
 }
 
 ::-ms-input-placeholder {
-    color: #999;
+  color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .form-section-content {
+    padding: 1.5rem;
+  }
+  
+  .intro-card {
+    padding: 1.5rem;
+  }
+  
+  .form-section legend {
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .btn-lg {
+    padding: 14px 30px;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .form-section-content {
+    padding: 1rem;
+  }
+  
+  .intro-card {
+    padding: 1rem;
+  }
+  
+  .form-section legend {
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .checkbox-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .terms-section,
+  .form-actions {
+    padding: 1.5rem;
+  }
 }
 </style>

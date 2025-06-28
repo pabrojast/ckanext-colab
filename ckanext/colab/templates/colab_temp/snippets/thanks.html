@@ -1,286 +1,435 @@
 {# Show a professional thank you message when a user is registered #}
 
-<div class="thanks-container">
-    <!-- Success Icon -->
-    <div class="success-icon">
-        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" fill="#4CAF50"/>
-            <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-    </div>
-
-    <!-- Main Message -->
-    <div class="thanks-content">
+<div class="contributor-thanks-wrapper">
+    <!-- Success Header Section -->
+    <div class="thanks-header">
+        <div class="success-icon">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" fill="#4CAF50"/>
+                <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
         <h1>{{ _("Registration Successful!") }}</h1>
         <h2>{{ _("Thank you for joining as a Data Contributor") }}</h2>
+    </div>
+
+    <!-- Main Content -->
+    <div class="thanks-content">
         
-        <div class="message-section">
-            <p class="main-message">{{ _("Your application has been successfully submitted and is now being reviewed by our team.") }}</p>
-            
-            <div class="info-box">
+        <!-- Success Message -->
+        <section class="success-message-card">
+            <div class="card-content">
+                <p class="main-message">{{ _("Your application has been successfully submitted and is now being reviewed by our team.") }}</p>
+            </div>
+        </section>
+        
+        <!-- Next Steps -->
+        <section class="next-steps-card">
+            <div class="card-header">
                 <h3>{{ _("What happens next?") }}</h3>
-                <ul class="next-steps">
-                    <li>
-                        <span class="step-icon">📧</span>
-                        <span>{{ _("Email verification will be sent to your provided email address") }}</span>
+            </div>
+            <div class="card-content">
+                <ul class="next-steps-list">
+                    <li class="step-item">
+                        <div class="step-icon">📧</div>
+                        <div class="step-content">
+                            <h4>{{ _("Email Verification") }}</h4>
+                            <p>{{ _("Email verification will be sent to your provided email address") }}</p>
+                        </div>
                     </li>
-                    <li>
-                        <span class="step-icon">👥</span>
-                        <span>{{ _("Our team will review your application and organization details") }}</span>
+                    <li class="step-item">
+                        <div class="step-icon">👥</div>
+                        <div class="step-content">
+                            <h4>{{ _("Application Review") }}</h4>
+                            <p>{{ _("Our team will review your application and organization details") }}</p>
+                        </div>
                     </li>
-                    <li>
-                        <span class="step-icon">✅</span>
-                        <span>{{ _("You'll receive a confirmation email once your account is approved") }}</span>
+                    <li class="step-item">
+                        <div class="step-icon">✅</div>
+                        <div class="step-content">
+                            <h4>{{ _("Account Approval") }}</h4>
+                            <p>{{ _("You'll receive a confirmation email once your account is approved") }}</p>
+                        </div>
                     </li>
-                    <li>
-                        <span class="step-icon">🚀</span>
-                        <span>{{ _("Start contributing valuable datasets to the IHP-WINS platform") }}</span>
+                    <li class="step-item">
+                        <div class="step-icon">🚀</div>
+                        <div class="step-content">
+                            <h4>{{ _("Start Contributing") }}</h4>
+                            <p>{{ _("Start contributing valuable datasets to the IHP-WINS platform") }}</p>
+                        </div>
                     </li>
                 </ul>
             </div>
+        </section>
 
-            <div class="contact-section">
+        <!-- Contact Section -->
+        <section class="contact-support-card">
+            <div class="card-header">
                 <h3>{{ _("Need assistance?") }}</h3>
+            </div>
+            <div class="card-content">
                 <p>{{ _("If you have any questions about the registration process or need support, please don't hesitate to contact us:") }}</p>
                 <div class="contact-info">
                     <a href="mailto:ihp-unesco@unesco.org" class="contact-link">
-                        <span class="contact-icon">📧</span>
+                        <i class="fa fa-envelope"></i>
                         ihp-unesco@unesco.org
                     </a>
                 </div>
             </div>
+        </section>
 
-            <div class="action-buttons">
-                <a href="/" class="btn-primary">{{ _("Return to Home") }}</a>
-                <a href="/dataset" class="btn-secondary">{{ _("Browse Datasets") }}</a>
-            </div>
+        <!-- Action Buttons -->
+        <div class="thanks-actions">
+            <a href="/" class="btn btn-primary btn-lg">
+                <i class="fa fa-home"></i> {{ _("Return to Home") }}
+            </a>
+            <a href="/dataset" class="btn btn-default btn-lg">
+                <i class="fa fa-database"></i> {{ _("Browse Datasets") }}
+            </a>
         </div>
     </div>
 </div>
 
 <style>
-.thanks-container {
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 40px 30px;
-    background: linear-gradient(135deg, #f8fafe 0%, #ffffff 100%);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 119, 212, 0.15);
-    border: 1px solid #e3f2fd;
-    text-align: center;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+/* Professional Thanks Page - UNESCO Water Family Theme */
+:root {
+  --unesco-blue: #0072BC;
+  --unesco-blue-dark: #005A9C;
+  --unesco-blue-light: #009EE0;
+  --unesco-blue-pale: #E3F2FD;
+  --success-color: #4caf50;
+  --success-pale: #e8f5e8;
+  --text-primary: #2c3e50;
+  --text-secondary: #6c757d;
+  --shadow-light: 0 2px 8px rgba(0, 114, 188, 0.08);
+  --shadow-medium: 0 4px 16px rgba(0, 114, 188, 0.12);
+  --shadow-strong: 0 8px 32px rgba(0, 114, 188, 0.16);
+}
+
+.contributor-thanks-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Thanks Header */
+.thanks-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, var(--success-pale) 0%, #ffffff 100%);
+  border-radius: 20px;
+  border-left: 6px solid var(--success-color);
+  box-shadow: var(--shadow-medium);
 }
 
 .success-icon {
-    margin-bottom: 30px;
-    animation: bounceIn 0.8s ease-out;
+  margin-bottom: 2rem;
+  animation: bounceIn 0.8s ease-out;
 }
 
 @keyframes bounceIn {
-    0% { transform: scale(0.3); opacity: 0; }
-    50% { transform: scale(1.05); opacity: 0.8; }
-    70% { transform: scale(0.9); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  70% { transform: scale(0.9); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-.thanks-content h1 {
-    color: #0077d4;
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 4px rgba(0, 119, 212, 0.1);
+.thanks-header h1 {
+  color: var(--success-color);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(76, 175, 80, 0.1);
+  line-height: 1.2;
 }
 
-.thanks-content h2 {
-    color: #666;
-    font-size: 18px;
-    font-weight: 400;
-    margin-bottom: 30px;
-    opacity: 0.9;
+.thanks-header h2 {
+  color: var(--text-secondary);
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin: 0;
+  opacity: 0.9;
 }
 
-.message-section {
-    text-align: left;
+/* Content Cards */
+.thanks-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
+.success-message-card,
+.next-steps-card,
+.contact-support-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: var(--shadow-medium);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border-left: 6px solid var(--unesco-blue);
+}
+
+.success-message-card:hover,
+.next-steps-card:hover,
+.contact-support-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-strong);
+}
+
+.success-message-card {
+  border-left-color: var(--success-color);
+}
+
+.contact-support-card {
+  border-left-color: var(--unesco-blue-light);
+}
+
+.card-header {
+  background: linear-gradient(135deg, var(--unesco-blue-pale) 0%, #ffffff 100%);
+  padding: 1.5rem 2rem;
+  border-bottom: 3px solid var(--unesco-blue-pale);
+}
+
+.card-header h3 {
+  color: var(--unesco-blue-dark);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+}
+
+.card-content {
+  padding: 2rem;
+}
+
+/* Success Message */
 .main-message {
-    font-size: 16px;
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 30px;
-    text-align: center;
-    padding: 20px;
-    background: #e8f5e8;
-    border-radius: 8px;
-    border-left: 4px solid #4CAF50;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0;
+  text-align: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--success-pale) 0%, #ffffff 100%);
+  border-radius: 12px;
+  border: 2px solid #c8e6c9;
 }
 
-.info-box {
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 12px rgba(0, 119, 212, 0.08);
-    border: 1px solid #e3f2fd;
+/* Next Steps List */
+.next-steps-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.info-box h3 {
-    color: #0077d4;
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-align: center;
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
 }
 
-.next-steps {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.next-steps li {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 15px;
-    padding: 12px;
-    background: #f8fafe;
-    border-radius: 8px;
-    transition: transform 0.2s ease;
-}
-
-.next-steps li:hover {
-    transform: translateX(5px);
-    background: #f0f7ff;
+.step-item:hover {
+  transform: translateX(5px);
+  border-color: var(--unesco-blue-light);
+  box-shadow: var(--shadow-light);
 }
 
 .step-icon {
-    font-size: 20px;
-    margin-right: 12px;
-    min-width: 24px;
+  font-size: 1.5rem;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--unesco-blue-pale);
+  border-radius: 50%;
+  border: 2px solid var(--unesco-blue-light);
 }
 
-.next-steps li span:last-child {
-    color: #444;
-    line-height: 1.5;
+.step-content h4 {
+  color: var(--unesco-blue-dark);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
 }
 
-.contact-section {
-    background: #fff3e0;
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    border: 1px solid #ffb74d;
+.step-content p {
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+  font-size: 0.95rem;
 }
 
-.contact-section h3 {
-    color: #f57c00;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.contact-section p {
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    text-align: center;
+/* Contact Section */
+.contact-support-card .card-content p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .contact-info {
-    text-align: center;
+  text-align: center;
 }
 
 .contact-link {
-    display: inline-flex;
-    align-items: center;
-    padding: 12px 20px;
-    background: #ffffff;
-    color: #0077d4;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 500;
-    border: 2px solid #0077d4;
-    transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ffffff 0%, var(--unesco-blue-pale) 100%);
+  color: var(--unesco-blue-dark);
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 600;
+  border: 2px solid var(--unesco-blue-light);
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-light);
 }
 
 .contact-link:hover {
-    background: #0077d4;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 119, 212, 0.3);
+  background: linear-gradient(135deg, var(--unesco-blue) 0%, var(--unesco-blue-dark) 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+  text-decoration: none;
 }
 
-.contact-icon {
-    margin-right: 8px;
-    font-size: 16px;
+/* Action Buttons */
+.thanks-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 20px;
 }
 
-.action-buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 30px;
-}
-
-.btn-primary,
-.btn-secondary {
-    padding: 12px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    display: inline-block;
-    min-width: 140px;
-    text-align: center;
+.btn {
+  border-radius: 25px;
+  padding: 14px 28px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  min-width: 160px;
+  justify-content: center;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #0077d4 0%, #0065b4 100%);
-    color: white;
-    border: none;
-    box-shadow: 0 4px 15px rgba(0, 119, 212, 0.3);
+  background: linear-gradient(135deg, var(--unesco-blue-dark) 0%, var(--unesco-blue) 100%);
+  color: white;
+  box-shadow: var(--shadow-medium);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #0065b4 0%, #004c8c 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 119, 212, 0.4);
-    color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 90, 156, 0.4);
+  color: white;
+  text-decoration: none;
 }
 
-.btn-secondary {
-    background: transparent;
-    color: #0077d4;
-    border: 2px solid #0077d4;
+.btn-default {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  color: var(--unesco-blue-dark);
+  border: 2px solid var(--unesco-blue-light);
+  box-shadow: var(--shadow-light);
 }
 
-.btn-secondary:hover {
-    background: #0077d4;
-    color: white;
-    transform: translateY(-2px);
+.btn-default:hover {
+  background: linear-gradient(135deg, var(--unesco-blue-pale) 0%, #ffffff 100%);
+  border-color: var(--unesco-blue);
+  color: var(--unesco-blue-dark);
+  transform: translateY(-1px);
+  text-decoration: none;
 }
 
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .thanks-container {
-        margin: 20px;
-        padding: 30px 20px;
-    }
-    
-    .thanks-content h1 {
-        font-size: 26px;
-    }
-    
-    .action-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn-primary,
-    .btn-secondary {
-        width: 200px;
-    }
+  .contributor-thanks-wrapper {
+    margin: 0 1rem;
+  }
+  
+  .thanks-header {
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .thanks-header h1 {
+    font-size: 2rem;
+  }
+  
+  .thanks-header h2 {
+    font-size: 1.1rem;
+  }
+  
+  .card-content {
+    padding: 1.5rem;
+  }
+  
+  .card-header {
+    padding: 1rem 1.5rem;
+  }
+  
+  .step-item {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .thanks-actions {
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+  }
+  
+  .btn {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .thanks-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .card-content {
+    padding: 1rem;
+  }
+  
+  .step-item {
+    padding: 0.75rem;
+  }
+  
+  .step-content h4 {
+    font-size: 1rem;
+  }
+  
+  .btn {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+  }
 }
 </style>
