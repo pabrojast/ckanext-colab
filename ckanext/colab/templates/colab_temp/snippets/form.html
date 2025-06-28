@@ -539,6 +539,10 @@ label {
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   box-shadow: var(--shadow-light);
   margin-bottom: 0.5rem;
+  min-height: 3.2em;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
 }
 
 .form-control:focus {
@@ -549,10 +553,37 @@ label {
   transform: translateY(-1px);
 }
 
+/* Ensure focus state maintains proper height for selects */
+select.form-control:focus {
+  height: 3.2em;
+  min-height: 3.2em;
+}
+
+/* Ensure focus state for inputs */
+input.form-control:focus {
+  height: 3.2em;
+  min-height: 3.2em;
+}
+
 .form-control:disabled {
   background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
   cursor: not-allowed;
   color: var(--text-secondary);
+}
+
+/* Input Fields */
+input.form-control {
+  height: 3.2em;
+  min-height: 3.2em;
+}
+
+/* Textarea Fields */
+textarea.form-control {
+  min-height: 6em;
+  height: auto;
+  display: block;
+  align-items: stretch;
+  resize: vertical;
 }
 
 /* Select Fields */
@@ -566,6 +597,8 @@ select.form-control {
   background-size: 12px;
   cursor: pointer;
   padding-right: 35px;
+  height: 3.2em;
+  min-height: 3.2em;
 }
 
 /* Help Text */
@@ -704,6 +737,10 @@ select.form-control {
 .btn-lg {
   padding: 16px 40px;
   font-size: 1.2rem;
+  min-height: 3.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .submit-help-text {
