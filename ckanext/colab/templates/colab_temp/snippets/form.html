@@ -238,12 +238,18 @@
         confirmPasswordField.addEventListener('input', checkPasswordMatch);
         form.addEventListener('submit', handleFormSubmit);
         
+        // Check initial state of organization selection
+        toggleNewOrganizationField();
+        toggleGenderOtherField();
+        
         // Initialize reCAPTCHA when ready
         if (typeof grecaptcha !== 'undefined') {
             initializeRecaptcha();
         } else {
             window.addEventListener('load', initializeRecaptcha);
         }
+        
+        console.log('Form initialized successfully');
     }
     
     // Gender field toggle
@@ -266,18 +272,27 @@
     function toggleNewOrganizationField() {
         const isNewOrganization = organizationSelect.value === 'new';
         
+        console.log('Organization changed:', organizationSelect.value, 'isNew:', isNewOrganization);
+        
         if (isNewOrganization) {
             newOrganizationField.style.display = 'block';
             newOrganizationNameField.required = true;
             // Set role to admin and disable selector
             userRoleSelect.value = 'admin';
             userRoleSelect.disabled = true;
+            userRoleSelect.classList.add('disabled-select');
+            console.log('Role set to admin and disabled');
         } else {
             newOrganizationField.style.display = 'none';
             newOrganizationNameField.required = false;
             newOrganizationNameField.value = '';
+            document.getElementById('new_organization_description').value = '';
             // Enable role selector
             userRoleSelect.disabled = false;
+            userRoleSelect.classList.remove('disabled-select');
+            // Reset role selection
+            userRoleSelect.value = '';
+            console.log('Role selector enabled and reset');
         }
     }
     
@@ -565,10 +580,20 @@ input.form-control:focus {
   min-height: 3.2em;
 }
 
-.form-control:disabled {
-  background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
-  cursor: not-allowed;
-  color: var(--text-secondary);
+.form-control:disabled,
+.disabled-select {
+  background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%) !important;
+  cursor: not-allowed !important;
+  color: var(--text-secondary) !important;
+  border-color: #d6d8db !important;
+  opacity: 0.7;
+}
+
+.form-control:disabled:focus,
+.disabled-select:focus {
+  border-color: #d6d8db !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 /* Input Fields */
