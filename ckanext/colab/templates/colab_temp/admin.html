@@ -3,6 +3,25 @@
   {{ super() }}
   <link rel="stylesheet" href="/adminuserform.css" />
   <style>
+    /* UNESCO Data Contributor Portal Admin Theme */
+    :root {
+      /* UNESCO Blue Colors */
+      --unesco-blue: #0072BC;
+      --unesco-blue-dark: #005A9C;
+      --unesco-blue-light: #009EE0;
+      --unesco-blue-pale: #E3F2FD;
+      
+      /* Neutral Colors */
+      --unesco-gray: #f8f9fa;
+      --text-primary: #2c3e50;
+      --text-secondary: #6c757d;
+      
+      /* UNESCO Blue-themed Shadows */
+      --shadow-light: 0 2px 8px rgba(0, 114, 188, 0.08);
+      --shadow-medium: 0 4px 16px rgba(0, 114, 188, 0.12);
+      --shadow-strong: 0 8px 32px rgba(0, 114, 188, 0.16);
+    }
+
     /* Modern Admin Interface Styles */
     .admin-container {
         max-width: 100%;
@@ -10,58 +29,71 @@
         padding: 20px;
     }
 
+    /* Admin Header - UNESCO Style */
     .admin-header {
         position: relative;
-        background: #0074D9;
-        color: white;
-        margin-bottom: 30px;
-        border-radius: 0;
+        height: 300px;
         overflow: hidden;
-        min-height: 200px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        border-radius: 16px;
+        margin-bottom: 3rem;
+        box-shadow: var(--shadow-strong);
     }
 
     .admin-header-bg {
         position: absolute;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, #0074D9 0%, #001f3f 100%);
-        opacity: 0.9;
+        width: 100%;
+        height: 100%;
+        background-image: url('/colab.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: brightness(0.8);
+        transition: transform 0.3s ease;
+    }
+
+    .admin-header:hover .admin-header-bg {
+        transform: scale(1.02);
     }
 
     .admin-header-overlay {
         position: absolute;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.3);
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(0, 90, 156, 0.9) 0%, rgba(0, 114, 188, 0.8) 100%);
     }
 
     .admin-header-content {
-        position: relative;
-        z-index: 2;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         text-align: center;
+        color: white;
+        z-index: 10;
+        width: 90%;
         max-width: 800px;
-        padding: 20px;
     }
 
     .admin-header h1 {
-        margin: 0 0 10px 0;
-        font-size: 2.8em;
-        font-weight: 400;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        margin: 0 0 1rem 0;
+        font-size: 2.8rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+        line-height: 1.2;
+        letter-spacing: -0.02em;
     }
 
     .admin-header p {
         margin: 0;
-        font-size: 1.2em;
+        font-size: 1.2rem;
         opacity: 0.95;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
         font-weight: 300;
+        line-height: 1.4;
     }
 
     .admin-stats {
@@ -74,36 +106,50 @@
     .stat-card {
         background: white;
         padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 20px;
+        box-shadow: var(--shadow-medium);
         flex: 1;
         min-width: 200px;
         text-align: center;
-        border-left: 4px solid #0074D9;
+        border-left: 6px solid var(--unesco-blue);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-strong);
     }
 
     .stat-number {
         font-size: 2em;
         font-weight: bold;
-        color: #0074D9;
+        color: var(--unesco-blue);
     }
 
     .stat-label {
-        color: #666;
+        color: var(--text-secondary);
         margin-top: 5px;
     }
 
-    /* Enhanced Tabs */
+    /* Enhanced Tabs - UNESCO Style */
     .tabs {
         background: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 20px;
+        box-shadow: var(--shadow-medium);
         overflow: hidden;
+        border-left: 6px solid var(--unesco-blue-dark);
+        transition: all 0.3s ease;
+    }
+
+    .tabs:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-strong);
     }
 
     .tab-buttons {
         display: flex;
-        background: #f8f9fa;
+        background: var(--unesco-gray);
         border-bottom: 2px solid #e9ecef;
     }
 
@@ -115,18 +161,18 @@
         cursor: pointer;
         font-size: 16px;
         font-weight: 500;
-        color: #666;
+        color: var(--text-secondary);
         transition: all 0.3s ease;
         position: relative;
     }
 
     .tab-button:hover {
         background: #e9ecef;
-        color: #333;
+        color: var(--text-primary);
     }
 
     .tab-button.active {
-        color: #0074D9;
+        color: var(--unesco-blue);
         background: white;
     }
 
@@ -137,18 +183,19 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: #0074D9;
+        background: var(--unesco-blue);
     }
 
-    /* Search and Filter */
+    /* Search and Filter - UNESCO Style */
     .controls {
         padding: 20px;
-        background: #f8f9fa;
+        background: linear-gradient(135deg, #ffffff 0%, var(--unesco-gray) 100%);
         border-bottom: 1px solid #e9ecef;
         display: flex;
         gap: 15px;
         align-items: center;
         flex-wrap: wrap;
+        box-shadow: var(--shadow-light);
     }
 
     .search-box {
@@ -159,16 +206,19 @@
 
     .search-input {
         width: 100%;
-        padding: 10px 15px 10px 40px;
+        padding: 12px 15px 12px 40px;
         border: 2px solid #e9ecef;
         border-radius: 25px;
         font-size: 14px;
-        transition: border-color 0.3s ease;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-light);
     }
 
     .search-input:focus {
         outline: none;
-        border-color: #0074D9;
+        border-color: var(--unesco-blue);
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-1px);
     }
 
     .search-icon {
@@ -176,15 +226,29 @@
         left: 12px;
         top: 50%;
         transform: translateY(-50%);
-        color: #666;
+        color: var(--text-secondary);
+        transition: color 0.3s ease;
+    }
+
+    .search-input:focus + .search-icon {
+        color: var(--unesco-blue);
     }
 
     .filter-select {
-        padding: 10px 15px;
+        padding: 12px 15px;
         border: 2px solid #e9ecef;
         border-radius: 20px;
         background: white;
         font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-light);
+    }
+
+    .filter-select:focus {
+        outline: none;
+        border-color: var(--unesco-blue);
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-1px);
     }
 
     /* Enhanced Table */
@@ -252,34 +316,40 @@
         margin: 5px 0;
         padding: 4px 8px;
         border: 2px solid #e9ecef;
-        border-radius: 4px;
+        border-radius: 8px;
         font-size: 11px;
         background: white;
-        color: #333;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-light);
     }
 
     .role-selector:focus {
         outline: none;
-        border-color: #0074D9;
+        border-color: var(--unesco-blue);
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-1px);
     }
 
     .role-current {
-        background: #f8f9fa;
+        background: var(--unesco-blue-pale);
         padding: 2px 6px;
-        border-radius: 3px;
+        border-radius: 6px;
         font-size: 10px;
         margin-bottom: 4px;
         display: block;
-        color: #666;
+        color: var(--unesco-blue-dark);
+        font-weight: 500;
     }
 
     .role-modified {
         background: #fff3cd !important;
         border-color: #ffc107 !important;
         color: #856404 !important;
+        box-shadow: 0 0 8px rgba(255, 193, 7, 0.3) !important;
     }
 
-    /* Action Buttons */
+    /* Action Buttons - UNESCO Style */
     .action-buttons {
         display: flex;
         gap: 8px;
@@ -287,47 +357,68 @@
     }
 
     .btn {
-        padding: 6px 12px;
+        padding: 8px 14px;
         border: none;
-        border-radius: 4px;
+        border-radius: 12px;
         cursor: pointer;
         font-size: 12px;
-        font-weight: 500;
+        font-weight: 600;
         text-decoration: none;
         transition: all 0.3s ease;
         display: inline-flex;
         align-items: center;
         gap: 4px;
+        box-shadow: var(--shadow-light);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+        left: 100%;
     }
 
     .btn-approve {
-        background: #28a745;
+        background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
         color: white;
     }
 
     .btn-approve:hover {
-        background: #218838;
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, #388e3c 0%, #2e7d32 100%);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
     }
 
     .btn-reject {
-        background: #dc3545;
+        background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
         color: white;
     }
 
     .btn-reject:hover {
-        background: #c82333;
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
     }
 
     .btn-view {
-        background: #007bff;
+        background: linear-gradient(135deg, var(--unesco-blue) 0%, var(--unesco-blue-dark) 100%);
         color: white;
     }
 
     .btn-view:hover {
-        background: #0056b3;
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, var(--unesco-blue-dark) 0%, #004080 100%);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
     }
 
     /* Status Badges */
@@ -354,7 +445,7 @@
         color: #721c24;
     }
 
-    /* Modal Styles */
+    /* Modal Styles - UNESCO Theme */
     .modal {
         display: none;
         position: fixed;
@@ -363,27 +454,30 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0,0,0,0.5);
+        background-color: rgba(0, 90, 156, 0.5);
         animation: fadeIn 0.3s ease;
+        backdrop-filter: blur(4px);
     }
 
     .modal-content {
         background-color: white;
         margin: 5% auto;
         padding: 0;
-        border-radius: 10px;
+        border-radius: 20px;
         width: 90%;
         max-width: 600px;
         max-height: 80vh;
         overflow-y: auto;
         animation: slideIn 0.3s ease;
+        box-shadow: var(--shadow-strong);
+        border-left: 6px solid var(--unesco-blue);
     }
 
     .modal-header {
-        background: #0074D9;
+        background: linear-gradient(135deg, var(--unesco-blue) 0%, var(--unesco-blue-dark) 100%);
         color: white;
         padding: 20px;
-        border-radius: 10px 10px 0 0;
+        border-radius: 20px 20px 0 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -392,6 +486,8 @@
     .modal-header h2 {
         margin: 0;
         font-size: 1.5em;
+        font-weight: 600;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
     }
 
     .close {
@@ -399,40 +495,70 @@
         font-weight: bold;
         cursor: pointer;
         color: white;
-        opacity: 0.7;
+        opacity: 0.8;
+        transition: all 0.3s ease;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
     }
 
     .close:hover {
         opacity: 1;
+        background: rgba(255,255,255,0.2);
+        transform: scale(1.1);
     }
 
     .modal-body {
-        padding: 20px;
+        padding: 25px;
     }
 
     .detail-group {
-        margin-bottom: 15px;
-        padding-bottom: 15px;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
         border-bottom: 1px solid #e9ecef;
+        background: linear-gradient(135deg, #ffffff 0%, var(--unesco-gray) 100%);
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: var(--shadow-light);
     }
 
     .detail-group:last-child {
         border-bottom: none;
+        margin-bottom: 0;
     }
 
     .detail-label {
         font-weight: 600;
-        color: #333;
-        margin-bottom: 5px;
+        color: var(--unesco-blue-dark);
+        margin-bottom: 8px;
+        font-size: 1.1em;
     }
 
     .detail-value {
-        color: #666;
+        color: var(--text-primary);
         word-wrap: break-word;
+        line-height: 1.5;
     }
 
-    /* Responsive Design */
+    /* Responsive Design - UNESCO Theme */
     @media (max-width: 768px) {
+        .admin-header {
+            height: 250px;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-header h1 {
+            font-size: 2rem;
+        }
+        
+        .admin-header p {
+            font-size: 1.1rem;
+        }
+        
         .admin-stats {
             flex-direction: column;
         }
@@ -440,6 +566,7 @@
         .controls {
             flex-direction: column;
             align-items: stretch;
+            padding: 15px;
         }
         
         .search-box {
@@ -461,6 +588,42 @@
         
         .truncate-long {
             max-width: 120px;
+        }
+        
+        .modal-content {
+            width: 95%;
+            margin: 10% auto;
+        }
+        
+        .modal-body {
+            padding: 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .admin-header {
+            height: 200px;
+            border-radius: 8px;
+        }
+        
+        .admin-header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .tabs {
+            border-radius: 8px;
+        }
+        
+        .stat-card {
+            border-radius: 8px;
+        }
+        
+        .modal-content {
+            border-radius: 8px;
+        }
+        
+        .modal-header {
+            border-radius: 8px 8px 0 0;
         }
     }
 
