@@ -136,12 +136,19 @@
                               <label for="organization_image" class="control-label">
                                 Organization Image/Logo
                               </label>
-                              <input type="file" 
-                                     id="organization_image" 
-                                     name="organization_image" 
-                                     class="form-control"
-                                     accept="image/*">
-                              <p class="help-block">Upload a logo or representative image for your organization (optional). Supported formats: PNG, JPG, JPEG, GIF.</p>
+                              <div class="file-upload-wrapper">
+                                <input type="file" 
+                                       id="organization_image" 
+                                       name="organization_image" 
+                                       class="form-control file-input"
+                                       accept="image/png,image/jpg,image/jpeg,image/gif"
+                                       onchange="handleFileSelect(this)">
+                                <div id="file-preview" class="file-preview" style="display: none;">
+                                  <img id="image-preview" src="" alt="Image preview" class="image-preview">
+                                  <button type="button" class="btn-clear-file" onclick="clearFileSelection()">✕ Remove</button>
+                                </div>
+                              </div>
+                              <p class="help-block">Upload a logo or representative image for your organization (optional). Supported formats: PNG, JPG, JPEG, GIF. Maximum size: 2MB.</p>
                             </div>
                           </div>
 
@@ -436,6 +443,7 @@
   transition: all 0.3s ease;
   background: white;
   box-shadow: var(--shadow-light);
+  height: 3.2em;
 }
 
 .form-control:focus {
@@ -452,6 +460,7 @@
 textarea.form-control {
   resize: vertical;
   min-height: 120px;
+  height: auto; /* Override the 3.2em height for textareas */
 }
 
 select.form-control {
@@ -572,9 +581,14 @@ select.form-control {
 }
 
 /* File Input Styling */
-input[type="file"].form-control {
+.file-upload-wrapper {
+  position: relative;
+}
+
+input[type="file"].form-control.file-input {
   padding: 8px 12px;
   cursor: pointer;
+  height: auto;
 }
 
 input[type="file"].form-control::-webkit-file-upload-button {
@@ -591,6 +605,59 @@ input[type="file"].form-control::-webkit-file-upload-button {
 
 input[type="file"].form-control::-webkit-file-upload-button:hover {
   background: var(--unesco-blue-dark);
+}
+
+/* File Preview Styles */
+.file-preview {
+  margin-top: 15px;
+  padding: 15px;
+  border: 2px dashed #e9ecef;
+  border-radius: 12px;
+  background: var(--unesco-gray);
+  text-align: center;
+  position: relative;
+}
+
+.image-preview {
+  max-width: 200px;
+  max-height: 150px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-light);
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+.btn-clear-file {
+  background: var(--form-error);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-clear-file:hover {
+  background: #d32f2f;
+  transform: translateY(-1px);
+}
+
+/* File upload states */
+.file-upload-wrapper.dragover {
+  background: var(--unesco-blue-pale);
+  border-color: var(--unesco-blue);
+}
+
+.file-upload-wrapper.error {
+  border-color: var(--form-error);
+}
+
+.file-error-message {
+  color: var(--form-error);
+  font-size: 0.875rem;
+  margin-top: 5px;
+  display: none;
 }
 
 /* Responsive Design */
@@ -684,5 +751,162 @@ input[type="file"].form-control::-webkit-file-upload-button:hover {
   animation: bounce 2s infinite;
 }
 </style>
+
+<script>
+// File upload handling functions
+function handleFileSelect(input) {
+    const file = input.files[0];
+    const preview = document.getElementById('file-preview');
+    const imagePreview = document.getElementById('image-preview');
+    const wrapper = document.querySelector('.file-upload-wrapper');
+    
+    // Clear any previous error states
+    wrapper.classList.remove('error');
+    hideErrorMessage();
+    
+    if (file) {
+        // Validate file type
+        const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+            showErrorMessage('Please select a valid image file (PNG, JPG, JPEG, or GIF)');
+            clearFileSelection();
+            return;
+        }
+        
+        // Validate file size (2MB max)
+        const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+        if (file.size > maxSize) {
+            showErrorMessage('File size must be less than 2MB');
+            clearFileSelection();
+            return;
+        }
+        
+        // Show preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        preview.style.display = 'none';
+    }
+}
+
+function clearFileSelection() {
+    const input = document.getElementById('organization_image');
+    const preview = document.getElementById('file-preview');
+    const wrapper = document.querySelector('.file-upload-wrapper');
+    
+    input.value = '';
+    preview.style.display = 'none';
+    wrapper.classList.remove('error');
+    hideErrorMessage();
+}
+
+function showErrorMessage(message) {
+    const wrapper = document.querySelector('.file-upload-wrapper');
+    let errorDiv = wrapper.querySelector('.file-error-message');
+    
+    if (!errorDiv) {
+        errorDiv = document.createElement('div');
+        errorDiv.className = 'file-error-message';
+        wrapper.appendChild(errorDiv);
+    }
+    
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    wrapper.classList.add('error');
+}
+
+function hideErrorMessage() {
+    const errorDiv = document.querySelector('.file-error-message');
+    if (errorDiv) {
+        errorDiv.style.display = 'none';
+    }
+}
+
+// Form validation
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.org-request-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            // Basic validation
+            const requiredFields = form.querySelectorAll('[required]');
+            let hasErrors = false;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = 'var(--form-error)';
+                    hasErrors = true;
+                } else {
+                    field.style.borderColor = '#e9ecef';
+                }
+            });
+            
+            if (hasErrors) {
+                e.preventDefault();
+                alert('Please fill in all required fields');
+                return false;
+            }
+            
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+                submitBtn.disabled = true;
+            }
+        });
+    }
+});
+
+// Drag and drop support
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('organization_image');
+    const wrapper = document.querySelector('.file-upload-wrapper');
+    
+    if (fileInput && wrapper) {
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            wrapper.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            wrapper.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            wrapper.addEventListener(eventName, unhighlight, false);
+        });
+        
+        // Handle dropped files
+        wrapper.addEventListener('drop', handleDrop, false);
+    }
+    
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    function highlight(e) {
+        wrapper.classList.add('dragover');
+    }
+    
+    function unhighlight(e) {
+        wrapper.classList.remove('dragover');
+    }
+    
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        
+        if (files.length > 0) {
+            fileInput.files = files;
+            handleFileSelect(fileInput);
+        }
+    }
+});
+</script>
 
 {% endblock %}

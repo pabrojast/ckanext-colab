@@ -26,12 +26,19 @@ The extension follows standard CKAN plugin architecture:
 
 ## Key Routes
 
+### User Management
 - `/colab` - Main user registration form (GET/POST)
-- `/colab/admin` - Admin interface for managing requests (GET)
+- `/colab/admin` - Admin interface for managing user requests (GET)
 - `/colab/admin/approve` - Approve user requests (POST)
 - `/colab/admin/approve/<params>` - Legacy approve endpoint (GET)
 - `/colab/admin/reject/<params>` - Reject user requests (GET)
 - `/colab/admin/approvegroup/<params>` - Approve group requests (GET)
+
+### Organization Management (New Feature)
+- `/colab/organization-request` - Organization request form for logged users (GET/POST)
+- `/colab/admin/organizations` - Admin panel for organization requests (GET)
+- `/colab/admin/organizations/approve` - Approve organization requests (POST)
+- `/colab/admin/organizations/reject` - Reject organization requests (POST)
 
 ## Development Commands
 
@@ -86,12 +93,32 @@ Required settings for full functionality:
 
 ## Database Schema
 
-The extension creates a `CoolPluginTable` with fields for:
+### User Requests (`CoolPluginTable`)
 - User information (fullname, wins_username, email)
 - Organization details (organization_name, new_organization_name, new_organization_description)
 - Approval status (approved, approvedgroup, rejected, rejection_reason)
 - Demographic data (age, gender, nationality, organizationType)
 - User role (admin, editor, member)
+
+### Organization Requests (`OrganizationRequestTable`) - New Feature
+- Request information (requester_username, organization_name, organization_description)
+- Organization details (organization_type, organization_image_url, admin_username)
+- Status tracking (status, created_date, approved_by, approved_date)
+- Rejection handling (rejected_by, rejected_date, rejection_reason)
+
+## File Upload System
+
+The organization request feature uses CKAN's built-in uploader system (following ckanext-pages pattern):
+
+- **Storage**: Uses `uploader.get_uploader('colab_organizations')`
+- **Path**: Files stored in `{ckan_storage_path}/uploads/colab_organizations/`
+- **Size Limit**: 2MB maximum per image
+- **Formats**: PNG, JPG, JPEG, GIF
+- **Features**: 
+  - Image preview before upload
+  - Drag & drop support
+  - Client-side validation
+  - Graceful error handling
 
 ## Dependencies
 

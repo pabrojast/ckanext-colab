@@ -15,6 +15,8 @@ import requests
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
+import ckan.lib.uploader as uploader
+import ckan.lib.helpers as h
 
 # Logging configuration
 logging.basicConfig(level=logging.DEBUG)
@@ -618,28 +620,34 @@ class MyLogic():
                                      current_user=toolkit.g.userobj.name,
                                      org_types=['Academic Institution', 'Government Agency', 'NGO', 'Private Company', 'Research Institute', 'International Organization', 'Other'])
             
-            # Handle image upload
+            # Handle image upload using CKAN's uploader system (like ckanext-pages)
             image_url = None
             if 'organization_image' in request.files:
                 file = request.files['organization_image']
                 if file and file.filename:
-                    # Validate file type
-                    allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
-                    if '.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in allowed_extensions:
-                        filename = secure_filename(file.filename)
-                        # Create unique filename
-                        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-                        filename = f"org_{timestamp}_{filename}"
+                    try:
+                        # Use CKAN's uploader system
+                        upload = uploader.get_uploader('colab_organizations')
+                        upload.update_data_dict(request.form, 'organization_image', 
+                                              'image_upload', 'clear_upload')
+                        upload.upload(max_size=2)  # 2MB max
                         
-                        # Save to CKAN public directory
-                        upload_dir = os.path.join(toolkit.config.get('ckan.storage_path', '/tmp'), 'storage', 'uploads', 'organization_images')
-                        os.makedirs(upload_dir, exist_ok=True)
-                        
-                        file_path = os.path.join(upload_dir, filename)
-                        file.save(file_path)
-                        
-                        # Store relative URL
-                        image_url = f"/uploads/organization_images/{filename}"
+                        if upload.filename:
+                            # Generate the URL using CKAN's helper
+                            image_url = h.url_for_static(
+                                'uploads/colab_organizations/%s' % upload.filename,
+                                qualified=True
+                            )
+                            logger.info(f"Successfully uploaded organization image: {upload.filename}")
+                        else:
+                            logger.warning("No file was uploaded")
+                            
+                    except toolkit.ValidationError as e:
+                        logger.warning(f"File upload validation error: {e}. Continuing without image.")
+                        image_url = None
+                    except Exception as e:
+                        logger.warning(f"Unexpected error uploading image: {e}. Continuing without image.")
+                        image_url = None
             
             # Create database entry
             db_session = model.Session()
