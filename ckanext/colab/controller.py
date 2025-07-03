@@ -629,20 +629,14 @@ class MyLogic():
                         # Use CKAN's uploader system
                         upload = uploader.get_uploader('colab_organizations')
                         
-                        # Create a mutable dict for the uploader
-                        data_dict = dict(request.form)
-                        data_dict['organization_image'] = file
-                        
-                        upload.update_data_dict(data_dict, 'organization_image', 
+                        # Create a mutable dict for the uploader with the correct file field
+                        upload.update_data_dict({'organization_image': file}, 'organization_image', 
                                               'image_upload', 'clear_upload')
                         upload.upload(max_size=2)  # 2MB max
                         
                         if upload.filename:
-                            # Generate the URL using CKAN's helper
-                            image_url = h.url_for_static(
-                                'uploads/colab_organizations/%s' % upload.filename,
-                                qualified=True
-                            )
+                            # Store just the filename, not the full URL
+                            image_url = upload.filename
                             logger.info(f"Successfully uploaded organization image: {upload.filename}")
                         else:
                             logger.warning("No file was uploaded")
@@ -768,7 +762,15 @@ class MyLogic():
                 }
                 
                 if org_request.organization_image_url:
-                    org_data['image_url'] = org_request.organization_image_url
+                    # Generate the full URL for the organization
+                    if not org_request.organization_image_url.startswith(('http://', 'https://', '/')):
+                        image_url = h.url_for_static(
+                            'uploads/colab_organizations/%s' % org_request.organization_image_url,
+                            qualified=True
+                        )
+                    else:
+                        image_url = org_request.organization_image_url
+                    org_data['image_url'] = image_url
                 
                 org_result = toolkit.get_action('organization_create')({'ignore_auth': True}, org_data)
                 

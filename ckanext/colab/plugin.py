@@ -110,5 +110,21 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
 
     def get_helpers(self):
         return {
-            'get_site_key': lambda: toolkit.config.get('ckan.recaptcha.publickey')
+            'get_site_key': lambda: toolkit.config.get('ckan.recaptcha.publickey'),
+            'colab_image_url': self._colab_image_url
         }
+
+    def _colab_image_url(self, image_path):
+        """Generate full URL for colab organization images"""
+        if not image_path:
+            return ''
+        
+        # If it's already a full URL, return as is
+        if image_path.startswith(('http://', 'https://', '/')):
+            return image_path
+            
+        # Generate the full URL using CKAN's helper
+        return toolkit.h.url_for_static(
+            'uploads/colab_organizations/%s' % image_path,
+            qualified=True
+        )

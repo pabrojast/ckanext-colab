@@ -926,7 +926,7 @@ let allRequests = [
         organization_name: "{{ request.organization_name }}",
         organization_description: "{{ request.organization_description }}",
         organization_type: "{{ request.organization_type }}",
-        organization_image_url: "{{ request.organization_image_url or '' }}",
+        organization_image_url: "{{ h.colab_image_url(request.organization_image_url) }}",
         requester_username: "{{ request.requester_username }}",
         admin_username: "{{ request.admin_username }}",
         status: "{{ request.status }}",
@@ -944,6 +944,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeAdmin();
     updateCounts();
 });
+
 
 function initializeAdmin() {
     // Tab functionality

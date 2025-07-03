@@ -421,11 +421,11 @@
 }
 
 /* Form Groups */
-.form-group {
+.org-request-form .form-group {
   margin-bottom: 1.5rem;
 }
 
-.control-label {
+.org-request-form .control-label {
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 8px;
@@ -433,12 +433,13 @@
   font-size: 1rem;
 }
 
-.required {
+.org-request-form .required {
   color: var(--form-error);
   font-weight: bold;
 }
 
-.form-control {
+/* Scope form controls to organization request form only */
+.org-request-form .form-control {
   width: 100%;
   padding: 12px 16px;
   border: 2px solid #e9ecef;
@@ -451,28 +452,28 @@
   height: 3.2em;
 }
 
-.form-control:focus {
+.org-request-form .form-control:focus {
   outline: none;
   border-color: var(--unesco-blue);
   box-shadow: var(--shadow-medium);
   transform: translateY(-1px);
 }
 
-.form-control:hover {
+.org-request-form .form-control:hover {
   border-color: var(--unesco-blue-light);
 }
 
-textarea.form-control {
+.org-request-form textarea.form-control {
   resize: vertical;
   min-height: 120px;
   height: auto; /* Override the 3.2em height for textareas */
 }
 
-select.form-control {
+.org-request-form select.form-control {
   cursor: pointer;
 }
 
-.help-block {
+.org-request-form .help-block {
   font-size: 0.875rem;
   color: var(--text-secondary);
   margin-top: 5px;
@@ -481,7 +482,7 @@ select.form-control {
 }
 
 /* Form Actions */
-.form-actions {
+.org-request-form .form-actions {
   margin-top: 2.5rem;
   padding-top: 2rem;
   border-top: 2px solid var(--unesco-blue-pale);
@@ -491,7 +492,7 @@ select.form-control {
   align-items: center;
 }
 
-.btn {
+.org-request-form .btn {
   padding: 12px 24px;
   border: none;
   border-radius: 12px;
@@ -508,7 +509,7 @@ select.form-control {
   overflow: hidden;
 }
 
-.btn::before {
+.org-request-form .btn::before {
   content: '';
   position: absolute;
   top: 0;
@@ -519,17 +520,17 @@ select.form-control {
   transition: left 0.5s ease;
 }
 
-.btn:hover::before {
+.org-request-form .btn:hover::before {
   left: 100%;
 }
 
-.btn-primary {
+.org-request-form .btn-primary {
   background: linear-gradient(135deg, var(--unesco-blue) 0%, var(--unesco-blue-dark) 100%);
   color: white;
   border: 2px solid var(--unesco-blue);
 }
 
-.btn-primary:hover {
+.org-request-form .btn-primary:hover {
   background: linear-gradient(135deg, var(--unesco-blue-dark) 0%, #004080 100%);
   transform: translateY(-2px);
   box-shadow: var(--shadow-medium);
@@ -537,13 +538,13 @@ select.form-control {
   text-decoration: none;
 }
 
-.btn-default {
+.org-request-form .btn-default {
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   color: var(--text-primary);
   border: 2px solid #e9ecef;
 }
 
-.btn-default:hover {
+.org-request-form .btn-default:hover {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   transform: translateY(-2px);
   box-shadow: var(--shadow-medium);
@@ -551,7 +552,7 @@ select.form-control {
   text-decoration: none;
 }
 
-.btn-lg {
+.org-request-form .btn-lg {
   padding: 16px 32px;
   font-size: 1.1rem;
 }
@@ -586,17 +587,17 @@ select.form-control {
 }
 
 /* File Input Styling */
-.file-upload-wrapper {
+.org-request-form .file-upload-wrapper {
   position: relative;
 }
 
-input[type="file"].form-control.file-input {
+.org-request-form input[type="file"].form-control.file-input {
   padding: 8px 12px;
   cursor: pointer;
   height: auto;
 }
 
-input[type="file"].form-control::-webkit-file-upload-button {
+.org-request-form input[type="file"].form-control::-webkit-file-upload-button {
   background: var(--unesco-blue);
   color: white;
   border: none;
@@ -608,12 +609,12 @@ input[type="file"].form-control::-webkit-file-upload-button {
   transition: all 0.3s ease;
 }
 
-input[type="file"].form-control::-webkit-file-upload-button:hover {
+.org-request-form input[type="file"].form-control::-webkit-file-upload-button:hover {
   background: var(--unesco-blue-dark);
 }
 
 /* File Preview Styles */
-.file-preview {
+.org-request-form .file-preview {
   margin-top: 15px;
   padding: 15px;
   border: 2px dashed #e9ecef;
@@ -623,7 +624,7 @@ input[type="file"].form-control::-webkit-file-upload-button:hover {
   position: relative;
 }
 
-.image-preview {
+.org-request-form .image-preview {
   max-width: 200px;
   max-height: 150px;
   border-radius: 8px;
@@ -632,7 +633,7 @@ input[type="file"].form-control::-webkit-file-upload-button:hover {
   margin: 0 auto 10px auto;
 }
 
-.btn-clear-file {
+.org-request-form .btn-clear-file {
   background: var(--form-error);
   color: white;
   border: none;
@@ -643,22 +644,22 @@ input[type="file"].form-control::-webkit-file-upload-button:hover {
   transition: all 0.3s ease;
 }
 
-.btn-clear-file:hover {
+.org-request-form .btn-clear-file:hover {
   background: #d32f2f;
   transform: translateY(-1px);
 }
 
 /* File upload states */
-.file-upload-wrapper.dragover {
+.org-request-form .file-upload-wrapper.dragover {
   background: var(--unesco-blue-pale);
   border-color: var(--unesco-blue);
 }
 
-.file-upload-wrapper.error {
+.org-request-form .file-upload-wrapper.error {
   border-color: var(--form-error);
 }
 
-.file-error-message {
+.org-request-form .file-error-message {
   color: var(--form-error);
   font-size: 0.875rem;
   margin-top: 5px;
@@ -688,11 +689,11 @@ input[type="file"].form-control::-webkit-file-upload-button:hover {
     padding: 1.5rem;
   }
   
-  .form-actions {
+  .org-request-form .form-actions {
     flex-direction: column;
   }
   
-  .btn {
+  .org-request-form .btn {
     width: 100%;
     justify-content: center;
   }
@@ -731,6 +732,15 @@ input[type="file"].form-control::-webkit-file-upload-button:hover {
   
   .form-section-title {
     font-size: 1.2rem;
+  }
+  
+  /* Ensure responsive styles don't conflict */
+  .org-request-form .form-control {
+    height: 3.2em !important;
+  }
+  
+  .org-request-form textarea.form-control {
+    height: auto !important;
   }
 }
 

@@ -116,11 +116,18 @@ The organization request feature uses CKAN's built-in uploader system (following
 - **Path**: Files stored in `{ckan_storage_path}/uploads/colab_organizations/`
 - **Size Limit**: 2MB maximum per image
 - **Formats**: PNG, JPG, JPEG, GIF
+- **URL Generation**: Helper function `h.colab_image_url()` for templates
 - **Features**: 
   - Image preview before upload
   - Drag & drop support
   - Client-side validation
   - Graceful error handling
+  - Automatic URL generation for display
+
+### Image Handling
+- **Storage**: Only filename is stored in database
+- **Display**: Full URLs generated using `h.colab_image_url()` helper
+- **Template Helper**: Available as `{{ h.colab_image_url(image_path) }}`
 
 ## Dependencies
 
