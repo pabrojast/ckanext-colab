@@ -70,6 +70,11 @@
                 <div class="section-title-content">
                   <h1>{{ _('Request Error') }}</h1>
                   <p class="section-title-description">{{ error }}</p>
+                  {% if 'table' in error or 'migration' in error %}
+                  <p class="section-title-description" style="font-size: 1rem; margin-top: 1rem;">
+                    Please contact your system administrator to run the database migration: <code>ckan -c production.ini db upgrade -p colab</code>
+                  </p>
+                  {% endif %}
                 </div>
               </div>
             </section>

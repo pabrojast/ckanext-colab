@@ -628,7 +628,12 @@ class MyLogic():
                     try:
                         # Use CKAN's uploader system
                         upload = uploader.get_uploader('colab_organizations')
-                        upload.update_data_dict(request.form, 'organization_image', 
+                        
+                        # Create a mutable dict for the uploader
+                        data_dict = dict(request.form)
+                        data_dict['organization_image'] = file
+                        
+                        upload.update_data_dict(data_dict, 'organization_image', 
                                               'image_upload', 'clear_upload')
                         upload.upload(max_size=2)  # 2MB max
                         
@@ -651,6 +656,14 @@ class MyLogic():
             
             # Create database entry
             db_session = model.Session()
+            
+            # Ensure the table exists (temporary fix until migration is run)
+            try:
+                from ckanext.colab.models.cool_plugin_table import organization_request_table, metadata
+                metadata.create_all(model.meta.engine, tables=[organization_request_table])
+            except Exception as e:
+                logger.debug(f"Table creation attempt: {e}")
+            
             try:
                 org_request = OrganizationRequestTable(
                     requester_username=toolkit.g.userobj.name,
@@ -698,6 +711,13 @@ class MyLogic():
             toolkit.abort(403, 'Need to be system administrator')
         
         try:
+            # Ensure the table exists (temporary fix until migration is run)
+            try:
+                from ckanext.colab.models.cool_plugin_table import organization_request_table, metadata
+                metadata.create_all(model.meta.engine, tables=[organization_request_table])
+            except Exception as e:
+                logger.debug(f"Table creation attempt in admin: {e}")
+                
             engine = create_engine(toolkit.config.get('sqlalchemy.url'))
             Session = sessionmaker(bind=engine)
             session = Session()

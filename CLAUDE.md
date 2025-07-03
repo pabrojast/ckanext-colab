@@ -57,12 +57,14 @@ ckan db init -p colab
 
 ### Database Migrations
 ```bash
-# Generate migration
-ckan -c production.ini generate migration -p colab -m 'migration description'
-
-# Apply migrations
+# Apply existing migrations (for organization requests feature)
 ckan -c production.ini db upgrade -p colab
+
+# Generate new migration (if needed)
+ckan -c production.ini generate migration -p colab -m 'migration description'
 ```
+
+**Important**: The organization requests feature requires migration `f3d4e5a6b7c8` to create the `colab_organization_requests` table.
 
 ### Testing
 ```bash
