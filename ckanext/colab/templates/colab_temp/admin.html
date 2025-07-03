@@ -810,6 +810,52 @@
         }
     }
 
+    /* Navigation between panels */
+    .admin-nav {
+        margin-bottom: 2rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow-medium);
+        padding: 1rem;
+        border-left: 6px solid var(--unesco-blue);
+    }
+
+    .nav-tabs {
+        border: none;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .nav-tab {
+        padding: 12px 24px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        background: white;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: var(--shadow-light);
+    }
+
+    .nav-tab:hover {
+        background: var(--unesco-blue-pale);
+        color: var(--unesco-blue-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+        text-decoration: none;
+    }
+
+    .nav-tab.active {
+        background: var(--unesco-blue);
+        color: white;
+        border-color: var(--unesco-blue);
+    }
+
     /* Animations */
     @keyframes fadeIn {
         from { opacity: 0; }
@@ -888,6 +934,18 @@
             <p>Manage user registrations and organization memberships</p>
         </div>
     </section>
+
+    <!-- Navigation between admin panels -->
+    <div class="admin-nav">
+        <div class="nav-tabs">
+            <a href="{{ h.url_for('colab.show_admin') }}" class="nav-tab active">
+                👥 User Management
+            </a>
+            <a href="{{ h.url_for('colab.organization_admin') }}" class="nav-tab">
+                🏢 Organization Requests
+            </a>
+        </div>
+    </div>
 
     <div class="admin-stats">
         <div class="stat-card">

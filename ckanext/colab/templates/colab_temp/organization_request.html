@@ -1,0 +1,688 @@
+{% extends "page.html" %}
+
+{% block title %}
+{% trans %}Request New Organization{% endtrans %} - {{ super() }}
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="/newuserform.css" />
+{% endblock %}
+
+{% block secondary %}
+{% endblock %}
+
+{% block content %}
+
+<div class="homepage layout-1">
+    <div id="content" class="container">
+      {{ self.flash() }}
+    </div>
+    
+    {% block primary_content %}
+    <div class="main">
+
+        <div class="container">
+            
+            <!-- Breadcrumb Navigation -->
+            <div class="toolbar" role="navigation" aria-label="Breadcrumb">
+                <ol class="breadcrumb">                 
+                    <li class="home"><a href="/" aria-label="Home"><i class="fa fa-home"></i><span> Home</span></a></li>
+                    <li><a href="{{ h.url_for('colab.show_something') }}">{% trans %}Data Contributor Portal{% endtrans %}</a></li>
+                    <li class="active"><a href="{{ h.url_for('colab.organization_request_form') }}">{% trans %}Request New Organization{% endtrans %}</a></li>
+                </ol>
+            </div>
+
+            <!-- Banner -->
+            {% if not success and not error %}
+            <section class="module module-narrow module-shallow">
+              <div class="section-title" style="margin-bottom: 2rem;">
+                <div class="section-title-bg" style="background-image: url('/colab.jpg');"></div>
+                <div class="section-title-overlay"></div>
+                <div class="section-title-content">
+                  <h1>{{ _('Request New Organization') }}</h1>
+                  <p class="section-title-description">{{ _('Create a new organization to manage your data and collaborate with team members.') }}</p>
+                </div>
+              </div>
+            </section>
+            {% endif %}
+
+            <!-- Success Banner -->
+            {% if success %}
+            <section class="module module-narrow module-shallow">
+              <div class="section-title" style="margin-bottom: 2rem;">
+                <div class="section-title-bg" style="background-image: url('/colab.jpg');"></div>
+                <div class="section-title-overlay success-overlay"></div>
+                <div class="section-title-content">
+                  <h1>{{ _('Request Submitted Successfully') }}</h1>
+                  <p class="section-title-description">{{ _('Your organization request has been submitted and is pending admin approval.') }}</p>
+                </div>
+              </div>
+            </section>
+            {% endif %}
+
+            <!-- Error Banner -->
+            {% if error %}
+            <section class="module module-narrow module-shallow">
+              <div class="section-title" style="margin-bottom: 2rem;">
+                <div class="section-title-bg" style="background-image: url('/colab.jpg');"></div>
+                <div class="section-title-overlay error-overlay"></div>
+                <div class="section-title-content">
+                  <h1>{{ _('Request Error') }}</h1>
+                  <p class="section-title-description">{{ error }}</p>
+                </div>
+              </div>
+            </section>
+            {% endif %}
+          </div>
+        
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                
+                <!-- Form Section -->
+                {% if not success %}
+                  <div class="organization-form-wrapper">
+                    <section class="module module-narrow">
+                      <div class="module-content">
+                        <form method="post" enctype="multipart/form-data" class="org-request-form">
+                          
+                          <div class="form-section">
+                            <h3 class="form-section-title">
+                              <i class="fa fa-building"></i>
+                              Organization Information
+                            </h3>
+                            
+                            <div class="form-group">
+                              <label for="organization_name" class="control-label">
+                                <span class="required">*</span> Organization Name
+                              </label>
+                              <input type="text" 
+                                     id="organization_name" 
+                                     name="organization_name" 
+                                     class="form-control" 
+                                     placeholder="Enter the full name of your organization"
+                                     required>
+                              <p class="help-block">The official name of your organization as it should appear publicly.</p>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="organization_type" class="control-label">
+                                <span class="required">*</span> Organization Type
+                              </label>
+                              <select id="organization_type" name="organization_type" class="form-control" required>
+                                <option value="">Select organization type...</option>
+                                {% for org_type in org_types %}
+                                <option value="{{ org_type }}">{{ org_type }}</option>
+                                {% endfor %}
+                              </select>
+                              <p class="help-block">Select the category that best describes your organization.</p>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="organization_description" class="control-label">
+                                <span class="required">*</span> Organization Description
+                              </label>
+                              <textarea id="organization_description" 
+                                        name="organization_description" 
+                                        class="form-control" 
+                                        rows="6"
+                                        placeholder="Provide a detailed description of your organization, its mission, goals, and activities..."
+                                        required></textarea>
+                              <p class="help-block">Describe your organization's purpose, activities, and how it relates to data management or research.</p>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="organization_image" class="control-label">
+                                Organization Image/Logo
+                              </label>
+                              <input type="file" 
+                                     id="organization_image" 
+                                     name="organization_image" 
+                                     class="form-control"
+                                     accept="image/*">
+                              <p class="help-block">Upload a logo or representative image for your organization (optional). Supported formats: PNG, JPG, JPEG, GIF.</p>
+                            </div>
+                          </div>
+
+                          <div class="form-section">
+                            <h3 class="form-section-title">
+                              <i class="fa fa-user-shield"></i>
+                              Administration
+                            </h3>
+                            
+                            <div class="form-group">
+                              <label for="admin_username" class="control-label">
+                                <span class="required">*</span> Administrator Username
+                              </label>
+                              <input type="text" 
+                                     id="admin_username" 
+                                     name="admin_username" 
+                                     class="form-control"
+                                     value="{{ current_user }}"
+                                     placeholder="Enter username for organization administrator"
+                                     required>
+                              <p class="help-block">The username of the person who will be the administrator of this organization. This user must already exist in the system.</p>
+                            </div>
+                          </div>
+
+                          <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                              <i class="fa fa-paper-plane"></i>
+                              Submit Organization Request
+                            </button>
+                            <a href="{{ h.url_for('colab.show_something') }}" class="btn btn-default btn-lg">
+                              <i class="fa fa-arrow-left"></i>
+                              Back to Portal
+                            </a>
+                          </div>
+
+                        </form>
+                      </div>
+                    </section>
+                  </div>
+                {% endif %}
+
+                <!-- Success Section -->
+                {% if success %}
+                  <div class="organization-success-wrapper">
+                    <section class="module module-narrow">
+                      <div class="module-content text-center">
+                        <div class="success-icon">
+                          <i class="fa fa-check-circle"></i>
+                        </div>
+                        <h3>Request Submitted Successfully!</h3>
+                        <p>Your organization request has been submitted and is now pending administrator approval. You will be notified once the request has been reviewed.</p>
+                        <div class="success-actions">
+                          <a href="{{ h.url_for('colab.show_something') }}" class="btn btn-primary">
+                            <i class="fa fa-arrow-left"></i>
+                            Return to Portal
+                          </a>
+                          <a href="{{ h.url_for('colab.organization_request_form') }}" class="btn btn-default">
+                            <i class="fa fa-plus"></i>
+                            Submit Another Request
+                          </a>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
+
+    </div>
+    {% endblock %}
+</div>
+
+<!-- Organization Request Form CSS -->
+<style>
+/* Organization Request Form Theme - UNESCO Palette */
+:root {
+  /* UNESCO Blue Colors */
+  --unesco-blue: #0072BC;
+  --unesco-blue-dark: #005A9C;
+  --unesco-blue-light: #009EE0;
+  --unesco-blue-pale: #E3F2FD;
+  
+  /* Neutral Colors */
+  --unesco-gray: #f8f9fa;
+  --text-primary: #2c3e50;
+  --text-secondary: #6c757d;
+  
+  /* UNESCO Blue-themed Shadows */
+  --shadow-light: 0 2px 8px rgba(0, 114, 188, 0.08);
+  --shadow-medium: 0 4px 16px rgba(0, 114, 188, 0.12);
+  --shadow-strong: 0 8px 32px rgba(0, 114, 188, 0.16);
+  
+  /* Form Colors */
+  --form-success: #4caf50;
+  --form-error: #f44336;
+  --form-warning: #ff9800;
+}
+
+/* Banner Section */
+.section-title {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 16px;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-strong);
+}
+
+.section-title-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.8);
+  transition: transform 0.3s ease;
+}
+
+.section-title:hover .section-title-bg {
+  transform: scale(1.02);
+}
+
+.section-title-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 90, 156, 0.9) 0%, rgba(0, 114, 188, 0.8) 100%);
+}
+
+.section-title-overlay.success-overlay {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.5) 0%, rgba(46, 125, 50, 0.7) 100%);
+}
+
+.section-title-overlay.error-overlay {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.5) 0%, rgba(211, 47, 47, 0.7) 100%);
+}
+
+.section-title-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 10;
+  width: 90%;
+  max-width: 700px;
+}
+
+.section-title-content h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.section-title-description {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  opacity: 0.95;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* Breadcrumb */
+.toolbar {
+  margin-bottom: 3rem;
+  padding: 1rem 0;
+}
+
+.breadcrumb {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 12px 20px;
+  margin: 0;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  box-shadow: var(--shadow-light);
+  font-size: 0.95rem;
+}
+
+.breadcrumb > li + li:before {
+  content: "›";
+  padding: 0 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.breadcrumb > li.active a {
+  color: var(--unesco-blue-dark);
+  font-weight: 600;
+}
+
+.breadcrumb > li a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb > li a:hover {
+  color: var(--unesco-blue-dark);
+}
+
+/* Modules */
+.module {
+  background: #fff;
+  border: none;
+  border-radius: 20px;
+  box-shadow: var(--shadow-medium);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  border-left: 6px solid var(--unesco-blue);
+}
+
+.module:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-strong);
+}
+
+.module-content {
+  padding: 2.5rem;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, var(--unesco-gray) 100%);
+  border-radius: 16px;
+  border: 1px solid #e9ecef;
+  box-shadow: var(--shadow-light);
+  transition: all 0.3s ease;
+}
+
+.form-section:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-medium);
+}
+
+.form-section-title {
+  color: var(--unesco-blue-dark);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--unesco-blue-pale);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-section-title i {
+  font-size: 1.2rem;
+  color: var(--unesco-blue);
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.control-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  display: block;
+  font-size: 1rem;
+}
+
+.required {
+  color: var(--form-error);
+  font-weight: bold;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: all 0.3s ease;
+  background: white;
+  box-shadow: var(--shadow-light);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--unesco-blue);
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-1px);
+}
+
+.form-control:hover {
+  border-color: var(--unesco-blue-light);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 120px;
+}
+
+select.form-control {
+  cursor: pointer;
+}
+
+.help-block {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 5px;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+/* Form Actions */
+.form-actions {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--unesco-blue-pale);
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--unesco-blue) 0%, var(--unesco-blue-dark) 100%);
+  color: white;
+  border: 2px solid var(--unesco-blue);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--unesco-blue-dark) 0%, #004080 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+  color: white;
+  text-decoration: none;
+}
+
+.btn-default {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  color: var(--text-primary);
+  border: 2px solid #e9ecef;
+}
+
+.btn-default:hover {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+}
+
+/* Success Section */
+.organization-success-wrapper .module {
+  border-left: 6px solid var(--form-success);
+}
+
+.success-icon {
+  font-size: 4rem;
+  color: var(--form-success);
+  margin-bottom: 1rem;
+}
+
+.success-actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Content Wrappers */
+.organization-form-wrapper,
+.organization-success-wrapper {
+  margin-bottom: 2rem;
+}
+
+.organization-form-wrapper .module {
+  border-left: 6px solid var(--unesco-blue-dark);
+}
+
+/* File Input Styling */
+input[type="file"].form-control {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+input[type="file"].form-control::-webkit-file-upload-button {
+  background: var(--unesco-blue);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+input[type="file"].form-control::-webkit-file-upload-button:hover {
+  background: var(--unesco-blue-dark);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .section-title {
+    height: 250px;
+    margin-bottom: 2rem;
+  }
+  
+  .section-title-content h1 {
+    font-size: 2rem;
+  }
+  
+  .section-title-description {
+    font-size: 1.1rem;
+  }
+  
+  .module-content {
+    padding: 1.5rem;
+  }
+  
+  .form-section {
+    padding: 1.5rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .success-actions {
+    flex-direction: column;
+  }
+  
+  .toolbar {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    height: 200px;
+    border-radius: 8px;
+  }
+  
+  .section-title-content h1 {
+    font-size: 1.8rem;
+  }
+  
+  .module-content {
+    padding: 1rem;
+  }
+  
+  .form-section {
+    padding: 1rem;
+  }
+  
+  .breadcrumb {
+    border-radius: 8px;
+    padding: 8px 16px;
+  }
+  
+  .form-section-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* Text alignment for better readability */
+.text-center {
+  text-align: center;
+}
+
+/* Animation for success icon */
+@keyframes bounce {
+  0%, 20%, 60%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  80% {
+    transform: translateY(-5px);
+  }
+}
+
+.success-icon i {
+  animation: bounce 2s infinite;
+}
+</style>
+
+{% endblock %}

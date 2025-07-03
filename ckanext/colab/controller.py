@@ -3,7 +3,7 @@ from flask import render_template, request, abort
 import ckan.plugins.toolkit as toolkit
 import ckan.model as model
 import ckan.logic as logic
-from ckanext.colab.models.cool_plugin_table import CoolPluginTable
+from ckanext.colab.models.cool_plugin_table import CoolPluginTable, OrganizationRequestTable
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -12,6 +12,9 @@ import json
 import logging
 from ckanext.colab.lib.email_notifications import send_admin_notification
 import requests
+from datetime import datetime
+import os
+from werkzeug.utils import secure_filename
 
 # Logging configuration
 logging.basicConfig(level=logging.DEBUG)
@@ -559,3 +562,260 @@ class MyLogic():
             except Exception as e:
                 logger.error(f"General error in rejection: {e}")
                 return json.dumps({'error': str(e)})
+
+    @staticmethod
+    def show_organization_request_form():
+        """Show organization request form for logged users"""
+        if not toolkit.g.userobj:
+            toolkit.abort(403, 'You must be logged in to request an organization')
+        
+        try:
+            # Get organization types for dropdown
+            org_types = ['Academic Institution', 'Government Agency', 'NGO', 'Private Company', 'Research Institute', 'International Organization', 'Other']
+            
+            return render_template("organization_request.html", 
+                                 current_user=toolkit.g.userobj.name,
+                                 org_types=org_types)
+        except Exception as e:
+            logger.error(f"Error showing organization request form: {e}")
+            abort(500)
+
+    @staticmethod
+    def submit_organization_request():
+        """Handle organization request form submission"""
+        if not toolkit.g.userobj:
+            toolkit.abort(403, 'You must be logged in to request an organization')
+        
+        if request.method != 'POST':
+            return toolkit.redirect_to('colab.organization_request_form')
+        
+        try:
+            # Get form data
+            organization_name = request.form.get('organization_name', '').strip()
+            organization_description = request.form.get('organization_description', '').strip()
+            organization_type = request.form.get('organization_type', '').strip()
+            admin_username = request.form.get('admin_username', toolkit.g.userobj.name).strip()
+            
+            # Validation
+            if not organization_name:
+                return render_template("organization_request.html", 
+                                     error="Organization name is required",
+                                     current_user=toolkit.g.userobj.name,
+                                     org_types=['Academic Institution', 'Government Agency', 'NGO', 'Private Company', 'Research Institute', 'International Organization', 'Other'])
+            
+            if not organization_description:
+                return render_template("organization_request.html", 
+                                     error="Organization description is required",
+                                     current_user=toolkit.g.userobj.name,
+                                     org_types=['Academic Institution', 'Government Agency', 'NGO', 'Private Company', 'Research Institute', 'International Organization', 'Other'])
+            
+            # Validate admin username exists
+            try:
+                toolkit.get_action('user_show')({'ignore_auth': True}, {'id': admin_username})
+            except toolkit.ObjectNotFound:
+                return render_template("organization_request.html", 
+                                     error=f"User '{admin_username}' does not exist",
+                                     current_user=toolkit.g.userobj.name,
+                                     org_types=['Academic Institution', 'Government Agency', 'NGO', 'Private Company', 'Research Institute', 'International Organization', 'Other'])
+            
+            # Handle image upload
+            image_url = None
+            if 'organization_image' in request.files:
+                file = request.files['organization_image']
+                if file and file.filename:
+                    # Validate file type
+                    allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
+                    if '.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in allowed_extensions:
+                        filename = secure_filename(file.filename)
+                        # Create unique filename
+                        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                        filename = f"org_{timestamp}_{filename}"
+                        
+                        # Save to CKAN public directory
+                        upload_dir = os.path.join(toolkit.config.get('ckan.storage_path', '/tmp'), 'storage', 'uploads', 'organization_images')
+                        os.makedirs(upload_dir, exist_ok=True)
+                        
+                        file_path = os.path.join(upload_dir, filename)
+                        file.save(file_path)
+                        
+                        # Store relative URL
+                        image_url = f"/uploads/organization_images/{filename}"
+            
+            # Create database entry
+            db_session = model.Session()
+            try:
+                org_request = OrganizationRequestTable(
+                    requester_username=toolkit.g.userobj.name,
+                    organization_name=organization_name,
+                    organization_description=organization_description,
+                    organization_image_url=image_url,
+                    admin_username=admin_username,
+                    organization_type=organization_type,
+                    status='pending',
+                    created_date=datetime.now()
+                )
+                
+                db_session.add(org_request)
+                db_session.commit()
+                
+                return render_template("organization_request.html", 
+                                     success=True,
+                                     current_user=toolkit.g.userobj.name,
+                                     org_types=['Academic Institution', 'Government Agency', 'NGO', 'Private Company', 'Research Institute', 'International Organization', 'Other'])
+                
+            except Exception as e:
+                db_session.rollback()
+                logger.error(f"Database error in organization request: {e}")
+                return render_template("organization_request.html", 
+                                     error="An error occurred while processing your request",
+                                     current_user=toolkit.g.userobj.name,
+                                     org_types=['Academic Institution', 'Government Agency', 'NGO', 'Private Company', 'Research Institute', 'International Organization', 'Other'])
+            finally:
+                db_session.close()
+                
+        except Exception as e:
+            logger.error(f"Error in organization request submission: {e}")
+            return render_template("organization_request.html", 
+                                 error="An unexpected error occurred",
+                                 current_user=toolkit.g.userobj.name,
+                                 org_types=['Academic Institution', 'Government Agency', 'NGO', 'Private Company', 'Research Institute', 'International Organization', 'Other'])
+
+    @staticmethod
+    def show_organization_admin():
+        """Show organization requests admin panel"""
+        context = {'model': model, 'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
+        try:
+            logic.check_access('sysadmin', context, {})
+        except logic.NotAuthorized:
+            toolkit.abort(403, 'Need to be system administrator')
+        
+        try:
+            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+            Session = sessionmaker(bind=engine)
+            session = Session()
+            
+            # Get organization requests
+            org_requests = session.query(OrganizationRequestTable).all()
+            
+            return render_template("organization_admin.html", requests=org_requests)
+        except Exception as e:
+            logger.error(f"Error showing organization admin: {e}")
+            abort(500)
+        finally:
+            session.close()
+
+    @staticmethod
+    def approve_organization_request():
+        """Approve organization request"""
+        context = {'model': model, 'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
+        try:
+            logic.check_access('sysadmin', context, {})
+        except logic.NotAuthorized:
+            toolkit.abort(403, 'Need to be system administrator')
+        
+        if request.method != 'POST':
+            return json.dumps({'error': 'POST method required'})
+        
+        try:
+            request_id = request.form.get('request_id')
+            if not request_id:
+                return json.dumps({'error': 'Request ID is required'})
+            
+            db_session = model.Session()
+            try:
+                org_request = db_session.query(OrganizationRequestTable).filter_by(id=request_id).first()
+                if not org_request:
+                    return json.dumps({'error': 'Organization request not found'})
+                
+                # Clean organization name for URL
+                clean_name = org_request.organization_name.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
+                clean_name = re.sub('[^A-Za-z0-9\-]+', '', clean_name)
+                
+                # Create organization
+                org_data = {
+                    'name': clean_name,
+                    'title': org_request.organization_name,
+                    'description': org_request.organization_description,
+                    'users': [{'name': org_request.admin_username, 'capacity': 'admin'}]
+                }
+                
+                if org_request.organization_image_url:
+                    org_data['image_url'] = org_request.organization_image_url
+                
+                org_result = toolkit.get_action('organization_create')({'ignore_auth': True}, org_data)
+                
+                # Update request status
+                org_request.status = 'approved'
+                org_request.approved_by = toolkit.g.user
+                org_request.approved_date = datetime.now()
+                
+                db_session.commit()
+                
+                return json.dumps({
+                    'success': True, 
+                    'message': f'Organization "{org_request.organization_name}" created successfully',
+                    'organization_id': org_result['id']
+                })
+                
+            except Exception as e:
+                db_session.rollback()
+                logger.error(f"Error approving organization request: {e}")
+                return json.dumps({'error': str(e)})
+            finally:
+                db_session.close()
+                
+        except Exception as e:
+            logger.error(f"General error in organization approval: {e}")
+            return json.dumps({'error': str(e)})
+
+    @staticmethod
+    def reject_organization_request():
+        """Reject organization request"""
+        context = {'model': model, 'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
+        try:
+            logic.check_access('sysadmin', context, {})
+        except logic.NotAuthorized:
+            toolkit.abort(403, 'Need to be system administrator')
+        
+        if request.method != 'POST':
+            return json.dumps({'error': 'POST method required'})
+        
+        try:
+            request_id = request.form.get('request_id')
+            rejection_reason = request.form.get('rejection_reason', '').strip()
+            
+            if not request_id:
+                return json.dumps({'error': 'Request ID is required'})
+            
+            if not rejection_reason:
+                return json.dumps({'error': 'Rejection reason is required'})
+            
+            db_session = model.Session()
+            try:
+                org_request = db_session.query(OrganizationRequestTable).filter_by(id=request_id).first()
+                if not org_request:
+                    return json.dumps({'error': 'Organization request not found'})
+                
+                # Update request status
+                org_request.status = 'rejected'
+                org_request.rejected_by = toolkit.g.user
+                org_request.rejected_date = datetime.now()
+                org_request.rejection_reason = rejection_reason
+                
+                db_session.commit()
+                
+                return json.dumps({
+                    'success': True, 
+                    'message': f'Organization request rejected'
+                })
+                
+            except Exception as e:
+                db_session.rollback()
+                logger.error(f"Error rejecting organization request: {e}")
+                return json.dumps({'error': str(e)})
+            finally:
+                db_session.close()
+                
+        except Exception as e:
+            logger.error(f"General error in organization rejection: {e}")
+            return json.dumps({'error': str(e)})

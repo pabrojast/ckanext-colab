@@ -1,0 +1,1125 @@
+{% extends "page.html" %}
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="/adminuserform.css" />
+  <style>
+    /* UNESCO Data Contributor Portal Admin Theme */
+    :root {
+      /* UNESCO Blue Colors */
+      --unesco-blue: #0072BC;
+      --unesco-blue-dark: #005A9C;
+      --unesco-blue-light: #009EE0;
+      --unesco-blue-pale: #E3F2FD;
+      
+      /* Neutral Colors */
+      --unesco-gray: #f8f9fa;
+      --text-primary: #2c3e50;
+      --text-secondary: #6c757d;
+      
+      /* UNESCO Blue-themed Shadows */
+      --shadow-light: 0 2px 8px rgba(0, 114, 188, 0.08);
+      --shadow-medium: 0 4px 16px rgba(0, 114, 188, 0.12);
+      --shadow-strong: 0 8px 32px rgba(0, 114, 188, 0.16);
+    }
+
+    /* Modern Admin Interface Styles */
+    .admin-container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Admin Header - UNESCO Style */
+    .admin-header {
+        position: relative;
+        height: 300px;
+        overflow: hidden;
+        border-radius: 16px;
+        margin-bottom: 3rem;
+        box-shadow: var(--shadow-strong);
+    }
+
+    .admin-header-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/colab.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: brightness(0.8);
+        transition: transform 0.3s ease;
+    }
+
+    .admin-header:hover .admin-header-bg {
+        transform: scale(1.02);
+    }
+
+    .admin-header-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(0, 90, 156, 0.9) 0%, rgba(0, 114, 188, 0.8) 100%);
+    }
+
+    .admin-header-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: white;
+        z-index: 10;
+        width: 90%;
+        max-width: 800px;
+    }
+
+    .admin-header h1 {
+        margin: 0 0 1rem 0;
+        font-size: 2.8rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+    }
+
+    .admin-header p {
+        margin: 0;
+        font-size: 1.2rem;
+        opacity: 0.95;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+        font-weight: 300;
+        line-height: 1.4;
+    }
+
+    /* Navigation between panels */
+    .admin-nav {
+        margin-bottom: 2rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow-medium);
+        padding: 1rem;
+        border-left: 6px solid var(--unesco-blue);
+    }
+
+    .nav-tabs {
+        border: none;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .nav-tab {
+        padding: 12px 24px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        background: white;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: var(--shadow-light);
+    }
+
+    .nav-tab:hover {
+        background: var(--unesco-blue-pale);
+        color: var(--unesco-blue-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+        text-decoration: none;
+    }
+
+    .nav-tab.active {
+        background: var(--unesco-blue);
+        color: white;
+        border-color: var(--unesco-blue);
+    }
+
+    .admin-stats {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: var(--shadow-medium);
+        flex: 1;
+        min-width: 200px;
+        text-align: center;
+        border-left: 6px solid var(--unesco-blue);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-strong);
+    }
+
+    .stat-number {
+        font-size: 2em;
+        font-weight: bold;
+        color: var(--unesco-blue);
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+        margin-top: 5px;
+    }
+
+    /* Enhanced Tabs - UNESCO Style */
+    .tabs {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow-medium);
+        overflow: hidden;
+        border-left: 6px solid var(--unesco-blue-dark);
+        transition: all 0.3s ease;
+    }
+
+    .tabs:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-strong);
+    }
+
+    .tab-buttons {
+        display: flex;
+        background: var(--unesco-gray);
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .tab-button {
+        flex: 1;
+        padding: 15px 20px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .tab-button:hover {
+        background: #e9ecef;
+        color: var(--text-primary);
+    }
+
+    .tab-button.active {
+        color: var(--unesco-blue);
+        background: white;
+    }
+
+    .tab-button.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--unesco-blue);
+    }
+
+    /* Search and Filter */
+    .controls {
+        padding: 20px;
+        background: linear-gradient(135deg, #ffffff 0%, var(--unesco-gray) 100%);
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        flex-wrap: wrap;
+        box-shadow: var(--shadow-light);
+    }
+
+    .search-box {
+        flex: 1;
+        min-width: 250px;
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 12px 15px 12px 40px;
+        border: 2px solid #e9ecef;
+        border-radius: 25px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-light);
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: var(--unesco-blue);
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-1px);
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+        transition: color 0.3s ease;
+    }
+
+    .search-input:focus + .search-icon {
+        color: var(--unesco-blue);
+    }
+
+    .filter-select {
+        padding: 12px 15px;
+        border: 2px solid #e9ecef;
+        border-radius: 20px;
+        background: white;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-light);
+    }
+
+    .filter-select:focus {
+        outline: none;
+        border-color: var(--unesco-blue);
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-1px);
+    }
+
+    /* Enhanced Table */
+    .table-container {
+        overflow-x: auto;
+        padding: 20px;
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        background: white;
+    }
+
+    .admin-table th {
+        background: #f8f9fa;
+        padding: 15px 10px;
+        text-align: left;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 2px solid #e9ecef;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .admin-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #e9ecef;
+        vertical-align: middle;
+    }
+
+    .admin-table tr:hover {
+        background: #f8f9fa;
+    }
+
+    /* Text Truncation */
+    .truncate {
+        max-width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+    }
+
+    .truncate-long {
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        box-shadow: var(--shadow-light);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn-approve {
+        background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%) !important;
+        color: white !important;
+        border: 2px solid #4caf50 !important;
+    }
+
+    .btn-approve:hover {
+        background: linear-gradient(135deg, #388e3c 0%, #2e7d32 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+        border-color: #388e3c !important;
+        color: white !important;
+        text-decoration: none !important;
+    }
+
+    .btn-reject {
+        background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
+        color: white !important;
+        border: 2px solid #f44336 !important;
+    }
+
+    .btn-reject:hover {
+        background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+        border-color: #d32f2f !important;
+        color: white !important;
+        text-decoration: none !important;
+    }
+
+    .btn-view {
+        background: linear-gradient(135deg, var(--unesco-blue) 0%, var(--unesco-blue-dark) 100%) !important;
+        color: white !important;
+        border: 2px solid var(--unesco-blue) !important;
+    }
+
+    .btn-view:hover {
+        background: linear-gradient(135deg, var(--unesco-blue-dark) 0%, #004080 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+        border-color: var(--unesco-blue-dark) !important;
+        color: white !important;
+        text-decoration: none !important;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-approved {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-rejected {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 90, 156, 0.5);
+        animation: fadeIn 0.3s ease;
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 0;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        animation: slideIn 0.3s ease;
+        box-shadow: var(--shadow-strong);
+        border-left: 6px solid var(--unesco-blue);
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, var(--unesco-blue) 0%, var(--unesco-blue-dark) 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 20px 20px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-header h2 {
+        margin: 0;
+        font-size: 1.5em;
+        font-weight: 600;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+
+    .close {
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+        opacity: 0.8;
+        transition: all 0.3s ease;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+    }
+
+    .close:hover {
+        opacity: 1;
+        background: rgba(255,255,255,0.2);
+        transform: scale(1.1);
+    }
+
+    .modal-body {
+        padding: 25px;
+    }
+
+    .detail-group {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e9ecef;
+        background: linear-gradient(135deg, #ffffff 0%, var(--unesco-gray) 100%);
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: var(--shadow-light);
+    }
+
+    .detail-group:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: var(--unesco-blue-dark);
+        margin-bottom: 8px;
+        font-size: 1.1em;
+    }
+
+    .detail-value {
+        color: var(--text-primary);
+        word-wrap: break-word;
+        line-height: 1.5;
+    }
+
+    /* Image preview */
+    .org-image-preview {
+        max-width: 200px;
+        max-height: 150px;
+        border-radius: 8px;
+        box-shadow: var(--shadow-light);
+        margin-top: 10px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .admin-header {
+            height: 250px;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-header h1 {
+            font-size: 2rem;
+        }
+        
+        .admin-header p {
+            font-size: 1.1rem;
+        }
+        
+        .admin-stats {
+            flex-direction: column;
+        }
+        
+        .controls {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 15px;
+        }
+        
+        .search-box {
+            min-width: auto;
+        }
+        
+        .admin-table {
+            font-size: 12px;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 8px 5px;
+        }
+        
+        .truncate {
+            max-width: 100px;
+        }
+        
+        .truncate-long {
+            max-width: 120px;
+        }
+        
+        .modal-content {
+            width: 95%;
+            margin: 10% auto;
+        }
+        
+        .modal-body {
+            padding: 15px;
+        }
+
+        .nav-tabs {
+            flex-direction: column;
+        }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Loading State */
+    .loading {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+    }
+
+    .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid var(--unesco-blue);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+  </style>
+{% endblock %}
+
+{% block secondary %}
+{% endblock %}
+
+{% block primary %}
+<div class="admin-container">
+    <section class="admin-header">
+        <div class="admin-header-bg"></div>
+        <div class="admin-header-overlay"></div>
+        <div class="admin-header-content">
+            <h1>Organization Requests Dashboard</h1>
+            <p>Manage organization creation requests from users</p>
+        </div>
+    </section>
+
+    <!-- Navigation between admin panels -->
+    <div class="admin-nav">
+        <div class="nav-tabs">
+            <a href="{{ h.url_for('colab.show_admin') }}" class="nav-tab">
+                👥 User Management
+            </a>
+            <a href="{{ h.url_for('colab.organization_admin') }}" class="nav-tab active">
+                🏢 Organization Requests
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-stats">
+        <div class="stat-card">
+            <div class="stat-number" id="pending-org-count">0</div>
+            <div class="stat-label">Pending Requests</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="approved-org-count">0</div>
+            <div class="stat-label">Approved Organizations</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="rejected-org-count">0</div>
+            <div class="stat-label">Rejected Requests</div>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab-buttons">
+            <button class="tab-button active" data-tab="pending">
+                📋 Pending (<span id="pending-tab-count">0</span>)
+            </button>
+            <button class="tab-button" data-tab="approved">
+                ✅ Approved (<span id="approved-tab-count">0</span>)
+            </button>
+            <button class="tab-button" data-tab="rejected">
+                ❌ Rejected (<span id="rejected-tab-count">0</span>)
+            </button>
+        </div>
+
+        <div class="controls">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search by organization name, requester..." id="search-input">
+            </div>
+            <select class="filter-select" id="type-filter">
+                <option value="">All Types</option>
+                <option value="Academic Institution">Academic Institution</option>
+                <option value="Government Agency">Government Agency</option>
+                <option value="NGO">NGO</option>
+                <option value="Private Company">Private Company</option>
+                <option value="Research Institute">Research Institute</option>
+                <option value="International Organization">International Organization</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div id="pending" class="tab-content active">
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>🏢 Organization</th>
+                            <th>👤 Requester</th>
+                            <th>🎯 Type</th>
+                            <th>👨‍💼 Admin</th>
+                            <th>📅 Date</th>
+                            <th>⚡ Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in requests %}
+                            {% if request.status == 'pending' %}
+                                <tr data-request-id="{{ request.id }}" class="request-row">
+                                    <td>
+                                        <div>
+                                            <strong class="truncate" title="{{ request.organization_name }}">{{ request.organization_name }}</strong>
+                                            <br>
+                                            <small class="text-muted truncate-long" title="{{ request.organization_description }}">{{ request.organization_description }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>{{ request.requester_username }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="truncate" title="{{ request.organization_type }}">{{ request.organization_type }}</span>
+                                    </td>
+                                    <td>
+                                        <strong>{{ request.admin_username }}</strong>
+                                    </td>
+                                    <td>
+                                        <small>{{ request.created_date.strftime('%Y-%m-%d %H:%M') if request.created_date else 'N/A' }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-view" onclick="showRequestDetails('{{ request.id }}')">
+                                                👁️ View
+                                            </button>
+                                            <button class="btn btn-approve" onclick="approveRequest('{{ request.id }}')">
+                                                ✅ Approve
+                                            </button>
+                                            <button class="btn btn-reject" onclick="rejectRequest('{{ request.id }}')">
+                                                ❌ Reject
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="approved" class="tab-content">
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>🏢 Organization</th>
+                            <th>👤 Requester</th>
+                            <th>🎯 Type</th>
+                            <th>👨‍💼 Admin</th>
+                            <th>✅ Status</th>
+                            <th>⚡ Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in requests %}
+                            {% if request.status == 'approved' %}
+                                <tr data-request-id="{{ request.id }}" class="request-row">
+                                    <td>
+                                        <div>
+                                            <strong class="truncate" title="{{ request.organization_name }}">{{ request.organization_name }}</strong>
+                                            <br>
+                                            <small class="text-muted truncate-long" title="{{ request.organization_description }}">{{ request.organization_description }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>{{ request.requester_username }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="truncate" title="{{ request.organization_type }}">{{ request.organization_type }}</span>
+                                    </td>
+                                    <td>
+                                        <strong>{{ request.admin_username }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge status-approved">Approved by {{ request.approved_by }}</span>
+                                        <div style="margin-top: 4px; font-size: 11px; color: #666;">
+                                            {{ request.approved_date.strftime('%Y-%m-%d %H:%M') if request.approved_date else 'N/A' }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-view" onclick="showRequestDetails('{{ request.id }}')">
+                                                👁️ View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="rejected" class="tab-content">
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>🏢 Organization</th>
+                            <th>👤 Requester</th>
+                            <th>🎯 Type</th>
+                            <th>👨‍💼 Admin</th>
+                            <th>❌ Status</th>
+                            <th>📝 Reason</th>
+                            <th>⚡ Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in requests %}
+                            {% if request.status == 'rejected' %}
+                                <tr data-request-id="{{ request.id }}" class="request-row">
+                                    <td>
+                                        <div>
+                                            <strong class="truncate" title="{{ request.organization_name }}">{{ request.organization_name }}</strong>
+                                            <br>
+                                            <small class="text-muted truncate-long" title="{{ request.organization_description }}">{{ request.organization_description }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>{{ request.requester_username }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="truncate" title="{{ request.organization_type }}">{{ request.organization_type }}</span>
+                                    </td>
+                                    <td>
+                                        <strong>{{ request.admin_username }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge status-rejected">Rejected by {{ request.rejected_by }}</span>
+                                        <div style="margin-top: 4px; font-size: 11px; color: #666;">
+                                            {{ request.rejected_date.strftime('%Y-%m-%d %H:%M') if request.rejected_date else 'N/A' }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="truncate" title="{{ request.rejection_reason }}">
+                                            {{ request.rejection_reason }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-view" onclick="showRequestDetails('{{ request.id }}')">
+                                                👁️ View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Request Details Modal -->
+<div id="requestModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>🏢 Organization Request Details</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<script>
+// Store all requests data for filtering
+let allRequests = [
+    {% for request in requests %}
+    {
+        id: "{{ request.id }}",
+        organization_name: "{{ request.organization_name }}",
+        organization_description: "{{ request.organization_description }}",
+        organization_type: "{{ request.organization_type }}",
+        organization_image_url: "{{ request.organization_image_url or '' }}",
+        requester_username: "{{ request.requester_username }}",
+        admin_username: "{{ request.admin_username }}",
+        status: "{{ request.status }}",
+        created_date: "{{ request.created_date.strftime('%Y-%m-%d %H:%M') if request.created_date else 'N/A' }}",
+        approved_by: "{{ request.approved_by or '' }}",
+        approved_date: "{{ request.approved_date.strftime('%Y-%m-%d %H:%M') if request.approved_date else 'N/A' }}",
+        rejected_by: "{{ request.rejected_by or '' }}",
+        rejected_date: "{{ request.rejected_date.strftime('%Y-%m-%d %H:%M') if request.rejected_date else 'N/A' }}",
+        rejection_reason: "{{ request.rejection_reason or '' }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeAdmin();
+    updateCounts();
+});
+
+function initializeAdmin() {
+    // Tab functionality
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            button.classList.add('active');
+            const tabId = button.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    // Search functionality
+    document.getElementById('search-input').addEventListener('input', filterRequests);
+    document.getElementById('type-filter').addEventListener('change', filterRequests);
+
+    // Modal close on outside click
+    window.onclick = function(event) {
+        const modal = document.getElementById('requestModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+}
+
+function showRequestDetails(requestId) {
+    const request = allRequests.find(r => r.id === requestId);
+    if (!request) return;
+
+    const modalBody = document.getElementById('modal-body');
+    modalBody.innerHTML = `
+        <div class="detail-group">
+            <div class="detail-label">🏢 Organization Information</div>
+            <div class="detail-value">
+                <strong>Name:</strong> ${request.organization_name}<br>
+                <strong>Type:</strong> ${request.organization_type}<br>
+                <strong>Description:</strong> ${request.organization_description}
+                ${request.organization_image_url ? `<br><br><strong>Image:</strong><br><img src="${request.organization_image_url}" alt="Organization Image" class="org-image-preview">` : ''}
+            </div>
+        </div>
+        
+        <div class="detail-group">
+            <div class="detail-label">👤 Request Information</div>
+            <div class="detail-value">
+                <strong>Requested by:</strong> ${request.requester_username}<br>
+                <strong>Proposed Administrator:</strong> ${request.admin_username}<br>
+                <strong>Request Date:</strong> ${request.created_date}
+            </div>
+        </div>
+        
+        <div class="detail-group">
+            <div class="detail-label">📊 Status Information</div>
+            <div class="detail-value">
+                <strong>Status:</strong> ${request.status}<br>
+                ${request.approved_by ? `<strong>Approved by:</strong> ${request.approved_by}<br><strong>Approval Date:</strong> ${request.approved_date}<br>` : ''}
+                ${request.rejected_by ? `<strong>Rejected by:</strong> ${request.rejected_by}<br><strong>Rejection Date:</strong> ${request.rejected_date}<br><strong>Rejection Reason:</strong> ${request.rejection_reason}` : ''}
+            </div>
+        </div>
+    `;
+
+    document.getElementById('requestModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('requestModal').style.display = 'none';
+}
+
+function approveRequest(requestId) {
+    const request = allRequests.find(r => r.id === requestId);
+    if (!request) return;
+
+    const confirmMessage = `🎯 APPROVE ORGANIZATION REQUEST\n\n` +
+                          `🏢 Organization: ${request.organization_name}\n` +
+                          `🎯 Type: ${request.organization_type}\n` +
+                          `👤 Requester: ${request.requester_username}\n` +
+                          `👨‍💼 Admin: ${request.admin_username}\n\n` +
+                          `Do you want to approve this organization request?`;
+
+    if (confirm(confirmMessage)) {
+        const formData = new FormData();
+        formData.append('request_id', requestId);
+
+        fetch('/colab/admin/organizations/approve', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('❌ Error: ' + data.error);
+            } else {
+                alert('✅ Organization request approved successfully!\n\n' + data.message);
+                location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ An error occurred while processing the approval');
+        });
+    }
+}
+
+function rejectRequest(requestId) {
+    const request = allRequests.find(r => r.id === requestId);
+    if (!request) return;
+
+    const reason = prompt("📝 Please enter the reason for rejection:");
+    if (reason && reason.trim()) {
+        const formData = new FormData();
+        formData.append('request_id', requestId);
+        formData.append('rejection_reason', reason.trim());
+
+        fetch('/colab/admin/organizations/reject', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('❌ Error: ' + data.error);
+            } else {
+                alert('❌ Organization request rejected successfully');
+                location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ An error occurred while processing the rejection');
+        });
+    }
+}
+
+function updateCounts() {
+    const pendingCount = document.querySelectorAll('#pending .request-row').length;
+    const approvedCount = document.querySelectorAll('#approved .request-row').length;
+    const rejectedCount = document.querySelectorAll('#rejected .request-row').length;
+
+    document.getElementById('pending-org-count').textContent = pendingCount;
+    document.getElementById('approved-org-count').textContent = approvedCount;
+    document.getElementById('rejected-org-count').textContent = rejectedCount;
+    
+    document.getElementById('pending-tab-count').textContent = pendingCount;
+    document.getElementById('approved-tab-count').textContent = approvedCount;
+    document.getElementById('rejected-tab-count').textContent = rejectedCount;
+}
+
+function filterRequests() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const typeFilter = document.getElementById('type-filter').value;
+    
+    document.querySelectorAll('.request-row').forEach(row => {
+        const requestId = row.getAttribute('data-request-id');
+        const request = allRequests.find(r => r.id === requestId);
+        
+        if (!request) return;
+        
+        const matchesSearch = !searchTerm || 
+            request.organization_name.toLowerCase().includes(searchTerm) ||
+            request.requester_username.toLowerCase().includes(searchTerm) ||
+            request.admin_username.toLowerCase().includes(searchTerm) ||
+            request.organization_description.toLowerCase().includes(searchTerm);
+            
+        const matchesType = !typeFilter || request.organization_type === typeFilter;
+        
+        if (matchesSearch && matchesType) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+</script>
+
+{% endblock %}

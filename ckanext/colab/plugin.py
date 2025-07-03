@@ -67,6 +67,42 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['GET']
         )
 
+        # Organization request routes
+        blueprint.add_url_rule(
+            u'/colab/organization-request',
+            u'organization_request_form',
+            MyLogic.show_organization_request_form,
+            methods=['GET']
+        )
+
+        blueprint.add_url_rule(
+            u'/colab/organization-request',
+            u'submit_organization_request',
+            MyLogic.submit_organization_request,
+            methods=['POST']
+        )
+
+        blueprint.add_url_rule(
+            u'/colab/admin/organizations',
+            u'organization_admin',
+            MyLogic.show_organization_admin,
+            methods=['GET']
+        )
+
+        blueprint.add_url_rule(
+            u'/colab/admin/organizations/approve',
+            u'approve_organization_request',
+            MyLogic.approve_organization_request,
+            methods=['POST']
+        )
+
+        blueprint.add_url_rule(
+            u'/colab/admin/organizations/reject',
+            u'reject_organization_request',
+            MyLogic.reject_organization_request,
+            methods=['POST']
+        )
+
         return blueprint
     
 
