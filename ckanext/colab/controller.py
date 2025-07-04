@@ -626,8 +626,8 @@ class MyLogic():
                 file = request.files['organization_image']
                 if file and file.filename:
                     try:
-                        # Use CKAN's uploader system
-                        upload = uploader.get_uploader('colab_organizations')
+                        # Use CKAN's uploader system (using page_images namespace for Azure compatibility)
+                        upload = uploader.get_uploader('page_images')
                         
                         # Create a mutable dict for the uploader with the correct file field
                         upload.update_data_dict({'organization_image': file}, 'organization_image', 
@@ -799,7 +799,7 @@ class MyLogic():
                     # Generate the full URL for the organization
                     if not org_request.organization_image_url.startswith(('http://', 'https://', '/')):
                         image_url = h.url_for_static(
-                            'uploads/colab_organizations/%s' % org_request.organization_image_url,
+                            'uploads/page_images/%s' % org_request.organization_image_url,
                             qualified=True
                         )
                     else:

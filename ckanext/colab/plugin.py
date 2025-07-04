@@ -123,8 +123,8 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
         if image_path.startswith(('http://', 'https://', '/')):
             return image_path
             
-        # Generate the full URL using CKAN's helper
+        # Generate the full URL using CKAN's helper (using page_images namespace for Azure compatibility)
         return toolkit.h.url_for_static(
-            'uploads/colab_organizations/%s' % image_path,
+            'uploads/page_images/%s' % image_path,
             qualified=True
         )
