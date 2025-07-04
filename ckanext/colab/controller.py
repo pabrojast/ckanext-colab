@@ -621,7 +621,7 @@ class MyLogic():
                                      org_types=['Academic Institution', 'Government Agency', 'NGO', 'Private Company', 'Research Institute', 'International Organization', 'Other'])
             
             # Handle image upload using CKAN's uploader system (like ckanext-pages)
-            image_url = None
+            image_filename = None
             if 'organization_image' in request.files:
                 file = request.files['organization_image']
                 if file and file.filename:
@@ -635,18 +635,40 @@ class MyLogic():
                         upload.upload(max_size=2)  # 2MB max
                         
                         if upload.filename:
-                            # Store just the filename, not the full URL
-                            image_url = upload.filename
-                            logger.info(f"Successfully uploaded organization image: {upload.filename}")
+                            # Debug: Log the type and value of upload.filename
+                            logger.debug(f"upload.filename type: {type(upload.filename)}")
+                            logger.debug(f"upload.filename value: {upload.filename}")
+                            
+                            # Extract just the filename string
+                            if hasattr(upload.filename, 'filename'):
+                                # If it's a FileStorage object, get the filename attribute
+                                image_filename = upload.filename.filename
+                                logger.debug(f"Extracted from FileStorage.filename: {image_filename}")
+                            elif hasattr(upload.filename, 'name'):
+                                # If it's a file-like object, get the name
+                                image_filename = upload.filename.name
+                                logger.debug(f"Extracted from name: {image_filename}")
+                            else:
+                                # If it's already a string, use it directly
+                                image_filename = str(upload.filename)
+                                logger.debug(f"Converted to string: {image_filename}")
+                            
+                            # Clean the filename to ensure it's just the basename
+                            import os
+                            image_filename = os.path.basename(image_filename)
+                            
+                            # Final validation that it's a string
+                            image_filename = str(image_filename)
+                            logger.info(f"Final image filename to store: {image_filename} (type: {type(image_filename)})")
                         else:
                             logger.warning("No file was uploaded")
                             
                     except toolkit.ValidationError as e:
                         logger.warning(f"File upload validation error: {e}. Continuing without image.")
-                        image_url = None
+                        image_filename = None
                     except Exception as e:
                         logger.warning(f"Unexpected error uploading image: {e}. Continuing without image.")
-                        image_url = None
+                        image_filename = None
             
             # Create database entry
             db_session = model.Session()
@@ -659,11 +681,23 @@ class MyLogic():
                 logger.debug(f"Table creation attempt: {e}")
             
             try:
+                # Final validation: ensure image_filename is a simple string or None
+                if image_filename is not None:
+                    # Convert to string and validate it's not a complex object
+                    image_filename_str = str(image_filename)
+                    # Ensure it doesn't contain object representation signs
+                    if '<' in image_filename_str or '>' in image_filename_str or 'FileStorage' in image_filename_str:
+                        logger.warning(f"Invalid filename detected: {image_filename_str}. Setting to None.")
+                        image_filename = None
+                    else:
+                        image_filename = image_filename_str
+                        logger.info(f"Validated filename for database: {image_filename}")
+                
                 org_request = OrganizationRequestTable(
                     requester_username=toolkit.g.userobj.name,
                     organization_name=organization_name,
                     organization_description=organization_description,
-                    organization_image_url=image_url,
+                    organization_image_url=image_filename,  # Store only the filename
                     admin_username=admin_username,
                     organization_type=organization_type,
                     status='pending',
