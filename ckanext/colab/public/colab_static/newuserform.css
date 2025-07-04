@@ -87,13 +87,13 @@ label.required::after {
     font-weight: bold;
 }
 
-/* Form inputs - BASE STYLES */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-select,
-textarea {
+/* Form inputs - BASE STYLES - Scoped to avoid conflicts */
+.containerform input[type="text"],
+.containerform input[type="email"],
+.containerform input[type="password"],
+.containerform input[type="number"],
+.containerform select,
+.containerform textarea {
     width: 100%;
     padding: 12px 15px;
     margin-bottom: 20px;
@@ -108,14 +108,14 @@ textarea {
 }
 
 /* Textarea specific height */
-textarea {
+.containerform textarea {
     height: auto;
     min-height: 100px;
     resize: vertical;
 }
 
 /* Select specific styling */
-select {
+.containerform select {
     appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
@@ -124,12 +124,12 @@ select {
     padding-right: 40px;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="number"]:focus,
-select:focus,
-textarea:focus {
+.containerform input[type="text"]:focus,
+.containerform input[type="email"]:focus,
+.containerform input[type="password"]:focus,
+.containerform input[type="number"]:focus,
+.containerform select:focus,
+.containerform textarea:focus {
     outline: none;
     border-color: #0077d4;
     box-shadow: 0 0 0 3px rgba(0, 119, 212, 0.1);
@@ -177,8 +177,8 @@ small {
 }
 
 /* Inputs in grid rows */
-.form-row input,
-.form-row select {
+.containerform .form-row input,
+.containerform .form-row select {
     order: 3;
     height: 48px;
     margin-bottom: 10px;

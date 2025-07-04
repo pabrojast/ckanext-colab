@@ -449,7 +449,7 @@
   transition: all 0.3s ease;
   background: white;
   box-shadow: var(--shadow-light);
-  height: 3.2em;
+  min-height: 48px;
 }
 
 .org-request-form .form-control:focus {
@@ -736,11 +736,12 @@
   
   /* Ensure responsive styles don't conflict */
   .org-request-form .form-control {
-    height: 3.2em !important;
+    min-height: 48px !important;
   }
   
   .org-request-form textarea.form-control {
     height: auto !important;
+    min-height: 120px !important;
   }
 }
 
