@@ -17,12 +17,42 @@ import os
 from werkzeug.utils import secure_filename
 import ckan.lib.uploader as uploader
 import ckan.lib.helpers as h
+from functools import lru_cache
+import time
 
 # Logging configuration
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 Base = declarative_base()
+
+# Cache with 5 minutes expiration time
+_cache_timestamp = {}
+
+def timed_lru_cache(seconds: int, maxsize: int = 128):
+    """LRU cache que expira después de un tiempo específico"""
+    def decorator(func):
+        cached_func = lru_cache(maxsize=maxsize)(func)
+        
+        def wrapper(*args, **kwargs):
+            # Generar clave única para los argumentos
+            cache_key = str(args) + str(kwargs)
+            current_time = time.time()
+            
+            # Verificar si el cache ha expirado
+            if cache_key in _cache_timestamp:
+                if current_time - _cache_timestamp[cache_key] > seconds:
+                    # Cache expirado, limpiar
+                    cached_func.cache_clear()
+                    _cache_timestamp.clear()
+            
+            # Actualizar timestamp y retornar resultado cacheado
+            _cache_timestamp[cache_key] = current_time
+            return cached_func(*args, **kwargs)
+        
+        wrapper.cache_clear = cached_func.cache_clear
+        return wrapper
+    return decorator
 
 def verify_recaptcha(recaptcha_response):
     """Verify the reCAPTCHA response"""
@@ -38,6 +68,28 @@ def verify_recaptcha(recaptcha_response):
     result = response.json()
     
     return result.get('success', False) and result.get('score', 0) > 0.5
+
+@timed_lru_cache(seconds=300, maxsize=20)  # Cache de 5 minutos
+def get_all_groups_cached():
+    """Obtiene todos los grupos con cache"""
+    try:
+        return toolkit.get_action('group_list')(
+            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 1000}
+        )
+    except Exception as e:
+        logger.error(f"Error obteniendo lista de grupos: {e}")
+        return []
+
+@timed_lru_cache(seconds=300, maxsize=20)  # Cache de 5 minutos
+def get_all_organizations_cached():
+    """Obtiene todas las organizaciones con cache"""
+    try:
+        return toolkit.get_action('organization_list')(
+            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 1000}
+        )
+    except Exception as e:
+        logger.error(f"Error obteniendo lista de organizaciones: {e}")
+        return []
 
 class MyLogic():
 
@@ -334,15 +386,16 @@ class MyLogic():
         errornewuserform = False
         if request.method == 'GET':
             try:
-                groups = toolkit.get_action('group_list')(
-                    data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 1000})
-                organization_list = toolkit.get_action('organization_list')(
-                    data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 1000})
+                # Obtener grupos y organizaciones desde cache
+                groups = get_all_groups_cached()
+                organization_list = get_all_organizations_cached()
                 return render_template("index.html", groups=groups, organization_list=organization_list, 
                                      errornewuserform=errornewuserform)
             except Exception as e:
                 logger.error(f"Error in GET method: {e}")
-                abort(500)
+                # En caso de error, retornar listas vacías
+                return render_template("index.html", groups=[], organization_list=[], 
+                                     errornewuserform=errornewuserform)
 
         if request.method == 'POST':
             try:
