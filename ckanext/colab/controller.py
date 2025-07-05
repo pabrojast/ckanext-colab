@@ -74,7 +74,7 @@ def get_all_groups_cached():
     """Obtiene todos los grupos con cache"""
     try:
         return toolkit.get_action('group_list')(
-            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 1000}
+            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 500}
         )
     except Exception as e:
         logger.error(f"Error obteniendo lista de grupos: {e}")
@@ -85,7 +85,7 @@ def get_all_organizations_cached():
     """Obtiene todas las organizaciones con cache"""
     try:
         return toolkit.get_action('organization_list')(
-            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 1000}
+            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 500}
         )
     except Exception as e:
         logger.error(f"Error obteniendo lista de organizaciones: {e}")
