@@ -386,15 +386,14 @@ class MyLogic():
         errornewuserform = False
         if request.method == 'GET':
             try:
-                # Obtener grupos y organizaciones desde cache
+                # Obtener grupos desde cache (organizaciones se cargan via JavaScript)
                 groups = get_all_groups_cached()
-                organization_list = get_all_organizations_cached()
-                return render_template("index.html", groups=groups, organization_list=organization_list, 
+                return render_template("index.html", groups=groups, 
                                      errornewuserform=errornewuserform)
             except Exception as e:
                 logger.error(f"Error in GET method: {e}")
                 # En caso de error, retornar listas vacías
-                return render_template("index.html", groups=[], organization_list=[], 
+                return render_template("index.html", groups=[], 
                                      errornewuserform=errornewuserform)
 
         if request.method == 'POST':

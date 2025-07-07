@@ -136,10 +136,7 @@
                 <label for="organization_name" class="required">{{ _('Organization Name') }} <span class="text-danger">*</span></label>
                 <select name="organization_name" id="organization_name" required class="form-control">
                     <option value="">{{ _('Select an organization...') }}</option>
-                    <option value="new"><strong>{{ _('Create New Organization') }}</strong></option>
-                    {% for item in organization_list %}
-                    <option value="{{ item['name'] }}">{{ item['display_name'] }}</option>       
-                    {% endfor %}
+                    <option value="loading" disabled>{{ _('Loading organizations...') }}</option>
                 </select>
                 <div class="help-text">{{ _('Select your organization in the dropdown list or add a new organization.') }}</div>
             </div>
@@ -225,11 +222,54 @@
     const matchMessage = document.getElementById('match-message');
     const submitButton = document.getElementById('submit-button');
     
+    // Load organizations from API
+    function loadOrganizations() {
+        // Get base URL from current page
+        const baseUrl = window.location.origin;
+        
+        // Make AJAX request to CKAN API
+        fetch(`${baseUrl}/api/3/action/organization_list?all_fields=true`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.result) {
+                    // Clear the select
+                    organizationSelect.innerHTML = '';
+                    
+                    // Add default options
+                    organizationSelect.innerHTML = `
+                        <option value="">{{ _('Select an organization...') }}</option>
+                        <option value="new"><strong>{{ _('Create New Organization') }}</strong></option>
+                    `;
+                    
+                    // Add organizations
+                    data.result.forEach(function(org) {
+                        const option = document.createElement('option');
+                        option.value = org.name;
+                        option.textContent = org.display_name || org.title;
+                        organizationSelect.appendChild(option);
+                    });
+                    
+                    console.log('Organizations loaded successfully:', data.result.length, 'organizations');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading organizations:', error);
+                organizationSelect.innerHTML = `
+                    <option value="">{{ _('Select an organization...') }}</option>
+                    <option value="new"><strong>{{ _('Create New Organization') }}</strong></option>
+                    <option value="" disabled>{{ _('Error loading organizations') }}</option>
+                `;
+            });
+    }
+    
     // Initialize form
     function initializeForm() {
         // Set initial states
         genderOtherText.style.display = 'none';
         newOrganizationField.style.display = 'none';
+        
+        // Load organizations
+        loadOrganizations();
         
         // Add event listeners
         genderSelect.addEventListener('change', toggleGenderOtherField);
