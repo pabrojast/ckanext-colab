@@ -54,13 +54,13 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="wins_password" class="required">{{ _('Password') }} <span class="text-danger">*</span></label>
-                    <input type="password" id="wins_password" name="wins_password" minlength="8" required placeholder="{{ _('Enter a secure password') }}" class="form-control">
+                    <input type="password" id="wins_password" name="wins_password" minlength="8" required placeholder="{{ _('Enter a secure password') }}" class="form-control" autocomplete="new-password">
                     <div class="help-text">{{ _('Your password must be 8 characters or longer') }}</div>
                     <div class="password-strength" id="password-strength"></div>
                 </div>
                 <div class="form-group">
                     <label for="confirm-password" class="required">{{ _('Confirm password') }} <span class="text-danger">*</span></label>
-                    <input type="password" id="confirm-password" name="confirm-password" minlength="8" required placeholder="{{ _('Repeat your password') }}" class="form-control">
+                    <input type="password" id="confirm-password" name="confirm-password" minlength="8" required placeholder="{{ _('Repeat your password') }}" class="form-control" autocomplete="new-password">
                     <div class="help-text">{{ _('Passwords must match') }}</div>
                     <div id="match-message"></div>
                 </div>
