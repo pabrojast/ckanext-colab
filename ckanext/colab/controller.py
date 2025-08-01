@@ -1,4 +1,3 @@
-from random import random
 from flask import render_template, request, abort
 import ckan.plugins.toolkit as toolkit
 import ckan.model as model
@@ -473,29 +472,81 @@ Best regards,
 
         if request.method == 'POST':
             try:
+                logger.info("POST request received at /colab")
+                logger.debug(f"Form data keys: {list(request.form.keys())}")
+                
+                # Check if form was actually submitted
+                if not request.form.get('form_submitted'):
+                    logger.warning("Form submitted without form_submitted field")
+                
                 # Verificar reCAPTCHA primero
                 recaptcha_response = request.form.get('recaptcha_response')
-                if not recaptcha_response or not verify_recaptcha(recaptcha_response):
+                recaptcha_enabled = toolkit.config.get('ckan.recaptcha.publickey') and toolkit.config.get('ckan.recaptcha.privatekey')
+                
+                if recaptcha_enabled and (not recaptcha_response or not verify_recaptcha(recaptcha_response)):
                     logger.error("reCAPTCHA verification failed")
+                    groups = get_all_groups_cached()
                     return render_template("index.html", errornewuserform=True, 
-                                        error_message="reCAPTCHA verification failed")
+                                        error_message="reCAPTCHA verification failed",
+                                        groups=groups)
 
-                email = request.form['email']
-                # Ensure lowercase
-                name = request.form['wins_username'].lower()
-                # Keep only alphanumeric characters
-                fullname = request.form['fullname']
-                password = request.form['wins_password']
-                title_within_organization = request.form['title_within_organization']
-                organization_name = request.form['organization_name']
-                new_organization_name = request.form['new_organization_name']
-                new_organization_description = request.form['new_organization_description']
-                group_form = 0
-                age = request.form['age']
-                nationality = request.form['nationality']
-                organizationType = request.form['organizationType']
-                gender = request.form['gender']
-                user_role = request.form.get('user_role', 'admin')  # Default to 'admin' if not specified
+                # Get form data with error handling
+                try:
+                    email = request.form.get('email', '').strip()
+                    # Ensure lowercase
+                    name = request.form.get('wins_username', '').lower().strip()
+                    # Keep only alphanumeric characters
+                    fullname = request.form.get('fullname', '').strip()
+                    password = request.form.get('wins_password', '')
+                    confirm_password = request.form.get('confirm-password', '')
+                    title_within_organization = request.form.get('title_within_organization', '').strip()
+                    organization_name = request.form.get('organization_name', '').strip()
+                    new_organization_name = request.form.get('new_organization_name', '').strip()
+                    new_organization_description = request.form.get('new_organization_description', '').strip()
+                    group_form = 0
+                    age = request.form.get('age', '')
+                    nationality = request.form.get('nationality', '').strip()
+                    organizationType = request.form.get('organizationType', '').strip()
+                    gender = request.form.get('gender', '').strip()
+                    # Handle "other" gender option
+                    if gender == 'other':
+                        gender_other = request.form.get('genderOther', '').strip()
+                        if gender_other:
+                            gender = gender_other
+                    user_role = request.form.get('user_role', 'admin')  # Default to 'admin' if not specified
+                    
+                    logger.info(f"Processing registration for user: {name}, email: {email}, org: {organization_name}")
+                    
+                    # Validate required fields
+                    if not all([email, name, password, title_within_organization, organization_name, age, nationality, gender]):
+                        logger.error("Missing required fields")
+                        groups = get_all_groups_cached()
+                        return render_template("index.html", errornewuserform=True, 
+                                            error_message="Please fill in all required fields",
+                                            groups=groups)
+                    
+                    # Validate password match
+                    if password != confirm_password:
+                        logger.error("Passwords do not match")
+                        groups = get_all_groups_cached()
+                        return render_template("index.html", errornewuserform=True, 
+                                            error_message="Passwords do not match",
+                                            groups=groups)
+                    
+                    # Validate password length
+                    if len(password) < 8:
+                        logger.error("Password too short")
+                        groups = get_all_groups_cached()
+                        return render_template("index.html", errornewuserform=True, 
+                                            error_message="Password must be at least 8 characters long",
+                                            groups=groups)
+                    
+                except Exception as e:
+                    logger.error(f"Error extracting form data: {e}")
+                    groups = get_all_groups_cached()
+                    return render_template("index.html", errornewuserform=True, 
+                                        error_message="Error processing form data",
+                                        groups=groups)
 
                 if (group_form == "new_group"):
                     group_form = 1
@@ -506,18 +557,19 @@ Best regards,
                     group_form = 0
                     new_group_description = "NA"
                 
-                if(organization_name == "new"):
+                # Handle new organization
+                is_new_organization = False
+                if organization_name == "new":
+                    is_new_organization = True
                     organization_name = new_organization_name
-                    new_organization_name = 1
                     user_role = 'admin'  # Force admin role for new organization creators
                 else:
-                    new_organization_name = 0
-                    new_organization_description = "NA"
+                    new_organization_description = "NA" if not new_organization_description else new_organization_description
                 # print(group_form)
                 # print(new_group_name)
                 # print(organization_name)
 
-                newuser = [{'email': email ,'name': name, 'fullname': fullname, 'password': password}]
+                # Removed unused variable newuser
                 #ckan.logic.action.create.user_create(context, data_dict)
                 # Create a new user.
 
@@ -578,7 +630,7 @@ Best regards,
                         approved="Pending",
                         approvedgroup="Pending",
                         organization_name=organization_name,
-                        new_organization_name=new_organization_name,
+                        new_organization_name=1 if is_new_organization else 0,
                         new_organization_description=new_organization_description,
                         age=age,
                         gender=gender,
@@ -599,7 +651,7 @@ Best regards,
                     logger.info(f"User {name} doesn't exist - continuing with user creation")
                     try:
                         logic.check_access('user_create', context)
-                        groups = toolkit.get_action('user_create')(
+                        new_user = toolkit.get_action('user_create')(
                         data_dict={'name': name, 'email': email, 'password': password, 'fullname': fullname  })
                         # Preparar datos para la notificación
                         user_data = {
@@ -624,7 +676,7 @@ Best regards,
                             approved="Pending",
                             approvedgroup="Pending",
                             organization_name = organization_name,
-                            new_organization_name = new_organization_name,
+                            new_organization_name = 1 if is_new_organization else 0,
                             new_organization_description = new_organization_description,
                             age = age,
                             gender = gender,
@@ -642,12 +694,15 @@ Best regards,
                     except logic.NotAuthorized:
                         toolkit.abort(403, 'Not authorized to create users')               
             except Exception as e:
-                if session:
+                if 'session' in locals() and session:
                     session.rollback()
                 logger.error(f"Error in POST method: {e}")
-                return render_template("index.html", errornewuserform=True)
+                logger.error(f"Error traceback: ", exc_info=True)
+                groups = get_all_groups_cached()
+                return render_template("index.html", errornewuserform=True, groups=groups,
+                                     error_message=f"An error occurred: {str(e)}")
             finally:
-                if session:
+                if 'session' in locals() and session:
                     session.close()
         
 

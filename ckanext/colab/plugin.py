@@ -21,7 +21,7 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
 
     def get_blueprint(self):
 
-        blueprint = Blueprint(self.name, self.__module__)        
+        blueprint = Blueprint('colab', self.__module__)        
        
         blueprint.add_url_rule(
             u'/colab',
