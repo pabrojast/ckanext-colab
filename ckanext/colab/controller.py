@@ -227,6 +227,19 @@ class MyLogic():
             # Establecer user_role como 'admin' si es None
             user_role = cool_plugin_instance.user_role or 'admin'
 
+            # Verificar si el usuario CKAN existe
+            try:
+                existing_user = toolkit.get_action('user_show')({'ignore_auth': True}, {'id': name})
+                user_exists = True
+                logger.info(f"CKAN user {name} already exists")
+            except toolkit.ObjectNotFound:
+                user_exists = False
+                logger.warning(f"CKAN user {name} does not exist - this method should not be called for non-existent users")
+                return json.dumps({
+                    'error': f'CKAN user {name} does not exist. The user must complete registration first.',
+                    'details': 'This approval method requires an existing CKAN user.'
+                })
+
             # Generamos la URL
             CleanTitle = organization.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
             CleanTitleStep2 = re.sub('[^A-Za-z0-9\-]+', '', CleanTitle)
@@ -257,6 +270,21 @@ class MyLogic():
                 # Actualizar status después de cualquier operación exitosa
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
                 db_session.commit()
+                
+                # Enviar notificación por email (opcional para el método legacy)
+                try:
+                    if cool_plugin_instance.email:
+                        from ckan.lib import mailer
+                        temp_user = type('obj', (object,), {
+                            'email': cool_plugin_instance.email,
+                            'name': name,
+                            'display_name': cool_plugin_instance.fullname
+                        })
+                        approval_subject = f"[{toolkit.config.get('ckan.site_title')}] Your registration has been approved"
+                        approval_body = f"Dear {cool_plugin_instance.fullname},\n\nYour registration has been approved and you have been added to {organization} as {user_role}.\n\nBest regards"
+                        mailer.mail_user(temp_user, approval_subject, approval_body)
+                except Exception as e:
+                    logger.error(f"Failed to send approval email: {e}")
                 
                 return json.dumps(organizationapi)
                 
@@ -306,6 +334,22 @@ class MyLogic():
             # Actualizar el rol en la base de datos
             cool_plugin_instance.user_role = user_role
 
+            # Verificar si el usuario CKAN existe
+            try:
+                existing_user = toolkit.get_action('user_show')({'ignore_auth': True}, {'id': wins_username})
+                user_exists = True
+                logger.info(f"CKAN user {wins_username} already exists")
+            except toolkit.ObjectNotFound:
+                user_exists = False
+                logger.info(f"CKAN user {wins_username} does not exist, will need to be created first")
+
+            # Si el usuario no existe en CKAN, no podemos continuar
+            if not user_exists:
+                return json.dumps({
+                    'error': f'CKAN user {wins_username} does not exist. The user must complete registration first.',
+                    'details': 'User needs to register through the main form to create their CKAN account.'
+                })
+
             # Limpiar el nombre de la organización para URL
             CleanTitle = organization_name.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
             CleanTitleStep2 = re.sub('[^A-Za-z0-9\-]+', '', CleanTitle)
@@ -343,9 +387,40 @@ class MyLogic():
 
                 # Actualizar status después de cualquier operación exitosa
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
-                organizationapi['user'] = toolkit.g.user
                 db_session.commit()
                 
+                # Enviar notificación por email al usuario aprobado
+                try:
+                    user_email = cool_plugin_instance.email
+                    if user_email:
+                        approval_subject = f"[{toolkit.config.get('ckan.site_title')}] Your registration has been approved"
+                        approval_body = f"""Dear {cool_plugin_instance.fullname},
+
+Your registration request has been approved by {toolkit.g.user}.
+
+You have been added to the organization: {organization_name}
+Your role in the organization is: {user_role}
+
+You can now log in to the system using your username: {wins_username}
+
+Best regards,
+{toolkit.config.get('ckan.site_title')} Team
+"""
+                        # Crear un objeto usuario temporal para usar con mail_user
+                        temp_user = type('obj', (object,), {
+                            'email': user_email,
+                            'name': wins_username,
+                            'display_name': cool_plugin_instance.fullname
+                        })
+                        
+                        from ckan.lib import mailer
+                        mailer.mail_user(temp_user, approval_subject, approval_body)
+                        logger.info(f"Approval notification sent to {user_email}")
+                except Exception as email_error:
+                    logger.error(f"Failed to send approval email: {email_error}")
+                    # Don't fail the approval if email fails
+                
+                organizationapi['user'] = toolkit.g.user
                 return json.dumps(organizationapi)
                 
             except Exception as e:

@@ -1338,10 +1338,19 @@ function handleApprove(event) {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.error) {
-                alert('❌ Error: ' + data.error);
+                let errorMessage = '❌ Error: ' + data.error;
+                if (data.details) {
+                    errorMessage += '\n\n' + data.details;
+                }
+                alert(errorMessage);
                 link.innerHTML = '✅ Approve';
                 link.style.pointerEvents = 'auto';
             } else {
@@ -1354,12 +1363,20 @@ function handleApprove(event) {
                 
                 updateCounts();
                 
-                alert('✅ User successfully approved!\n\n' + (data.message || 'User added to organization'));
+                let successMessage = '✅ User successfully approved!';
+                if (data.message) {
+                    successMessage += '\n\n' + data.message;
+                }
+                alert(successMessage);
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('❌ An error occurred while processing the approval');
+            let errorMessage = '❌ An error occurred while processing the approval';
+            if (error.message) {
+                errorMessage += '\n\nDetails: ' + error.message;
+            }
+            alert(errorMessage);
             link.innerHTML = '✅ Approve';
             link.style.pointerEvents = 'auto';
         });
@@ -1380,7 +1397,12 @@ function handleReject(event) {
         link.style.pointerEvents = 'none';
 
         fetch(`/colab/admin/reject/${encodeURIComponent(username)}/${encodeURIComponent(organization)}/${encodeURIComponent(reason)}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.error) {
                     alert('❌ Error: ' + data.error);
@@ -1401,7 +1423,11 @@ function handleReject(event) {
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('❌ An error occurred while processing the rejection');
+                let errorMessage = '❌ An error occurred while processing the rejection';
+                if (error.message) {
+                    errorMessage += '\n\nDetails: ' + error.message;
+                }
+                alert(errorMessage);
                 link.innerHTML = '❌ Reject';
                 link.style.pointerEvents = 'auto';
             });
