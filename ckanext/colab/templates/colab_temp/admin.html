@@ -1345,11 +1345,12 @@ function handleApprove(event) {
                 link.innerHTML = '✅ Approve';
                 link.style.pointerEvents = 'auto';
             } else {
+                // Get the row before modifying the DOM
+                const row = link.closest('tr');
                 const cell = link.closest('td');
                 cell.innerHTML = `<span class="status-badge status-approved">approved by ${data.user || 'admin'}</span>`;
                 
                 // Move row to approved tab
-                const row = link.closest('tr');
                 row.remove();
                 
                 updateCounts();
@@ -1387,11 +1388,12 @@ function handleReject(event) {
                     link.innerHTML = '❌ Reject';
                     link.style.pointerEvents = 'auto';
                 } else {
+                    // Get the row before modifying the DOM
+                    const row = link.closest('tr');
                     const cell = link.closest('td');
                     cell.innerHTML = `<span class="status-badge status-rejected">rejected by ${data.user || 'admin'}</span>`;
                     
                     // Move row to rejected tab
-                    const row = link.closest('tr');
                     row.remove();
                     
                     updateCounts();
