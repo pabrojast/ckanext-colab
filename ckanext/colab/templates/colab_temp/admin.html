@@ -1222,21 +1222,21 @@
 let allUsers = [
     {% for result in results %}
     {
-        fullname: "{{ result.fullname|escapejs }}",
-        wins_username: "{{ result.wins_username|escapejs }}",
-        email: "{{ result.email|escapejs }}",
-        organization_name: "{{ result.organization_name|escapejs }}",
-        organizationType: "{{ result.organizationType|escapejs }}",
-        title_within_organization: "{{ result.title_within_organization|escapejs }}",
-        new_organization_description: "{{ result.new_organization_description|escapejs }}",
-        user_role: "{{ result.user_role|escapejs }}",
-        approved: "{{ result.approved|escapejs }}",
-        rejected: "{{ result.rejected|escapejs }}",
-        rejection_reason: "{{ result.rejection_reason|escapejs }}",
-        age: "{{ result.age|escapejs }}",
-        gender: "{{ result.gender|escapejs }}",
-        nationality: "{{ result.nationality|escapejs }}",
-        new_organization_name: "{{ result.new_organization_name|escapejs }}"
+        fullname: {{ (result.fullname or '')|tojson }},
+        wins_username: {{ (result.wins_username or '')|tojson }},
+        email: {{ (result.email or '')|tojson }},
+        organization_name: {{ (result.organization_name or '')|tojson }},
+        organizationType: {{ (result.organizationType or '')|tojson }},
+        title_within_organization: {{ (result.title_within_organization or '')|tojson }},
+        new_organization_description: {{ (result.new_organization_description or '')|tojson }},
+        user_role: {{ (result.user_role or '')|tojson }},
+        approved: {{ (result.approved or '')|tojson }},
+        rejected: {{ (result.rejected or '')|tojson }},
+        rejection_reason: {{ (result.rejection_reason or '')|tojson }},
+        age: {{ (result.age or '')|tojson }},
+        gender: {{ (result.gender or '')|tojson }},
+        nationality: {{ (result.nationality or '')|tojson }},
+        new_organization_name: {{ (result.new_organization_name or '')|tojson }}
     }{% if not loop.last %},{% endif %}
     {% endfor %}
 ];
@@ -1272,51 +1272,15 @@ function initializeAdmin() {
 }
 
 function setupEventListeners() {
-    // Use event delegation for more robust event handling
-    document.body.addEventListener('click', function(event) {
-        // Handle approve links
-        if (event.target.classList.contains('approve-link') || 
-            event.target.closest('.approve-link')) {
-            const link = event.target.classList.contains('approve-link') ? 
-                         event.target : event.target.closest('.approve-link');
-            if (link) {
-                console.log('Approve link clicked via delegation');
-                handleApprove({ preventDefault: () => {}, currentTarget: link });
-            }
-        }
-        
-        // Handle reject links
-        if (event.target.classList.contains('reject-link') || 
-            event.target.closest('.reject-link')) {
-            const link = event.target.classList.contains('reject-link') ? 
-                         event.target : event.target.closest('.reject-link');
-            if (link) {
-                console.log('Reject link clicked via delegation');
-                handleReject({ preventDefault: () => {}, currentTarget: link });
-            }
-        }
+    // Approve links
+    document.querySelectorAll('.approve-link').forEach(link => {
+        link.addEventListener('click', handleApprove);
     });
-    
-    // Wait a bit to ensure DOM is fully loaded
-    setTimeout(() => {
-        // Approve links
-        const approveLinks = document.querySelectorAll('.approve-link');
-        console.log('Found approve links:', approveLinks.length);
-        approveLinks.forEach(link => {
-            // Remove any existing listeners to avoid duplicates
-            link.removeEventListener('click', handleApprove);
-            link.addEventListener('click', handleApprove);
-        });
 
-        // Reject links
-        const rejectLinks = document.querySelectorAll('.reject-link');
-        console.log('Found reject links:', rejectLinks.length);
-        rejectLinks.forEach(link => {
-            // Remove any existing listeners to avoid duplicates
-            link.removeEventListener('click', handleReject);
-            link.addEventListener('click', handleReject);
-        });
-    }, 100);
+    // Reject links
+    document.querySelectorAll('.reject-link').forEach(link => {
+        link.addEventListener('click', handleReject);
+    });
 
     // Modal close on outside click
     window.onclick = function(event) {
@@ -1329,17 +1293,8 @@ function setupEventListeners() {
 
 function handleApprove(event) {
     event.preventDefault();
-    console.log('handleApprove called');
     
     const link = event.currentTarget;
-    if (!link) {
-        console.error('No link element found');
-        alert('❌ Error: Could not find button element');
-        return;
-    }
-    
-    console.log('Link element:', link);
-    
     const fullName = link.getAttribute('data-fullname');
     const winsUsername = link.getAttribute('data-wins-username');
     const organizationName = link.getAttribute('data-organization-name');
@@ -1350,18 +1305,8 @@ function handleApprove(event) {
     const userRole = link.getAttribute('data-user-role');
     const newOrgName = link.getAttribute('data-new-org-name');
 
-    console.log('User data:', { fullName, winsUsername, organizationName });
-
-    // Get the row and role selector BEFORE any DOM manipulation
+    // Get the selected role from the dropdown
     const row = link.closest('tr');
-    console.log('Found row:', row);
-    
-    if (!row) {
-        console.error('Could not find row element');
-        alert('❌ Error: Could not find user row');
-        return;
-    }
-    
     const roleSelector = row.querySelector('.role-selector');
     const selectedRole = roleSelector ? roleSelector.value : (userRole || 'admin');
 
@@ -1378,10 +1323,7 @@ function handleApprove(event) {
                           `Do you want to approve this user?`;
 
     if (confirm(confirmMessage)) {
-        console.log('User confirmed approval');
-        
         // Show loading state
-        const originalText = link.innerHTML;
         link.innerHTML = '⏳ Processing...';
         link.style.pointerEvents = 'none';
 
@@ -1392,32 +1334,44 @@ function handleApprove(event) {
         formData.append('new_organization_description', newOrgDescription || 'NA');
         formData.append('user_role', selectedRole);
 
-        console.log('Sending approval request...');
-
         fetch('/colab/admin/approve', {
             method: 'POST',
             body: formData
         })
-        .then(response => {
-            console.log('Approval response:', response);
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log('Approval data:', data);
             if (data.error) {
                 alert('❌ Error: ' + data.error);
-                link.innerHTML = originalText;
+                link.innerHTML = '✅ Approve';
                 link.style.pointerEvents = 'auto';
             } else {
-                // Success - safely remove the row
-                safelyRemoveRow(row, 'approved');
+                // Get the row before modifying the DOM
+                const row = link.closest('tr');
+                if (!row) {
+                    console.error('Could not find row element');
+                    alert('✅ User successfully approved!\n\n' + (data.message || 'User added to organization'));
+                    return;
+                }
+                
+                const cell = link.closest('td');
+                if (cell) {
+                    cell.innerHTML = `<span class="status-badge status-approved">approved by ${data.user || 'admin'}</span>`;
+                }
+                
+                // Move row to approved tab - check if row still exists
+                if (row && row.parentNode) {
+                    row.remove();
+                }
+                
+                updateCounts();
+                
                 alert('✅ User successfully approved!\n\n' + (data.message || 'User added to organization'));
             }
         })
         .catch(error => {
             console.error('Error:', error);
             alert('❌ An error occurred while processing the approval');
-            link.innerHTML = originalText;
+            link.innerHTML = '✅ Approve';
             link.style.pointerEvents = 'auto';
         });
     }
@@ -1425,121 +1379,55 @@ function handleApprove(event) {
 
 function handleReject(event) {
     event.preventDefault();
-    console.log('handleReject called');
     
     const link = event.currentTarget;
-    if (!link) {
-        console.error('No link element found');
-        alert('❌ Error: Could not find button element');
-        return;
-    }
-    
-    console.log('Link element:', link);
-    
     const username = link.getAttribute('data-wins-username');
     const organization = link.getAttribute('data-organization-name');
     
-    console.log('User data:', { username, organization });
-    
-    // Get the row BEFORE any DOM manipulation
-    const row = link.closest('tr');
-    console.log('Found row:', row);
-    
-    if (!row) {
-        console.error('Could not find row element');
-        alert('❌ Error: Could not find user row');
-        return;
-    }
-    
     const reason = prompt("📝 Please enter the reason for rejection:");
     if (reason && reason.trim()) {
-        console.log('User provided rejection reason');
-        
         // Show loading state
-        const originalText = link.innerHTML;
         link.innerHTML = '⏳ Processing...';
         link.style.pointerEvents = 'none';
 
-        console.log('Sending rejection request...');
-
         fetch(`/colab/admin/reject/${encodeURIComponent(username)}/${encodeURIComponent(organization)}/${encodeURIComponent(reason)}`)
-            .then(response => {
-                console.log('Rejection response:', response);
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log('Rejection data:', data);
                 if (data.error) {
                     alert('❌ Error: ' + data.error);
-                    link.innerHTML = originalText;
+                    link.innerHTML = '❌ Reject';
                     link.style.pointerEvents = 'auto';
                 } else {
-                    // Success - safely remove the row
-                    safelyRemoveRow(row, 'rejected');
+                    // Get the row before modifying the DOM
+                    const row = link.closest('tr');
+                    if (!row) {
+                        console.error('Could not find row element');
+                        alert('❌ User successfully rejected');
+                        return;
+                    }
+                    
+                    const cell = link.closest('td');
+                    if (cell) {
+                        cell.innerHTML = `<span class="status-badge status-rejected">rejected by ${data.user || 'admin'}</span>`;
+                    }
+                    
+                    // Move row to rejected tab - check if row still exists
+                    if (row && row.parentNode) {
+                        row.remove();
+                    }
+                    
+                    updateCounts();
+                    
                     alert('❌ User successfully rejected');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('❌ An error occurred while processing the rejection');
-                link.innerHTML = originalText;
+                link.innerHTML = '❌ Reject';
                 link.style.pointerEvents = 'auto';
             });
     }
-}
-
-// New function to safely remove rows and handle errors
-function safelyRemoveRow(row, action) {
-    try {
-        console.log(`Attempting to remove row after ${action}...`);
-        
-        // Multiple checks to ensure the row is still valid
-        if (!row) {
-            console.warn('Row is null or undefined');
-            refreshPageWithMessage(action);
-            return;
-        }
-        
-        if (!row.parentNode) {
-            console.warn('Row has no parent node');
-            refreshPageWithMessage(action);
-            return;
-        }
-        
-        if (typeof row.remove !== 'function') {
-            console.warn('Row.remove is not a function, using parentNode.removeChild');
-            row.parentNode.removeChild(row);
-        } else {
-            row.remove();
-        }
-        
-        console.log('Row removed successfully');
-        
-        // Update counts after successful removal
-        updateCounts();
-        
-        // Refresh page after a short delay to ensure everything is in sync
-        setTimeout(() => {
-            window.location.reload();
-        }, 1500);
-        
-    } catch (error) {
-        console.error('Error removing row:', error);
-        refreshPageWithMessage(action);
-    }
-}
-
-// Helper function to refresh page with appropriate message
-function refreshPageWithMessage(action) {
-    const message = action === 'approved' ? 
-        '✅ User successfully approved!\n\nRefreshing page to show changes...' :
-        '❌ User successfully rejected!\n\nRefreshing page to show changes...';
-    
-    alert(message);
-    
-    setTimeout(() => {
-        window.location.reload();
-    }, 1000);
 }
 
 function showUserDetails(username) {
