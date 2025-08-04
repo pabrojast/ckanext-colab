@@ -1305,8 +1305,14 @@ function handleApprove(event) {
     const userRole = link.getAttribute('data-user-role');
     const newOrgName = link.getAttribute('data-new-org-name');
 
-    // Get the selected role from the dropdown
+    // Get the row and role selector BEFORE any DOM manipulation
     const row = link.closest('tr');
+    if (!row) {
+        console.error('Could not find row element');
+        alert('❌ Error: Could not find user row');
+        return;
+    }
+    
     const roleSelector = row.querySelector('.role-selector');
     const selectedRole = roleSelector ? roleSelector.value : (userRole || 'admin');
 
@@ -1345,27 +1351,27 @@ function handleApprove(event) {
                 link.innerHTML = '✅ Approve';
                 link.style.pointerEvents = 'auto';
             } else {
-                // Get the row before modifying the DOM
-                const row = link.closest('tr');
-                if (!row) {
-                    console.error('Could not find row element');
+                try {
+                    // Simply remove the row from pending tab - it will appear in approved after page refresh
+                    if (row && row.parentNode) {
+                        row.remove();
+                    }
+                    
+                    // Update counts
+                    updateCounts();
+                    
                     alert('✅ User successfully approved!\n\n' + (data.message || 'User added to organization'));
-                    return;
+                    
+                    // Optional: Refresh the page to show the user in the approved tab
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                    
+                } catch (error) {
+                    console.error('Error updating DOM:', error);
+                    alert('✅ User successfully approved!\n\nPlease refresh the page to see the changes.');
+                    window.location.reload();
                 }
-                
-                const cell = link.closest('td');
-                if (cell) {
-                    cell.innerHTML = `<span class="status-badge status-approved">approved by ${data.user || 'admin'}</span>`;
-                }
-                
-                // Move row to approved tab - check if row still exists
-                if (row && row.parentNode) {
-                    row.remove();
-                }
-                
-                updateCounts();
-                
-                alert('✅ User successfully approved!\n\n' + (data.message || 'User added to organization'));
             }
         })
         .catch(error => {
@@ -1384,6 +1390,14 @@ function handleReject(event) {
     const username = link.getAttribute('data-wins-username');
     const organization = link.getAttribute('data-organization-name');
     
+    // Get the row BEFORE any DOM manipulation
+    const row = link.closest('tr');
+    if (!row) {
+        console.error('Could not find row element');
+        alert('❌ Error: Could not find user row');
+        return;
+    }
+    
     const reason = prompt("📝 Please enter the reason for rejection:");
     if (reason && reason.trim()) {
         // Show loading state
@@ -1398,27 +1412,27 @@ function handleReject(event) {
                     link.innerHTML = '❌ Reject';
                     link.style.pointerEvents = 'auto';
                 } else {
-                    // Get the row before modifying the DOM
-                    const row = link.closest('tr');
-                    if (!row) {
-                        console.error('Could not find row element');
+                    try {
+                        // Simply remove the row from pending tab - it will appear in rejected after page refresh
+                        if (row && row.parentNode) {
+                            row.remove();
+                        }
+                        
+                        // Update counts
+                        updateCounts();
+                        
                         alert('❌ User successfully rejected');
-                        return;
+                        
+                        // Optional: Refresh the page to show the user in the rejected tab
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                        
+                    } catch (error) {
+                        console.error('Error updating DOM:', error);
+                        alert('❌ User successfully rejected!\n\nPlease refresh the page to see the changes.');
+                        window.location.reload();
                     }
-                    
-                    const cell = link.closest('td');
-                    if (cell) {
-                        cell.innerHTML = `<span class="status-badge status-rejected">rejected by ${data.user || 'admin'}</span>`;
-                    }
-                    
-                    // Move row to rejected tab - check if row still exists
-                    if (row && row.parentNode) {
-                        row.remove();
-                    }
-                    
-                    updateCounts();
-                    
-                    alert('❌ User successfully rejected');
                 }
             })
             .catch(error => {
