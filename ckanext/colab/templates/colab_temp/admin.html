@@ -1222,21 +1222,21 @@
 let allUsers = [
     {% for result in results %}
     {
-        fullname: "{{ result.fullname }}",
-        wins_username: "{{ result.wins_username }}",
-        email: "{{ result.email }}",
-        organization_name: "{{ result.organization_name }}",
-        organizationType: "{{ result.organizationType }}",
-        title_within_organization: "{{ result.title_within_organization }}",
-        new_organization_description: "{{ result.new_organization_description }}",
-        user_role: "{{ result.user_role }}",
-        approved: "{{ result.approved }}",
-        rejected: "{{ result.rejected }}",
-        rejection_reason: "{{ result.rejection_reason }}",
-        age: "{{ result.age }}",
-        gender: "{{ result.gender }}",
-        nationality: "{{ result.nationality }}",
-        new_organization_name: "{{ result.new_organization_name }}"
+        fullname: "{{ result.fullname|escapejs }}",
+        wins_username: "{{ result.wins_username|escapejs }}",
+        email: "{{ result.email|escapejs }}",
+        organization_name: "{{ result.organization_name|escapejs }}",
+        organizationType: "{{ result.organizationType|escapejs }}",
+        title_within_organization: "{{ result.title_within_organization|escapejs }}",
+        new_organization_description: "{{ result.new_organization_description|escapejs }}",
+        user_role: "{{ result.user_role|escapejs }}",
+        approved: "{{ result.approved|escapejs }}",
+        rejected: "{{ result.rejected|escapejs }}",
+        rejection_reason: "{{ result.rejection_reason|escapejs }}",
+        age: "{{ result.age|escapejs }}",
+        gender: "{{ result.gender|escapejs }}",
+        nationality: "{{ result.nationality|escapejs }}",
+        new_organization_name: "{{ result.new_organization_name|escapejs }}"
     }{% if not loop.last %},{% endif %}
     {% endfor %}
 ];
