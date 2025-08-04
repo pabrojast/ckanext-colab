@@ -416,6 +416,8 @@ class MyLogic():
                 organization_name = request.form['organization_name']
                 new_organization_name = request.form['new_organization_name']
                 new_organization_description = request.form['new_organization_description']
+                # Eliminar todos los saltos de línea de la descripción
+                new_organization_description = new_organization_description.replace('\n', '').replace('\r', '')
                 group_form = 0
                 age = request.form['age']
                 nationality = request.form['nationality']
@@ -648,6 +650,8 @@ class MyLogic():
             # Get form data
             organization_name = request.form.get('organization_name', '').strip()
             organization_description = request.form.get('organization_description', '').strip()
+            # Eliminar todos los saltos de línea de la descripción
+            organization_description = organization_description.replace('\n', '').replace('\r', '')
             organization_type = request.form.get('organization_type', '').strip()
             admin_username = request.form.get('admin_username', toolkit.g.userobj.name).strip()
             
