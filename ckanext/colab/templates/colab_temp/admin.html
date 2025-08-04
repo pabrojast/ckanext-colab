@@ -1294,7 +1294,7 @@ function setupEventListeners() {
 function handleApprove(event) {
     event.preventDefault();
     
-    const link = event.target;
+    const link = event.currentTarget;
     const fullName = link.getAttribute('data-fullname');
     const winsUsername = link.getAttribute('data-wins-username');
     const organizationName = link.getAttribute('data-organization-name');
@@ -1347,11 +1347,21 @@ function handleApprove(event) {
             } else {
                 // Get the row before modifying the DOM
                 const row = link.closest('tr');
-                const cell = link.closest('td');
-                cell.innerHTML = `<span class="status-badge status-approved">approved by ${data.user || 'admin'}</span>`;
+                if (!row) {
+                    console.error('Could not find row element');
+                    alert('✅ User successfully approved!\n\n' + (data.message || 'User added to organization'));
+                    return;
+                }
                 
-                // Move row to approved tab
-                row.remove();
+                const cell = link.closest('td');
+                if (cell) {
+                    cell.innerHTML = `<span class="status-badge status-approved">approved by ${data.user || 'admin'}</span>`;
+                }
+                
+                // Move row to approved tab - check if row still exists
+                if (row && row.parentNode) {
+                    row.remove();
+                }
                 
                 updateCounts();
                 
@@ -1370,7 +1380,7 @@ function handleApprove(event) {
 function handleReject(event) {
     event.preventDefault();
     
-    const link = event.target;
+    const link = event.currentTarget;
     const username = link.getAttribute('data-wins-username');
     const organization = link.getAttribute('data-organization-name');
     
@@ -1390,11 +1400,21 @@ function handleReject(event) {
                 } else {
                     // Get the row before modifying the DOM
                     const row = link.closest('tr');
-                    const cell = link.closest('td');
-                    cell.innerHTML = `<span class="status-badge status-rejected">rejected by ${data.user || 'admin'}</span>`;
+                    if (!row) {
+                        console.error('Could not find row element');
+                        alert('❌ User successfully rejected');
+                        return;
+                    }
                     
-                    // Move row to rejected tab
-                    row.remove();
+                    const cell = link.closest('td');
+                    if (cell) {
+                        cell.innerHTML = `<span class="status-badge status-rejected">rejected by ${data.user || 'admin'}</span>`;
+                    }
+                    
+                    // Move row to rejected tab - check if row still exists
+                    if (row && row.parentNode) {
+                        row.remove();
+                    }
                     
                     updateCounts();
                     
