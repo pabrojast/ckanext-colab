@@ -1272,15 +1272,51 @@ function initializeAdmin() {
 }
 
 function setupEventListeners() {
-    // Approve links
-    document.querySelectorAll('.approve-link').forEach(link => {
-        link.addEventListener('click', handleApprove);
+    // Use event delegation for more robust event handling
+    document.body.addEventListener('click', function(event) {
+        // Handle approve links
+        if (event.target.classList.contains('approve-link') || 
+            event.target.closest('.approve-link')) {
+            const link = event.target.classList.contains('approve-link') ? 
+                         event.target : event.target.closest('.approve-link');
+            if (link) {
+                console.log('Approve link clicked via delegation');
+                handleApprove({ preventDefault: () => {}, currentTarget: link });
+            }
+        }
+        
+        // Handle reject links
+        if (event.target.classList.contains('reject-link') || 
+            event.target.closest('.reject-link')) {
+            const link = event.target.classList.contains('reject-link') ? 
+                         event.target : event.target.closest('.reject-link');
+            if (link) {
+                console.log('Reject link clicked via delegation');
+                handleReject({ preventDefault: () => {}, currentTarget: link });
+            }
+        }
     });
+    
+    // Wait a bit to ensure DOM is fully loaded
+    setTimeout(() => {
+        // Approve links
+        const approveLinks = document.querySelectorAll('.approve-link');
+        console.log('Found approve links:', approveLinks.length);
+        approveLinks.forEach(link => {
+            // Remove any existing listeners to avoid duplicates
+            link.removeEventListener('click', handleApprove);
+            link.addEventListener('click', handleApprove);
+        });
 
-    // Reject links
-    document.querySelectorAll('.reject-link').forEach(link => {
-        link.addEventListener('click', handleReject);
-    });
+        // Reject links
+        const rejectLinks = document.querySelectorAll('.reject-link');
+        console.log('Found reject links:', rejectLinks.length);
+        rejectLinks.forEach(link => {
+            // Remove any existing listeners to avoid duplicates
+            link.removeEventListener('click', handleReject);
+            link.addEventListener('click', handleReject);
+        });
+    }, 100);
 
     // Modal close on outside click
     window.onclick = function(event) {
@@ -1293,8 +1329,17 @@ function setupEventListeners() {
 
 function handleApprove(event) {
     event.preventDefault();
+    console.log('handleApprove called');
     
     const link = event.currentTarget;
+    if (!link) {
+        console.error('No link element found');
+        alert('❌ Error: Could not find button element');
+        return;
+    }
+    
+    console.log('Link element:', link);
+    
     const fullName = link.getAttribute('data-fullname');
     const winsUsername = link.getAttribute('data-wins-username');
     const organizationName = link.getAttribute('data-organization-name');
@@ -1305,8 +1350,12 @@ function handleApprove(event) {
     const userRole = link.getAttribute('data-user-role');
     const newOrgName = link.getAttribute('data-new-org-name');
 
+    console.log('User data:', { fullName, winsUsername, organizationName });
+
     // Get the row and role selector BEFORE any DOM manipulation
     const row = link.closest('tr');
+    console.log('Found row:', row);
+    
     if (!row) {
         console.error('Could not find row element');
         alert('❌ Error: Could not find user row');
@@ -1329,6 +1378,8 @@ function handleApprove(event) {
                           `Do you want to approve this user?`;
 
     if (confirm(confirmMessage)) {
+        console.log('User confirmed approval');
+        
         // Show loading state
         link.innerHTML = '⏳ Processing...';
         link.style.pointerEvents = 'none';
@@ -1340,21 +1391,37 @@ function handleApprove(event) {
         formData.append('new_organization_description', newOrgDescription || 'NA');
         formData.append('user_role', selectedRole);
 
+        console.log('Sending approval request...');
+
         fetch('/colab/admin/approve', {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Approval response:', response);
+            return response.json();
+        })
         .then(data => {
+            console.log('Approval data:', data);
             if (data.error) {
                 alert('❌ Error: ' + data.error);
                 link.innerHTML = '✅ Approve';
                 link.style.pointerEvents = 'auto';
             } else {
                 try {
-                    // Simply remove the row from pending tab - it will appear in approved after page refresh
-                    if (row && row.parentNode) {
+                    console.log('Attempting to remove row...');
+                    
+                    // Double-check row still exists and has parentNode
+                    if (row && row.parentNode && typeof row.remove === 'function') {
+                        console.log('Removing row...');
                         row.remove();
+                        console.log('Row removed successfully');
+                    } else {
+                        console.warn('Row not available for removal:', { 
+                            rowExists: !!row, 
+                            hasParent: !!(row && row.parentNode),
+                            hasRemoveMethod: !!(row && typeof row.remove === 'function')
+                        });
                     }
                     
                     // Update counts
@@ -1385,13 +1452,26 @@ function handleApprove(event) {
 
 function handleReject(event) {
     event.preventDefault();
+    console.log('handleReject called');
     
     const link = event.currentTarget;
+    if (!link) {
+        console.error('No link element found');
+        alert('❌ Error: Could not find button element');
+        return;
+    }
+    
+    console.log('Link element:', link);
+    
     const username = link.getAttribute('data-wins-username');
     const organization = link.getAttribute('data-organization-name');
     
+    console.log('User data:', { username, organization });
+    
     // Get the row BEFORE any DOM manipulation
     const row = link.closest('tr');
+    console.log('Found row:', row);
+    
     if (!row) {
         console.error('Could not find row element');
         alert('❌ Error: Could not find user row');
@@ -1400,22 +1480,40 @@ function handleReject(event) {
     
     const reason = prompt("📝 Please enter the reason for rejection:");
     if (reason && reason.trim()) {
+        console.log('User provided rejection reason');
+        
         // Show loading state
         link.innerHTML = '⏳ Processing...';
         link.style.pointerEvents = 'none';
 
+        console.log('Sending rejection request...');
+
         fetch(`/colab/admin/reject/${encodeURIComponent(username)}/${encodeURIComponent(organization)}/${encodeURIComponent(reason)}`)
-            .then(response => response.json())
+            .then(response => {
+                console.log('Rejection response:', response);
+                return response.json();
+            })
             .then(data => {
+                console.log('Rejection data:', data);
                 if (data.error) {
                     alert('❌ Error: ' + data.error);
                     link.innerHTML = '❌ Reject';
                     link.style.pointerEvents = 'auto';
                 } else {
                     try {
-                        // Simply remove the row from pending tab - it will appear in rejected after page refresh
-                        if (row && row.parentNode) {
+                        console.log('Attempting to remove row...');
+                        
+                        // Double-check row still exists and has parentNode
+                        if (row && row.parentNode && typeof row.remove === 'function') {
+                            console.log('Removing row...');
                             row.remove();
+                            console.log('Row removed successfully');
+                        } else {
+                            console.warn('Row not available for removal:', { 
+                                rowExists: !!row, 
+                                hasParent: !!(row && row.parentNode),
+                                hasRemoveMethod: !!(row && typeof row.remove === 'function')
+                            });
                         }
                         
                         // Update counts
