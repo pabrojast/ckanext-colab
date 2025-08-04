@@ -1381,6 +1381,7 @@ function handleApprove(event) {
         console.log('User confirmed approval');
         
         // Show loading state
+        const originalText = link.innerHTML;
         link.innerHTML = '⏳ Processing...';
         link.style.pointerEvents = 'none';
 
@@ -1405,46 +1406,18 @@ function handleApprove(event) {
             console.log('Approval data:', data);
             if (data.error) {
                 alert('❌ Error: ' + data.error);
-                link.innerHTML = '✅ Approve';
+                link.innerHTML = originalText;
                 link.style.pointerEvents = 'auto';
             } else {
-                try {
-                    console.log('Attempting to remove row...');
-                    
-                    // Double-check row still exists and has parentNode
-                    if (row && row.parentNode && typeof row.remove === 'function') {
-                        console.log('Removing row...');
-                        row.remove();
-                        console.log('Row removed successfully');
-                    } else {
-                        console.warn('Row not available for removal:', { 
-                            rowExists: !!row, 
-                            hasParent: !!(row && row.parentNode),
-                            hasRemoveMethod: !!(row && typeof row.remove === 'function')
-                        });
-                    }
-                    
-                    // Update counts
-                    updateCounts();
-                    
-                    alert('✅ User successfully approved!\n\n' + (data.message || 'User added to organization'));
-                    
-                    // Optional: Refresh the page to show the user in the approved tab
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                    
-                } catch (error) {
-                    console.error('Error updating DOM:', error);
-                    alert('✅ User successfully approved!\n\nPlease refresh the page to see the changes.');
-                    window.location.reload();
-                }
+                // Success - safely remove the row
+                safelyRemoveRow(row, 'approved');
+                alert('✅ User successfully approved!\n\n' + (data.message || 'User added to organization'));
             }
         })
         .catch(error => {
             console.error('Error:', error);
             alert('❌ An error occurred while processing the approval');
-            link.innerHTML = '✅ Approve';
+            link.innerHTML = originalText;
             link.style.pointerEvents = 'auto';
         });
     }
@@ -1483,6 +1456,7 @@ function handleReject(event) {
         console.log('User provided rejection reason');
         
         // Show loading state
+        const originalText = link.innerHTML;
         link.innerHTML = '⏳ Processing...';
         link.style.pointerEvents = 'none';
 
@@ -1497,49 +1471,75 @@ function handleReject(event) {
                 console.log('Rejection data:', data);
                 if (data.error) {
                     alert('❌ Error: ' + data.error);
-                    link.innerHTML = '❌ Reject';
+                    link.innerHTML = originalText;
                     link.style.pointerEvents = 'auto';
                 } else {
-                    try {
-                        console.log('Attempting to remove row...');
-                        
-                        // Double-check row still exists and has parentNode
-                        if (row && row.parentNode && typeof row.remove === 'function') {
-                            console.log('Removing row...');
-                            row.remove();
-                            console.log('Row removed successfully');
-                        } else {
-                            console.warn('Row not available for removal:', { 
-                                rowExists: !!row, 
-                                hasParent: !!(row && row.parentNode),
-                                hasRemoveMethod: !!(row && typeof row.remove === 'function')
-                            });
-                        }
-                        
-                        // Update counts
-                        updateCounts();
-                        
-                        alert('❌ User successfully rejected');
-                        
-                        // Optional: Refresh the page to show the user in the rejected tab
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1000);
-                        
-                    } catch (error) {
-                        console.error('Error updating DOM:', error);
-                        alert('❌ User successfully rejected!\n\nPlease refresh the page to see the changes.');
-                        window.location.reload();
-                    }
+                    // Success - safely remove the row
+                    safelyRemoveRow(row, 'rejected');
+                    alert('❌ User successfully rejected');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('❌ An error occurred while processing the rejection');
-                link.innerHTML = '❌ Reject';
+                link.innerHTML = originalText;
                 link.style.pointerEvents = 'auto';
             });
     }
+}
+
+// New function to safely remove rows and handle errors
+function safelyRemoveRow(row, action) {
+    try {
+        console.log(`Attempting to remove row after ${action}...`);
+        
+        // Multiple checks to ensure the row is still valid
+        if (!row) {
+            console.warn('Row is null or undefined');
+            refreshPageWithMessage(action);
+            return;
+        }
+        
+        if (!row.parentNode) {
+            console.warn('Row has no parent node');
+            refreshPageWithMessage(action);
+            return;
+        }
+        
+        if (typeof row.remove !== 'function') {
+            console.warn('Row.remove is not a function, using parentNode.removeChild');
+            row.parentNode.removeChild(row);
+        } else {
+            row.remove();
+        }
+        
+        console.log('Row removed successfully');
+        
+        // Update counts after successful removal
+        updateCounts();
+        
+        // Refresh page after a short delay to ensure everything is in sync
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500);
+        
+    } catch (error) {
+        console.error('Error removing row:', error);
+        refreshPageWithMessage(action);
+    }
+}
+
+// Helper function to refresh page with appropriate message
+function refreshPageWithMessage(action) {
+    const message = action === 'approved' ? 
+        '✅ User successfully approved!\n\nRefreshing page to show changes...' :
+        '❌ User successfully rejected!\n\nRefreshing page to show changes...';
+    
+    alert(message);
+    
+    setTimeout(() => {
+        window.location.reload();
+    }, 1000);
 }
 
 function showUserDetails(username) {
