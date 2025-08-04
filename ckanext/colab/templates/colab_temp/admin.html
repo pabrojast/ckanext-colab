@@ -1217,29 +1217,43 @@
     </div>
 </div>
 
-<script>
-// Store all users data for filtering
-let allUsers = [
+<!-- Safe JSON data storage -->
+<script type="application/json" id="users-data">
+[
     {% for result in results %}
     {
-        fullname: {{ (result.fullname or '')|tojson }},
-        wins_username: {{ (result.wins_username or '')|tojson }},
-        email: {{ (result.email or '')|tojson }},
-        organization_name: {{ (result.organization_name or '')|tojson }},
-        organizationType: {{ (result.organizationType or '')|tojson }},
-        title_within_organization: {{ (result.title_within_organization or '')|tojson }},
-        new_organization_description: {{ (result.new_organization_description or '')|tojson }},
-        user_role: {{ (result.user_role or '')|tojson }},
-        approved: {{ (result.approved or '')|tojson }},
-        rejected: {{ (result.rejected or '')|tojson }},
-        rejection_reason: {{ (result.rejection_reason or '')|tojson }},
-        age: {{ (result.age or '')|tojson }},
-        gender: {{ (result.gender or '')|tojson }},
-        nationality: {{ (result.nationality or '')|tojson }},
-        new_organization_name: {{ (result.new_organization_name or '')|tojson }}
+        "fullname": {{ (result.fullname or '')|safe|tojson }},
+        "wins_username": {{ (result.wins_username or '')|safe|tojson }},
+        "email": {{ (result.email or '')|safe|tojson }},
+        "organization_name": {{ (result.organization_name or '')|safe|tojson }},
+        "organizationType": {{ (result.organizationType or '')|safe|tojson }},
+        "title_within_organization": {{ (result.title_within_organization or '')|safe|tojson }},
+        "new_organization_description": {{ (result.new_organization_description or '')|replace('&#39;', "'")|safe|tojson }},
+        "user_role": {{ (result.user_role or '')|safe|tojson }},
+        "approved": {{ (result.approved or '')|safe|tojson }},
+        "rejected": {{ (result.rejected or '')|safe|tojson }},
+        "rejection_reason": {{ (result.rejection_reason or '')|safe|tojson }},
+        "age": {{ (result.age or '')|safe|tojson }},
+        "gender": {{ (result.gender or '')|safe|tojson }},
+        "nationality": {{ (result.nationality or '')|safe|tojson }},
+        "new_organization_name": {{ (result.new_organization_name or '')|safe|tojson }}
     }{% if not loop.last %},{% endif %}
     {% endfor %}
-];
+]
+</script>
+
+<script>
+// Load users data safely
+let allUsers = [];
+try {
+    const usersDataElement = document.getElementById('users-data');
+    if (usersDataElement) {
+        allUsers = JSON.parse(usersDataElement.textContent);
+    }
+} catch (e) {
+    console.error('Error loading users data:', e);
+    allUsers = [];
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeAdmin();
