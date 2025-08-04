@@ -1217,9 +1217,29 @@
     </div>
 </div>
 
-<!-- Safe JSON data storage -->
+<!-- Safe JSON data storage with data cleaning -->
 <script type="application/json" id="users-data">
-{{ results|list|tojson|safe }}
+[
+{% for result in results %}
+{
+  "fullname": {{ (result.fullname or '')|replace('\n', ' ')|replace('\r', '')|replace('&#39;', "'")|replace('&quot;', '"')|replace('&amp;', '&')|tojson }},
+  "wins_username": {{ (result.wins_username or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "email": {{ (result.email or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "organization_name": {{ (result.organization_name or '')|replace('\n', ' ')|replace('\r', '')|replace('&#39;', "'")|tojson }},
+  "organizationType": {{ (result.organizationType or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "title_within_organization": {{ (result.title_within_organization or '')|replace('\n', ' ')|replace('\r', '')|replace('&#39;', "'")|tojson }},
+  "new_organization_description": {{ (result.new_organization_description or '')|replace('\n', ' ')|replace('\r', '')|replace('&#39;', "'")|replace('&quot;', '"')|replace('&amp;', '&')|tojson }},
+  "user_role": {{ (result.user_role or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "approved": {{ (result.approved or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "rejected": {{ (result.rejected or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "rejection_reason": {{ (result.rejection_reason or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "age": {{ (result.age or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "gender": {{ (result.gender or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "nationality": {{ (result.nationality or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "new_organization_name": {{ (result.new_organization_name or '')|replace('\n', ' ')|replace('\r', '')|tojson }}
+}{% if not loop.last %},{% endif %}
+{% endfor %}
+]
 </script>
 
 <script>
@@ -1227,8 +1247,9 @@
 let allUsers = [];
 try {
     const usersDataElement = document.getElementById('users-data');
-    if (usersDataElement) {
+    if (usersDataElement && usersDataElement.textContent.trim()) {
         allUsers = JSON.parse(usersDataElement.textContent);
+        console.log('Users data loaded successfully:', allUsers.length, 'users');
     }
 } catch (e) {
     console.error('Error loading users data:', e);
