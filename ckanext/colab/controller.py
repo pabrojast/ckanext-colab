@@ -397,6 +397,7 @@ class MyLogic():
                                      errornewuserform=errornewuserform)
 
         if request.method == 'POST':
+            session = None  # Initialize session to avoid UnboundLocalError
             try:
                 # Verificar reCAPTCHA primero
                 recaptcha_response = request.form.get('recaptcha_response')
