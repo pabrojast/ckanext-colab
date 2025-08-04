@@ -1368,17 +1368,13 @@ function handleApprove(event) {
                     return;
                 }
                 
-                const cell = link.closest('td');
-                if (cell) {
-                    cell.innerHTML = `<span class="status-badge status-approved">approved by ${data.user || 'admin'}</span>`;
-                }
-                
-                // Move row to approved tab - check if row still exists
-                if (row && row.parentNode) {
+                // Remove row immediately to avoid DOM disconnection issues
+                if (row && row.parentNode && document.contains(row)) {
                     row.remove();
+                    updateCounts();
+                } else {
+                    console.error('Row element is no longer valid for removal');
                 }
-                
-                updateCounts();
                 
                 alert('✅ User successfully approved!\n\n' + (data.message || 'User added to organization'));
             }
@@ -1421,17 +1417,13 @@ function handleReject(event) {
                         return;
                     }
                     
-                    const cell = link.closest('td');
-                    if (cell) {
-                        cell.innerHTML = `<span class="status-badge status-rejected">rejected by ${data.user || 'admin'}</span>`;
-                    }
-                    
-                    // Move row to rejected tab - check if row still exists
-                    if (row && row.parentNode) {
+                    // Remove row immediately to avoid DOM disconnection issues
+                    if (row && row.parentNode && document.contains(row)) {
                         row.remove();
+                        updateCounts();
+                    } else {
+                        console.error('Row element is no longer valid for removal');
                     }
-                    
-                    updateCounts();
                     
                     alert('❌ User successfully rejected');
                 }
