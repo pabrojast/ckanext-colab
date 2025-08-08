@@ -1001,6 +1001,7 @@
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
                             <th>🎭 Role</th>
+                            <th>🌊 Citizens4Water</th>
                             <th>⚡ Actions</th>
                         </tr>
                     </thead>
@@ -1039,6 +1040,15 @@
                                             <option value="editor" {% if result.user_role == 'editor' %}selected{% endif %}>Editor</option>
                                             <option value="member" {% if result.user_role == 'member' %}selected{% endif %}>Member</option>
                                         </select>
+                                    </td>
+                                    <td>
+                                        <div class="text-center">
+                                            {% if result.citizens4water == 'yes' %}
+                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
+                                            {% else %}
+                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
+                                            {% endif %}
+                                        </div>
                                     </td>
                                     <td>
                                         <div class="action-buttons">
@@ -1081,6 +1091,7 @@
                             <th>📧 Contact</th>
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
+                            <th>🌊 Citizens4Water</th>
                             <th>✅ Status</th>
                             <th>⚡ Actions</th>
                         </tr>
@@ -1114,6 +1125,15 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <div class="text-center">
+                                            {% if result.citizens4water == 'yes' %}
+                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
+                                            {% else %}
+                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
                                         <span class="status-badge status-approved">{{ result.approved }}</span>
                                         <div style="margin-top: 4px; font-size: 11px; color: #666;">
                                             Role: {{ result.user_role or 'admin' }}
@@ -1143,6 +1163,7 @@
                             <th>📧 Contact</th>
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
+                            <th>🌊 Citizens4Water</th>
                             <th>❌ Status</th>
                             <th>📝 Reason</th>
                             <th>⚡ Actions</th>
@@ -1174,6 +1195,15 @@
                                     <td>
                                         <div class="truncate" title="{{ result.title_within_organization }}">
                                             {{ result.title_within_organization }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center">
+                                            {% if result.citizens4water == 'yes' %}
+                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
+                                            {% else %}
+                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td>
@@ -1236,7 +1266,8 @@ let allUsers = [
         age: "{{ result.age }}",
         gender: "{{ result.gender }}",
         nationality: "{{ result.nationality }}",
-        new_organization_name: "{{ result.new_organization_name }}"
+        new_organization_name: "{{ result.new_organization_name }}",
+        citizens4water: "{{ result.citizens4water }}"
     }{% if not loop.last %},{% endif %}
     {% endfor %}
 ];
@@ -1459,6 +1490,13 @@ function showUserDetails(username) {
                 <strong>Organization Type:</strong> ${user.organizationType}<br>
                 <strong>Title/Position:</strong> ${user.title_within_organization}<br>
                 <strong>User Role:</strong> ${user.user_role || 'admin'}
+            </div>
+        </div>
+        
+        <div class="detail-group">
+            <div class="detail-label">🌊 Platform Registration</div>
+            <div class="detail-value">
+                <strong>Citizens4Water:</strong> ${user.citizens4water === 'yes' ? '✅ Yes - User wants to contribute to Citizens4Water platform' : '❌ No - User only registered for IHP WINS'}
             </div>
         </div>
         
