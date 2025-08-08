@@ -53,47 +53,38 @@ msgstr ""
 "Pedimos disculpas por cualquier confusión o inconveniente que esto haya podido causar y agradecemos tu interés en unirte a nuestra comunidad. ¡Esperamos verte pronto en nuestro sitio web!"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:5
-msgid "Enroll as a Data Contributor for Your Organization"
-msgstr ""
-"Inscríbete como Contribuyente de Datos para tu Organización"
+msgid "Registration for IHP WINS"
+msgstr "Registro para IHP WINS"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:6
+msgid "Join our community of data contributors and help enhance water resources management through collaborative data sharing."
+msgstr "Únete a nuestra comunidad de contribuyentes de datos y ayuda a mejorar la gestión de recursos hídricos a través del intercambio colaborativo de datos."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:7
 msgid ""
-"Welcome to the Data Upload Form. By completing this form, you request to "
-"contribute datasets on behalf of your organization. Please provide the "
-"required information regarding the datasets you intend to upload onto the"
-" IHP-WINS platform. This will enhance our data resources for the mutual "
-"benefit of your organization."
+"Welcome to the IHP WINS registration form. By completing this form, you will be able to "
+"contribute data and information on behalf of your organization on IHP WINS and the related "
+"Citizens4Water platform."
 msgstr ""
-"Bienvenido al Formulario de Carga de Datos. Al completar este formulario, solicitas contribuir con conjuntos de datos en nombre de tu organización. Por favor, proporciona la información requerida sobre los conjuntos de datos que planeas cargar en la plataforma IHP-WINS. Esto mejorará nuestros recursos de datos para el beneficio mutuo de tu organización."
+"Bienvenido al formulario de registro de IHP WINS. Al completar este formulario, podrás "
+"contribuir con datos e información en nombre de tu organización en IHP WINS y la plataforma "
+"relacionada Citizens4Water."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:8
 msgid ""
-"Kindly note that your submission will undergo an email verification "
+"Kindly note that your submission will undergo a verification "
 "process, requiring your organization's official email address. This "
 "verification step ensures the security and authenticity of the data you "
 "submit."
 msgstr ""
-"Ten en cuenta que tu envío pasará por un proceso de verificación por correo electrónico, requiriendo la dirección de correo electrónico oficial de tu organización. Este paso de verificación asegura la seguridad y autenticidad de los datos que envías."
+"Ten en cuenta que tu envío pasará por un proceso de verificación, requiriendo la dirección de correo electrónico oficial de tu organización. Este paso de verificación asegura la seguridad y autenticidad de los datos que envías."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:9
 msgid ""
-"If you encounter any issues with the registration process, please contact us at ihp-unesco@unesco.org for assistance."
+"If you encounter any issues with the registration process, please contact us at "
+"ihp-wins@unesco.org for assistance."
 msgstr ""
-"Si encuentras algún problema con el proceso de registro, por favor contáctanos en ihp-unesco@unesco.org para recibir asistencia."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:10
-msgid ""
-"If your organization is already listed on the site, you can create a "
-"regular user account so that your organization's administrator can add "
-"you to their team at the following link: "
-msgstr ""
-"Si tu organización ya está listada en el sitio, puedes crear una cuenta de usuario regular para que el administrador de tu organización pueda agregarte a su equipo en el siguiente enlace: "
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:9
-msgid "Register for a Normal User Account"
-msgstr ""
-"Regístrate para una Cuenta de Usuario Regular"
+"Si encuentras algún problema con el proceso de registro, por favor contáctanos en ihp-wins@unesco.org para recibir asistencia."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:14
 msgid "Full Name (Optional)"
@@ -101,9 +92,8 @@ msgstr ""
 "Nombre Completo (Opcional)"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:17
-msgid "Username WINS *"
-msgstr ""
-"Nombre de Usuario WINS *"
+msgid "Username *"
+msgstr "Nombre de Usuario *"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:18
 msgid "Your username should consist solely of lowercase letters and numbers."
@@ -131,18 +121,17 @@ msgstr ""
 "Correo Electrónico *"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:32
-msgid "Demography"
-msgstr ""
-"Demografía"
+msgid "Demographics"
+msgstr "Demografía"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:33
 msgid ""
 "UNESCO's overarching priorities encompass gender equality, age "
 "inclusivity, and geographic diversity. Accordingly, we kindly request "
 "your input in the demography fields of this form to ensure we understand "
-"who our diverse data contributors are."
+"who our diverse contributors are."
 msgstr ""
-"Las prioridades generales de la UNESCO abarcan la igualdad de género, la inclusión de edad y la diversidad geográfica. Por lo tanto, solicitamos amablemente tu aporte en los campos de demografía de este formulario para asegurar que entendemos quiénes son nuestros diversos contribuyentes de datos."
+"Las prioridades generales de la UNESCO abarcan la igualdad de género, la inclusión de edad y la diversidad geográfica. Por lo tanto, solicitamos amablemente tu aporte en los campos de demografía de este formulario para asegurar que entendemos quiénes son nuestros diversos contribuyentes."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:36
 msgid "Age*"
@@ -191,17 +180,15 @@ msgstr ""
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:55
 msgid ""
-"An organization are those related to the Water Family such as programmes,"
-" UNESCO centers, chairs, research institutes, UN agencies, etc., with a "
-"wide range of activities and objectives. Typically, organizations "
-"comprise multiple teams, divisions or sectors. Structuring data by "
-"organizations and their respective teams/divisions/sectors allows for "
-"streamlined management and targeted collaboration. Depending on your role"
-" as a data contributor, your data is either uploaded to the overall "
-"institutional data or to the data repository specific to your designated "
-"team."
+"To be a contributor for IHP WINS you need to be part of an organization. If your "
+"organization is not yet active in IHP WINS, you can create a new organization via "
+"this form. Depending on your role, your data is either uploaded to the overall "
+"institutional data or to the data repository specific to your organization."
 msgstr ""
-"Una organización está relacionada con la Familia del Agua, tales como programas, centros UNESCO, cátedras, institutos de investigación, agencias de la ONU, etc., con una amplia gama de actividades y objetivos. Típicamente, las organizaciones comprenden múltiples equipos, divisiones o sectores. Estructurar los datos por organizaciones y sus respectivos equipos/divisiones/sectores permite una gestión simplificada y una colaboración dirigida. Dependiendo de tu rol como contribuyente de datos, tus datos se cargarán en los datos institucionales generales o en el repositorio de datos específico de tu equipo designado."
+"Para ser un contribuyente de IHP WINS necesitas ser parte de una organización. Si tu "
+"organización aún no está activa en IHP WINS, puedes crear una nueva organización a través "
+"de este formulario. Dependiendo de tu rol, tus datos se cargan en los datos institucionales "
+"generales o en el repositorio de datos específico de tu organización."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:58
 msgid "Organization Type"
@@ -293,10 +280,32 @@ msgid "Organization Description"
 msgstr ""
 "Descripción de la Organización"
 
+#: ckanext/colab/templates/colab_temp/snippets/form.html:72
+msgid "Select your affiliation to the UNESCO Water Family. If your organization is not related to the UNESCO Water Family, select other."
+msgstr "Selecciona tu afiliación a la Familia del Agua de la UNESCO. Si tu organización no está relacionada con la Familia del Agua de la UNESCO, selecciona otro."
+
 #: ckanext/colab/templates/colab_temp/snippets/form.html:93
 msgid "Title Within Represented Organization *"
 msgstr ""
 "Título Dentro de la Organización Representada *"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:95
+msgid "Related platforms"
+msgstr "Plataformas relacionadas"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:96
+msgid ""
+"This registration form will allow you to contribute data and information on IHP WINS "
+"and related platforms. Select the related platforms you wish to contribute to and "
+"agree you may be contacted about."
+msgstr ""
+"Este formulario de registro te permitirá contribuir con datos e información en IHP WINS "
+"y plataformas relacionadas. Selecciona las plataformas relacionadas a las que deseas "
+"contribuir y acepta que podrías ser contactado al respecto."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:97
+msgid "Citizens4Water platform"
+msgstr "Plataforma Citizens4Water"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:98
 msgid ""

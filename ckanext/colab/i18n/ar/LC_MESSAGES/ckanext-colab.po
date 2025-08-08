@@ -51,42 +51,46 @@ msgid ""
 msgstr "نعتذر عن أي ارتباك أو إزعاج قد تسببه هذه المشكلة ونقدر اهتمامك بالانضمام إلى مجتمعنا. نأمل أن نراك قريبًا على موقعنا!"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:5
-msgid "Enroll as a Data Contributor for Your Organization"
-msgstr "سجل كمساهم بيانات لمنظمتك"
+msgid "Registration for IHP WINS"
+msgstr "التسجيل في IHP WINS"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:6
+msgid "Join our community of data contributors and help enhance water resources management through collaborative data sharing."
+msgstr "انضم إلى مجتمع المساهمين في البيانات وساعد في تعزيز إدارة الموارد المائية من خلال تبادل البيانات التعاوني."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:7
 msgid ""
-"Welcome to the Data Upload Form. By completing this form, you request to "
-"contribute datasets on behalf of your organization. Please provide the "
-"required information regarding the datasets you intend to upload onto the"
-" IHP-WINS platform. This will enhance our data resources for the mutual "
-"benefit of your organization."
-msgstr "مرحبًا بك في نموذج تحميل البيانات. من خلال إكمال هذا النموذج، تطلب المساهمة بمجموعات البيانات نيابة عن منظمتك. يرجى تقديم المعلومات المطلوبة بشأن مجموعات البيانات التي تنوي تحميلها على منصة IHP-WINS. سيعزز هذا من موارد بياناتنا لتحقيق الفائدة المتبادلة لمنظمتك."
+"Welcome to the IHP WINS registration form. By completing this form, you will be able to "
+"contribute data and information on behalf of your organization on IHP WINS and the related "
+"Citizens4Water platform."
+msgstr ""
+"مرحبًا بك في نموذج التسجيل في IHP WINS. من خلال إكمال هذا النموذج، ستتمكن من "
+"المساهمة بالبيانات والمعلومات نيابة عن منظمتك في IHP WINS ومنصة "
+"Citizens4Water ذات الصلة."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:8
 msgid ""
-"Kindly note that your submission will undergo an email verification "
+"Kindly note that your submission will undergo a verification "
 "process, requiring your organization's official email address. This "
 "verification step ensures the security and authenticity of the data you "
 "submit."
-msgstr "يرجى ملاحظة أن تقديمك سيخضع لعملية تحقق عبر البريد الإلكتروني، مما يتطلب عنوان البريد الإلكتروني الرسمي لمنظمتك. تضمن هذه الخطوة الأمنية صحة البيانات التي تقدمها."
+msgstr ""
+"يرجى ملاحظة أن تقديمك سيخضع لعملية تحقق، مما يتطلب عنوان البريد الإلكتروني الرسمي لمنظمتك. تضمن هذه الخطوة الأمنية صحة البيانات التي تقدمها."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:9
 msgid ""
-"If you encounter any issues with the registration process, please contact us at ihp-unesco@unesco.org for assistance."
-msgstr "إذا واجهت أي مشاكل في عملية التسجيل، يرجى الاتصال بنا على ihp-unesco@unesco.org للمساعدة."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:9
-msgid "Register for a Normal User Account"
-msgstr "سجل للحصول على حساب مستخدم عادي"
+"If you encounter any issues with the registration process, please contact us at "
+"ihp-wins@unesco.org for assistance."
+msgstr ""
+"إذا واجهت أي مشاكل في عملية التسجيل، يرجى الاتصال بنا على ihp-wins@unesco.org للمساعدة."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:14
 msgid "Full Name (Optional)"
 msgstr "الاسم الكامل (اختياري)"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:17
-msgid "Username WINS *"
-msgstr "اسم المستخدم WINS *"
+msgid "Username *"
+msgstr "اسم المستخدم *"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:18
 msgid "Your username should consist solely of lowercase letters and numbers."
