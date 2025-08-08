@@ -7,18 +7,19 @@
 
 <!-- Form Header -->
 <div class="form-header">
-    <h1>{{ _('Enroll as a Data Contributor for Your Organization') }}</h1>
+    <h1>{{ _('Registration for IHP WINS') }}</h1>
+    <p class="form-subtitle">{{ _('Join our community of data contributors and help enhance water resources management through collaborative data sharing.') }}</p>
 </div>
 
 <!-- Form Introduction -->
 <div class="form-intro">
     <section class="intro-card">
         <div class="intro-content">
-            <p>{{ _('Welcome to the Data Upload Form. By completing this form, you request to contribute datasets on behalf of your organization. Please provide the required information regarding the datasets you intend to upload onto the IHP-WINS platform. This will enhance our data resources for the mutual benefit of your organization.') }}</p>
+            <p>{{ _('Welcome to the IHP WINS registration form. By completing this form, you will be able to contribute data and information on behalf of your organization on IHP WINS and the related Citizens4Water platform.') }}</p>
 
-            <p>{{ _('Kindly note that your submission will undergo an email verification process, requiring your organization\'s official email address. This verification step ensures the security and authenticity of the data you submit.') }}</p>
+            <p>{{ _('Kindly note that your submission will undergo a verification process requiring your organization\'s official email address. This verification step ensures the security and authenticity of the data you submit.') }}</p>
 
-            <p>{{ _('If you encounter any issues with the registration process, please contact us at ihp-unesco@unesco.org for assistance.') }}</p>
+            <p>{{ _('If you encounter any issues with the registration process, please contact us at ihp-wins@unesco.org for assistance.') }}</p>
         </div>
     </section>
 </div>
@@ -38,7 +39,7 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="wins_username" class="required">{{ _('Username WINS') }} <span class="text-danger">*</span></label>
+                    <label for="wins_username" class="required">{{ _('Username') }} <span class="text-danger">*</span></label>
                     <input type="text" id="wins_username" name="wins_username" pattern="[a-z0-9]*" minlength="4" maxlength="100" required placeholder="{{ _('e.g., john_doe123') }}" class="form-control">
                     <div class="help-text">{{ _('Your username should consist solely of lowercase letters and numbers.') }}</div>
                     <div class="field-error" id="username-error"></div>
@@ -73,7 +74,7 @@
         <legend>{{ _('Demographics') }}</legend>
         <div class="form-section-content">
             <div class="demographics-intro">
-                <p class="section-description">{{ _('UNESCO\'s overarching priorities encompass gender equality, age inclusivity, and geographic diversity. Accordingly, we kindly request your input in the demography fields of this form to ensure we understand who our diverse data contributors are.') }}</p>
+                <p class="section-description">{{ _('UNESCO\'s overarching priorities encompass gender equality, age inclusivity, and geographic diversity. Accordingly, we kindly request your input in the demography fields of this form to ensure we understand who our diverse contributors are.') }}</p>
             </div>
 
             <div class="form-row">
@@ -109,7 +110,7 @@
         <legend>{{ _('Organization') }}</legend>
         <div class="form-section-content">
             <div class="organization-intro">
-                <p class="section-description">{{ _('An organization are those related to the Water Family such as programmes, UNESCO centers, chairs, research institutes, UN agencies, etc., with a wide range of activities and objectives. Typically, organizations comprise multiple teams, divisions or sectors. Structuring data by organizations and their respective teams/divisions/sectors allows for streamlined management and targeted collaboration. Depending on your role as a data contributor, your data is either uploaded to the overall institutional data or to the data repository specific to your designated team.') }}</p>
+                <p class="section-description">{{ _('To be a contributor for IHP WINS you need to be part of an organization. If your organization is not yet active in IHP WINS, you can create a new organization via this form. Depending on your role, your data is either uploaded to the overall institutional data or to the data repository specific to your organization.') }}</p>
             </div>
 
             <div class="form-group">
@@ -129,7 +130,7 @@
                     <option value="research_institution">{{ _('Research Institution') }}</option>
                     <option value="other">{{ _('Other') }}</option>
                 </select>
-                <div class="help-text">{{ _('Select the type that best describes your organization') }}</div>
+                <div class="help-text">{{ _('Select your affiliation to the UNESCO Water Family. If your organization is not related to the UNESCO Water Family, select other.') }}</div>
             </div>
 
             <div class="form-group">
@@ -170,6 +171,25 @@
                         <option value="admin">{{ _('Admin') }}</option>
                     </select>
                     <div class="help-text">{{ _('For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets.') }}</div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <!-- Related Platforms Section -->
+    <fieldset class="form-section">
+        <legend>{{ _('Related platforms') }}</legend>
+        <div class="form-section-content">
+            <div class="platforms-intro">
+                <p class="section-description">{{ _('This registration form will allow you to contribute data and information on IHP WINS and related platforms. Select the related platforms you wish to contribute to and agree you may be contacted about.') }}</p>
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="citizens4water" name="citizens4water" value="yes">
+                    <label for="citizens4water" class="checkbox-label">
+                        {{ _('Citizens4Water platform') }}
+                    </label>
                 </div>
             </div>
         </div>
@@ -531,8 +551,16 @@
   color: var(--unesco-blue-dark);
   font-size: 2rem;
   font-weight: 700;
-  margin: 0;
+  margin: 0 0 0.5rem 0;
   line-height: 1.3;
+}
+
+.form-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.4;
 }
 
 /* Form Introduction */
@@ -605,7 +633,8 @@
 }
 
 .demographics-intro,
-.organization-intro {
+.organization-intro,
+.platforms-intro {
   margin-bottom: 2rem;
 }
 
