@@ -514,6 +514,7 @@ Best regards,
                         if gender_other:
                             gender = gender_other
                     user_role = request.form.get('user_role', 'admin')  # Default to 'admin' if not specified
+                    citizens4water = request.form.get('citizens4water', '')  # Get citizens4water checkbox value
                     
                     logger.info(f"Processing registration for user: {name}, email: {email}, org: {organization_name}")
                     
@@ -637,6 +638,7 @@ Best regards,
                         organizationType=organizationType,
                         nationality=nationality,
                         user_role=user_role,
+                        citizens4water=citizens4water,
                     )
 
                     session.add(db_model)
@@ -683,6 +685,7 @@ Best regards,
                             organizationType = organizationType,
                             nationality = nationality,
                             user_role=user_role,
+                            citizens4water=citizens4water,
                         )
 
                         session.add(db_model)
