@@ -1325,7 +1325,7 @@ function setupEventListeners() {
 function handleApprove(event) {
     event.preventDefault();
     
-    const link = event.target;
+    const link = event.currentTarget;
     const fullName = link.getAttribute('data-fullname');
     const winsUsername = link.getAttribute('data-wins-username');
     const organizationName = link.getAttribute('data-organization-name');
@@ -1337,8 +1337,8 @@ function handleApprove(event) {
     const newOrgName = link.getAttribute('data-new-org-name');
 
     // Get the selected role from the dropdown
-    const row = link.closest('tr');
-    const roleSelector = row.querySelector('.role-selector');
+    const rowElement = link.closest('tr');
+    const roleSelector = rowElement ? rowElement.querySelector('.role-selector') : null;
     const selectedRole = roleSelector ? roleSelector.value : (userRole || 'admin');
 
     const roleChange = selectedRole !== (userRole || 'admin') ? 
@@ -1386,11 +1386,14 @@ function handleApprove(event) {
                 link.style.pointerEvents = 'auto';
             } else {
                 const cell = link.closest('td');
-                cell.innerHTML = `<span class="status-badge status-approved">approved by ${data.user || 'admin'}</span>`;
+                if (cell) {
+                    cell.innerHTML = `<span class="status-badge status-approved">approved by ${data.user || 'admin'}</span>`;
+                }
                 
-                // Move row to approved tab
-                const row = link.closest('tr');
-                row.remove();
+                // Remove row from pending list
+                if (rowElement) {
+                    rowElement.remove();
+                }
                 
                 updateCounts();
                 
@@ -1417,7 +1420,7 @@ function handleApprove(event) {
 function handleReject(event) {
     event.preventDefault();
     
-    const link = event.target;
+    const link = event.currentTarget;
     const username = link.getAttribute('data-wins-username');
     const organization = link.getAttribute('data-organization-name');
     
@@ -1441,11 +1444,15 @@ function handleReject(event) {
                     link.style.pointerEvents = 'auto';
                 } else {
                     const cell = link.closest('td');
-                    cell.innerHTML = `<span class="status-badge status-rejected">rejected by ${data.user || 'admin'}</span>`;
+                    if (cell) {
+                        cell.innerHTML = `<span class="status-badge status-rejected">rejected by ${data.user || 'admin'}</span>`;
+                    }
                     
-                    // Move row to rejected tab
-                    const row = link.closest('tr');
-                    row.remove();
+                    // Remove row from pending list
+                    const rowElement = link.closest('tr');
+                    if (rowElement) {
+                        rowElement.remove();
+                    }
                     
                     updateCounts();
                     
