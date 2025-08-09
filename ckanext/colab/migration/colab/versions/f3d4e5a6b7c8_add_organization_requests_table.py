@@ -17,26 +17,40 @@ depends_on = None
 
 
 def upgrade():
-    # Create the organization requests table
-    op.create_table(
-        'colab_organization_requests',
-        sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
-        sa.Column('requester_username', sa.String, nullable=False),
-        sa.Column('organization_name', sa.String, nullable=False),
-        sa.Column('organization_description', sa.String),
-        sa.Column('organization_image_url', sa.String),
-        sa.Column('admin_username', sa.String, nullable=False),
-        sa.Column('organization_type', sa.String),
-        sa.Column('status', sa.String, default='pending'),
-        sa.Column('created_date', sa.DateTime),
-        sa.Column('approved_by', sa.String),
-        sa.Column('approved_date', sa.DateTime),
-        sa.Column('rejected_by', sa.String),
-        sa.Column('rejected_date', sa.DateTime),
-        sa.Column('rejection_reason', sa.String)
-    )
+    # Create the organization requests table only if it doesn't exist
+    try:
+        op.create_table(
+            'colab_organization_requests',
+            sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
+            sa.Column('requester_username', sa.String, nullable=False),
+            sa.Column('organization_name', sa.String, nullable=False),
+            sa.Column('organization_description', sa.String),
+            sa.Column('organization_image_url', sa.String),
+            sa.Column('admin_username', sa.String, nullable=False),
+            sa.Column('organization_type', sa.String),
+            sa.Column('status', sa.String, default='pending'),
+            sa.Column('created_date', sa.DateTime),
+            sa.Column('approved_by', sa.String),
+            sa.Column('approved_date', sa.DateTime),
+            sa.Column('rejected_by', sa.String),
+            sa.Column('rejected_date', sa.DateTime),
+            sa.Column('rejection_reason', sa.String)
+        )
+    except Exception as e:
+        # If table already exists, skip creation
+        if "already exists" in str(e) or "duplicate" in str(e).lower():
+            pass
+        else:
+            raise
 
 
 def downgrade():
-    # Drop the organization requests table
-    op.drop_table('colab_organization_requests')
+    # Drop the organization requests table only if it exists
+    try:
+        op.drop_table('colab_organization_requests')
+    except Exception as e:
+        # If table doesn't exist, skip deletion
+        if "does not exist" in str(e) or "no such table" in str(e).lower():
+            pass
+        else:
+            raise
