@@ -642,7 +642,7 @@ Best regards,
                     Session = sessionmaker(bind=engine)
                     session = Session()
 
-                        db_model = CoolPluginTable(
+                    db_model = CoolPluginTable(
                         fullname=fullname,
                         wins_username=name,
                         email=email,
@@ -652,7 +652,7 @@ Best regards,
                         organization_name=organization_name,
                         new_organization_name=1 if is_new_organization else 0,
                         new_organization_description=new_organization_description,
-                            date_of_birth=dob,
+                        date_of_birth=dob,
                         gender=gender,
                         organizationType=organizationType,
                         nationality=nationality,
