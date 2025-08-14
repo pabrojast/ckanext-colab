@@ -1015,7 +1015,7 @@
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
                                             <br>
-                                            <small class="text-muted">{{ result.age }}y, {{ result.gender }}, {{ result.nationality }}</small>
+                                             <small class="text-muted">{{ result.date_of_birth }}, {{ result.gender }}, {{ result.nationality }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -1106,7 +1106,7 @@
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
                                             <br>
-                                            <small class="text-muted">{{ result.age }}y, {{ result.gender }}, {{ result.nationality }}</small>
+                                             <small class="text-muted">{{ result.date_of_birth }}, {{ result.gender }}, {{ result.nationality }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -1179,7 +1179,7 @@
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
                                             <br>
-                                            <small class="text-muted">{{ result.age }}y, {{ result.gender }}, {{ result.nationality }}</small>
+                                            <small class="text-muted">{{ result.date_of_birth }}, {{ result.gender }}, {{ result.nationality }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -1263,7 +1263,7 @@ let allUsers = [
         approved: "{{ result.approved }}",
         rejected: "{{ result.rejected }}",
         rejection_reason: "{{ result.rejection_reason }}",
-        age: "{{ result.age }}",
+        date_of_birth: "{{ result.date_of_birth }}",
         gender: "{{ result.gender }}",
         nationality: "{{ result.nationality }}",
         new_organization_name: "{{ result.new_organization_name }}",
@@ -1484,7 +1484,7 @@ function showUserDetails(username) {
                 <strong>Full Name:</strong> ${user.fullname}<br>
                 <strong>Username:</strong> ${user.wins_username}<br>
                 <strong>Email:</strong> ${user.email}<br>
-                <strong>Age:</strong> ${user.age} years<br>
+                 <strong>Date of Birth:</strong> ${user.date_of_birth}<br>
                 <strong>Gender:</strong> ${user.gender}<br>
                 <strong>Nationality:</strong> ${user.nationality}
             </div>

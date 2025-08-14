@@ -504,7 +504,7 @@ Best regards,
                     new_organization_name = request.form.get('new_organization_name', '').strip()
                     new_organization_description = request.form.get('new_organization_description', '').strip()
                     group_form = 0
-                    age = request.form.get('age', '')
+                    date_of_birth = request.form.get('date_of_birth', '').strip()
                     nationality = request.form.get('nationality', '').strip()
                     organizationType = request.form.get('organizationType', '').strip()
                     gender = request.form.get('gender', '').strip()
@@ -519,13 +519,32 @@ Best regards,
                     logger.info(f"Processing registration for user: {name}, email: {email}, org: {organization_name}")
                     
                     # Validate required fields
-                    if not all([email, name, password, title_within_organization, organization_name, age, nationality, gender]):
+                    if not all([email, name, password, title_within_organization, organization_name, date_of_birth, nationality, gender]):
                         logger.error("Missing required fields")
                         groups = get_all_groups_cached()
                         return render_template("index.html", errornewuserform=True, 
                                             error_message="Please fill in all required fields",
                                             groups=groups)
                     
+                    # Validate date_of_birth (must be 16+)
+                    try:
+                        from datetime import datetime, date
+                        dob = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
+                        today = date.today()
+                        age_years = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+                        if age_years < 16:
+                            logger.error("User is under 16")
+                            groups = get_all_groups_cached()
+                            return render_template("index.html", errornewuserform=True,
+                                                error_message="You must be at least 16 years old to register",
+                                                groups=groups)
+                    except Exception:
+                        logger.error("Invalid date_of_birth format")
+                        groups = get_all_groups_cached()
+                        return render_template("index.html", errornewuserform=True,
+                                            error_message="Invalid date of birth format. Use YYYY-MM-DD",
+                                            groups=groups)
+
                     # Validate password match
                     if password != confirm_password:
                         logger.error("Passwords do not match")
@@ -623,7 +642,7 @@ Best regards,
                     Session = sessionmaker(bind=engine)
                     session = Session()
 
-                    db_model = CoolPluginTable(
+                        db_model = CoolPluginTable(
                         fullname=fullname,
                         wins_username=name,
                         email=email,
@@ -633,7 +652,7 @@ Best regards,
                         organization_name=organization_name,
                         new_organization_name=1 if is_new_organization else 0,
                         new_organization_description=new_organization_description,
-                        age=age,
+                            date_of_birth=dob,
                         gender=gender,
                         organizationType=organizationType,
                         nationality=nationality,
@@ -680,7 +699,7 @@ Best regards,
                             organization_name = organization_name,
                             new_organization_name = 1 if is_new_organization else 0,
                             new_organization_description = new_organization_description,
-                            age = age,
+                            date_of_birth = dob,
                             gender = gender,
                             organizationType = organizationType,
                             nationality = nationality,

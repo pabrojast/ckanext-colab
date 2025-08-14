@@ -74,8 +74,8 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="age" class="required">{{ _('Age') }} <span class="text-danger">*</span></label>
-                    <input type="number" id="age" name="age" min="16" max="120" required placeholder="{{ _('Enter your age') }}" class="form-control">
+                    <label for="date_of_birth" class="required">Date of Birth <span class="text-danger">*</span></label>
+                    <input type="date" id="date_of_birth" name="date_of_birth" required placeholder="YYYY-MM-DD" class="form-control">
                     <div class="help-text">{{ _('Must be 16 years or older') }}</div>
                 </div>
                 <div class="form-group">
@@ -172,14 +172,14 @@
     </fieldset>
 
     <!-- Related Platforms Section -->
-    <fieldset class="form-section" style="display:none;">
+    <fieldset class="form-section">
         <legend>{{ _('Related platforms') }}</legend>
         <div class="form-section-content">
             <div class="platforms-intro">
                 <p class="section-description">{{ _('This registration form will allow you to contribute data and information on IHP WINS and related platforms. Select the related platforms you wish to contribute to.') }}</p>
             </div>
             
-            <div class="form-group" style="display:none;">
+            <div class="form-group">
                 <div class="checkbox-container">
                     <input type="checkbox" id="citizens4water" name="citizens4water" value="yes">
                     <label for="citizens4water" class="checkbox-label">
@@ -240,6 +240,7 @@
     const confirmPasswordField = document.getElementById('confirm-password');
     const matchMessage = document.getElementById('match-message');
     const submitButton = document.getElementById('submit-button');
+    const dateOfBirthField = document.getElementById('date_of_birth');
     
     // Load organizations from API
     function loadOrganizations() {
@@ -296,6 +297,10 @@
         passwordField.addEventListener('input', checkPasswordMatch);
         confirmPasswordField.addEventListener('input', checkPasswordMatch);
         form.addEventListener('submit', handleFormSubmit);
+        if (dateOfBirthField) {
+            setDOBMaxDate();
+            dateOfBirthField.addEventListener('change', validateDOB);
+        }
         
         // Check initial state of organization selection
         toggleNewOrganizationField();
@@ -310,6 +315,28 @@
         
         console.log('Form initialized successfully');
     }
+    // Date of Birth validation (16+ years)
+    function setDOBMaxDate() {
+        const today = new Date();
+        const sixteenYearsAgo = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
+        const iso = sixteenYearsAgo.toISOString().split('T')[0];
+        dateOfBirthField.setAttribute('max', iso);
+    }
+
+    function validateDOB() {
+        const dobValue = dateOfBirthField.value;
+        if (!dobValue) return false;
+        const dob = new Date(dobValue + 'T00:00:00');
+        const today = new Date();
+        const age = today.getFullYear() - dob.getFullYear() - ((today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())) ? 1 : 0);
+        if (age < 16) {
+            alert("{{ _('You must be at least 16 years old to register.') }}");
+            dateOfBirthField.focus();
+            return false;
+        }
+        return true;
+    }
+
     
     // Gender field toggle
     function toggleGenderOtherField() {
@@ -453,6 +480,14 @@
             return;
         }
         
+        // Validate Date of Birth (16+)
+        if (dateOfBirthField && !validateDOB()) {
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+            submitButton.innerHTML = '<i class="fa fa-paper-plane"></i> {{ _("Submit Application") }}';
+            return;
+        }
+
         // Check for duplicate organization
         if (!checkDuplicateOrganization()) {
             submitButton.classList.remove('loading');
