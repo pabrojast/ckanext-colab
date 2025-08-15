@@ -1002,6 +1002,7 @@
                             <th>📋 Details</th>
                             <th>🎭 Role</th>
                             <th>🌊 Citizens4Water</th>
+                            <th>💧 IHP WINS</th>
                             <th>⚡ Actions</th>
                         </tr>
                     </thead>
@@ -1051,6 +1052,15 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <div class="text-center">
+                                            {% if result.ihp_wins == 'yes' %}
+                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
+                                            {% else %}
+                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
                                         <div class="action-buttons">
                                             <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username }}')">
                                                 👁️ View
@@ -1092,6 +1102,7 @@
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
                             <th>🌊 Citizens4Water</th>
+                            <th>💧 IHP WINS</th>
                             <th>✅ Status</th>
                             <th>⚡ Actions</th>
                         </tr>
@@ -1134,6 +1145,15 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <div class="text-center">
+                                            {% if result.ihp_wins == 'yes' %}
+                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
+                                            {% else %}
+                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
                                         <span class="status-badge status-approved">{{ result.approved }}</span>
                                         <div style="margin-top: 4px; font-size: 11px; color: #666;">
                                             Role: {{ result.user_role or 'admin' }}
@@ -1164,6 +1184,7 @@
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
                             <th>🌊 Citizens4Water</th>
+                            <th>💧 IHP WINS</th>
                             <th>❌ Status</th>
                             <th>📝 Reason</th>
                             <th>⚡ Actions</th>
@@ -1200,6 +1221,15 @@
                                     <td>
                                         <div class="text-center">
                                             {% if result.citizens4water == 'yes' %}
+                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
+                                            {% else %}
+                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center">
+                                            {% if result.ihp_wins == 'yes' %}
                                                 <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
                                             {% else %}
                                                 <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
@@ -1267,7 +1297,8 @@ let allUsers = [
         gender: "{{ result.gender }}",
         nationality: "{{ result.nationality }}",
         new_organization_name: "{{ result.new_organization_name }}",
-        citizens4water: "{{ result.citizens4water }}"
+        citizens4water: "{{ result.citizens4water }}",
+        ihp_wins: "{{ result.ihp_wins }}"
     }{% if not loop.last %},{% endif %}
     {% endfor %}
 ];
@@ -1503,7 +1534,8 @@ function showUserDetails(username) {
         <div class="detail-group">
             <div class="detail-label">🌊 Platform Registration</div>
             <div class="detail-value">
-                <strong>Citizens4Water:</strong> ${user.citizens4water === 'yes' ? '✅ Yes - User wants to contribute to Citizens4Water platform' : '❌ No - User only registered for IHP WINS'}
+                <strong>Citizens4Water:</strong> ${user.citizens4water === 'yes' ? '✅ Yes - User wants to contribute to Citizens4Water platform' : '❌ No'}<br>
+                <strong>IHP WINS:</strong> ${user.ihp_wins === 'yes' ? '✅ Yes - User wants to contribute to IHP WINS data platform' : '❌ No'}
             </div>
         </div>
         

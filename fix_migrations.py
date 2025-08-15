@@ -64,6 +64,20 @@ def main():
             END IF;
         END $$;
         """,
+
+        # Verificar si la columna ihp_wins existe
+        """
+        DO $$
+        BEGIN
+            IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                          WHERE table_name = 'colab' AND column_name = 'ihp_wins') THEN
+                ALTER TABLE colab ADD COLUMN ihp_wins VARCHAR;
+                RAISE NOTICE 'Columna ihp_wins agregada';
+            ELSE
+                RAISE NOTICE 'Columna ihp_wins ya existe';
+            END IF;
+        END $$;
+        """,
         
         # Crear tabla de organization_requests si no existe
         """

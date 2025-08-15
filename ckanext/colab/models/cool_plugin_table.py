@@ -24,7 +24,8 @@ cool_plugin_table = Table(
     Column('user_role', types.String),
     Column('rejected', types.String),
     Column('rejection_reason', types.String),
-    Column('citizens4water', types.String)
+    Column('citizens4water', types.String),
+    Column('ihp_wins', types.String)
     )
 
 organization_request_table = Table(
@@ -48,7 +49,7 @@ organization_request_table = Table(
 
 
 class CoolPluginTable(domain_object.DomainObject):
-    def __init__(self, fullname=None, wins_username=None, email=None, organization_name = None, new_organization_name = None, new_organization_description = None, approved=None,  approvedgroup=None, title_within_organization=None, gender=None, date_of_birth=None, organizationType=None, nationality=None, user_role=None, rejected=None, rejection_reason=None, citizens4water=None):
+    def __init__(self, fullname=None, wins_username=None, email=None, organization_name = None, new_organization_name = None, new_organization_description = None, approved=None,  approvedgroup=None, title_within_organization=None, gender=None, date_of_birth=None, organizationType=None, nationality=None, user_role=None, rejected=None, rejection_reason=None, citizens4water=None, ihp_wins=None):
         self.fullname = fullname
         self.wins_username = wins_username        
         self.email = email
@@ -66,6 +67,7 @@ class CoolPluginTable(domain_object.DomainObject):
         self.rejected = rejected
         self.rejection_reason = rejection_reason
         self.citizens4water = citizens4water
+        self.ihp_wins = ihp_wins
 
 class OrganizationRequestTable(domain_object.DomainObject):
     def __init__(self, requester_username=None, organization_name=None, organization_description=None, 

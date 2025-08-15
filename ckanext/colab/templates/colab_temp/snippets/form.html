@@ -176,10 +176,16 @@
         <legend>{{ _('Related platforms') }}</legend>
         <div class="form-section-content">
             <div class="platforms-intro">
-                <p class="section-description">{{ _('This registration form will allow you to contribute data and information on IHP WINS and related platforms. Select the related platforms you wish to contribute to.') }}</p>
+                <p class="section-description">{{ _('This registration form will allow you to contribute data and information on IHP WINS and related platforms. Select the related platforms you wish to contribute to from the list.') }}</p>
             </div>
             
             <div class="form-group">
+                <div class="checkbox-container" style="margin-bottom: 0.5rem;">
+                    <input type="checkbox" id="ihp_wins" name="ihp_wins" value="yes">
+                    <label for="ihp_wins" class="checkbox-label">
+                        {{ _('IHP WINS data platform') }}
+                    </label>
+                </div>
                 <div class="checkbox-container">
                     <input type="checkbox" id="citizens4water" name="citizens4water" value="yes">
                     <label for="citizens4water" class="checkbox-label">
