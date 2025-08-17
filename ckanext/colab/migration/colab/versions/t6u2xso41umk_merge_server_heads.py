@@ -1,8 +1,8 @@
-"""merge heads - resolve multiple heads issue
+"""merge server heads - resolve multiple heads issue for server deployment
 
-Revision ID: ztanx25m7u8r
-Revises: bc416bb48b61, f3d4e5a6b7c8
-Create Date: 2025-08-17 17:45:00.000000
+Revision ID: t6u2xso41umk
+Revises: e9f0a1b2c3d4, a0b1c2d3e4f5
+Create Date: 2025-08-17 19:50:00.000000
 
 """
 from alembic import op
@@ -10,14 +10,14 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ztanx25m7u8r'
-down_revision = ('bc416bb48b61', 'f3d4e5a6b7c8')
+revision = 't6u2xso41umk'
+down_revision = ('e9f0a1b2c3d4', 'a0b1c2d3e4f5')
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    # Esta migración fusiona las ramas divergentes
+    # Esta migración fusiona las ramas divergentes del servidor
     # No realiza cambios en la base de datos, solo resuelve el conflicto de historial
     pass
 
