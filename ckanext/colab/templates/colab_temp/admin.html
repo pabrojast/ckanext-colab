@@ -279,7 +279,13 @@
     /* Enhanced Table */
     .table-container {
         overflow-x: auto;
+        overflow-y: visible;
         padding: 20px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow-medium);
+        border-left: 6px solid var(--unesco-blue-dark);
+        transition: all 0.3s ease;
     }
 
     .admin-table {
@@ -287,6 +293,8 @@
         border-collapse: collapse;
         font-size: 14px;
         background: white;
+        overflow: visible;
+        table-layout: auto;
     }
 
     .admin-table th {
@@ -378,7 +386,9 @@
     .action-buttons {
         display: flex;
         gap: 8px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        overflow: visible;
+        min-width: 220px;
     }
 
     .btn {
@@ -395,7 +405,7 @@
         gap: 4px;
         box-shadow: var(--shadow-light);
         position: relative;
-        overflow: hidden;
+        overflow: visible;
     }
 
     .btn::before {
@@ -582,7 +592,16 @@
 
     /* Estilos específicos para la columna de acciones */
     .action-buttons {
-        min-width: 180px !important;
+        min-width: 220px !important;
+        overflow: visible !important;
+    }
+    
+    /* Asegurar que la columna de acciones no se trunca */
+    .admin-table td:last-child,
+    .admin-table td .action-buttons {
+        overflow: visible !important;
+        min-width: 220px !important;
+        white-space: nowrap !important;
     }
 
     .action-buttons a,
