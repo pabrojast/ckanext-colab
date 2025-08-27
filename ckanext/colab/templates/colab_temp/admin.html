@@ -1009,10 +1009,10 @@
                     <tbody>
                         {% for result in results %}
                             {% if result.approved == 'Pending' and not result.rejected %}
-                                <tr data-user-id="{{ result.wins_username }}" class="user-row">
+                                <tr data-user-id="{{ result.wins_username|e }}" class="user-row">
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ result.fullname }}">{{ result.fullname }}</strong>
+                                            <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
                                             <br>
@@ -1020,23 +1020,23 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="email-full" title="{{ result.email }}">{{ result.email }}</div>
+                                        <div class="email-full" title="{{ result.email|e }}">{{ result.email }}</div>
                                     </td>
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ result.organization_name }}">{{ result.organization_name }}</strong>
+                                            <strong class="truncate" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
                                             <br>
                                             <small class="text-muted">{{ result.organizationType }}</small>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="truncate" title="{{ result.title_within_organization }}">
+                                        <div class="truncate" title="{{ result.title_within_organization|e }}">
                                             {{ result.title_within_organization }}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="role-current">Current: {{ result.user_role or 'admin' }}</div>
-                                        <select class="role-selector" id="role-{{ result.wins_username }}-{{ loop.index }}" data-original="{{ result.user_role or 'admin' }}">
+                                        <select class="role-selector" id="role-{{ result.wins_username|e }}-{{ loop.index }}" data-original="{{ (result.user_role or 'admin')|e }}">
                                             <option value="admin" {% if (result.user_role or 'admin') == 'admin' %}selected{% endif %}>Admin</option>
                                             <option value="editor" {% if result.user_role == 'editor' %}selected{% endif %}>Editor</option>
                                             <option value="member" {% if result.user_role == 'member' %}selected{% endif %}>Member</option>
@@ -1062,24 +1062,24 @@
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username }}')">
+                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')"
                                                 👁️ View
                                             </button>
                                             <a href="#" class="btn btn-approve approve-link"
-                                               data-fullname="{{ result.fullname }}"
-                                               data-wins-username="{{ result.wins_username }}"
-                                               data-organization-name="{{ result.organization_name }}"
-                                               data-title-within-organization="{{ result.title_within_organization }}"
-                                               data-new-org-description="{{ result.new_organization_description }}"
-                                               data-email="{{ result.email }}"
-                                               data-approved="{{ result.approved }}"
-                                               data-user-role="{{ result.user_role }}"
-                                               data-new-org-name="{{ result.new_organization_name }}">
+                                               data-fullname="{{ result.fullname|e }}"
+                                               data-wins-username="{{ result.wins_username|e }}"
+                                               data-organization-name="{{ result.organization_name|e }}"
+                                               data-title-within-organization="{{ result.title_within_organization|e }}"
+                                               data-new-org-description="{{ result.new_organization_description|e }}"
+                                               data-email="{{ result.email|e }}"
+                                               data-approved="{{ result.approved|e }}"
+                                               data-user-role="{{ result.user_role|e }}"
+                                               data-new-org-name="{{ result.new_organization_name|e }}">
                                                 ✅ Approve
                                             </a>
                                             <a href="#" class="btn btn-reject reject-link"
-                                               data-wins-username="{{ result.wins_username }}"
-                                               data-organization-name="{{ result.organization_name }}">
+                                               data-wins-username="{{ result.wins_username|e }}"
+                                               data-organization-name="{{ result.organization_name|e }}">
                                                 ❌ Reject
                                             </a>
                                         </div>
@@ -1110,10 +1110,10 @@
                     <tbody>
                         {% for result in results %}
                             {% if result.approved and "approved by" in result.approved %}
-                                <tr data-user-id="{{ result.wins_username }}" class="user-row">
+                                <tr data-user-id="{{ result.wins_username|e }}" class="user-row">
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ result.fullname }}">{{ result.fullname }}</strong>
+                                            <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
                                             <br>
@@ -1121,17 +1121,17 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="email-full" title="{{ result.email }}">{{ result.email }}</div>
+                                        <div class="email-full" title="{{ result.email|e }}">{{ result.email }}</div>
                                     </td>
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ result.organization_name }}">{{ result.organization_name }}</strong>
+                                            <strong class="truncate" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
                                             <br>
                                             <small class="text-muted">{{ result.organizationType }}</small>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="truncate" title="{{ result.title_within_organization }}">
+                                        <div class="truncate" title="{{ result.title_within_organization|e }}">
                                             {{ result.title_within_organization }}
                                         </div>
                                     </td>
@@ -1161,7 +1161,7 @@
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username }}')">
+                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')"
                                                 👁️ View
                                             </button>
                                         </div>
@@ -1193,10 +1193,10 @@
                     <tbody>
                         {% for result in results %}
                             {% if result.rejected and "rejected by" in result.rejected %}
-                                <tr data-user-id="{{ result.wins_username }}" class="user-row">
+                                <tr data-user-id="{{ result.wins_username|e }}" class="user-row">
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ result.fullname }}">{{ result.fullname }}</strong>
+                                            <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
                                             <br>
@@ -1204,17 +1204,17 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="email-full" title="{{ result.email }}">{{ result.email }}</div>
+                                        <div class="email-full" title="{{ result.email|e }}">{{ result.email }}</div>
                                     </td>
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ result.organization_name }}">{{ result.organization_name }}</strong>
+                                            <strong class="truncate" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
                                             <br>
                                             <small class="text-muted">{{ result.organizationType }}</small>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="truncate" title="{{ result.title_within_organization }}">
+                                        <div class="truncate" title="{{ result.title_within_organization|e }}">
                                             {{ result.title_within_organization }}
                                         </div>
                                     </td>
@@ -1243,13 +1243,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="truncate" title="{{ result.rejection_reason }}">
+                                        <div class="truncate" title="{{ result.rejection_reason|e }}">
                                             {{ result.rejection_reason }}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username }}')">
+                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')"
                                                 👁️ View
                                             </button>
                                         </div>
