@@ -308,6 +308,11 @@
     .table-container {
         overflow-x: auto;
         padding: 20px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow-medium);
+        border-left: 6px solid var(--unesco-blue-dark);
+        transition: all 0.3s ease;
     }
 
     .admin-table {
@@ -315,7 +320,16 @@
         border-collapse: collapse;
         font-size: 14px;
         background: white;
+        table-layout: fixed;
     }
+
+    /* Column width specifications for org admin */
+    .admin-table th:nth-child(1), .admin-table td:nth-child(1) { width: 25%; }
+    .admin-table th:nth-child(2), .admin-table td:nth-child(2) { width: 12%; }
+    .admin-table th:nth-child(3), .admin-table td:nth-child(3) { width: 12%; }
+    .admin-table th:nth-child(4), .admin-table td:nth-child(4) { width: 12%; }
+    .admin-table th:nth-child(5), .admin-table td:nth-child(5) { width: 15%; }
+    .admin-table th:nth-child(6), .admin-table td:nth-child(6) { width: 24%; }
 
     .admin-table th {
         background: #f8f9fa;
@@ -339,21 +353,30 @@
         background: #f8f9fa;
     }
 
-    /* Text Truncation */
+    /* Text Truncation - More restrictive */
     .truncate {
-        max-width: 150px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         cursor: help;
+        display: block;
     }
 
     .truncate-long {
-        max-width: 200px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         cursor: help;
+        display: block;
+    }
+
+    .truncate-org {
+        max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+        display: block;
     }
 
     /* Action Buttons */
@@ -664,6 +687,126 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
+
+    /* Toast Notifications */
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+
+    .toast {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow-strong);
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-left: 4px solid var(--unesco-blue);
+        min-width: 300px;
+        max-width: 400px;
+        animation: slideInRight 0.3s ease, fadeOut 0.3s ease 4.7s forwards;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .toast.success {
+        border-left-color: #28a745;
+    }
+
+    .toast.error {
+        border-left-color: #dc3545;
+    }
+
+    .toast.warning {
+        border-left-color: #ffc107;
+    }
+
+    .toast-content {
+        flex: 1;
+    }
+
+    .toast-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text-primary);
+    }
+
+    .toast-message {
+        font-size: 14px;
+        color: var(--text-secondary);
+    }
+
+    .toast-close {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: var(--text-secondary);
+        padding: 0;
+        width: 20px;
+        height: 20px;
+    }
+
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+    }
+
+    /* Row transition animations */
+    .row-processing {
+        background: #fff3cd !important;
+        transform: scale(0.98);
+        transition: all 0.3s ease;
+    }
+
+    .row-success {
+        background: #d4edda !important;
+        animation: successPulse 1s ease;
+    }
+
+    .row-fade-out {
+        animation: fadeOutRow 0.5s ease forwards;
+    }
+
+    @keyframes successPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); background: #b8e6c1; }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes fadeOutRow {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+            max-height: 100px;
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-20px);
+            max-height: 0;
+            padding: 0;
+            margin: 0;
+        }
+    }
   </style>
 {% endblock %}
 
@@ -757,9 +900,9 @@
                                 <tr data-request-id="{{ request.id }}" class="request-row">
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ request.organization_name }}">{{ request.organization_name }}</strong>
+                                            <strong class="truncate-org" title="{{ request.organization_name }}">{{ request.organization_name }}</strong>
                                             <br>
-                                            <small class="text-muted truncate-long" title="{{ request.organization_description }}">{{ request.organization_description }}</small>
+                                            <small class="text-muted truncate" title="{{ request.organization_description }}">{{ request.organization_description }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -814,9 +957,9 @@
                                 <tr data-request-id="{{ request.id }}" class="request-row">
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ request.organization_name }}">{{ request.organization_name }}</strong>
+                                            <strong class="truncate-org" title="{{ request.organization_name }}">{{ request.organization_name }}</strong>
                                             <br>
-                                            <small class="text-muted truncate-long" title="{{ request.organization_description }}">{{ request.organization_description }}</small>
+                                            <small class="text-muted truncate" title="{{ request.organization_description }}">{{ request.organization_description }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -869,9 +1012,9 @@
                                 <tr data-request-id="{{ request.id }}" class="request-row">
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ request.organization_name }}">{{ request.organization_name }}</strong>
+                                            <strong class="truncate-org" title="{{ request.organization_name }}">{{ request.organization_name }}</strong>
                                             <br>
-                                            <small class="text-muted truncate-long" title="{{ request.organization_description }}">{{ request.organization_description }}</small>
+                                            <small class="text-muted truncate" title="{{ request.organization_description }}">{{ request.organization_description }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -910,6 +1053,9 @@
         </div>
     </div>
 </div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
 
 <!-- Request Details Modal -->
 <div id="requestModal" class="modal">
@@ -950,6 +1096,7 @@ let allRequests = [
 document.addEventListener('DOMContentLoaded', function() {
     initializeAdmin();
     updateCounts();
+    setupToastSystem();
 });
 
 
@@ -1036,6 +1183,11 @@ function approveRequest(requestId) {
                           `Do you want to approve this organization request?`;
 
     if (confirm(confirmMessage)) {
+        const rowElement = document.querySelector(`tr[data-request-id="${requestId}"]`);
+        if (rowElement) {
+            rowElement.classList.add('row-processing');
+        }
+
         const formData = new FormData();
         formData.append('request_id', requestId);
 
@@ -1046,15 +1198,34 @@ function approveRequest(requestId) {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                alert('❌ Error: ' + data.error);
+                showToast('Error al aprobar', data.error, 'error');
+                if (rowElement) {
+                    rowElement.classList.remove('row-processing');
+                }
             } else {
-                alert('✅ Organization request approved successfully!\n\n' + data.message);
-                location.reload();
+                showToast('Organización aprobada', `${request.organization_name} ha sido aprobada exitosamente`, 'success');
+                
+                if (rowElement) {
+                    rowElement.classList.remove('row-processing');
+                    rowElement.classList.add('row-success');
+                    
+                    setTimeout(() => {
+                        rowElement.classList.add('row-fade-out');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 500);
+                    }, 1000);
+                } else {
+                    setTimeout(() => location.reload(), 1500);
+                }
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('❌ An error occurred while processing the approval');
+            showToast('Error de conexión', 'No se pudo procesar la aprobación. Inténtalo de nuevo.', 'error');
+            if (rowElement) {
+                rowElement.classList.remove('row-processing');
+            }
         });
     }
 }
@@ -1065,6 +1236,11 @@ function rejectRequest(requestId) {
 
     const reason = prompt("📝 Please enter the reason for rejection:");
     if (reason && reason.trim()) {
+        const rowElement = document.querySelector(`tr[data-request-id="${requestId}"]`);
+        if (rowElement) {
+            rowElement.classList.add('row-processing');
+        }
+
         const formData = new FormData();
         formData.append('request_id', requestId);
         formData.append('rejection_reason', reason.trim());
@@ -1076,15 +1252,34 @@ function rejectRequest(requestId) {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                alert('❌ Error: ' + data.error);
+                showToast('Error al rechazar', data.error, 'error');
+                if (rowElement) {
+                    rowElement.classList.remove('row-processing');
+                }
             } else {
-                alert('❌ Organization request rejected successfully');
-                location.reload();
+                showToast('Organización rechazada', `${request.organization_name} ha sido rechazada`, 'warning');
+                
+                if (rowElement) {
+                    rowElement.classList.remove('row-processing');
+                    rowElement.classList.add('row-success');
+                    
+                    setTimeout(() => {
+                        rowElement.classList.add('row-fade-out');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 500);
+                    }, 1000);
+                } else {
+                    setTimeout(() => location.reload(), 1500);
+                }
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('❌ An error occurred while processing the rejection');
+            showToast('Error de conexión', 'No se pudo procesar el rechazo. Inténtalo de nuevo.', 'error');
+            if (rowElement) {
+                rowElement.classList.remove('row-processing');
+            }
         });
     }
 }
@@ -1127,6 +1322,50 @@ function filterRequests() {
             row.style.display = 'none';
         }
     });
+}
+
+// Toast System Functions
+function setupToastSystem() {
+    // Create toast container if it doesn't exist
+    if (!document.getElementById('toast-container')) {
+        const container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+}
+
+function showToast(title, message, type = 'info') {
+    const toastContainer = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️';
+    
+    toast.innerHTML = `
+        <div style="font-size: 20px;">${icon}</div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close" onclick="closeToast(this)">×</button>
+    `;
+    
+    toastContainer.appendChild(toast);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.remove();
+        }
+    }, 5000);
+}
+
+function closeToast(button) {
+    const toast = button.closest('.toast');
+    if (toast) {
+        toast.remove();
+    }
 }
 </script>
 

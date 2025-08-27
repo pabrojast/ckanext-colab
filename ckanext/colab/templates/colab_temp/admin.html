@@ -294,8 +294,18 @@
         font-size: 14px;
         background: white;
         overflow: visible;
-        table-layout: auto;
+        table-layout: fixed;
     }
+
+    /* Column width specifications */
+    .admin-table th:nth-child(1), .admin-table td:nth-child(1) { width: 15%; }
+    .admin-table th:nth-child(2), .admin-table td:nth-child(2) { width: 15%; }
+    .admin-table th:nth-child(3), .admin-table td:nth-child(3) { width: 12%; }
+    .admin-table th:nth-child(4), .admin-table td:nth-child(4) { width: 10%; }
+    .admin-table th:nth-child(5), .admin-table td:nth-child(5) { width: 8%; }
+    .admin-table th:nth-child(6), .admin-table td:nth-child(6) { width: 8%; }
+    .admin-table th:nth-child(7), .admin-table td:nth-child(7) { width: 8%; }
+    .admin-table th:nth-child(8), .admin-table td:nth-child(8) { width: 24%; }
 
     .admin-table th {
         background: #f8f9fa;
@@ -319,21 +329,30 @@
         background: #f8f9fa;
     }
 
-    /* Text Truncation */
+    /* Text Truncation - More restrictive */
     .truncate {
-        max-width: 150px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         cursor: help;
+        display: block;
     }
 
     .truncate-long {
-        max-width: 200px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         cursor: help;
+        display: block;
+    }
+
+    .truncate-org {
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+        display: block;
     }
 
     .email-full {
@@ -908,6 +927,163 @@
         100% { transform: rotate(360deg); }
     }
 
+    /* Toast Notifications */
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+
+    .toast {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow-strong);
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-left: 4px solid var(--unesco-blue);
+        min-width: 300px;
+        max-width: 400px;
+        animation: slideInRight 0.3s ease, fadeOut 0.3s ease 4.7s forwards;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .toast.success {
+        border-left-color: #28a745;
+    }
+
+    .toast.error {
+        border-left-color: #dc3545;
+    }
+
+    .toast.warning {
+        border-left-color: #ffc107;
+    }
+
+    .toast-content {
+        flex: 1;
+    }
+
+    .toast-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text-primary);
+    }
+
+    .toast-message {
+        font-size: 14px;
+        color: var(--text-secondary);
+    }
+
+    .toast-close {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: var(--text-secondary);
+        padding: 0;
+        width: 20px;
+        height: 20px;
+    }
+
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+    }
+
+    /* Row transition animations */
+    .row-processing {
+        background: #fff3cd !important;
+        transform: scale(0.98);
+        transition: all 0.3s ease;
+    }
+
+    .row-success {
+        background: #d4edda !important;
+        animation: successPulse 1s ease;
+    }
+
+    .row-fade-out {
+        animation: fadeOutRow 0.5s ease forwards;
+    }
+
+    @keyframes successPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); background: #b8e6c1; }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes fadeOutRow {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+            max-height: 100px;
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-20px);
+            max-height: 0;
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    /* Last processed indicator */
+    .last-processed {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--unesco-blue);
+        color: white;
+        padding: 12px 18px;
+        border-radius: 25px;
+        box-shadow: var(--shadow-strong);
+        z-index: 1000;
+        animation: slideInUp 0.3s ease;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: none;
+    }
+
+    .last-processed:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(0, 114, 188, 0.3);
+    }
+
+    .last-processed.show {
+        display: block;
+    }
+
+    @keyframes slideInUp {
+        from {
+            transform: translateY(100px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
     /* Tooltip */
     .tooltip {
         position: relative;
@@ -1043,9 +1219,9 @@
                                     </td>
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
+                                            <strong class="truncate-org" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
                                             <br>
-                                            <small class="text-muted">{{ result.organizationType }}</small>
+                                            <small class="text-muted truncate" title="{{ result.organizationType|e }}">{{ result.organizationType }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -1144,9 +1320,9 @@
                                     </td>
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
+                                            <strong class="truncate-org" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
                                             <br>
-                                            <small class="text-muted">{{ result.organizationType }}</small>
+                                            <small class="text-muted truncate" title="{{ result.organizationType|e }}">{{ result.organizationType }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -1227,9 +1403,9 @@
                                     </td>
                                     <td>
                                         <div>
-                                            <strong class="truncate" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
+                                            <strong class="truncate-org" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
                                             <br>
-                                            <small class="text-muted">{{ result.organizationType }}</small>
+                                            <small class="text-muted truncate" title="{{ result.organizationType|e }}">{{ result.organizationType }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -1283,6 +1459,14 @@
     </div>
 </div>
 
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Last Processed Indicator -->
+<div class="last-processed" id="last-processed">
+    <span id="last-processed-text">👁️ Ver último procesado</span>
+</div>
+
 <!-- User Details Modal -->
 <div id="userModal" class="modal">
     <div class="modal-content">
@@ -1322,12 +1506,17 @@ let allUsers = [
     {% endfor %}
 ];
 
+// Global variables for better UX
+let lastProcessedUser = null;
+
 document.addEventListener('DOMContentLoaded', function() {
     initializeAdmin();
     setupEventListeners();
     updateCounts();
     populateFilters();
     setupRoleSelectors();
+    setupToastSystem();
+    setupLastProcessedIndicator();
 });
 
 function initializeAdmin() {
@@ -1404,7 +1593,17 @@ function handleApprove(event) {
                           `Do you want to approve this user?`;
 
     if (confirm(confirmMessage)) {
-        // Show loading state
+        // Store user info for last processed
+        lastProcessedUser = {
+            name: fullName,
+            username: winsUsername,
+            organization: organizationName,
+            role: selectedRole,
+            action: 'approved'
+        };
+
+        // Show processing state
+        rowElement.classList.add('row-processing');
         link.innerHTML = '⏳ Processing...';
         link.style.pointerEvents = 'none';
 
@@ -1427,40 +1626,39 @@ function handleApprove(event) {
         })
         .then(data => {
             if (data.error) {
-                let errorMessage = '❌ Error: ' + data.error;
-                if (data.details) {
-                    errorMessage += '\n\n' + data.details;
-                }
-                alert(errorMessage);
+                showToast('Error al aprobar', data.error, 'error');
+                rowElement.classList.remove('row-processing');
                 link.innerHTML = '✅ Approve';
                 link.style.pointerEvents = 'auto';
             } else {
-                const cell = link.closest('td');
-                if (cell) {
-                    cell.innerHTML = `<span class="status-badge status-approved">approved by ${data.user || 'admin'}</span>`;
-                }
+                // Show success state
+                rowElement.classList.remove('row-processing');
+                rowElement.classList.add('row-success');
                 
-                // Remove row from pending list
-                if (rowElement) {
-                    rowElement.remove();
-                }
+                // Show success toast
+                showToast('Usuario aprobado', `${fullName} ha sido aprobado exitosamente`, 'success');
                 
-                updateCounts();
+                // Show last processed indicator
+                showLastProcessedIndicator();
                 
-                let successMessage = '✅ User successfully approved!';
-                if (data.message) {
-                    successMessage += '\n\n' + data.message;
-                }
-                alert(successMessage);
+                // Wait for animation then remove row
+                setTimeout(() => {
+                    rowElement.classList.add('row-fade-out');
+                    setTimeout(() => {
+                        rowElement.remove();
+                        updateCounts();
+                        // Auto-switch to approved tab if it makes sense
+                        if (document.querySelectorAll('#pending .user-row').length === 0) {
+                            document.querySelector('[data-tab="approved"]').click();
+                        }
+                    }, 500);
+                }, 1000);
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            let errorMessage = '❌ An error occurred while processing the approval';
-            if (error.message) {
-                errorMessage += '\n\nDetails: ' + error.message;
-            }
-            alert(errorMessage);
+            showToast('Error de conexión', 'No se pudo procesar la aprobación. Inténtalo de nuevo.', 'error');
+            rowElement.classList.remove('row-processing');
             link.innerHTML = '✅ Approve';
             link.style.pointerEvents = 'auto';
         });
@@ -1473,10 +1671,23 @@ function handleReject(event) {
     const link = event.currentTarget;
     const username = link.getAttribute('data-wins-username');
     const organization = link.getAttribute('data-organization-name');
+    const fullName = link.closest('tr').querySelector('strong').textContent;
     
     const reason = prompt("📝 Please enter the reason for rejection:");
     if (reason && reason.trim()) {
-        // Show loading state
+        const rowElement = link.closest('tr');
+        
+        // Store user info for last processed
+        lastProcessedUser = {
+            name: fullName,
+            username: username,
+            organization: organization,
+            reason: reason,
+            action: 'rejected'
+        };
+
+        // Show processing state
+        rowElement.classList.add('row-processing');
         link.innerHTML = '⏳ Processing...';
         link.style.pointerEvents = 'none';
 
@@ -1489,33 +1700,35 @@ function handleReject(event) {
             })
             .then(data => {
                 if (data.error) {
-                    alert('❌ Error: ' + data.error);
+                    showToast('Error al rechazar', data.error, 'error');
+                    rowElement.classList.remove('row-processing');
                     link.innerHTML = '❌ Reject';
                     link.style.pointerEvents = 'auto';
                 } else {
-                    const cell = link.closest('td');
-                    if (cell) {
-                        cell.innerHTML = `<span class="status-badge status-rejected">rejected by ${data.user || 'admin'}</span>`;
-                    }
+                    // Show success state
+                    rowElement.classList.remove('row-processing');
+                    rowElement.classList.add('row-success');
                     
-                    // Remove row from pending list
-                    const rowElement = link.closest('tr');
-                    if (rowElement) {
-                        rowElement.remove();
-                    }
+                    // Show toast with rejection
+                    showToast('Usuario rechazado', `${fullName} ha sido rechazado`, 'warning');
                     
-                    updateCounts();
+                    // Show last processed indicator
+                    showLastProcessedIndicator();
                     
-                    alert('❌ User successfully rejected');
+                    // Wait for animation then remove row
+                    setTimeout(() => {
+                        rowElement.classList.add('row-fade-out');
+                        setTimeout(() => {
+                            rowElement.remove();
+                            updateCounts();
+                        }, 500);
+                    }, 1000);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                let errorMessage = '❌ An error occurred while processing the rejection';
-                if (error.message) {
-                    errorMessage += '\n\nDetails: ' + error.message;
-                }
-                alert(errorMessage);
+                showToast('Error de conexión', 'No se pudo procesar el rechazo. Inténtalo de nuevo.', 'error');
+                rowElement.classList.remove('row-processing');
                 link.innerHTML = '❌ Reject';
                 link.style.pointerEvents = 'auto';
             });
@@ -1653,6 +1866,99 @@ function setupRoleSelectors() {
             }
         });
     });
+}
+
+// Toast System Functions
+function setupToastSystem() {
+    // Create toast container if it doesn't exist
+    if (!document.getElementById('toast-container')) {
+        const container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+}
+
+function showToast(title, message, type = 'info') {
+    const toastContainer = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️';
+    
+    toast.innerHTML = `
+        <div style="font-size: 20px;">${icon}</div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close" onclick="closeToast(this)">×</button>
+    `;
+    
+    toastContainer.appendChild(toast);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.remove();
+        }
+    }, 5000);
+}
+
+function closeToast(button) {
+    const toast = button.closest('.toast');
+    if (toast) {
+        toast.remove();
+    }
+}
+
+// Last Processed Indicator Functions
+function setupLastProcessedIndicator() {
+    const indicator = document.getElementById('last-processed');
+    if (indicator) {
+        indicator.addEventListener('click', showLastProcessedDetails);
+    }
+}
+
+function showLastProcessedIndicator() {
+    const indicator = document.getElementById('last-processed');
+    if (indicator && lastProcessedUser) {
+        indicator.classList.add('show');
+        
+        // Hide after 10 seconds
+        setTimeout(() => {
+            indicator.classList.remove('show');
+        }, 10000);
+    }
+}
+
+function showLastProcessedDetails() {
+    if (lastProcessedUser) {
+        const action = lastProcessedUser.action === 'approved' ? 'aprobado' : 'rechazado';
+        const modalBody = document.getElementById('modal-body');
+        modalBody.innerHTML = `
+            <div class="detail-group">
+                <div class="detail-label">✅ Último Usuario ${action.charAt(0).toUpperCase() + action.slice(1)}</div>
+                <div class="detail-value">
+                    <strong>Nombre:</strong> ${lastProcessedUser.name}<br>
+                    <strong>Usuario:</strong> ${lastProcessedUser.username}<br>
+                    <strong>Organización:</strong> ${lastProcessedUser.organization}<br>
+                    <strong>Rol:</strong> ${lastProcessedUser.role}<br>
+                    <strong>Acción:</strong> ${action}<br>
+                    <strong>Hora:</strong> ${new Date().toLocaleString()}
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-view" onclick="document.querySelector('[data-tab=\\\"approved\\\"]').click(); closeModal();">
+                    Ver en Lista de Aprobados
+                </button>
+            </div>
+        `;
+        document.getElementById('userModal').style.display = 'block';
+        
+        // Hide the indicator since user clicked it
+        document.getElementById('last-processed').classList.remove('show');
+    }
 }
 </script>
 
