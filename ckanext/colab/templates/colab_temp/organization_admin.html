@@ -1075,20 +1075,20 @@
 let allRequests = [
     {% for request in requests %}
     {
-        id: "{{ request.id }}",
-        organization_name: "{{ request.organization_name }}",
-        organization_description: "{{ request.organization_description }}",
-        organization_type: "{{ request.organization_type }}",
-        organization_image_url: "{{ h.colab_image_url(request.organization_image_url) }}",
-        requester_username: "{{ request.requester_username }}",
-        admin_username: "{{ request.admin_username }}",
-        status: "{{ request.status }}",
-        created_date: "{{ request.created_date.strftime('%Y-%m-%d %H:%M') if request.created_date else 'N/A' }}",
-        approved_by: "{{ request.approved_by or '' }}",
-        approved_date: "{{ request.approved_date.strftime('%Y-%m-%d %H:%M') if request.approved_date else 'N/A' }}",
-        rejected_by: "{{ request.rejected_by or '' }}",
-        rejected_date: "{{ request.rejected_date.strftime('%Y-%m-%d %H:%M') if request.rejected_date else 'N/A' }}",
-        rejection_reason: "{{ request.rejection_reason or '' }}"
+        id: {{ (request.id|string or '')|tojson }},
+        organization_name: {{ (request.organization_name or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        organization_description: {{ (request.organization_description or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        organization_type: {{ (request.organization_type or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        organization_image_url: {{ (h.colab_image_url(request.organization_image_url) or '')|tojson }},
+        requester_username: {{ (request.requester_username or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        admin_username: {{ (request.admin_username or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        status: {{ (request.status or '')|tojson }},
+        created_date: {{ (request.created_date.strftime('%Y-%m-%d %H:%M') if request.created_date else 'N/A')|tojson }},
+        approved_by: {{ (request.approved_by or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        approved_date: {{ (request.approved_date.strftime('%Y-%m-%d %H:%M') if request.approved_date else 'N/A')|tojson }},
+        rejected_by: {{ (request.rejected_by or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        rejected_date: {{ (request.rejected_date.strftime('%Y-%m-%d %H:%M') if request.rejected_date else 'N/A')|tojson }},
+        rejection_reason: {{ (request.rejection_reason or '')|replace('\n', ' ')|replace('\r', '')|tojson }}
     }{% if not loop.last %},{% endif %}
     {% endfor %}
 ];
