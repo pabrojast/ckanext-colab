@@ -393,6 +393,25 @@
         
         // Validate form
         if (!form.checkValidity()) {
+            form.reportValidity();
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+            return;
+        }
+        
+        // Validate user_role is selected (not empty) for existing organizations
+        if (organizationSelect.value !== 'new' && !userRoleSelect.value) {
+            alert("{{ _('Please select a role in the organization.') }}");
+            userRoleSelect.focus();
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+            return;
+        }
+        
+        // Validate new organization name when creating new org
+        if (organizationSelect.value === 'new' && !newOrganizationNameField.value.trim()) {
+            alert("{{ _('Please enter the new organization name.') }}");
+            newOrganizationNameField.focus();
             submitButton.classList.remove('loading');
             submitButton.disabled = false;
             return;

@@ -406,24 +406,50 @@ class MyLogic():
                     return render_template("index.html", errornewuserform=True, 
                                         error_message="reCAPTCHA verification failed")
 
-                email = request.form['email']
+                email = request.form.get('email', '').strip()
                 # Ensure lowercase
-                name = request.form['wins_username'].lower()
+                name = request.form.get('wins_username', '').lower().strip()
                 # Keep only alphanumeric characters
-                fullname = request.form['fullname']
-                password = request.form['wins_password']
-                title_within_organization = request.form['title_within_organization']
-                organization_name = request.form['organization_name']
-                new_organization_name = request.form['new_organization_name']
-                new_organization_description = request.form['new_organization_description']
+                fullname = request.form.get('fullname', '').strip()
+                password = request.form.get('wins_password', '')
+                title_within_organization = request.form.get('title_within_organization', '').strip()
+                organization_name = request.form.get('organization_name', '').strip()
+                new_organization_name = request.form.get('new_organization_name', '').strip()
+                new_organization_description = request.form.get('new_organization_description', '').strip()
                 # Eliminar todos los saltos de línea de la descripción
                 new_organization_description = new_organization_description.replace('\n', '').replace('\r', '')
                 group_form = 0
-                age = request.form['age']
-                nationality = request.form['nationality']
-                organizationType = request.form['organizationType']
-                gender = request.form['gender']
-                user_role = request.form.get('user_role', 'admin')  # Default to 'admin' if not specified
+                age = request.form.get('age', '').strip()
+                nationality = request.form.get('nationality', '').strip()
+                organizationType = request.form.get('organizationType', '').strip()
+                gender = request.form.get('gender', '').strip()
+                user_role = request.form.get('user_role', '').strip()
+
+                # Server-side validation for required fields
+                required_fields = {
+                    'email': email,
+                    'wins_username': name,
+                    'wins_password': password,
+                    'title_within_organization': title_within_organization,
+                    'organization_name': organization_name,
+                    'age': age,
+                    'nationality': nationality,
+                    'gender': gender
+                }
+                
+                missing_fields = [field for field, value in required_fields.items() if not value]
+                if missing_fields:
+                    logger.error(f"Missing required fields: {missing_fields}")
+                    groups = get_all_groups_cached()
+                    return render_template("index.html", errornewuserform=True, 
+                                        error_message=f"Missing required fields: {', '.join(missing_fields)}",
+                                        groups=groups)
+
+                # Validate user_role for existing organizations
+                if organization_name != "new" and not user_role:
+                    user_role = 'member'  # Default to 'member' if not specified for existing orgs
+                elif not user_role:
+                    user_role = 'admin'  # Default to 'admin' if not specified
 
                 if (group_form == "new_group"):
                     group_form = 1
@@ -435,6 +461,13 @@ class MyLogic():
                     new_group_description = "NA"
                 
                 if(organization_name == "new"):
+                    # Validate new_organization_name is provided when creating new org
+                    if not new_organization_name:
+                        logger.error("New organization name is required when creating a new organization")
+                        groups = get_all_groups_cached()
+                        return render_template("index.html", errornewuserform=True, 
+                                            error_message="New organization name is required when creating a new organization",
+                                            groups=groups)
                     organization_name = new_organization_name
                     new_organization_name = 1
                     user_role = 'admin'  # Force admin role for new organization creators
