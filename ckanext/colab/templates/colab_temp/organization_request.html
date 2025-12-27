@@ -91,6 +91,7 @@
                     <section class="module module-narrow">
                       <div class="module-content">
                         <form method="post" enctype="multipart/form-data" class="org-request-form">
+                          <input type="hidden" name="csrf_token" value="{{ h.get_csrf_token() }}">
                           
                           <div class="form-section">
                             <h3 class="form-section-title">

@@ -24,6 +24,7 @@
 </div>
 
 <form method="POST" action="" id="data-contributor-form" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ h.get_csrf_token() }}">
     
     <!-- Personal Information Section -->
     <fieldset class="form-section">

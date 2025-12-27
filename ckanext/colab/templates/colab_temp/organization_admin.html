@@ -925,6 +925,8 @@
 </div>
 
 <script>
+const csrfToken = '{{ h.get_csrf_token() }}';
+
 // Store all requests data for filtering
 let allRequests = [
     {% for request in requests %}
@@ -1038,6 +1040,7 @@ function approveRequest(requestId) {
     if (confirm(confirmMessage)) {
         const formData = new FormData();
         formData.append('request_id', requestId);
+        formData.append('csrf_token', csrfToken);
 
         fetch('/colab/admin/organizations/approve', {
             method: 'POST',
@@ -1068,6 +1071,7 @@ function rejectRequest(requestId) {
         const formData = new FormData();
         formData.append('request_id', requestId);
         formData.append('rejection_reason', reason.trim());
+        formData.append('csrf_token', csrfToken);
 
         fetch('/colab/admin/organizations/reject', {
             method: 'POST',

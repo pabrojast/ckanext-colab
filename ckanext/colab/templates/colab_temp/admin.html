@@ -1243,6 +1243,8 @@
 </script>
 
 <script>
+const csrfToken = '{{ h.get_csrf_token() }}';
+
 // Load users data safely
 let allUsers = [];
 try {
@@ -1348,6 +1350,7 @@ function handleApprove(event) {
         formData.append('new_organization_name', newOrgName || '0');
         formData.append('new_organization_description', newOrgDescription || 'NA');
         formData.append('user_role', selectedRole);
+        formData.append('csrf_token', csrfToken);
 
         fetch('/colab/admin/approve', {
             method: 'POST',
