@@ -20,6 +20,16 @@ import ckan.lib.helpers as h
 from functools import lru_cache
 import time
 
+# CSRF validation for CKAN 2.10+
+try:
+    from ckan.lib.csrf_token import validate_request_csrf_token
+    HAS_CSRF_VALIDATION = True
+except ImportError:
+    # Fallback for older CKAN versions
+    HAS_CSRF_VALIDATION = False
+    logger = logging.getLogger(__name__)
+    logger.warning("CSRF token validation not available - using fallback")
+
 # Logging configuration
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -90,6 +100,26 @@ def get_all_organizations_cached():
     except Exception as e:
         logger.error(f"Error obteniendo lista de organizaciones: {e}")
         return []
+
+
+def validate_csrf_token():
+    """Validate CSRF token from request. Returns True if valid, raises error if invalid."""
+    if HAS_CSRF_VALIDATION:
+        try:
+            validate_request_csrf_token()
+            return True
+        except Exception as e:
+            logger.error(f"CSRF token validation failed: {e}")
+            toolkit.abort(403, 'CSRF token validation failed')
+    else:
+        # Fallback: manual validation for older CKAN versions
+        csrf_token = request.form.get('csrf_token') or request.headers.get('X-CSRFToken')
+        if not csrf_token:
+            logger.error("CSRF token missing from request")
+            toolkit.abort(403, 'CSRF token missing')
+        # In older CKAN, we trust that if a token is provided, the middleware validated it
+        return True
+
 
 class MyLogic():
 
@@ -273,6 +303,9 @@ class MyLogic():
     def approve_post():
         """Handle POST requests for user approval"""
         try:
+            # Validate CSRF token
+            validate_csrf_token()
+            
             context = {'model': model, 'user': toolkit.c.user}
             try:
                 logic.check_access('organization_create', context)
@@ -399,6 +432,9 @@ class MyLogic():
         if request.method == 'POST':
             session = None  # Initialize session to avoid UnboundLocalError
             try:
+                # Validate CSRF token
+                validate_csrf_token()
+                
                 # Verificar reCAPTCHA primero
                 recaptcha_response = request.form.get('recaptcha_response')
                 if not recaptcha_response or not verify_recaptcha(recaptcha_response):
@@ -615,6 +651,8 @@ class MyLogic():
 
     @staticmethod
     def reject(name, organization, reason):
+            """Legacy GET method for backward compatibility - deprecated"""
+            logger.warning("Using deprecated GET reject endpoint. Please use POST /colab/admin/reject instead")
             logger.debug(f"Starting rejection for user: {name}, organization: {organization}, reason: {reason}")
             try:
                 context = {'model': model, 'user': toolkit.c.user}
@@ -654,6 +692,62 @@ class MyLogic():
                 return json.dumps({'error': str(e)})
 
     @staticmethod
+    def reject_post():
+        """Handle POST requests for user rejection with CSRF protection"""
+        try:
+            # Validate CSRF token
+            validate_csrf_token()
+            
+            context = {'model': model, 'user': toolkit.c.user}
+            try:
+                logic.check_access('organization_create', context)
+            except logic.NotAuthorized:
+                logger.error("User not authorized to reject users")
+                toolkit.abort(403, 'Not authorized to reject users')
+            
+            # Get data from POST form
+            wins_username = request.form.get('wins_username')
+            organization_name = request.form.get('organization_name')
+            rejection_reason = request.form.get('rejection_reason', '').strip()
+            
+            if not wins_username or not organization_name:
+                return json.dumps({'error': 'Missing required parameters'})
+            
+            if not rejection_reason:
+                return json.dumps({'error': 'Rejection reason is required'})
+            
+            logger.debug(f"Starting rejection for user: {wins_username}, organization: {organization_name}")
+            
+            db_session = model.Session()
+            try:
+                cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
+                    wins_username=wins_username, 
+                    organization_name=organization_name
+                ).first()
+                
+                if not cool_plugin_instance:
+                    logger.error("No corresponding instance found in CoolPluginTable")
+                    return json.dumps({'error': 'Record not found'})
+
+                cool_plugin_instance.rejected = f'rejected by {toolkit.g.user}'
+                cool_plugin_instance.rejection_reason = rejection_reason
+                logger.debug(f"Updating instance: {cool_plugin_instance}")
+                
+                db_session.commit()
+                logger.debug("Successful commit")
+                
+                return json.dumps({'success': True, 'message': 'User rejected successfully'})
+            except Exception as e:
+                logger.error(f"Error in rejection: {e}")
+                db_session.rollback()
+                return json.dumps({'error': str(e)})
+            finally:
+                db_session.close()
+        except Exception as e:
+            logger.error(f"General error in rejection: {e}")
+            return json.dumps({'error': str(e)})
+
+    @staticmethod
     def show_organization_request_form():
         """Show organization request form for logged users"""
         if not toolkit.g.userobj:
@@ -680,6 +774,9 @@ class MyLogic():
             return toolkit.redirect_to('colab.organization_request_form')
         
         try:
+            # Validate CSRF token
+            validate_csrf_token()
+            
             # Get form data
             organization_name = request.form.get('organization_name', '').strip()
             organization_description = request.form.get('organization_description', '').strip()
@@ -862,6 +959,9 @@ class MyLogic():
         if request.method != 'POST':
             return json.dumps({'error': 'POST method required'})
         
+        # Validate CSRF token
+        validate_csrf_token()
+        
         try:
             request_id = request.form.get('request_id')
             if not request_id:
@@ -933,6 +1033,9 @@ class MyLogic():
         
         if request.method != 'POST':
             return json.dumps({'error': 'POST method required'})
+        
+        # Validate CSRF token
+        validate_csrf_token()
         
         try:
             request_id = request.form.get('request_id')

@@ -60,11 +60,20 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['GET']
         )
 
+        # Legacy GET route for backward compatibility - deprecated
         blueprint.add_url_rule(
             u'/colab/admin/reject/<name>/<organization>/<reason>',
             u'reject',
             MyLogic.reject,
             methods=['GET']
+        )
+
+        # New POST route for reject with CSRF protection
+        blueprint.add_url_rule(
+            u'/colab/admin/reject',
+            u'reject_post',
+            MyLogic.reject_post,
+            methods=['POST']
         )
 
         # Organization request routes

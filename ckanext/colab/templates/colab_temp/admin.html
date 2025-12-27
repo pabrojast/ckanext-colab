@@ -1404,7 +1404,17 @@ function handleReject(event) {
         link.innerHTML = '⏳ Processing...';
         link.style.pointerEvents = 'none';
 
-        fetch(`/colab/admin/reject/${encodeURIComponent(username)}/${encodeURIComponent(organization)}/${encodeURIComponent(reason)}`)
+        // Use POST with CSRF token instead of GET
+        const formData = new FormData();
+        formData.append('wins_username', username);
+        formData.append('organization_name', organization);
+        formData.append('rejection_reason', reason.trim());
+        formData.append('csrf_token', csrfToken);
+
+        fetch('/colab/admin/reject', {
+            method: 'POST',
+            body: formData
+        })
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
