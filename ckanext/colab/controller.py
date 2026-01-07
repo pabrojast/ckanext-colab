@@ -285,6 +285,8 @@ class MyLogic():
                                   'role': user_role})
 
                 # Actualizar status después de cualquier operación exitosa
+                cool_plugin_instance.rejected = None
+                cool_plugin_instance.rejection_reason = None
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
                 db_session.commit()
                 
@@ -375,6 +377,8 @@ class MyLogic():
                         return json.dumps({'error': f'Organization {organization_name} does not exist'})
 
                 # Actualizar status después de cualquier operación exitosa
+                cool_plugin_instance.rejected = None
+                cool_plugin_instance.rejection_reason = None
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
                 organizationapi['user'] = toolkit.g.user
                 db_session.commit()
@@ -573,7 +577,7 @@ class MyLogic():
                         email=email,
                         title_within_organization=title_within_organization,
                         approved="Pending",
-                        approvedgroup="Pending",
+                        approvedgroup="Auto-approved (C4Water)",
                         organization_name=organization_name,
                         new_organization_name=new_organization_name,
                         new_organization_description=new_organization_description,
@@ -582,6 +586,8 @@ class MyLogic():
                         organizationType=organizationType,
                         nationality=nationality,
                         user_role=user_role,
+                        created_date=datetime.now(),
+                        c4water_status='auto_approved',
                     )
 
                     session.add(db_model)
@@ -619,7 +625,7 @@ class MyLogic():
                             email=email,
                             title_within_organization=title_within_organization,
                             approved="Pending",
-                            approvedgroup="Pending",
+                            approvedgroup="Auto-approved (C4Water)",
                             organization_name = organization_name,
                             new_organization_name = new_organization_name,
                             new_organization_description = new_organization_description,
@@ -628,6 +634,8 @@ class MyLogic():
                             organizationType = organizationType,
                             nationality = nationality,
                             user_role=user_role,
+                            created_date=datetime.now(),
+                            c4water_status='auto_approved',
                         )
 
                         session.add(db_model)

@@ -628,6 +628,18 @@
         color: #721c24;
     }
 
+    .application-date {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+    }
+
+    .platform-badges {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
     /* Modal Styles - UNESCO Theme */
     .modal {
         display: none;
@@ -1000,6 +1012,7 @@
                             <th>📧 Contact</th>
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
+                            <th>📅 Application</th>
                             <th>🎭 Role</th>
                             <th>⚡ Actions</th>
                         </tr>
@@ -1008,6 +1021,9 @@
                         {% for result in results %}
                             {% if result.approved == 'Pending' and not result.rejected %}
                                 <tr data-user-id="{{ result.wins_username }}" class="user-row">
+                                    {% set application_date = result.created_date.strftime('%Y-%m-%d %H:%M') if result.created_date else 'N/A' %}
+                                    {% set c4_status_raw = result.c4water_status or 'auto_approved' %}
+                                    {% set c4_status_label = 'Auto-approved (user created)' if c4_status_raw == 'auto_approved' else c4_status_raw %}
                                     <td>
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname }}">{{ result.fullname }}</strong>
@@ -1030,6 +1046,13 @@
                                     <td>
                                         <div class="truncate" title="{{ result.title_within_organization }}">
                                             {{ result.title_within_organization }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="application-date">Applied: {{ application_date }}</div>
+                                        <div class="platform-badges">
+                                            <span class="status-badge status-approved">C4Water: {{ c4_status_label }}</span>
+                                            <span class="status-badge status-pending">IHP-WINS: Pending</span>
                                         </div>
                                     </td>
                                     <td>
@@ -1081,6 +1104,7 @@
                             <th>📧 Contact</th>
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
+                            <th>📅 Application</th>
                             <th>✅ Status</th>
                             <th>⚡ Actions</th>
                         </tr>
@@ -1089,6 +1113,9 @@
                         {% for result in results %}
                             {% if result.approved and "approved by" in result.approved %}
                                 <tr data-user-id="{{ result.wins_username }}" class="user-row">
+                                    {% set application_date = result.created_date.strftime('%Y-%m-%d %H:%M') if result.created_date else 'N/A' %}
+                                    {% set c4_status_raw = result.c4water_status or 'auto_approved' %}
+                                    {% set c4_status_label = 'Auto-approved (user created)' if c4_status_raw == 'auto_approved' else c4_status_raw %}
                                     <td>
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname }}">{{ result.fullname }}</strong>
@@ -1111,6 +1138,13 @@
                                     <td>
                                         <div class="truncate" title="{{ result.title_within_organization }}">
                                             {{ result.title_within_organization }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="application-date">Applied: {{ application_date }}</div>
+                                        <div class="platform-badges">
+                                            <span class="status-badge status-approved">C4Water: {{ c4_status_label }}</span>
+                                            <span class="status-badge status-approved">IHP-WINS: {{ result.approved }}</span>
                                         </div>
                                     </td>
                                     <td>
@@ -1143,6 +1177,7 @@
                             <th>📧 Contact</th>
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
+                            <th>📅 Application</th>
                             <th>❌ Status</th>
                             <th>📝 Reason</th>
                             <th>⚡ Actions</th>
@@ -1152,6 +1187,9 @@
                         {% for result in results %}
                             {% if result.rejected and "rejected by" in result.rejected %}
                                 <tr data-user-id="{{ result.wins_username }}" class="user-row">
+                                    {% set application_date = result.created_date.strftime('%Y-%m-%d %H:%M') if result.created_date else 'N/A' %}
+                                    {% set c4_status_raw = result.c4water_status or 'auto_approved' %}
+                                    {% set c4_status_label = 'Auto-approved (user created)' if c4_status_raw == 'auto_approved' else c4_status_raw %}
                                     <td>
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname }}">{{ result.fullname }}</strong>
@@ -1177,6 +1215,13 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <div class="application-date">Applied: {{ application_date }}</div>
+                                        <div class="platform-badges">
+                                            <span class="status-badge status-approved">C4Water: {{ c4_status_label }}</span>
+                                            <span class="status-badge status-rejected">IHP-WINS: {{ result.rejected }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
                                         <span class="status-badge status-rejected">{{ result.rejected }}</span>
                                         <div style="margin-top: 4px; font-size: 11px; color: #666;">
                                             Role: {{ result.user_role or 'admin' }}
@@ -1189,6 +1234,18 @@
                                     </td>
                                     <td>
                                         <div class="action-buttons">
+                                            <a href="#" class="btn btn-approve approve-link"
+                                               data-fullname="{{ result.fullname }}"
+                                               data-wins-username="{{ result.wins_username }}"
+                                               data-organization-name="{{ result.organization_name }}"
+                                               data-title-within-organization="{{ result.title_within_organization }}"
+                                               data-new-org-description="{{ result.new_organization_description }}"
+                                               data-email="{{ result.email }}"
+                                               data-approved="{{ result.approved }}"
+                                               data-user-role="{{ result.user_role }}"
+                                               data-new-org-name="{{ result.new_organization_name }}">
+                                                ✅ Approve
+                                            </a>
                                             <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username }}')">
                                                 👁️ View
                                             </button>
@@ -1225,11 +1282,13 @@
   "fullname": {{ (result.fullname or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
   "wins_username": {{ (result.wins_username or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
   "email": {{ (result.email or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "created_date": {{ (result.created_date.strftime('%Y-%m-%d %H:%M') if result.created_date else '')|tojson }},
   "organization_name": {{ (result.organization_name or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
   "organizationType": {{ (result.organizationType or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
   "title_within_organization": {{ (result.title_within_organization or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
   "new_organization_description": {{ (result.new_organization_description or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
   "user_role": {{ (result.user_role or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+  "c4water_status": {{ (result.c4water_status or 'auto_approved')|replace('\n', ' ')|replace('\r', '')|tojson }},
   "approved": {{ (result.approved or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
   "rejected": {{ (result.rejected or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
   "rejection_reason": {{ (result.rejection_reason or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
@@ -1256,6 +1315,31 @@ try {
 } catch (e) {
     console.error('Error loading users data:', e);
     allUsers = [];
+}
+
+function getUserRecord(username) {
+    return allUsers.find(u => u.wins_username === username);
+}
+
+function getC4StatusLabel(user) {
+    const raw = (user && user.c4water_status) ? user.c4water_status : 'auto_approved';
+    return raw === 'auto_approved' ? 'Auto-approved (user created)' : raw;
+}
+
+function getWinsStatus(user) {
+    if (!user) {
+        return { label: 'Pending', code: 'pending' };
+    }
+
+    if (user.rejected) {
+        return { label: user.rejected, code: 'rejected' };
+    }
+
+    if (user.approved && user.approved.toLowerCase().includes('approved')) {
+        return { label: user.approved, code: 'approved' };
+    }
+
+    return { label: 'Pending', code: 'pending' };
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1321,6 +1405,10 @@ function handleApprove(event) {
     const newOrgDescription = link.getAttribute('data-new-org-description');
     const userRole = link.getAttribute('data-user-role');
     const newOrgName = link.getAttribute('data-new-org-name');
+    const userRecord = getUserRecord(winsUsername);
+    const appliedOn = (userRecord && userRecord.created_date) ? userRecord.created_date : 'N/A';
+    const c4Status = getC4StatusLabel(userRecord);
+    const winsStatus = getWinsStatus(userRecord).label;
 
     // Get the selected role from the dropdown
     const row = link.closest('tr');
@@ -1334,6 +1422,9 @@ function handleApprove(event) {
                           `👤 Name: ${fullName}\n` +
                           `🔑 Username: ${winsUsername}\n` +
                           `🏢 Organization: ${organizationName}\n` +
+                          `📅 Applied: ${appliedOn}\n` +
+                          `💧 C4Water: ${c4Status}\n` +
+                          `🏛️ IHP-WINS: ${winsStatus}\n` +
                           `📋 Title: ${titleWithinOrganization}\n` +
                           `📧 Email: ${email}\n` +
                           `🎭 Role: ${selectedRole}${roleChange}\n\n` +
@@ -1393,12 +1484,25 @@ function handleApprove(event) {
 
 function handleReject(event) {
     event.preventDefault();
-    
+
     const link = event.currentTarget;
     const username = link.getAttribute('data-wins-username');
     const organization = link.getAttribute('data-organization-name');
-    
-    const reason = prompt("📝 Please enter the reason for rejection:");
+    const userRecord = getUserRecord(username);
+    const appliedOn = (userRecord && userRecord.created_date) ? userRecord.created_date : 'N/A';
+    const c4Status = getC4StatusLabel(userRecord);
+    const winsStatus = getWinsStatus(userRecord).label;
+    const displayName = (userRecord && userRecord.fullname) ? userRecord.fullname : username;
+
+    const reason = prompt(
+        "📝 REJECT USER\n\n" +
+        `👤 Name: ${displayName}\n` +
+        `🏢 Organization: ${organization}\n` +
+        `📅 Applied: ${appliedOn}\n` +
+        `💧 C4Water: ${c4Status}\n` +
+        `🏛️ IHP-WINS: ${winsStatus}\n\n` +
+        "Please enter the reason for rejection:"
+    );
     if (reason && reason.trim()) {
         // Show loading state
         link.innerHTML = '⏳ Processing...';
@@ -1451,8 +1555,12 @@ function handleReject(event) {
 }
 
 function showUserDetails(username) {
-    const user = allUsers.find(u => u.wins_username === username);
+    const user = getUserRecord(username);
     if (!user) return;
+
+    const c4Status = getC4StatusLabel(user);
+    const winsStatus = getWinsStatus(user);
+    const appliedOn = user.created_date || 'N/A';
 
     const modalBody = document.getElementById('modal-body');
     modalBody.innerHTML = `
@@ -1477,6 +1585,15 @@ function showUserDetails(username) {
                 <strong>User Role:</strong> ${user.user_role || 'admin'}
             </div>
         </div>
+
+        <div class="detail-group">
+            <div class="detail-label">📅 Application</div>
+            <div class="detail-value">
+                <strong>Applied:</strong> ${appliedOn}<br>
+                <strong>C4Water:</strong> ${c4Status}<br>
+                <strong>IHP-WINS:</strong> ${winsStatus.label}
+            </div>
+        </div>
         
         ${user.new_organization_description ? `
         <div class="detail-group">
@@ -1488,7 +1605,7 @@ function showUserDetails(username) {
         <div class="detail-group">
             <div class="detail-label">📊 Status Information</div>
             <div class="detail-value">
-                <strong>Approval Status:</strong> ${user.approved || 'Pending'}<br>
+                <strong>IHP-WINS Status:</strong> ${winsStatus.label}<br>
                 ${user.rejected ? `<strong>Rejection Status:</strong> ${user.rejected}<br>` : ''}
                 ${user.rejection_reason ? `<strong>Rejection Reason:</strong> ${user.rejection_reason}` : ''}
             </div>

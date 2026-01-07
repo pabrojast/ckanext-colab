@@ -11,8 +11,10 @@ cool_plugin_table = Table(
     Column('fullname', types.String),
     Column('wins_username', types.String),
     Column('email', types.String),
+    Column('created_date', types.DateTime),
     Column('approved', types.String),
     Column('approvedgroup', types.String),
+    Column('c4water_status', types.String),
     Column('organization_name', types.String),
     Column('new_organization_name', types.Integer),
     Column('new_organization_description', types.String), 
@@ -47,14 +49,16 @@ organization_request_table = Table(
 
 
 class CoolPluginTable(domain_object.DomainObject):
-    def __init__(self, fullname=None, wins_username=None, email=None, organization_name = None, new_organization_name = None, new_organization_description = None, approved=None,  approvedgroup=None, title_within_organization=None, gender=None,age=None, organizationType=None, nationality=None, user_role=None, rejected=None, rejection_reason=None):
+    def __init__(self, fullname=None, wins_username=None, email=None, organization_name = None, new_organization_name = None, new_organization_description = None, approved=None,  approvedgroup=None, title_within_organization=None, gender=None,age=None, organizationType=None, nationality=None, user_role=None, rejected=None, rejection_reason=None, created_date=None, c4water_status=None):
         self.fullname = fullname
         self.wins_username = wins_username        
         self.email = email
+        self.created_date = created_date
         self.organization_name = organization_name
         self.new_organization_name = new_organization_name
         self.approved = approved
         self.approvedgroup = approvedgroup
+        self.c4water_status = c4water_status
         self.title_within_organization = title_within_organization
         self.gender = gender
         self.age = age
