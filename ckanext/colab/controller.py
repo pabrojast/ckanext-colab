@@ -3,7 +3,7 @@ import ckan.plugins.toolkit as toolkit
 import ckan.model as model
 import ckan.logic as logic
 from ckanext.colab.models.cool_plugin_table import CoolPluginTable, OrganizationRequestTable
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text, inspect
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import re 
@@ -27,6 +27,36 @@ Base = declarative_base()
 
 # Cache with 5 minutes expiration time
 _cache_timestamp = {}
+
+
+
+def ensure_colab_schema(engine=None):
+    """Ensure expected columns exist on the colab table to avoid runtime errors."""
+    engine = engine or model.meta.engine
+    try:
+        inspector = inspect(engine)
+        columns = {col['name'] for col in inspector.get_columns('colab')}
+    except Exception as e:
+        logger.warning("Could not inspect colab table: %s", e)
+        return
+
+    statements = []
+    if 'created_date' not in columns:
+        statements.append("ALTER TABLE colab ADD COLUMN created_date TIMESTAMP DEFAULT NOW()")
+    if 'age' not in columns:
+        statements.append("ALTER TABLE colab ADD COLUMN age INTEGER")
+    if 'c4water_status' not in columns:
+        statements.append("ALTER TABLE colab ADD COLUMN c4water_status VARCHAR")
+
+    for stmt in statements:
+        try:
+            with engine.begin() as conn:
+                conn.execute(text(stmt))
+            logger.info("Added missing column to colab table with statement: %s", stmt)
+        except Exception as e:
+            logger.warning("Could not add column with statement '%s': %s", stmt, e)
+
+ensure_colab_schema()
 
 def timed_lru_cache(seconds: int, maxsize: int = 128):
     """LRU cache que expira después de un tiempo específico"""
@@ -443,6 +473,7 @@ Best regards,
             toolkit.abort(403, 'Need to be system administrator')
         # Crear una sesión de SQLAlchemy
         engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+        ensure_colab_schema(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
 
@@ -639,6 +670,7 @@ Best regards,
                     
                     # Add data to CoolPluginTable for existing user
                     engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+                    ensure_colab_schema(engine)
                     Base.metadata.create_all(engine)
                     Session = sessionmaker(bind=engine)
                     session = Session()
@@ -654,12 +686,15 @@ Best regards,
                         new_organization_name=1 if is_new_organization else 0,
                         new_organization_description=new_organization_description,
                         date_of_birth=dob,
+                        age=age_years,
                         gender=gender,
                         organizationType=organizationType,
                         nationality=nationality,
+                        c4water_status='auto_approved',
                         user_role=user_role,
                         citizens4water=citizens4water,
                         ihp_wins=ihp_wins,
+                        created_date=datetime.now(),
                     )
 
                     session.add(db_model)
@@ -687,6 +722,7 @@ Best regards,
                         }
                         # Add data to CoolPluginTable
                         engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+                        ensure_colab_schema(engine)
                         Base.metadata.create_all(engine)
                         Session = sessionmaker(bind=engine)
                         session = Session()
@@ -702,12 +738,15 @@ Best regards,
                             new_organization_name = 1 if is_new_organization else 0,
                             new_organization_description = new_organization_description,
                             date_of_birth = dob,
+                            age = age_years,
                             gender = gender,
                             organizationType = organizationType,
                             nationality = nationality,
+                            c4water_status='auto_approved',
                             user_role=user_role,
                             citizens4water=citizens4water,
                             ihp_wins=ihp_wins,
+                            created_date=datetime.now(),
                         )
 
                         session.add(db_model)

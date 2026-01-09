@@ -1,6 +1,7 @@
 from sqlalchemy import Table, Column, types, MetaData
 from ckan.model import meta
 from ckan.model import meta, Package, domain_object
+from datetime import datetime
 
 metadata = MetaData()
 
@@ -11,6 +12,7 @@ cool_plugin_table = Table(
     Column('fullname', types.String),
     Column('wins_username', types.String),
     Column('email', types.String),
+    Column('created_date', types.DateTime, default=datetime.utcnow),
     Column('approved', types.String),
     Column('approvedgroup', types.String),
     Column('organization_name', types.String),
@@ -21,6 +23,8 @@ cool_plugin_table = Table(
     Column('organizationType', types.String),
     Column('nationality', types.String),
     Column('date_of_birth', types.Date),
+    Column('age', types.Integer),
+    Column('c4water_status', types.String),
     Column('user_role', types.String),
     Column('rejected', types.String),
     Column('rejection_reason', types.String),
@@ -49,10 +53,16 @@ organization_request_table = Table(
 
 
 class CoolPluginTable(domain_object.DomainObject):
-    def __init__(self, fullname=None, wins_username=None, email=None, organization_name = None, new_organization_name = None, new_organization_description = None, approved=None,  approvedgroup=None, title_within_organization=None, gender=None, date_of_birth=None, organizationType=None, nationality=None, user_role=None, rejected=None, rejection_reason=None, citizens4water=None, ihp_wins=None):
+    def __init__(self, fullname=None, wins_username=None, email=None, organization_name=None,
+                 new_organization_name=None, new_organization_description=None, approved=None,
+                 approvedgroup=None, title_within_organization=None, gender=None,
+                 date_of_birth=None, organizationType=None, nationality=None, age=None,
+                 c4water_status=None, user_role=None, rejected=None, rejection_reason=None,
+                 citizens4water=None, ihp_wins=None, created_date=None):
         self.fullname = fullname
         self.wins_username = wins_username        
         self.email = email
+        self.created_date = created_date
         self.organization_name = organization_name
         self.new_organization_name = new_organization_name
         self.approved = approved
@@ -60,9 +70,11 @@ class CoolPluginTable(domain_object.DomainObject):
         self.title_within_organization = title_within_organization
         self.gender = gender
         self.date_of_birth = date_of_birth
+        self.age = age
         self.new_organization_description = new_organization_description
         self.organizationType = organizationType
         self.nationality = nationality
+        self.c4water_status = c4water_status
         self.user_role = user_role
         self.rejected = rejected
         self.rejection_reason = rejection_reason
