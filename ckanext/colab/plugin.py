@@ -4,6 +4,10 @@ import ckan.model as model
 from ckan.lib.plugins import DefaultTranslation
 from flask import Blueprint
 from ckanext.colab.controller import MyLogic
+import logging
+
+
+log = logging.getLogger(__name__)
 
 
 class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
@@ -120,7 +124,8 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
     def get_helpers(self):
         return {
             'get_site_key': lambda: toolkit.config.get('ckan.recaptcha.publickey'),
-            'colab_image_url': self._colab_image_url
+            'colab_image_url': self._colab_image_url,
+            'get_csrf_token': self._get_csrf_token
         }
 
     def _colab_image_url(self, image_path):
@@ -137,3 +142,29 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'uploads/page_images/%s' % image_path,
             qualified=True
         )
+
+    def _get_csrf_token(self):
+        """
+        Return a CSRF token compatible with CKAN's validation helper.
+        Attempts CKAN's internal generators first and falls back to Flask-WTF.
+        """
+        try:
+            from ckan.lib import csrf_token  # CKAN >= 2.9
+            for attr in ('_get_or_create_token', 'get_or_create_token', 'get_token', 'get_csrf_token'):
+                getter = getattr(csrf_token, attr, None)
+                if callable(getter):
+                    return getter()
+        except Exception as e:
+            log.warning("Could not get CSRF token from CKAN helpers: %s", e)
+
+        # Fallback to any token already on the request
+        token = getattr(toolkit.request, 'csrf_token', None)
+        if token:
+            return token
+
+        try:
+            from flask_wtf.csrf import generate_csrf
+            return generate_csrf()
+        except Exception as e:
+            log.error("CSRF token generation failed: %s", e)
+            return ''
