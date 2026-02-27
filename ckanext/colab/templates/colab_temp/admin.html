@@ -424,7 +424,7 @@
         gap: 4px;
         box-shadow: var(--shadow-light);
         position: relative;
-        overflow: visible;
+        overflow: hidden;
     }
 
     .btn::before {
@@ -436,6 +436,7 @@
         height: 100%;
         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
         transition: left 0.5s ease;
+        pointer-events: none;
     }
 
     .btn:hover::before {
@@ -450,7 +451,6 @@
 
     .btn-approve:hover {
         background: linear-gradient(135deg, #388e3c 0%, #2e7d32 100%) !important;
-        transform: translateY(-2px);
         box-shadow: var(--shadow-medium);
         border-color: #388e3c !important;
         color: white !important;
@@ -465,7 +465,6 @@
 
     .btn-reject:hover {
         background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%) !important;
-        transform: translateY(-2px);
         box-shadow: var(--shadow-medium);
         border-color: #d32f2f !important;
         color: white !important;
@@ -480,7 +479,6 @@
 
     .btn-view:hover {
         background: linear-gradient(135deg, var(--unesco-blue-dark) 0%, #004080 100%) !important;
-        transform: translateY(-2px);
         box-shadow: var(--shadow-medium);
         border-color: var(--unesco-blue-dark) !important;
         color: white !important;
