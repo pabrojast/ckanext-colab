@@ -4,6 +4,7 @@ import ckan.model as model
 from ckan.lib.plugins import DefaultTranslation
 from flask import Blueprint
 from ckanext.colab.controller import MyLogic
+from ckanext.colab.models.cool_plugin_table import CoolPluginTable
 
 
 class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
@@ -111,8 +112,20 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
     def get_helpers(self):
         return {
             'get_site_key': lambda: toolkit.config.get('ckan.recaptcha.publickey'),
-            'colab_image_url': self._colab_image_url
+            'colab_image_url': self._colab_image_url,
+            'colab_pending_count': self._colab_pending_count
         }
+
+    def _colab_pending_count(self):
+        """Return the number of pending user approval requests."""
+        try:
+            count = model.Session.query(CoolPluginTable).filter(
+                CoolPluginTable.approved == 'Pending',
+                CoolPluginTable.rejected == None
+            ).count()
+            return count
+        except Exception:
+            return 0
 
     def _colab_image_url(self, image_path):
         """Generate full URL for colab organization images"""
