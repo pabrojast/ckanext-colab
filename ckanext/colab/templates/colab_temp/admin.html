@@ -1410,6 +1410,17 @@
                                             <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')">
                                                 👁️ View
                                             </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="rejected" class="tab-content">
             <div class="table-container">
                 <table class="admin-table">
                     <thead>
