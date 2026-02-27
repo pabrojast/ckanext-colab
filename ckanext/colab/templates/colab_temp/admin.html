@@ -765,6 +765,57 @@
         line-height: 1.5;
     }
 
+    .modal-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        padding: 20px 25px;
+        border-top: 1px solid #e9ecef;
+        background: var(--unesco-gray);
+        border-radius: 0 0 20px 20px;
+    }
+
+    .modal-actions .modal-role-selector {
+        padding: 10px 14px;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 0.95em;
+        margin-right: auto;
+        background: white;
+    }
+
+    .modal-actions .btn {
+        padding: 10px 24px;
+        font-size: 1em;
+        font-weight: 600;
+        border-radius: 10px;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s ease;
+    }
+
+    .modal-actions .btn-approve {
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: white;
+    }
+
+    .modal-actions .btn-approve:hover {
+        background: linear-gradient(135deg, #218838, #1e7e34);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+
+    .modal-actions .btn-reject {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+    }
+
+    .modal-actions .btn-reject:hover {
+        background: linear-gradient(135deg, #c82333, #bd2130);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+
     /* Responsive Design - UNESCO Theme */
     @media (max-width: 768px) {
         .admin-header {
@@ -1257,8 +1308,8 @@
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')"
-                                                👁️ View
+                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}', true)">
+                                                👁️ Review
                                             </button>
                                             <a href="#" class="btn btn-approve approve-link"
                                                data-fullname="{{ result.fullname|e }}"
@@ -1356,20 +1407,9 @@
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')"
+                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')">
                                                 👁️ View
                                             </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="rejected" class="tab-content">
             <div class="table-container">
                 <table class="admin-table">
                     <thead>
@@ -1444,7 +1484,7 @@
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')"
+                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')">
                                                 👁️ View
                                             </button>
                                         </div>
@@ -1476,6 +1516,9 @@
         </div>
         <div class="modal-body" id="modal-body">
             <!-- Content will be populated by JavaScript -->
+        </div>
+        <div class="modal-actions" id="modal-actions" style="display: none;">
+            <!-- Action buttons populated by JavaScript for pending users -->
         </div>
     </div>
 </div>
@@ -1735,7 +1778,7 @@ function handleReject(event) {
     }
 }
 
-function showUserDetails(username) {
+function showUserDetails(username, isPending) {
     const user = allUsers.find(u => u.wins_username === username);
     if (!user) return;
 
@@ -1747,7 +1790,7 @@ function showUserDetails(username) {
                 <strong>Full Name:</strong> ${user.fullname}<br>
                 <strong>Username:</strong> ${user.wins_username}<br>
                 <strong>Email:</strong> ${user.email}<br>
-                 <strong>Date of Birth:</strong> ${user.date_of_birth}<br>
+                <strong>Date of Birth:</strong> ${user.date_of_birth}<br>
                 <strong>Gender:</strong> ${user.gender}<br>
                 <strong>Nationality:</strong> ${user.nationality}
             </div>
@@ -1788,11 +1831,152 @@ function showUserDetails(username) {
         </div>
     `;
 
+    const modalActions = document.getElementById('modal-actions');
+    if (isPending) {
+        const currentRole = user.user_role || 'admin';
+        modalActions.innerHTML = `
+            <select class="modal-role-selector" id="modal-role-selector">
+                <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>🎭 Admin</option>
+                <option value="editor" ${currentRole === 'editor' ? 'selected' : ''}>🎭 Editor</option>
+                <option value="member" ${currentRole === 'member' ? 'selected' : ''}>🎭 Member</option>
+            </select>
+            <button class="btn btn-approve" onclick="approveFromModal('${user.wins_username}')">
+                ✅ Approve
+            </button>
+            <button class="btn btn-reject" onclick="rejectFromModal('${user.wins_username}')">
+                ❌ Reject
+            </button>
+        `;
+        modalActions.style.display = 'flex';
+    } else {
+        modalActions.style.display = 'none';
+    }
+
     document.getElementById('userModal').style.display = 'block';
 }
 
 function closeModal() {
     document.getElementById('userModal').style.display = 'none';
+}
+
+function approveFromModal(username) {
+    const user = allUsers.find(u => u.wins_username === username);
+    if (!user) return;
+
+    const selectedRole = document.getElementById('modal-role-selector').value;
+    const rowElement = document.querySelector(`tr[data-user-id="${username}"]`);
+    const approveLink = rowElement ? rowElement.querySelector('.approve-link') : null;
+
+    closeModal();
+
+    lastProcessedUser = {
+        name: user.fullname,
+        username: user.wins_username,
+        organization: user.organization_name,
+        role: selectedRole,
+        action: 'approved'
+    };
+
+    if (rowElement) {
+        rowElement.classList.add('row-processing');
+    }
+
+    const formData = new FormData();
+    formData.append('wins_username', user.wins_username);
+    formData.append('organization_name', user.organization_name);
+    formData.append('new_organization_name', user.new_organization_name || '0');
+    formData.append('new_organization_description', user.new_organization_description || 'NA');
+    formData.append('user_role', selectedRole);
+
+    fetch('/colab/admin/approve', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            showToast('Error al aprobar', data.error, 'error');
+            if (rowElement) rowElement.classList.remove('row-processing');
+        } else {
+            if (rowElement) {
+                rowElement.classList.remove('row-processing');
+                rowElement.classList.add('row-success');
+            }
+            showToast('Usuario aprobado', `${user.fullname} ha sido aprobado exitosamente`, 'success');
+            showLastProcessedIndicator();
+            setTimeout(() => {
+                if (rowElement) {
+                    rowElement.classList.add('row-fade-out');
+                    setTimeout(() => {
+                        rowElement.remove();
+                        updateCounts();
+                        if (document.querySelectorAll('#pending .user-row').length === 0) {
+                            document.querySelector('[data-tab="approved"]').click();
+                        }
+                    }, 500);
+                }
+            }, 1000);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Error de conexión', 'No se pudo procesar la aprobación. Inténtalo de nuevo.', 'error');
+        if (rowElement) rowElement.classList.remove('row-processing');
+    });
+}
+
+function rejectFromModal(username) {
+    const user = allUsers.find(u => u.wins_username === username);
+    if (!user) return;
+
+    closeModal();
+
+    const reason = prompt("📝 Please enter the reason for rejection:");
+    if (!reason) return;
+
+    const rowElement = document.querySelector(`tr[data-user-id="${username}"]`);
+
+    lastProcessedUser = {
+        name: user.fullname,
+        username: user.wins_username,
+        organization: user.organization_name,
+        action: 'rejected'
+    };
+
+    if (rowElement) {
+        rowElement.classList.add('row-processing');
+    }
+
+    fetch(`/colab/admin/reject/${encodeURIComponent(username)}/${encodeURIComponent(user.organization_name)}/${encodeURIComponent(reason)}`)
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+    })
+    .then(data => {
+        if (rowElement) {
+            rowElement.classList.remove('row-processing');
+            rowElement.classList.add('row-error');
+        }
+        showToast('Usuario rechazado', `${user.fullname} ha sido rechazado`, 'info');
+        showLastProcessedIndicator();
+        setTimeout(() => {
+            if (rowElement) {
+                rowElement.classList.add('row-fade-out');
+                setTimeout(() => {
+                    rowElement.remove();
+                    updateCounts();
+                }, 500);
+            }
+        }, 1000);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Error de conexión', 'No se pudo procesar el rechazo. Inténtalo de nuevo.', 'error');
+        if (rowElement) rowElement.classList.remove('row-processing');
+    });
 }
 
 function updateCounts() {
