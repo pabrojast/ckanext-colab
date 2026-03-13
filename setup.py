@@ -27,7 +27,7 @@ setup(
 
     # Author details
     author='''Pablo Rojas''',
-    author_email='''projas@cazalac.org''',
+    author_email='''projas@aquedra.com''',
 
     # Choose your license
     license='AGPL',
