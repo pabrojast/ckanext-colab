@@ -3,7 +3,7 @@ import ckan.plugins.toolkit as toolkit
 import ckan.model as model
 import ckan.logic as logic
 from ckanext.colab.models.cool_plugin_table import CoolPluginTable, OrganizationRequestTable
-from sqlalchemy import create_engine, text, inspect
+from sqlalchemy import create_engine, text, inspect, func
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import re 
@@ -100,25 +100,113 @@ def verify_recaptcha(recaptcha_response):
 
 @timed_lru_cache(seconds=300, maxsize=20)  # Cache de 5 minutos
 def get_all_groups_cached():
-    """Obtiene todos los grupos con cache"""
+    """Obtiene todos los grupos con cache.
+    Uses a direct DB query to avoid N+1 overhead from group_list(all_fields=True).
+    """
     try:
-        return toolkit.get_action('group_list')(
-            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 500}
+        package_count_sq = (
+            model.Session.query(
+                model.Member.group_id,
+                func.count(model.Member.id).label('package_count')
+            )
+            .filter(
+                model.Member.table_name == 'package',
+                model.Member.state == 'active',
+            )
+            .group_by(model.Member.group_id)
+            .subquery()
         )
+        groups = (
+            model.Session.query(
+                model.Group.id,
+                model.Group.name,
+                model.Group.title,
+                model.Group.description,
+                model.Group.image_url,
+                model.Group.state,
+                func.coalesce(package_count_sq.c.package_count, 0).label('package_count'),
+            )
+            .outerjoin(package_count_sq, model.Group.id == package_count_sq.c.group_id)
+            .filter(
+                model.Group.type == 'group',
+                model.Group.state == 'active',
+            )
+            .order_by(model.Group.title)
+            .all()
+        )
+        return [
+            {
+                'id': g.id, 'name': g.name, 'title': g.title,
+                'description': g.description or '', 'image_url': g.image_url or '',
+                'state': g.state, 'package_count': g.package_count,
+                'display_name': g.title or g.name,
+            }
+            for g in groups
+        ]
     except Exception as e:
-        logger.error(f"Error obteniendo lista de grupos: {e}")
-        return []
+        logger.warning(f"get_all_groups_cached: falling back to group_list: {e}")
+        try:
+            return toolkit.get_action('group_list')(
+                data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 500}
+            )
+        except Exception as e2:
+            logger.error(f"Error obteniendo lista de grupos: {e2}")
+            return []
 
 @timed_lru_cache(seconds=300, maxsize=20)  # Cache de 5 minutos
 def get_all_organizations_cached():
-    """Obtiene todas las organizaciones con cache"""
+    """Obtiene todas las organizaciones con cache.
+    Uses a direct DB query to avoid N+1 overhead from organization_list(all_fields=True).
+    """
     try:
-        return toolkit.get_action('organization_list')(
-            data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 500}
+        package_count_sq = (
+            model.Session.query(
+                model.Member.group_id,
+                func.count(model.Member.id).label('package_count')
+            )
+            .filter(
+                model.Member.table_name == 'package',
+                model.Member.state == 'active',
+            )
+            .group_by(model.Member.group_id)
+            .subquery()
         )
+        orgs = (
+            model.Session.query(
+                model.Group.id,
+                model.Group.name,
+                model.Group.title,
+                model.Group.description,
+                model.Group.image_url,
+                model.Group.state,
+                func.coalesce(package_count_sq.c.package_count, 0).label('package_count'),
+            )
+            .outerjoin(package_count_sq, model.Group.id == package_count_sq.c.group_id)
+            .filter(
+                model.Group.type == 'organization',
+                model.Group.state == 'active',
+            )
+            .order_by(model.Group.title)
+            .all()
+        )
+        return [
+            {
+                'id': o.id, 'name': o.name, 'title': o.title,
+                'description': o.description or '', 'image_url': o.image_url or '',
+                'state': o.state, 'package_count': o.package_count,
+                'display_name': o.title or o.name,
+            }
+            for o in orgs
+        ]
     except Exception as e:
-        logger.error(f"Error obteniendo lista de organizaciones: {e}")
-        return []
+        logger.warning(f"get_all_organizations_cached: falling back to organization_list: {e}")
+        try:
+            return toolkit.get_action('organization_list')(
+                data_dict={'include_dataset_count': True, 'all_fields': True, 'limit': 500}
+            )
+        except Exception as e2:
+            logger.error(f"Error obteniendo lista de organizaciones: {e2}")
+            return []
 
 class MyLogic():
 

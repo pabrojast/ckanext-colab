@@ -254,7 +254,7 @@
         const baseUrl = window.location.origin;
         
         // Make AJAX request to CKAN API
-        fetch(`${baseUrl}/api/3/action/organization_list?all_fields=true`)
+        fetch(`${baseUrl}/api/3/action/organization_list?all_fields=true&include_dataset_count=false&include_extras=false&include_tags=false&include_users=false&include_groups=false&include_followers=false`)
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.result) {
