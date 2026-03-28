@@ -175,7 +175,12 @@
 
 {% block subtitle %}Device Request #{{ dr.id }}{% endblock %}
 
-{% block primary_content_inner %}
+{% block secondary %}{% endblock %}
+
+{% block content %}
+<div class="container">
+  {{ self.flash() }}
+</div>
 <div class="detail-container">
   <!-- Header -->
   <div class="detail-header">
@@ -416,3 +421,4 @@
 </script>
 {% endif %}
 {% endblock %}
+{# end block content #}

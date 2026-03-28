@@ -221,7 +221,12 @@
 
 {% block subtitle %}Device Management{% endblock %}
 
-{% block primary_content_inner %}
+{% block secondary %}{% endblock %}
+
+{% block content %}
+<div class="container">
+  {{ self.flash() }}
+</div>
 <div class="tb-container">
   <!-- Header -->
   <div class="tb-header">
@@ -315,3 +320,4 @@
   {% endif %}
 </div>
 {% endblock %}
+{# end block content #}

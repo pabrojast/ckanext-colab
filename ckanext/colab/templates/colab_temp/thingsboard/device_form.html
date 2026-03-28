@@ -254,7 +254,12 @@
   {% if device_request %}Edit Device Request{% else %}New Device Request{% endif %}
 {% endblock %}
 
-{% block primary_content_inner %}
+{% block secondary %}{% endblock %}
+
+{% block content %}
+<div class="container">
+  {{ self.flash() }}
+</div>
 <div class="tb-form-container">
   <!-- Header -->
   <div class="tb-form-header">
@@ -460,3 +465,4 @@
   }
 </script>
 {% endblock %}
+{# end block content #}

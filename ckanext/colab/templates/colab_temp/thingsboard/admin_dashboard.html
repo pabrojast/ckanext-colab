@@ -144,7 +144,12 @@
 
 {% block subtitle %}Device Requests Admin{% endblock %}
 
-{% block primary_content_inner %}
+{% block secondary %}{% endblock %}
+
+{% block content %}
+<div class="container">
+  {{ self.flash() }}
+</div>
 <div class="admin-container">
   <!-- Header -->
   <div class="admin-header">
@@ -280,3 +285,4 @@
   }
 </script>
 {% endblock %}
+{# end block content #}
