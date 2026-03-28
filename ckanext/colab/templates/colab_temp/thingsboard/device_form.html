@@ -1,0 +1,462 @@
+{% extends "page.html" %}
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    :root {
+      --unesco-blue: #0072BC;
+      --unesco-blue-dark: #005A9C;
+      --unesco-blue-light: #009EE0;
+      --unesco-blue-pale: #E3F2FD;
+      --unesco-gray: #f8f9fa;
+      --text-primary: #2c3e50;
+      --text-secondary: #6c757d;
+      --shadow-light: 0 2px 8px rgba(0, 114, 188, 0.08);
+      --shadow-medium: 0 4px 16px rgba(0, 114, 188, 0.12);
+      --shadow-strong: 0 8px 32px rgba(0, 114, 188, 0.16);
+    }
+
+    .tb-form-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .tb-form-header {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-strong);
+    }
+
+    .tb-form-header-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, #005A9C 0%, #0072BC 40%, #009EE0 100%);
+    }
+
+    .tb-form-header-content {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      z-index: 10;
+      width: 90%;
+    }
+
+    .tb-form-header-content h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .tb-form-header-content p {
+      margin: 0; font-size: 1rem; opacity: 0.9; color: white !important;
+    }
+
+    .form-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow-medium);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      border-left: 6px solid var(--unesco-blue);
+    }
+
+    .form-card-header {
+      padding: 18px 24px;
+      background: var(--unesco-gray);
+      border-bottom: 2px solid #e9ecef;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-card-body {
+      padding: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+
+    .form-group label .required {
+      color: #dc3545;
+      margin-left: 2px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--unesco-blue);
+      box-shadow: 0 0 0 3px rgba(0, 114, 188, 0.1);
+    }
+
+    textarea.form-control {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .errors-block {
+      background: #fff3f3;
+      border: 1px solid #f5c6cb;
+      border-left: 4px solid #dc3545;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 1.5rem;
+    }
+
+    .errors-block h4 {
+      margin: 0 0 8px 0;
+      color: #721c24;
+      font-size: 15px;
+    }
+
+    .errors-block ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .errors-block li {
+      color: #721c24;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .btn-save {
+      padding: 12px 28px;
+      border: 2px solid var(--unesco-blue);
+      color: var(--unesco-blue);
+      background: white;
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-save:hover {
+      background: var(--unesco-blue-pale);
+    }
+
+    .btn-submit {
+      padding: 12px 28px;
+      background: var(--unesco-blue);
+      color: white;
+      border: 2px solid var(--unesco-blue);
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-medium);
+    }
+
+    .btn-submit:hover {
+      background: var(--unesco-blue-dark);
+      border-color: var(--unesco-blue-dark);
+    }
+
+    .btn-back {
+      padding: 12px 28px;
+      background: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+      background: #5a6268;
+      color: white;
+      text-decoration: none;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--unesco-blue);
+    }
+
+    #map {
+      height: 300px;
+      border-radius: 10px;
+      border: 2px solid #e9ecef;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .form-actions { justify-content: stretch; }
+      .form-actions .btn-save,
+      .form-actions .btn-submit,
+      .form-actions .btn-back { width: 100%; text-align: center; }
+    }
+  </style>
+{% endblock %}
+
+{% block subtitle %}
+  {% if device_request %}Edit Device Request{% else %}New Device Request{% endif %}
+{% endblock %}
+
+{% block primary_content_inner %}
+<div class="tb-form-container">
+  <!-- Header -->
+  <div class="tb-form-header">
+    <div class="tb-form-header-bg"></div>
+    <div class="tb-form-header-content">
+      <h1>{% if device_request %}Edit Device Request #{{ device_request.id }}{% else %}New Device Request{% endif %}</h1>
+      <p>Fill in the device details below. Required fields are marked with *</p>
+    </div>
+  </div>
+
+  <!-- Errors -->
+  {% if errors %}
+  <div class="errors-block">
+    <h4>Please fix the following errors:</h4>
+    <ul>
+      {% for error in errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% set action_url = h.url_for('thingsboard.update_request', id=device_request.id) if device_request else h.url_for('thingsboard.create_request') %}
+  {% set submit_url = h.url_for('thingsboard.submit_request', id=device_request.id) if device_request else '' %}
+
+  <form method="post" action="{{ action_url }}" id="deviceForm">
+
+    <!-- Device Information -->
+    <div class="form-card">
+      <div class="form-card-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--unesco-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><polyline points="16 3 12 7 8 3"></polyline></svg>
+        Device Information
+      </div>
+      <div class="form-card-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Device Name <span class="required">*</span></label>
+            <input type="text" name="device_name" class="form-control" placeholder="e.g., WaterLevel-Sensor-01"
+                   value="{{ device_request.device_name or '' if device_request else '' }}">
+          </div>
+          <div class="form-group">
+            <label>Device Label</label>
+            <input type="text" name="device_label" class="form-control" placeholder="e.g., Water Level Sensor Station 1"
+                   value="{{ device_request.device_label or '' if device_request else '' }}">
+          </div>
+        </div>
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Serial Number <span class="required">*</span></label>
+            <input type="text" name="serial_number" class="form-control" placeholder="e.g., SN-2026-001"
+                   value="{{ device_request.serial_number or '' if device_request else '' }}">
+          </div>
+          <div class="form-group">
+            <label>Device Profile Name <span class="required">*</span></label>
+            <input type="text" name="device_profile_name" class="form-control" placeholder="e.g., default"
+                   value="{{ device_request.device_profile_name or '' if device_request else '' }}">
+          </div>
+          <div class="form-group">
+            <label>Firmware Version</label>
+            <input type="text" name="firmware_version" class="form-control" placeholder="e.g., 1.0.0"
+                   value="{{ device_request.firmware_version or '' if device_request else '' }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Organization</label>
+          <select name="organization_id" class="form-control">
+            <option value="">— Select Organization —</option>
+            {% for org in organizations %}
+            <option value="{{ org.id }}" {% if device_request and device_request.organization_id == org.id %}selected{% endif %}>
+              {{ org.display_name or org.title or org.name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Installation Details -->
+    <div class="form-card">
+      <div class="form-card-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--unesco-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+        Installation Details
+      </div>
+      <div class="form-card-body">
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Site Code <span class="required">*</span></label>
+            <input type="text" name="site_code" class="form-control" placeholder="e.g., POZO-01"
+                   value="{{ device_request.site_code or '' if device_request else '' }}">
+          </div>
+          <div class="form-group">
+            <label>Installer Name <span class="required">*</span></label>
+            <input type="text" name="installer_name" class="form-control" placeholder="Full name"
+                   value="{{ device_request.installer_name or '' if device_request else '' }}">
+          </div>
+          <div class="form-group">
+            <label>Install Date <span class="required">*</span></label>
+            <input type="date" name="install_date" class="form-control"
+                   value="{{ device_request.install_date.strftime('%Y-%m-%d') if device_request and device_request.install_date else '' }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Owner Name <span class="required">*</span></label>
+          <input type="text" name="owner_name" class="form-control" placeholder="Device owner or responsible person"
+                 value="{{ device_request.owner_name or '' if device_request else '' }}">
+        </div>
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div class="form-card">
+      <div class="form-card-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--unesco-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        Location
+      </div>
+      <div class="form-card-body">
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Latitude</label>
+            <input type="number" step="any" name="latitude" id="latitude" class="form-control" placeholder="-90 to 90"
+                   value="{{ device_request.latitude or '' if device_request else '' }}">
+          </div>
+          <div class="form-group">
+            <label>Longitude</label>
+            <input type="number" step="any" name="longitude" id="longitude" class="form-control" placeholder="-180 to 180"
+                   value="{{ device_request.longitude or '' if device_request else '' }}">
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" name="address" class="form-control" placeholder="e.g., La Serena, Chile"
+                   value="{{ device_request.address or '' if device_request else '' }}">
+          </div>
+        </div>
+        <div id="map"></div>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;">Click on the map to set coordinates</p>
+      </div>
+    </div>
+
+    <!-- Technical Notes -->
+    <div class="form-card">
+      <div class="form-card-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--unesco-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        Additional Information
+      </div>
+      <div class="form-card-body">
+        <div class="form-group">
+          <label>Technical Notes</label>
+          <textarea name="technical_notes" class="form-control" placeholder="Any additional technical information about the device installation...">{{ device_request.technical_notes or '' if device_request else '' }}</textarea>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" name="survey_completed" id="survey_completed"
+                 {% if device_request and device_request.survey_completed %}checked{% endif %}>
+          <label for="survey_completed" style="margin-bottom: 0;">
+            Survey completed <span class="required">*</span>
+            <span style="font-size: 12px; color: var(--text-secondary); display: block;">Required for submission</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <a href="{{ h.url_for('thingsboard.dashboard') }}" class="btn-back">Back</a>
+      <button type="submit" class="btn-save">Save as Draft</button>
+      {% if device_request %}
+      <button type="button" class="btn-submit" onclick="submitForReview()">Submit for Review</button>
+      {% endif %}
+    </div>
+  </form>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  // Map initialization
+  var lat = parseFloat(document.getElementById('latitude').value) || 0;
+  var lon = parseFloat(document.getElementById('longitude').value) || 0;
+  var zoom = (lat !== 0 || lon !== 0) ? 10 : 2;
+
+  var map = L.map('map').setView([lat, lon], zoom);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  var marker = null;
+  if (lat !== 0 || lon !== 0) {
+    marker = L.marker([lat, lon]).addTo(map);
+  }
+
+  map.on('click', function(e) {
+    if (marker) map.removeLayer(marker);
+    marker = L.marker(e.latlng).addTo(map);
+    document.getElementById('latitude').value = e.latlng.lat.toFixed(6);
+    document.getElementById('longitude').value = e.latlng.lng.toFixed(6);
+  });
+
+  // Submit for review
+  function submitForReview() {
+    if (confirm('Are you sure you want to submit this request for review? You will not be able to edit it after submission.')) {
+      var form = document.getElementById('deviceForm');
+      form.action = '{{ submit_url }}';
+      form.submit();
+    }
+  }
+</script>
+{% endblock %}

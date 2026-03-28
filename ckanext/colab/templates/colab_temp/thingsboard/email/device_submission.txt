@@ -1,0 +1,17 @@
+New Device Registration Request
+================================
+
+A new device registration request has been submitted on {{ site_title }}.
+
+Submitter: {{ submitter_name }}
+Device Name: {{ device_request.device_name }}
+Serial Number: {{ device_request.serial_number }}
+Site Code: {{ device_request.site_code }}
+Installer: {{ device_request.installer_name }}
+Owner: {{ device_request.owner_name }}
+
+Please review and approve or reject this request in the admin panel:
+{{ site_url }}/thingsboard/admin/request/{{ device_request.id }}
+
+--
+{{ site_title }}
