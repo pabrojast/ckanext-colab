@@ -2,7 +2,7 @@ from flask import render_template, request, abort, jsonify, Response
 import ckan.plugins.toolkit as toolkit
 import ckan.model as model
 import ckan.logic as logic
-from ckanext.colab.models.cool_plugin_table import CoolPluginTable, OrganizationRequestTable
+from ckanext.colab.models.cool_plugin_table import CoolPluginTable, OrganizationRequestTable, AuditLog
 from sqlalchemy import create_engine, text, inspect
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -66,7 +66,47 @@ def ensure_colab_schema(engine=None):
         except Exception as e:
             logger.warning("Could not add column with statement '%s': %s", stmt, e)
 
+    # Ensure audit log table exists
+    try:
+        tables = inspector.get_table_names()
+        if 'colab_audit_log' not in tables:
+            create_audit = """CREATE TABLE IF NOT EXISTS colab_audit_log (
+                id SERIAL PRIMARY KEY,
+                action VARCHAR NOT NULL,
+                admin_user VARCHAR NOT NULL,
+                record_id INTEGER,
+                target_user VARCHAR,
+                details TEXT,
+                created_at TIMESTAMP DEFAULT NOW()
+            )"""
+            with engine.begin() as conn:
+                conn.execute(text(create_audit))
+            logger.info("Created colab_audit_log table")
+    except Exception as e:
+        logger.warning("Could not create audit log table: %s", e)
+
 ensure_colab_schema()
+
+
+def log_audit(action, admin_user, record_id=None, target_user=None, details=None):
+    """Log an admin action to the audit trail."""
+    try:
+        entry = AuditLog(
+            action=action,
+            admin_user=admin_user,
+            record_id=record_id,
+            target_user=target_user,
+            details=details,
+            created_at=datetime.utcnow()
+        )
+        model.Session.add(entry)
+        model.Session.commit()
+    except Exception as e:
+        logger.warning("Could not log audit entry: %s", e)
+        try:
+            model.Session.rollback()
+        except Exception:
+            pass
 
 def timed_lru_cache(seconds: int, maxsize: int = 128):
     """LRU cache que expira después de un tiempo específico"""
@@ -400,6 +440,7 @@ class MyLogic():
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
                 cool_plugin_instance.approved_date = datetime.utcnow()
                 db_session.commit()
+                log_audit('approve', toolkit.g.user, cool_plugin_instance.id, name, f'Organization: {organization}')
                 
                 # Enviar notificación por email (opcional para el método legacy)
                 try:
@@ -519,6 +560,7 @@ class MyLogic():
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
                 cool_plugin_instance.approved_date = datetime.utcnow()
                 db_session.commit()
+                log_audit('approve', toolkit.g.user, cool_plugin_instance.id, wins_username, f'Org: {organization_name}, Role: {user_role}')
                 
                 # Enviar notificación por email al usuario aprobado
                 try:
@@ -612,11 +654,29 @@ Best regards,
         duplicate_usernames = {u for u, c in username_counts.items() if c > 1}
         duplicate_emails = {e for e, c in email_counts.items() if c > 1}
 
+        # Compute analytics: avg processing time for approved applications
+        processing_times = []
+        for r in results:
+            if r.approved_date and r.created_date and r.approved and 'approved by' in r.approved:
+                delta = (r.approved_date - r.created_date).total_seconds() / 86400.0
+                processing_times.append(delta)
+        avg_processing_days = round(sum(processing_times) / len(processing_times), 1) if processing_times else 0
+
+        # Fetch recent audit log entries (last 50)
+        try:
+            audit_entries = session.query(AuditLog).order_by(
+                AuditLog.created_at.desc()
+            ).limit(50).all()
+        except Exception:
+            audit_entries = []
+
         try:
             return render_template("admin.html", results=results,
                                    existing_users=existing_users,
                                    duplicate_usernames=duplicate_usernames,
-                                   duplicate_emails=duplicate_emails)
+                                   duplicate_emails=duplicate_emails,
+                                   avg_processing_days=avg_processing_days,
+                                   audit_entries=audit_entries)
         finally:
             session.close()
 
@@ -649,6 +709,7 @@ Best regards,
             session.commit()
             session.close()
             logger.info(f"Application record {record_id} soft-deleted by {toolkit.g.user}")
+            log_audit('delete', toolkit.g.user, int(record_id), record.wins_username, 'Soft delete')
             return jsonify({'success': True, 'record_id': record_id})
         except Exception as e:
             logger.error(f"Error deleting application record: {e}")
@@ -681,6 +742,7 @@ Best regards,
             session.commit()
             session.close()
             logger.info(f"Application record {record_id} restored by {toolkit.g.user}")
+            log_audit('restore', toolkit.g.user, int(record_id), record.wins_username, 'Restored from soft delete')
             return jsonify({'success': True})
         except Exception as e:
             logger.error(f"Error restoring application record: {e}")
@@ -715,6 +777,7 @@ Best regards,
             session.commit()
             session.close()
             logger.info(f"Admin note updated for record {record_id} by {toolkit.g.user}")
+            log_audit('note', toolkit.g.user, int(record_id), record.wins_username, f'Note updated')
             return jsonify({'success': True})
         except Exception as e:
             logger.error(f"Error saving admin note: {e}")
@@ -886,6 +949,7 @@ Best regards,
             if errors:
                 result['errors'] = errors
             logger.info(f"Bulk {action}: {processed} records by {toolkit.g.user}")
+            log_audit(f'bulk_{action}', toolkit.g.user, details=f'{processed} records processed')
             return jsonify(result)
         except Exception as e:
             logger.error(f"Error in bulk action: {e}")
@@ -1265,6 +1329,7 @@ Best regards,
                     
                     db_session.commit()
                     logger.debug("Successful commit")
+                    log_audit('reject', toolkit.g.user, cool_plugin_instance.id, name, f'Reason: {reason}')
                     
                     return json.dumps({'success': True, 'message': 'User rejected successfully'})
                 except Exception as e:
