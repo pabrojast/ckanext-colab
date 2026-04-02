@@ -297,15 +297,16 @@
         table-layout: fixed;
     }
 
-    /* Column width specifications */
-    .admin-table th:nth-child(1), .admin-table td:nth-child(1) { width: 15%; }
-    .admin-table th:nth-child(2), .admin-table td:nth-child(2) { width: 15%; }
-    .admin-table th:nth-child(3), .admin-table td:nth-child(3) { width: 12%; }
-    .admin-table th:nth-child(4), .admin-table td:nth-child(4) { width: 10%; }
-    .admin-table th:nth-child(5), .admin-table td:nth-child(5) { width: 8%; }
-    .admin-table th:nth-child(6), .admin-table td:nth-child(6) { width: 8%; }
-    .admin-table th:nth-child(7), .admin-table td:nth-child(7) { width: 8%; }
-    .admin-table th:nth-child(8), .admin-table td:nth-child(8) { width: 24%; }
+    /* Column width specifications - 9 columns for pending tab */
+    .admin-table th:nth-child(1), .admin-table td:nth-child(1) { width: 14%; }  /* User */
+    .admin-table th:nth-child(2), .admin-table td:nth-child(2) { width: 13%; }  /* Contact */
+    .admin-table th:nth-child(3), .admin-table td:nth-child(3) { width: 12%; }  /* Organization */
+    .admin-table th:nth-child(4), .admin-table td:nth-child(4) { width: 10%; }  /* Details */
+    .admin-table th:nth-child(5), .admin-table td:nth-child(5) { width: 7%; }   /* Applied */
+    .admin-table th:nth-child(6), .admin-table td:nth-child(6) { width: 8%; }   /* Role */
+    .admin-table th:nth-child(7), .admin-table td:nth-child(7) { width: 7%; }   /* C4W */
+    .admin-table th:nth-child(8), .admin-table td:nth-child(8) { width: 7%; }   /* IHP WINS */
+    .admin-table th:nth-child(9), .admin-table td:nth-child(9) { width: 22%; }  /* Actions */
 
     .admin-table th {
         background: #f8f9fa;
@@ -1262,7 +1263,10 @@
                                                 <span class="status-badge" style="background: #fff3cd; color: #856404; font-size: 10px; padding: 1px 6px; margin-left: 4px;">⚠️ Already registered</span>
                                             {% endif %}
                                             {% if result.wins_username in duplicate_usernames or result.email in duplicate_emails %}
-                                                <span class="status-badge" style="background: #f8d7da; color: #721c24; font-size: 10px; padding: 1px 6px; margin-left: 4px;">🔁 Duplicate</span>
+                                                {% set dup_reasons = [] %}
+                                                {% if result.wins_username in duplicate_usernames %}{% set _ = dup_reasons.append('username: ' ~ result.wins_username) %}{% endif %}
+                                                {% if result.email in duplicate_emails %}{% set _ = dup_reasons.append('email: ' ~ result.email) %}{% endif %}
+                                                <span class="status-badge" style="background: #f8d7da; color: #721c24; font-size: 10px; padding: 1px 6px; margin-left: 4px; cursor: help;" title="Duplicate {{ dup_reasons|join(', ') }}">🔁 Duplicate ℹ️</span>
                                             {% endif %}
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
