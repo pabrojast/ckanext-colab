@@ -51,22 +51,22 @@ msgid ""
 msgstr "نعتذر عن أي ارتباك أو إزعاج قد تسببه هذه المشكلة ونقدر اهتمامك بالانضمام إلى مجتمعنا. نأمل أن نراك قريبًا على موقعنا!"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:5
-msgid "Registration for IHP WINS"
-msgstr "التسجيل في IHP WINS"
+msgid "Register"
+msgstr "التسجيل"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:6
-msgid "Join our community of data contributors and help enhance water resources management through collaborative data sharing."
-msgstr "انضم إلى مجتمع المساهمين في البيانات وساعد في تعزيز إدارة الموارد المائية من خلال تبادل البيانات التعاوني."
+msgid "Register to access IHP WINS, Citizens4Water, and related platforms. Contribute data, news, events, and data stories on behalf of your organization."
+msgstr "سجّل للوصول إلى IHP WINS وCitizens4Water والمنصات ذات الصلة. ساهم بالبيانات والأخبار والأحداث وقصص البيانات نيابة عن منظمتك."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:7
 msgid ""
-"Welcome to the IHP WINS registration form. By completing this form, you will be able to "
-"contribute data and information on behalf of your organization on IHP WINS and the related "
-"Citizens4Water platform."
+"Welcome to the registration form. By completing this form, you will be able to "
+"access IHP WINS, Citizens4Water, and related platforms to contribute data, news, events, "
+"and data stories on behalf of your organization."
 msgstr ""
-"مرحبًا بك في نموذج التسجيل في IHP WINS. من خلال إكمال هذا النموذج، ستتمكن من "
-"المساهمة بالبيانات والمعلومات نيابة عن منظمتك في IHP WINS ومنصة "
-"Citizens4Water ذات الصلة."
+"مرحبًا بك في نموذج التسجيل. من خلال إكمال هذا النموذج، ستتمكن من الوصول إلى "
+"IHP WINS وCitizens4Water والمنصات ذات الصلة للمساهمة بالبيانات والأخبار والأحداث "
+"وقصص البيانات نيابة عن منظمتك."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:8
 msgid ""

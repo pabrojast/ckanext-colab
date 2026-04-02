@@ -1,4 +1,4 @@
-from flask import render_template, request, abort
+from flask import render_template, request, abort, jsonify
 import ckan.plugins.toolkit as toolkit
 import ckan.model as model
 import ckan.logic as logic
@@ -569,11 +569,63 @@ Best regards,
 
         # Realizar una consulta para recuperar datos
         results = session.query(CoolPluginTable).all()
-        #print(results)
+
+        # Check which usernames already exist as CKAN users
+        existing_users = set()
+        for r in results:
+            if r.wins_username:
+                try:
+                    toolkit.get_action('user_show')({'ignore_auth': True}, {'id': r.wins_username})
+                    existing_users.add(r.wins_username)
+                except toolkit.ObjectNotFound:
+                    pass
+
+        # Find duplicate usernames and emails
+        from collections import Counter
+        username_counts = Counter(r.wins_username for r in results if r.wins_username)
+        email_counts = Counter(r.email for r in results if r.email)
+        duplicate_usernames = {u for u, c in username_counts.items() if c > 1}
+        duplicate_emails = {e for e, c in email_counts.items() if c > 1}
+
         try:
-            return render_template("admin.html", results=results)
+            return render_template("admin.html", results=results,
+                                   existing_users=existing_users,
+                                   duplicate_usernames=duplicate_usernames,
+                                   duplicate_emails=duplicate_emails)
         finally:
             session.close()
+
+    @staticmethod
+    def delete_application():
+        context = {'model': model,
+                   'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
+        try:
+            logic.check_access('sysadmin', context, {})
+        except logic.NotAuthorized:
+            return jsonify({'success': False, 'error': 'Not authorized'}), 403
+
+        record_id = request.form.get('record_id')
+        if not record_id:
+            return jsonify({'success': False, 'error': 'Missing record_id'}), 400
+
+        try:
+            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+            Session = sessionmaker(bind=engine)
+            session = Session()
+
+            record = session.query(CoolPluginTable).filter_by(id=record_id).first()
+            if not record:
+                session.close()
+                return jsonify({'success': False, 'error': 'Record not found'}), 404
+
+            session.delete(record)
+            session.commit()
+            session.close()
+            logger.info(f"Application record {record_id} deleted by {toolkit.g.user}")
+            return jsonify({'success': True})
+        except Exception as e:
+            logger.error(f"Error deleting application record: {e}")
+            return jsonify({'success': False, 'error': str(e)}), 500
 
 
     @staticmethod
@@ -740,6 +792,28 @@ Best regards,
                 #         }
                 #     }
                 # }
+                # Check for existing pending application with same username or email
+                try:
+                    dup_engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+                    DupSession = sessionmaker(bind=dup_engine)
+                    dup_session = DupSession()
+                    existing_application = dup_session.query(CoolPluginTable).filter(
+                        CoolPluginTable.approved == 'Pending',
+                        CoolPluginTable.wins_username == name
+                    ).first()
+                    if not existing_application:
+                        existing_application = dup_session.query(CoolPluginTable).filter(
+                            CoolPluginTable.approved == 'Pending',
+                            CoolPluginTable.email == email
+                        ).first()
+                    dup_session.close()
+                    if existing_application:
+                        logger.info(f"Duplicate pending application found for {name}/{email}")
+                        return render_template("index.html", newuser=False, errornewuserform=True,
+                                             error_message='A pending application already exists for this username or email address. Please wait for admin review or contact ihp-wins@unesco.org if you need assistance.')
+                except Exception as e:
+                    logger.warning(f"Error checking for duplicate applications: {e}")
+
                 # Check if user already exists
                 try:
                     context = {'model': model, 'user': toolkit.c.user}

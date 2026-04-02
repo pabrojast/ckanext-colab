@@ -1244,6 +1244,7 @@
                             <th>📧 Contact</th>
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
+                            <th>📅 Applied</th>
                             <th>🎭 Role</th>
                             <th>🌊 Citizens4Water</th>
                             <th>💧 IHP WINS</th>
@@ -1257,6 +1258,12 @@
                                     <td>
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
+                                            {% if result.wins_username in existing_users %}
+                                                <span class="status-badge" style="background: #fff3cd; color: #856404; font-size: 10px; padding: 1px 6px; margin-left: 4px;">⚠️ Already registered</span>
+                                            {% endif %}
+                                            {% if result.wins_username in duplicate_usernames or result.email in duplicate_emails %}
+                                                <span class="status-badge" style="background: #f8d7da; color: #721c24; font-size: 10px; padding: 1px 6px; margin-left: 4px;">🔁 Duplicate</span>
+                                            {% endif %}
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
                                             <br>
@@ -1276,6 +1283,17 @@
                                     <td>
                                         <div class="truncate" title="{{ result.title_within_organization|e }}">
                                             {{ result.title_within_organization }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="font-size: 12px; white-space: nowrap;">
+                                            {% if result.created_date %}
+                                                {{ result.created_date.strftime('%Y-%m-%d') }}
+                                                <br>
+                                                <small class="text-muted">{{ result.created_date.strftime('%H:%M') }}</small>
+                                            {% else %}
+                                                <small class="text-muted">N/A</small>
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td>
@@ -1326,6 +1344,12 @@
                                                data-organization-name="{{ result.organization_name|e }}">
                                                 ❌ Reject
                                             </a>
+                                            <button class="btn btn-delete delete-link" style="background: #6c757d; color: white; font-size: 11px; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer;"
+                                               data-record-id="{{ result.id }}"
+                                               data-fullname="{{ result.fullname|e }}"
+                                               onclick="deleteApplication(this)">
+                                                🗑️ Delete
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -1345,6 +1369,7 @@
                             <th>📧 Contact</th>
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
+                            <th>📅 Applied</th>
                             <th>🌊 Citizens4Water</th>
                             <th>💧 IHP WINS</th>
                             <th>✅ Status</th>
@@ -1377,6 +1402,17 @@
                                     <td>
                                         <div class="truncate" title="{{ result.title_within_organization|e }}">
                                             {{ result.title_within_organization }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="font-size: 12px; white-space: nowrap;">
+                                            {% if result.created_date %}
+                                                {{ result.created_date.strftime('%Y-%m-%d') }}
+                                                <br>
+                                                <small class="text-muted">{{ result.created_date.strftime('%H:%M') }}</small>
+                                            {% else %}
+                                                <small class="text-muted">N/A</small>
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td>
@@ -1427,6 +1463,7 @@
                             <th>📧 Contact</th>
                             <th>🏢 Organization</th>
                             <th>📋 Details</th>
+                            <th>📅 Applied</th>
                             <th>🌊 Citizens4Water</th>
                             <th>💧 IHP WINS</th>
                             <th>❌ Status</th>
@@ -1463,6 +1500,17 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <div style="font-size: 12px; white-space: nowrap;">
+                                            {% if result.created_date %}
+                                                {{ result.created_date.strftime('%Y-%m-%d') }}
+                                                <br>
+                                                <small class="text-muted">{{ result.created_date.strftime('%H:%M') }}</small>
+                                            {% else %}
+                                                <small class="text-muted">N/A</small>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
                                         <div class="text-center">
                                             {% if result.citizens4water == 'yes' %}
                                                 <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
@@ -1495,6 +1543,12 @@
                                         <div class="action-buttons">
                                             <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')">
                                                 👁️ View
+                                            </button>
+                                            <button class="btn btn-delete delete-link" style="background: #6c757d; color: white; font-size: 11px; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer;"
+                                               data-record-id="{{ result.id }}"
+                                               data-fullname="{{ result.fullname|e }}"
+                                               onclick="deleteApplication(this)">
+                                                🗑️ Delete
                                             </button>
                                         </div>
                                     </td>
@@ -2152,6 +2206,32 @@ function showLastProcessedDetails() {
         // Hide the indicator since user clicked it
         document.getElementById('last-processed').classList.remove('show');
     }
+}
+
+function deleteApplication(btn) {
+    var recordId = btn.getAttribute('data-record-id');
+    var fullname = btn.getAttribute('data-fullname');
+    if (!confirm('Are you sure you want to delete the application for "' + fullname + '"? This cannot be undone.')) {
+        return;
+    }
+    var formData = new FormData();
+    formData.append('record_id', recordId);
+    fetch('{{ h.url_for("colab.delete_application") }}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+        if (data.success) {
+            var row = btn.closest('tr');
+            if (row) row.remove();
+        } else {
+            alert('Error: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(function(err) {
+        alert('Error deleting application: ' + err);
+    });
 }
 </script>
 

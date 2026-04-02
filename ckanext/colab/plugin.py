@@ -70,6 +70,13 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['GET']
         )
 
+        blueprint.add_url_rule(
+            u'/colab/admin/delete',
+            u'delete_application',
+            MyLogic.delete_application,
+            methods=['POST']
+        )
+
         # Organization request routes
         blueprint.add_url_rule(
             u'/colab/organization-request',
