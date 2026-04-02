@@ -32,10 +32,10 @@
     /* Admin Header - UNESCO Style */
     .admin-header {
         position: relative;
-        height: 300px;
+        height: 150px;
         overflow: hidden;
         border-radius: 16px;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
         box-shadow: var(--shadow-strong);
     }
 
@@ -79,8 +79,8 @@
     }
 
     .admin-header h1 {
-        margin: 0 0 1rem 0;
-        font-size: 2.8rem;
+        margin: 0 0 0.5rem 0;
+        font-size: 1.8rem;
         font-weight: 700;
         text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
         line-height: 1.2;
@@ -89,7 +89,7 @@
 
     .admin-header p {
         margin: 0;
-        font-size: 1.2rem;
+        font-size: 1rem;
         opacity: 0.95;
         text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
         font-weight: 300;
@@ -291,22 +291,17 @@
     .admin-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 14px;
+        font-size: 13px;
         background: white;
         overflow: visible;
-        table-layout: fixed;
+        table-layout: auto;
     }
 
-    /* Column width specifications - 9 columns for pending tab */
-    .admin-table th:nth-child(1), .admin-table td:nth-child(1) { width: 14%; }  /* User */
-    .admin-table th:nth-child(2), .admin-table td:nth-child(2) { width: 13%; }  /* Contact */
-    .admin-table th:nth-child(3), .admin-table td:nth-child(3) { width: 12%; }  /* Organization */
-    .admin-table th:nth-child(4), .admin-table td:nth-child(4) { width: 10%; }  /* Details */
-    .admin-table th:nth-child(5), .admin-table td:nth-child(5) { width: 7%; }   /* Applied */
-    .admin-table th:nth-child(6), .admin-table td:nth-child(6) { width: 8%; }   /* Role */
-    .admin-table th:nth-child(7), .admin-table td:nth-child(7) { width: 7%; }   /* C4W */
-    .admin-table th:nth-child(8), .admin-table td:nth-child(8) { width: 7%; }   /* IHP WINS */
-    .admin-table th:nth-child(9), .admin-table td:nth-child(9) { width: 22%; }  /* Actions */
+    /* Let table auto-size columns, just set max/min hints */
+    .admin-table th,
+    .admin-table td {
+        white-space: normal;
+    }
 
     .admin-table th {
         background: #f8f9fa;
@@ -357,11 +352,39 @@
     }
 
     .email-full {
-        min-width: 200px;
+        max-width: 180px;
         word-break: break-all;
-        font-family: monospace;
         font-size: 12px;
         line-height: 1.3;
+    }
+
+    /* Platform chips */
+    .platform-chip {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        margin-right: 3px;
+    }
+    .platform-chip.active {
+        background: #d4edda;
+        color: #155724;
+    }
+    .platform-chip.inactive {
+        background: #f0f0f0;
+        color: #aaa;
+        text-decoration: line-through;
+    }
+
+    /* Compact icon badges */
+    .badge-icon {
+        display: inline-block;
+        font-size: 12px;
+        cursor: help;
+        margin-left: 2px;
+        vertical-align: middle;
     }
 
     /* Role Selector */
@@ -402,30 +425,32 @@
         box-shadow: 0 0 8px rgba(255, 193, 7, 0.3) !important;
     }
 
-    /* Action Buttons - UNESCO Style */
+    /* Action Buttons - Compact Icon Style */
     .action-buttons {
         display: flex;
-        gap: 8px;
+        gap: 4px;
         flex-wrap: nowrap;
         overflow: visible;
-        min-width: 220px;
     }
 
     .btn {
-        padding: 8px 14px;
+        padding: 6px 8px;
         border: none;
-        border-radius: 12px;
+        border-radius: 8px;
         cursor: pointer;
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 600;
         text-decoration: none;
         transition: all 0.3s ease;
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        justify-content: center;
+        gap: 0;
         box-shadow: var(--shadow-light);
         position: relative;
         overflow: hidden;
+        min-width: 32px;
+        height: 32px;
     }
 
     .btn::before {
@@ -1241,15 +1266,13 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>👤 User</th>
-                            <th>📧 Contact</th>
-                            <th>🏢 Organization</th>
-                            <th>📋 Details</th>
-                            <th>📅 Applied</th>
-                            <th>🎭 Role</th>
-                            <th>🌊 Citizens4Water</th>
-                            <th>💧 IHP WINS</th>
-                            <th>⚡ Actions</th>
+                            <th>User</th>
+                            <th>Contact</th>
+                            <th>Organization</th>
+                            <th>Applied</th>
+                            <th>Role</th>
+                            <th>Platforms</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1260,18 +1283,16 @@
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
                                             {% if result.wins_username in existing_users %}
-                                                <span class="status-badge" style="background: #fff3cd; color: #856404; font-size: 10px; padding: 1px 6px; margin-left: 4px;">⚠️ Already registered</span>
+                                                <span class="badge-icon" title="User already has a CKAN account">⚠️</span>
                                             {% endif %}
                                             {% if result.wins_username in duplicate_usernames or result.email in duplicate_emails %}
                                                 {% set dup_reasons = [] %}
                                                 {% if result.wins_username in duplicate_usernames %}{% set _ = dup_reasons.append('username: ' ~ result.wins_username) %}{% endif %}
                                                 {% if result.email in duplicate_emails %}{% set _ = dup_reasons.append('email: ' ~ result.email) %}{% endif %}
-                                                <span class="status-badge" style="background: #f8d7da; color: #721c24; font-size: 10px; padding: 1px 6px; margin-left: 4px; cursor: help;" title="Duplicate {{ dup_reasons|join(', ') }}">🔁 Duplicate ℹ️</span>
+                                                <span class="badge-icon" title="Duplicate {{ dup_reasons|join(', ') }}">🔁</span>
                                             {% endif %}
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
-                                            <br>
-                                             <small class="text-muted">{{ result.date_of_birth }}, {{ result.gender }}, {{ result.nationality }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -1282,11 +1303,10 @@
                                             <strong class="truncate-org" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
                                             <br>
                                             <small class="text-muted truncate" title="{{ result.organizationType|e }}">{{ result.organizationType }}</small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="truncate" title="{{ result.title_within_organization|e }}">
-                                            {{ result.title_within_organization }}
+                                            {% if result.title_within_organization %}
+                                                <br>
+                                                <small class="text-muted" title="{{ result.title_within_organization|e }}">📋 {{ result.title_within_organization }}</small>
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td>
@@ -1301,7 +1321,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="role-current">Current: {{ result.user_role or 'admin' }}</div>
+                                        <div class="role-current">{{ result.user_role or 'admin' }}</div>
                                         <select class="role-selector" id="role-{{ result.wins_username|e }}-{{ loop.index }}" data-original="{{ (result.user_role or 'admin')|e }}">
                                             <option value="admin" {% if (result.user_role or 'admin') == 'admin' %}selected{% endif %}>Admin</option>
                                             <option value="editor" {% if result.user_role == 'editor' %}selected{% endif %}>Editor</option>
@@ -1309,29 +1329,17 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <div class="text-center">
-                                            {% if result.citizens4water == 'yes' %}
-                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
-                                            {% else %}
-                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            {% if result.ihp_wins == 'yes' %}
-                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
-                                            {% else %}
-                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
-                                            {% endif %}
+                                        <div>
+                                            <span class="platform-chip {{ 'active' if result.citizens4water == 'yes' else 'inactive' }}">C4W</span>
+                                            <span class="platform-chip {{ 'active' if result.ihp_wins == 'yes' else 'inactive' }}">WINS</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}', true)">
-                                                👁️ Review
+                                            <button class="btn btn-view" title="Review details" onclick="showUserDetails('{{ result.wins_username|e }}', true)">
+                                                👁️
                                             </button>
-                                            <a href="#" class="btn btn-approve approve-link"
+                                            <a href="#" class="btn btn-approve approve-link" title="Approve"
                                                data-fullname="{{ result.fullname|e }}"
                                                data-wins-username="{{ result.wins_username|e }}"
                                                data-organization-name="{{ result.organization_name|e }}"
@@ -1341,18 +1349,18 @@
                                                data-approved="{{ result.approved|e }}"
                                                data-user-role="{{ result.user_role|e }}"
                                                data-new-org-name="{{ result.new_organization_name|e }}">
-                                                ✅ Approve
+                                                ✅
                                             </a>
-                                            <a href="#" class="btn btn-reject reject-link"
+                                            <a href="#" class="btn btn-reject reject-link" title="Reject"
                                                data-wins-username="{{ result.wins_username|e }}"
                                                data-organization-name="{{ result.organization_name|e }}">
-                                                ❌ Reject
+                                                ❌
                                             </a>
-                                            <button class="btn btn-delete delete-link" style="background: #6c757d; color: white; font-size: 11px; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer;"
+                                            <button class="btn btn-delete delete-link" title="Delete application" style="background: #6c757d; color: white; border: none;"
                                                data-record-id="{{ result.id }}"
                                                data-fullname="{{ result.fullname|e }}"
                                                onclick="deleteApplication(this)">
-                                                🗑️ Delete
+                                                🗑️
                                             </button>
                                         </div>
                                     </td>
@@ -1369,15 +1377,13 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>👤 User</th>
-                            <th>📧 Contact</th>
-                            <th>🏢 Organization</th>
-                            <th>📋 Details</th>
-                            <th>📅 Applied</th>
-                            <th>🌊 Citizens4Water</th>
-                            <th>💧 IHP WINS</th>
-                            <th>✅ Status</th>
-                            <th>⚡ Actions</th>
+                            <th>User</th>
+                            <th>Contact</th>
+                            <th>Organization</th>
+                            <th>Applied</th>
+                            <th>Platforms</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1389,8 +1395,6 @@
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
-                                            <br>
-                                             <small class="text-muted">{{ result.date_of_birth }}, {{ result.gender }}, {{ result.nationality }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -1401,52 +1405,37 @@
                                             <strong class="truncate-org" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
                                             <br>
                                             <small class="text-muted truncate" title="{{ result.organizationType|e }}">{{ result.organizationType }}</small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="truncate" title="{{ result.title_within_organization|e }}">
-                                            {{ result.title_within_organization }}
+                                            {% if result.title_within_organization %}
+                                                <br>
+                                                <small class="text-muted" title="{{ result.title_within_organization|e }}">📋 {{ result.title_within_organization }}</small>
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td>
                                         <div style="font-size: 12px; white-space: nowrap;">
                                             {% if result.created_date %}
                                                 {{ result.created_date.strftime('%Y-%m-%d') }}
-                                                <br>
-                                                <small class="text-muted">{{ result.created_date.strftime('%H:%M') }}</small>
                                             {% else %}
                                                 <small class="text-muted">N/A</small>
                                             {% endif %}
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-center">
-                                            {% if result.citizens4water == 'yes' %}
-                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
-                                            {% else %}
-                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
-                                            {% endif %}
+                                        <div>
+                                            <span class="platform-chip {{ 'active' if result.citizens4water == 'yes' else 'inactive' }}">C4W</span>
+                                            <span class="platform-chip {{ 'active' if result.ihp_wins == 'yes' else 'inactive' }}">WINS</span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-center">
-                                            {% if result.ihp_wins == 'yes' %}
-                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
-                                            {% else %}
-                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge status-approved">{{ result.approved }}</span>
-                                        <div style="margin-top: 4px; font-size: 11px; color: #666;">
+                                        <span class="status-badge status-approved" style="font-size: 11px;">{{ result.approved }}</span>
+                                        <div style="margin-top: 3px; font-size: 10px; color: #666;">
                                             Role: {{ result.user_role or 'admin' }}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')">
-                                                👁️ View
+                                            <button class="btn btn-view" title="View details" onclick="showUserDetails('{{ result.wins_username|e }}')">
+                                                👁️
                                             </button>
                                         </div>
                                     </td>
@@ -1463,16 +1452,14 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>👤 User</th>
-                            <th>📧 Contact</th>
-                            <th>🏢 Organization</th>
-                            <th>📋 Details</th>
-                            <th>📅 Applied</th>
-                            <th>🌊 Citizens4Water</th>
-                            <th>💧 IHP WINS</th>
-                            <th>❌ Status</th>
-                            <th>📝 Reason</th>
-                            <th>⚡ Actions</th>
+                            <th>User</th>
+                            <th>Contact</th>
+                            <th>Organization</th>
+                            <th>Applied</th>
+                            <th>Platforms</th>
+                            <th>Status</th>
+                            <th>Reason</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1484,8 +1471,6 @@
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
                                             <br>
                                             <small class="text-muted">{{ result.wins_username }}</small>
-                                            <br>
-                                            <small class="text-muted">{{ result.date_of_birth }}, {{ result.gender }}, {{ result.nationality }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -1496,45 +1481,30 @@
                                             <strong class="truncate-org" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
                                             <br>
                                             <small class="text-muted truncate" title="{{ result.organizationType|e }}">{{ result.organizationType }}</small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="truncate" title="{{ result.title_within_organization|e }}">
-                                            {{ result.title_within_organization }}
+                                            {% if result.title_within_organization %}
+                                                <br>
+                                                <small class="text-muted" title="{{ result.title_within_organization|e }}">📋 {{ result.title_within_organization }}</small>
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td>
                                         <div style="font-size: 12px; white-space: nowrap;">
                                             {% if result.created_date %}
                                                 {{ result.created_date.strftime('%Y-%m-%d') }}
-                                                <br>
-                                                <small class="text-muted">{{ result.created_date.strftime('%H:%M') }}</small>
                                             {% else %}
                                                 <small class="text-muted">N/A</small>
                                             {% endif %}
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-center">
-                                            {% if result.citizens4water == 'yes' %}
-                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
-                                            {% else %}
-                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
-                                            {% endif %}
+                                        <div>
+                                            <span class="platform-chip {{ 'active' if result.citizens4water == 'yes' else 'inactive' }}">C4W</span>
+                                            <span class="platform-chip {{ 'active' if result.ihp_wins == 'yes' else 'inactive' }}">WINS</span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-center">
-                                            {% if result.ihp_wins == 'yes' %}
-                                                <span class="status-badge" style="background: #d4edda; color: #155724;">✅ Yes</span>
-                                            {% else %}
-                                                <span class="status-badge" style="background: #f8d7da; color: #721c24;">❌ No</span>
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge status-rejected">{{ result.rejected }}</span>
-                                        <div style="margin-top: 4px; font-size: 11px; color: #666;">
+                                        <span class="status-badge status-rejected" style="font-size: 11px;">{{ result.rejected }}</span>
+                                        <div style="margin-top: 3px; font-size: 10px; color: #666;">
                                             Role: {{ result.user_role or 'admin' }}
                                         </div>
                                     </td>
@@ -1545,14 +1515,14 @@
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-view" onclick="showUserDetails('{{ result.wins_username|e }}')">
-                                                👁️ View
+                                            <button class="btn btn-view" title="View details" onclick="showUserDetails('{{ result.wins_username|e }}')">
+                                                👁️
                                             </button>
-                                            <button class="btn btn-delete delete-link" style="background: #6c757d; color: white; font-size: 11px; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer;"
+                                            <button class="btn btn-delete delete-link" title="Delete application" style="background: #6c757d; color: white; border: none;"
                                                data-record-id="{{ result.id }}"
                                                data-fullname="{{ result.fullname|e }}"
                                                onclick="deleteApplication(this)">
-                                                🗑️ Delete
+                                                🗑️
                                             </button>
                                         </div>
                                     </td>
