@@ -1,0 +1,313 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _("Application Status") }}{% endblock %}
+
+{% block primary %}
+<style>
+    .status-wrapper {
+        max-width: 640px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .status-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .status-card-header {
+        background: linear-gradient(135deg, #0072bc 0%, #00a1e0 100%);
+        padding: 28px 32px;
+        color: white;
+    }
+
+    .status-card-header h1 {
+        margin: 0 0 6px;
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    .status-card-header p {
+        margin: 0;
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    .status-form {
+        padding: 32px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 6px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 11px 14px;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 14px;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #0072bc;
+    }
+
+    .btn-check-status {
+        width: 100%;
+        padding: 12px;
+        background: #0072bc;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-check-status:hover {
+        background: #005a96;
+    }
+
+    .status-result {
+        padding: 32px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-approved {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-rejected {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .result-details {
+        margin-top: 20px;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 13px;
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .detail-value {
+        color: #333;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .status-error {
+        padding: 32px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .error-box {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 14px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+    }
+
+    .status-timeline {
+        margin-top: 20px;
+        padding: 16px;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .timeline-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 8px 0;
+    }
+
+    .timeline-icon {
+        font-size: 18px;
+        line-height: 1;
+        min-width: 24px;
+        text-align: center;
+    }
+
+    .timeline-text {
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .timeline-text.active {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #6c757d;
+    }
+
+    .rejection-reason {
+        margin-top: 12px;
+        padding: 12px;
+        background: #fff5f5;
+        border-left: 3px solid #dc3545;
+        border-radius: 6px;
+        font-size: 13px;
+        color: #721c24;
+    }
+</style>
+
+<div class="status-wrapper">
+    <div class="status-card">
+        <div class="status-card-header">
+            <h1>{{ _("Check Application Status") }}</h1>
+            <p>{{ _("Enter your username and email to check the status of your registration.") }}</p>
+        </div>
+
+        <form class="status-form" method="POST" action="/colab/status">
+            <div class="form-group">
+                <label for="username">{{ _("Username") }}</label>
+                <input type="text" id="username" name="username" required
+                       placeholder="{{ _('Enter your username') }}"
+                       value="{{ query_username or '' }}">
+            </div>
+            <div class="form-group">
+                <label for="email">{{ _("Email") }}</label>
+                <input type="email" id="email" name="email" required
+                       placeholder="{{ _('Enter your email address') }}"
+                       value="{{ query_email or '' }}">
+            </div>
+            <button type="submit" class="btn-check-status">
+                🔍 {{ _("Check Status") }}
+            </button>
+        </form>
+
+        {% if application %}
+        <div class="status-result">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                <h3 style="margin: 0; font-size: 16px;">{{ _("Application Found") }}</h3>
+                {% if application.approved == 'Pending' and not application.rejected %}
+                    <span class="status-badge status-pending">⏳ {{ _("Pending Review") }}</span>
+                {% elif application.approved and 'approved by' in application.approved %}
+                    <span class="status-badge status-approved">✅ {{ _("Approved") }}</span>
+                {% elif application.rejected and 'rejected by' in application.rejected %}
+                    <span class="status-badge status-rejected">❌ {{ _("Rejected") }}</span>
+                {% endif %}
+            </div>
+
+            <div class="result-details">
+                <div class="detail-row">
+                    <span class="detail-label">{{ _("Full Name") }}</span>
+                    <span class="detail-value">{{ application.fullname }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">{{ _("Username") }}</span>
+                    <span class="detail-value">{{ application.wins_username }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">{{ _("Organization") }}</span>
+                    <span class="detail-value">{{ application.organization_name }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">{{ _("Role Requested") }}</span>
+                    <span class="detail-value">{{ application.user_role or 'admin' }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">{{ _("Submitted") }}</span>
+                    <span class="detail-value">
+                        {% if application.created_date %}
+                            {{ application.created_date.strftime('%B %d, %Y at %H:%M UTC') }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+            {% if application.rejected and 'rejected by' in application.rejected %}
+                {% if application.rejection_reason %}
+                <div class="rejection-reason">
+                    <strong>{{ _("Reason:") }}</strong> {{ application.rejection_reason }}
+                </div>
+                {% endif %}
+            {% endif %}
+
+            {% if application.approved == 'Pending' and not application.rejected %}
+            <div class="status-timeline">
+                <div class="timeline-step">
+                    <span class="timeline-icon">✅</span>
+                    <span class="timeline-text active">{{ _("Application submitted") }}</span>
+                </div>
+                <div class="timeline-step">
+                    <span class="timeline-icon">⏳</span>
+                    <span class="timeline-text active">{{ _("Under review by administrators") }}</span>
+                </div>
+                <div class="timeline-step">
+                    <span class="timeline-icon">⬜</span>
+                    <span class="timeline-text">{{ _("Approval decision") }}</span>
+                </div>
+                <div class="timeline-step">
+                    <span class="timeline-icon">⬜</span>
+                    <span class="timeline-text">{{ _("Organization assignment") }}</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if not_found %}
+        <div class="status-error">
+            <div class="error-box">
+                {{ _("No application found matching this username and email combination. Please verify your details and try again.") }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <a href="/colab" class="back-link">← {{ _("Back to Registration") }}</a>
+</div>
+{% endblock %}

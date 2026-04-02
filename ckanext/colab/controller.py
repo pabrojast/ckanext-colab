@@ -9,7 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import re 
 import json 
 import logging
-from ckanext.colab.lib.email_notifications import send_admin_notification
+from ckanext.colab.lib.email_notifications import send_admin_notification, send_applicant_confirmation
 import requests
 from datetime import datetime
 import os
@@ -678,6 +678,43 @@ Best regards,
 
 
     @staticmethod
+    def check_status():
+        """Allow applicants to check their application status by username + email."""
+        if request.method == 'GET':
+            return render_template("status.html")
+
+        username = request.form.get('username', '').strip()
+        email = request.form.get('email', '').strip()
+
+        if not username or not email:
+            return render_template("status.html", not_found=True,
+                                   query_username=username, query_email=email)
+
+        try:
+            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+            Session = sessionmaker(bind=engine)
+            session = Session()
+
+            application = session.query(CoolPluginTable).filter(
+                CoolPluginTable.wins_username == username,
+                CoolPluginTable.email == email,
+                CoolPluginTable.deleted_at.is_(None)
+            ).order_by(CoolPluginTable.created_date.desc()).first()
+
+            session.close()
+
+            if application:
+                return render_template("status.html", application=application,
+                                       query_username=username, query_email=email)
+            else:
+                return render_template("status.html", not_found=True,
+                                       query_username=username, query_email=email)
+        except Exception as e:
+            logger.error(f"Error checking application status: {e}")
+            return render_template("status.html", not_found=True,
+                                   query_username=username, query_email=email)
+
+    @staticmethod
     def show_something():
         errornewuserform = False
         if request.method == 'GET':
@@ -915,7 +952,9 @@ Best regards,
                     
                     # Send notification to admins
                     send_admin_notification(user_data)
-                    return render_template("index.html", newuser=True, errornewuserform=False)
+                    send_applicant_confirmation(db_model)
+                    return render_template("index.html", newuser=True, errornewuserform=False,
+                                         application=db_model)
 
                 except toolkit.ObjectNotFound:
                     # User doesn't exist - continue with original user creation flow
@@ -966,7 +1005,9 @@ Best regards,
                         session.commit()
                         # Enviar notificación a los administradores
                         send_admin_notification(user_data)
-                        return render_template("index.html", newuser=True, errornewuserform=False)
+                        send_applicant_confirmation(db_model)
+                        return render_template("index.html", newuser=True, errornewuserform=False,
+                                             application=db_model)
 
                     except logic.NotAuthorized:
                         toolkit.abort(403, 'Not authorized to create users')               

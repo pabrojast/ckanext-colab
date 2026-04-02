@@ -84,6 +84,14 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['POST']
         )
 
+        # Application status check
+        blueprint.add_url_rule(
+            u'/colab/status',
+            u'check_status',
+            MyLogic.check_status,
+            methods=['GET', 'POST']
+        )
+
         # Organization request routes
         blueprint.add_url_rule(
             u'/colab/organization-request',
