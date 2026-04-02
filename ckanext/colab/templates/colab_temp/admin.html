@@ -276,6 +276,78 @@
         transform: translateY(-1px);
     }
 
+    /* Smart Filter Chips */
+    .smart-filters {
+        padding: 8px 20px 12px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .smart-filters-label {
+        font-size: 12px;
+        color: #6c757d;
+        font-weight: 500;
+        margin-right: 4px;
+    }
+
+    .filter-chip {
+        padding: 5px 12px;
+        border: 1px solid #dee2e6;
+        border-radius: 16px;
+        background: white;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #495057;
+    }
+
+    .filter-chip:hover {
+        background: #e9ecef;
+        border-color: #adb5bd;
+    }
+
+    .filter-chip.active {
+        background: var(--unesco-blue);
+        color: white;
+        border-color: var(--unesco-blue);
+    }
+
+    .filter-chip-clear {
+        background: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+    }
+
+    .filter-chip-clear:hover {
+        background: #f1b0b7;
+    }
+
+    /* Sortable Headers */
+    .sortable {
+        cursor: pointer;
+        user-select: none;
+        position: relative;
+    }
+
+    .sortable:hover {
+        background: #e9ecef !important;
+    }
+
+    .sort-indicator {
+        font-size: 10px;
+        color: #adb5bd;
+        margin-left: 3px;
+    }
+
+    .sortable.sorted-asc .sort-indicator,
+    .sortable.sorted-desc .sort-indicator {
+        color: var(--unesco-blue);
+    }
+
     /* Enhanced Table */
     .table-container {
         overflow-x: auto;
@@ -865,6 +937,10 @@
             padding: 15px;
         }
         
+        .smart-filters {
+            padding: 6px 15px 10px;
+        }
+        
         .search-box {
             min-width: auto;
         }
@@ -1259,6 +1335,25 @@
                 <option value="editor">Editor</option>
                 <option value="member">Member</option>
             </select>
+            <select class="filter-select" id="nationality-filter">
+                <option value="">All Countries</option>
+            </select>
+        </div>
+
+        <div class="smart-filters">
+            <span class="smart-filters-label">Quick filters:</span>
+            <button class="filter-chip" data-filter="duplicates" title="Show only duplicate applications">
+                🔁 Duplicates
+            </button>
+            <button class="filter-chip" data-filter="existing" title="Show only already-registered users">
+                ⚠️ Already Registered
+            </button>
+            <button class="filter-chip" data-filter="new-org" title="Show only applications requesting new organizations">
+                🏢 New Org
+            </button>
+            <button class="filter-chip filter-chip-clear" data-filter="clear" title="Clear all filters" style="display:none;">
+                ✕ Clear Filters
+            </button>
         </div>
 
         <div id="pending" class="tab-content active">
@@ -1266,11 +1361,11 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>User</th>
+                            <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
                             <th>Contact</th>
-                            <th>Organization</th>
-                            <th>Applied</th>
-                            <th>Role</th>
+                            <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
+                            <th class="sortable sorted-desc" data-sort="created-date">Applied <span class="sort-indicator">▼</span></th>
+                            <th class="sortable" data-sort="role">Role <span class="sort-indicator"></span></th>
                             <th>Platforms</th>
                             <th>Actions</th>
                         </tr>
@@ -1278,7 +1373,16 @@
                     <tbody>
                         {% for result in results %}
                             {% if result.approved == 'Pending' and not result.rejected %}
-                                <tr data-user-id="{{ result.wins_username|e }}" class="user-row">
+                                <tr data-user-id="{{ result.wins_username|e }}" class="user-row"
+                                    data-is-existing="{{ 'true' if result.wins_username in existing_users else 'false' }}"
+                                    data-is-duplicate="{{ 'true' if (result.wins_username in duplicate_usernames or result.email in duplicate_emails) else 'false' }}"
+                                    data-has-new-org="{{ 'true' if result.new_organization_name else 'false' }}"
+                                    data-nationality="{{ result.nationality|lower|e }}"
+                                    data-created-date="{{ result.created_date.strftime('%Y-%m-%d %H:%M') if result.created_date else '' }}"
+                                    data-fullname="{{ result.fullname|lower|e }}"
+                                    data-org="{{ result.organization_name|lower|e }}"
+                                    data-role="{{ (result.user_role or 'admin')|lower|e }}"
+                                    data-tab="pending">
                                     <td>
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
@@ -1377,10 +1481,10 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>User</th>
+                            <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
                             <th>Contact</th>
-                            <th>Organization</th>
-                            <th>Applied</th>
+                            <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
+                            <th class="sortable sorted-desc" data-sort="created-date">Applied <span class="sort-indicator">▼</span></th>
                             <th>Platforms</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -1389,7 +1493,13 @@
                     <tbody>
                         {% for result in results %}
                             {% if result.approved and "approved by" in result.approved %}
-                                <tr data-user-id="{{ result.wins_username|e }}" class="user-row">
+                                <tr data-user-id="{{ result.wins_username|e }}" class="user-row"
+                                    data-nationality="{{ result.nationality|lower|e }}"
+                                    data-created-date="{{ result.created_date.strftime('%Y-%m-%d %H:%M') if result.created_date else '' }}"
+                                    data-fullname="{{ result.fullname|lower|e }}"
+                                    data-org="{{ result.organization_name|lower|e }}"
+                                    data-role="{{ (result.user_role or 'admin')|lower|e }}"
+                                    data-tab="approved">
                                     <td>
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
@@ -1452,10 +1562,10 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>User</th>
+                            <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
                             <th>Contact</th>
-                            <th>Organization</th>
-                            <th>Applied</th>
+                            <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
+                            <th class="sortable sorted-desc" data-sort="created-date">Applied <span class="sort-indicator">▼</span></th>
                             <th>Platforms</th>
                             <th>Status</th>
                             <th>Reason</th>
@@ -1465,7 +1575,13 @@
                     <tbody>
                         {% for result in results %}
                             {% if result.rejected and "rejected by" in result.rejected %}
-                                <tr data-user-id="{{ result.wins_username|e }}" class="user-row">
+                                <tr data-user-id="{{ result.wins_username|e }}" class="user-row"
+                                    data-nationality="{{ result.nationality|lower|e }}"
+                                    data-created-date="{{ result.created_date.strftime('%Y-%m-%d %H:%M') if result.created_date else '' }}"
+                                    data-fullname="{{ result.fullname|lower|e }}"
+                                    data-org="{{ result.organization_name|lower|e }}"
+                                    data-role="{{ (result.user_role or 'admin')|lower|e }}"
+                                    data-tab="rejected">
                                     <td>
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
@@ -1594,10 +1710,16 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     updateCounts();
     populateFilters();
+    populateNationalityFilter();
     setupRoleSelectors();
     setupToastSystem();
     setupLastProcessedIndicator();
+    setupSmartFilters();
+    setupSortableHeaders();
 });
+
+// Track active smart filter
+let activeSmartFilter = null;
 
 function initializeAdmin() {
     // Tab functionality
@@ -1612,13 +1734,30 @@ function initializeAdmin() {
             button.classList.add('active');
             const tabId = button.getAttribute('data-tab');
             document.getElementById(tabId).classList.add('active');
+            
+            // Smart filters only apply to pending tab
+            const smartFilters = document.querySelector('.smart-filters');
+            if (tabId === 'pending') {
+                smartFilters.style.display = '';
+            } else {
+                smartFilters.style.display = 'none';
+                // Clear active smart filter when leaving pending
+                if (activeSmartFilter) {
+                    activeSmartFilter = null;
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    document.querySelector('.filter-chip-clear').style.display = 'none';
+                }
+            }
+            // Re-apply filters when switching tabs
+            filterUsers();
         });
     });
 
-    // Search functionality
+    // Search & filter functionality
     document.getElementById('search-input').addEventListener('input', filterUsers);
     document.getElementById('org-filter').addEventListener('change', filterUsers);
     document.getElementById('role-filter').addEventListener('change', filterUsers);
+    document.getElementById('nationality-filter').addEventListener('change', filterUsers);
 }
 
 function setupEventListeners() {
@@ -2042,12 +2181,31 @@ function populateFilters() {
     });
 }
 
+function populateNationalityFilter() {
+    const natFilter = document.getElementById('nationality-filter');
+    const nationalities = [...new Set(allUsers.map(u => u.nationality).filter(n => n && n.trim()))].sort();
+    
+    nationalities.forEach(nat => {
+        const option = document.createElement('option');
+        option.value = nat.toLowerCase();
+        option.textContent = nat;
+        natFilter.appendChild(option);
+    });
+}
+
 function filterUsers() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const orgFilter = document.getElementById('org-filter').value;
     const roleFilter = document.getElementById('role-filter').value;
+    const natFilter = document.getElementById('nationality-filter').value;
     
-    document.querySelectorAll('.user-row').forEach(row => {
+    // Get active tab to only filter visible rows
+    const activeTab = document.querySelector('.tab-content.active');
+    const rows = activeTab ? activeTab.querySelectorAll('.user-row') : document.querySelectorAll('.user-row');
+    
+    let visibleCount = 0;
+    
+    rows.forEach(row => {
         const username = row.getAttribute('data-user-id');
         const user = allUsers.find(u => u.wins_username === username);
         
@@ -2061,12 +2219,104 @@ function filterUsers() {
             
         const matchesOrg = !orgFilter || user.organization_name === orgFilter;
         const matchesRole = !roleFilter || user.user_role === roleFilter;
+        const matchesNat = !natFilter || (user.nationality && user.nationality.toLowerCase() === natFilter);
         
-        if (matchesSearch && matchesOrg && matchesRole) {
+        // Smart filter checks (data attributes on the row)
+        let matchesSmart = true;
+        if (activeSmartFilter === 'duplicates') {
+            matchesSmart = row.getAttribute('data-is-duplicate') === 'true';
+        } else if (activeSmartFilter === 'existing') {
+            matchesSmart = row.getAttribute('data-is-existing') === 'true';
+        } else if (activeSmartFilter === 'new-org') {
+            matchesSmart = row.getAttribute('data-has-new-org') === 'true';
+        }
+        
+        if (matchesSearch && matchesOrg && matchesRole && matchesNat && matchesSmart) {
             row.style.display = '';
+            visibleCount++;
         } else {
             row.style.display = 'none';
         }
+    });
+}
+
+function setupSmartFilters() {
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            const clearBtn = document.querySelector('.filter-chip-clear');
+            
+            if (filter === 'clear') {
+                // Clear active smart filter
+                activeSmartFilter = null;
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                clearBtn.style.display = 'none';
+                filterUsers();
+                return;
+            }
+            
+            // Toggle: if same filter clicked, deactivate
+            if (activeSmartFilter === filter) {
+                activeSmartFilter = null;
+                this.classList.remove('active');
+                clearBtn.style.display = 'none';
+            } else {
+                // Activate this filter, deactivate others
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                activeSmartFilter = filter;
+                clearBtn.style.display = '';
+            }
+            
+            filterUsers();
+        });
+    });
+}
+
+function setupSortableHeaders() {
+    document.querySelectorAll('.sortable').forEach(th => {
+        th.addEventListener('click', function() {
+            const table = this.closest('table');
+            const tbody = table.querySelector('tbody');
+            const sortKey = this.getAttribute('data-sort');
+            const indicator = this.querySelector('.sort-indicator');
+            
+            // Determine sort direction
+            let direction;
+            if (this.classList.contains('sorted-asc')) {
+                direction = 'desc';
+                this.classList.remove('sorted-asc');
+                this.classList.add('sorted-desc');
+                indicator.textContent = '▼';
+            } else {
+                direction = 'asc';
+                this.classList.remove('sorted-desc');
+                this.classList.add('sorted-asc');
+                indicator.textContent = '▲';
+            }
+            
+            // Clear other sort indicators in this table
+            table.querySelectorAll('.sortable').forEach(otherTh => {
+                if (otherTh !== this) {
+                    otherTh.classList.remove('sorted-asc', 'sorted-desc');
+                    otherTh.querySelector('.sort-indicator').textContent = '';
+                }
+            });
+            
+            // Sort rows
+            const rows = Array.from(tbody.querySelectorAll('tr.user-row'));
+            rows.sort((a, b) => {
+                let valA = a.getAttribute('data-' + sortKey) || '';
+                let valB = b.getAttribute('data-' + sortKey) || '';
+                
+                // Compare
+                const cmp = valA.localeCompare(valB, undefined, { numeric: true, sensitivity: 'base' });
+                return direction === 'asc' ? cmp : -cmp;
+            });
+            
+            // Re-append sorted rows
+            rows.forEach(row => tbody.appendChild(row));
+        });
     });
 }
 

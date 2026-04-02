@@ -567,8 +567,8 @@ Best regards,
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        # Realizar una consulta para recuperar datos
-        results = session.query(CoolPluginTable).all()
+        # Realizar una consulta para recuperar datos (newest first)
+        results = session.query(CoolPluginTable).order_by(CoolPluginTable.created_date.desc()).all()
 
         # Check which usernames already exist as CKAN users
         existing_users = set()
