@@ -48,26 +48,33 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['POST']
         )
 
-        # Keep the old GET route for backward compatibility
+        # Keep the parameterized legacy route, but do not allow state changes via GET.
         blueprint.add_url_rule(
             u'/colab/admin/approve/<name>/<organization>/<new>/<new_organization_description>',
             u'approve',
             MyLogic.approve,
-            methods=['GET']
+            methods=['POST']
         )
 
         blueprint.add_url_rule(
             u'/colab/admin/approvegroup/<name>/<new>/<group>/<new_group_description>',
             u'approvegroup',
             MyLogic.approvegroup,
-            methods=['GET']
+            methods=['POST']
+        )
+
+        blueprint.add_url_rule(
+            u'/colab/admin/reject',
+            u'reject_post',
+            MyLogic.reject_post,
+            methods=['POST']
         )
 
         blueprint.add_url_rule(
             u'/colab/admin/reject/<name>/<organization>/<reason>',
             u'reject',
             MyLogic.reject,
-            methods=['GET']
+            methods=['POST']
         )
 
         blueprint.add_url_rule(

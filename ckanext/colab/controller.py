@@ -3,7 +3,7 @@ import ckan.plugins.toolkit as toolkit
 import ckan.model as model
 import ckan.logic as logic
 from ckanext.colab.models.cool_plugin_table import CoolPluginTable, OrganizationRequestTable, AuditLog
-from sqlalchemy import create_engine, text, inspect
+from sqlalchemy import create_engine, text, inspect, or_
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import re 
@@ -299,7 +299,7 @@ class MyLogic():
             # Generate URL
             CleanTitle = group.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
             # Keep hyphens
-            CleanTitleStep2 = re.sub('[^A-Za-z0-9\-]+', '', CleanTitle)
+            CleanTitleStep2 = re.sub(r'[^A-Za-z0-9-]+', '', CleanTitle)
             # Add user
             users = [{'name': format(name),'capacity': 'admin' }]
             # If it's a new group, create it
@@ -411,7 +411,7 @@ class MyLogic():
 
             # Generamos la URL
             CleanTitle = organization.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
-            CleanTitleStep2 = re.sub('[^A-Za-z0-9\-]+', '', CleanTitle)
+            CleanTitleStep2 = re.sub(r'[^A-Za-z0-9-]+', '', CleanTitle)
             users = [{'name': format(name), 'capacity': user_role}]
 
             try:
@@ -523,7 +523,7 @@ class MyLogic():
 
             # Limpiar el nombre de la organización para URL
             CleanTitle = organization_name.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
-            CleanTitleStep2 = re.sub('[^A-Za-z0-9\-]+', '', CleanTitle)
+            CleanTitleStep2 = re.sub(r'[^A-Za-z0-9-]+', '', CleanTitle)
             users = [{'name': format(wins_username), 'capacity': user_role}]
 
             try:
@@ -956,6 +956,47 @@ Best regards,
             return jsonify({'success': False, 'error': str(e)}), 500
 
     @staticmethod
+    def _reject_application(name, organization, reason):
+        logger.debug(f"Starting rejection for user: {name}, organization: {organization}, reason: {reason}")
+        context = {'model': model, 'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
+        try:
+            logic.check_access('organization_create', context)
+        except logic.NotAuthorized:
+            logger.error("User not authorized to reject users")
+            toolkit.abort(403, 'Not authorized to reject users')
+
+        if not name or not organization or not reason:
+            return {'error': 'Missing required rejection parameters'}
+
+        db_session = model.Session()
+        try:
+            cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
+                wins_username=name,
+                organization_name=organization
+            ).first()
+
+            if not cool_plugin_instance:
+                logger.error("No corresponding instance found in CoolPluginTable")
+                return {'error': 'Record not found'}
+
+            cool_plugin_instance.rejected = f'rejected by {toolkit.g.user}'
+            cool_plugin_instance.rejection_reason = reason
+            cool_plugin_instance.rejected_date = datetime.utcnow()
+            logger.debug(f"Updating instance: {cool_plugin_instance}")
+
+            db_session.commit()
+            logger.debug("Successful commit")
+            log_audit('reject', toolkit.g.user, cool_plugin_instance.id, name, f'Reason: {reason}')
+
+            return {'success': True, 'message': 'User rejected successfully'}
+        except Exception as e:
+            logger.error(f"Error in rejection: {e}")
+            db_session.rollback()
+            return {'error': str(e)}
+        finally:
+            db_session.close()
+
+    @staticmethod
     def check_status():
         """Allow applicants to check their application status by username and email."""
         if request.method == 'GET':
@@ -1163,13 +1204,12 @@ Best regards,
                     dup_session = DupSession()
                     existing_application = dup_session.query(CoolPluginTable).filter(
                         CoolPluginTable.approved == 'Pending',
-                        CoolPluginTable.wins_username == name
-                    ).first()
-                    if not existing_application:
-                        existing_application = dup_session.query(CoolPluginTable).filter(
-                            CoolPluginTable.approved == 'Pending',
+                        CoolPluginTable.deleted_at.is_(None),
+                        or_(
+                            CoolPluginTable.wins_username == name,
                             CoolPluginTable.email == email
-                        ).first()
+                        )
+                    ).first()
                     dup_session.close()
                     if existing_application:
                         logger.info(f"Duplicate pending application found for {name}/{email}")
@@ -1305,45 +1345,15 @@ Best regards,
 
     @staticmethod
     def reject(name, organization, reason):
-            logger.debug(f"Starting rejection for user: {name}, organization: {organization}, reason: {reason}")
-            try:
-                context = {'model': model, 'user': toolkit.c.user}
-                try:
-                    logic.check_access('organization_create', context)
-                except logic.NotAuthorized:
-                    logger.error("User not authorized to reject users")
-                    toolkit.abort(403, 'Not authorized to reject users')
+        return jsonify(MyLogic._reject_application(name, organization, reason))
 
-                db_session = model.Session()
-                try:
-                    cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
-                        wins_username=name, 
-                        organization_name=organization
-                    ).first()
-                    
-                    if not cool_plugin_instance:
-                        logger.error("No corresponding instance found in CoolPluginTable")
-                        return json.dumps({'error': 'Record not found'})
-
-                    cool_plugin_instance.rejected = f'rejected by {toolkit.g.user}'
-                    cool_plugin_instance.rejection_reason = reason
-                    cool_plugin_instance.rejected_date = datetime.utcnow()
-                    logger.debug(f"Updating instance: {cool_plugin_instance}")
-                    
-                    db_session.commit()
-                    logger.debug("Successful commit")
-                    log_audit('reject', toolkit.g.user, cool_plugin_instance.id, name, f'Reason: {reason}')
-                    
-                    return json.dumps({'success': True, 'message': 'User rejected successfully'})
-                except Exception as e:
-                    logger.error(f"Error in rejection: {e}")
-                    db_session.rollback()
-                    return json.dumps({'error': str(e)})
-                finally:
-                    db_session.close()
-            except Exception as e:
-                logger.error(f"General error in rejection: {e}")
-                return json.dumps({'error': str(e)})
+    @staticmethod
+    def reject_post():
+        """Reject an application via POST without exposing the reason in the URL."""
+        name = request.form.get('wins_username', '').strip()
+        organization = request.form.get('organization_name', '').strip()
+        reason = request.form.get('reason', '').strip()
+        return jsonify(MyLogic._reject_application(name, organization, reason))
 
     @staticmethod
     def show_organization_request_form():
@@ -1517,7 +1527,8 @@ Best regards,
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
             toolkit.abort(403, 'Need to be system administrator')
-        
+
+        session = None
         try:
             # Ensure the table exists (temporary fix until migration is run)
             try:
@@ -1538,7 +1549,8 @@ Best regards,
             logger.error(f"Error showing organization admin: {e}")
             abort(500)
         finally:
-            session.close()
+            if session is not None:
+                session.close()
 
     @staticmethod
     def approve_organization_request():
@@ -1565,7 +1577,7 @@ Best regards,
                 
                 # Clean organization name for URL
                 clean_name = org_request.organization_name.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
-                clean_name = re.sub('[^A-Za-z0-9\-]+', '', clean_name)
+                clean_name = re.sub(r'[^A-Za-z0-9-]+', '', clean_name)
                 
                 # Create organization
                 org_data = {

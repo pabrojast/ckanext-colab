@@ -325,7 +325,7 @@
           <select name="organization_id" class="form-control">
             <option value="">— Select Organization —</option>
             {% for org in organizations %}
-            <option value="{{ org.id }}" {% if device_request and device_request.organization_id == org.id %}selected{% endif %}>
+            <option value="{{ org.id or org.name }}" {% if device_request and device_request.organization_id == (org.id or org.name) %}selected{% endif %}>
               {{ org.display_name or org.title or org.name }}
             </option>
             {% endfor %}

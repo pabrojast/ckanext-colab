@@ -85,8 +85,41 @@ class ThingsBoardLogic:
         return errors
 
     @staticmethod
-    def _populate_request_from_form(req):
-        """Populate a DeviceRequest from form data."""
+    def _normalize_organizations(orgs):
+        """Return organizations in a consistent dict format for templates and validation."""
+        normalized = []
+        for org in orgs:
+            if isinstance(org, dict):
+                org_id = org.get('id') or org.get('name')
+                org_name = org.get('name') or org_id
+                display_name = org.get('display_name') or org.get('title') or org_name
+            else:
+                org_id = getattr(org, 'id', None) or getattr(org, 'name', None) or str(org)
+                org_name = getattr(org, 'name', None) or org_id
+                display_name = getattr(org, 'display_name', None) or getattr(org, 'title', None) or org_name
+
+            normalized.append({
+                'id': org_id,
+                'name': org_name,
+                'title': display_name,
+                'display_name': display_name,
+            })
+
+        return normalized
+
+    @staticmethod
+    def _allowed_organization_ids(orgs):
+        allowed_ids = set()
+        for org in orgs:
+            org_id = org.get('id') or org.get('name')
+            if org_id:
+                allowed_ids.add(org_id)
+        return allowed_ids
+
+    @staticmethod
+    def _populate_request_from_form(req, allowed_org_ids=None):
+        """Populate a DeviceRequest from form data and return validation errors."""
+        errors = []
         req.device_name = request.form.get('device_name', '').strip()
         req.device_label = request.form.get('device_label', '').strip()
         req.device_profile_name = request.form.get('device_profile_name', '').strip()
@@ -98,6 +131,8 @@ class ThingsBoardLogic:
         req.address = request.form.get('address', '').strip()
         req.technical_notes = request.form.get('technical_notes', '').strip()
         req.organization_id = request.form.get('organization_id', '').strip() or None
+        if req.organization_id and allowed_org_ids is not None and req.organization_id not in allowed_org_ids:
+            errors.append('Selected organization is not available for your user')
         req.survey_completed = request.form.get('survey_completed') == 'on'
 
         # Install date
@@ -107,17 +142,26 @@ class ThingsBoardLogic:
                 req.install_date = datetime.strptime(install_date_str, '%Y-%m-%d').date()
             except ValueError:
                 req.install_date = None
+                errors.append('Install date must use the YYYY-MM-DD format')
         else:
             req.install_date = None
 
         # Lat/lon
         lat_str = request.form.get('latitude', '').strip()
         lon_str = request.form.get('longitude', '').strip()
-        req.latitude = float(lat_str) if lat_str else None
-        req.longitude = float(lon_str) if lon_str else None
+        try:
+            req.latitude = float(lat_str) if lat_str else None
+        except ValueError:
+            req.latitude = None
+            errors.append('Latitude must be a valid number')
+        try:
+            req.longitude = float(lon_str) if lon_str else None
+        except ValueError:
+            req.longitude = None
+            errors.append('Longitude must be a valid number')
 
         req.updated_at = datetime.utcnow()
-        return req
+        return errors
 
     # ------------------------------------------------------------------
     # Helper: ensure table exists
@@ -169,6 +213,8 @@ class ThingsBoardLogic:
         """Create a new device request as DRAFT."""
         ThingsBoardLogic._require_login()
         ThingsBoardLogic._ensure_table()
+        orgs = ThingsBoardLogic._get_user_organizations()
+        allowed_org_ids = ThingsBoardLogic._allowed_organization_ids(orgs)
 
         try:
             dr = DeviceRequest(
@@ -177,7 +223,16 @@ class ThingsBoardLogic:
                 created_at=datetime.utcnow(),
                 updated_at=datetime.utcnow()
             )
-            ThingsBoardLogic._populate_request_from_form(dr)
+            errors = ThingsBoardLogic._populate_request_from_form(
+                dr,
+                allowed_org_ids=allowed_org_ids
+            )
+            if errors:
+                return render_template('thingsboard/device_form.html',
+                                       device_request=dr,
+                                       organizations=orgs,
+                                       errors=errors,
+                                       current_user=toolkit.g.userobj.name)
 
             model.Session.add(dr)
             model.Session.commit()
@@ -187,9 +242,8 @@ class ThingsBoardLogic:
         except Exception as e:
             model.Session.rollback()
             log.error(f'Error creating device request: {e}')
-            orgs = ThingsBoardLogic._get_user_organizations()
             return render_template('thingsboard/device_form.html',
-                                   device_request=None,
+                                   device_request=dr if 'dr' in locals() else None,
                                    organizations=orgs,
                                    errors=['An error occurred while saving the request'],
                                    current_user=toolkit.g.userobj.name)
@@ -220,6 +274,8 @@ class ThingsBoardLogic:
         """Update an existing draft or rejected request."""
         ThingsBoardLogic._require_login()
         ThingsBoardLogic._ensure_table()
+        orgs = ThingsBoardLogic._get_user_organizations()
+        allowed_org_ids = ThingsBoardLogic._allowed_organization_ids(orgs)
 
         dr = model.Session.query(DeviceRequest).get(id)
         if not dr:
@@ -230,7 +286,16 @@ class ThingsBoardLogic:
             toolkit.abort(403, 'This request can no longer be edited')
 
         try:
-            ThingsBoardLogic._populate_request_from_form(dr)
+            errors = ThingsBoardLogic._populate_request_from_form(
+                dr,
+                allowed_org_ids=allowed_org_ids
+            )
+            if errors:
+                return render_template('thingsboard/device_form.html',
+                                       device_request=dr,
+                                       organizations=orgs,
+                                       errors=errors,
+                                       current_user=toolkit.g.userobj.name)
             if dr.status == 'REJECTED':
                 dr.status = 'DRAFT'
                 dr.rejection_reason = None
@@ -241,7 +306,6 @@ class ThingsBoardLogic:
         except Exception as e:
             model.Session.rollback()
             log.error(f'Error updating device request: {e}')
-            orgs = ThingsBoardLogic._get_user_organizations()
             return render_template('thingsboard/device_form.html',
                                    device_request=dr,
                                    organizations=orgs,
@@ -253,6 +317,8 @@ class ThingsBoardLogic:
         """Validate and submit a device request for review."""
         ThingsBoardLogic._require_login()
         ThingsBoardLogic._ensure_table()
+        orgs = ThingsBoardLogic._get_user_organizations()
+        allowed_org_ids = ThingsBoardLogic._allowed_organization_ids(orgs)
 
         dr = model.Session.query(DeviceRequest).get(id)
         if not dr:
@@ -262,10 +328,12 @@ class ThingsBoardLogic:
         if dr.status not in ('DRAFT', 'REJECTED'):
             toolkit.abort(403, 'This request cannot be submitted')
 
-        # Validate
-        errors = ThingsBoardLogic._validate_for_submission(dr, request_id=dr.id)
+        form_errors = ThingsBoardLogic._populate_request_from_form(
+            dr,
+            allowed_org_ids=allowed_org_ids
+        )
+        errors = form_errors + ThingsBoardLogic._validate_for_submission(dr, request_id=dr.id)
         if errors:
-            orgs = ThingsBoardLogic._get_user_organizations()
             return render_template('thingsboard/device_form.html',
                                    device_request=dr,
                                    organizations=orgs,
@@ -273,6 +341,11 @@ class ThingsBoardLogic:
                                    current_user=toolkit.g.userobj.name)
 
         try:
+            if dr.status == 'REJECTED':
+                dr.rejection_reason = None
+                dr.rejected_at = None
+                dr.reviewed_by_user_id = None
+                dr.reviewed_at = None
             dr.status = 'SUBMITTED'
             dr.submitted_at = datetime.utcnow()
             dr.updated_at = datetime.utcnow()
@@ -290,7 +363,6 @@ class ThingsBoardLogic:
         except Exception as e:
             model.Session.rollback()
             log.error(f'Error submitting device request: {e}')
-            orgs = ThingsBoardLogic._get_user_organizations()
             return render_template('thingsboard/device_form.html',
                                    device_request=dr,
                                    organizations=orgs,
@@ -506,6 +578,6 @@ class ThingsBoardLogic:
                 {'user': toolkit.g.user},
                 {'permission': 'read'}
             )
-            return orgs
+            return ThingsBoardLogic._normalize_organizations(orgs)
         except Exception:
             return []
