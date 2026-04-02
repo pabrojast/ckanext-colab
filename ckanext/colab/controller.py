@@ -954,7 +954,10 @@ Best regards,
         except Exception as e:
             logger.error(f"Error in bulk action: {e}")
             return jsonify({'success': False, 'error': str(e)}), 500
-        """Allow applicants to check their application status by username + email."""
+
+    @staticmethod
+    def check_status():
+        """Allow applicants to check their application status by username and email."""
         if request.method == 'GET':
             return render_template("status.html")
 

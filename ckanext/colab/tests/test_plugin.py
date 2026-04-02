@@ -48,6 +48,11 @@ To temporary patch the CKAN configuration for the duration of a test you can use
         pass
 """
 import ckanext.colab.plugin as plugin
+from ckanext.colab.controller import MyLogic
 
 def test_plugin():
     pass
+
+
+def test_status_blueprint_handler_exists():
+    assert hasattr(MyLogic, 'check_status')
