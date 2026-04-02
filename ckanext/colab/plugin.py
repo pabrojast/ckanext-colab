@@ -84,6 +84,27 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['POST']
         )
 
+        blueprint.add_url_rule(
+            u'/colab/admin/note',
+            u'save_admin_note',
+            MyLogic.save_admin_note,
+            methods=['POST']
+        )
+
+        blueprint.add_url_rule(
+            u'/colab/admin/export',
+            u'export_csv',
+            MyLogic.export_csv,
+            methods=['GET']
+        )
+
+        blueprint.add_url_rule(
+            u'/colab/admin/bulk',
+            u'bulk_action',
+            MyLogic.bulk_action,
+            methods=['POST']
+        )
+
         # Application status check
         blueprint.add_url_rule(
             u'/colab/status',

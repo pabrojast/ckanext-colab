@@ -1,4 +1,4 @@
-from flask import render_template, request, abort, jsonify
+from flask import render_template, request, abort, jsonify, Response
 import ckan.plugins.toolkit as toolkit
 import ckan.model as model
 import ckan.logic as logic
@@ -9,6 +9,8 @@ from sqlalchemy.ext.declarative import declarative_base
 import re 
 import json 
 import logging
+import csv
+import io
 from ckanext.colab.lib.email_notifications import send_admin_notification, send_applicant_confirmation
 import requests
 from datetime import datetime
@@ -49,6 +51,12 @@ def ensure_colab_schema(engine=None):
         statements.append("ALTER TABLE colab ADD COLUMN c4water_status VARCHAR")
     if 'deleted_at' not in columns:
         statements.append("ALTER TABLE colab ADD COLUMN deleted_at TIMESTAMP")
+    if 'approved_date' not in columns:
+        statements.append("ALTER TABLE colab ADD COLUMN approved_date TIMESTAMP")
+    if 'rejected_date' not in columns:
+        statements.append("ALTER TABLE colab ADD COLUMN rejected_date TIMESTAMP")
+    if 'admin_notes' not in columns:
+        statements.append("ALTER TABLE colab ADD COLUMN admin_notes TEXT")
 
     for stmt in statements:
         try:
@@ -390,6 +398,7 @@ class MyLogic():
 
                 # Actualizar status después de cualquier operación exitosa
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
+                cool_plugin_instance.approved_date = datetime.utcnow()
                 db_session.commit()
                 
                 # Enviar notificación por email (opcional para el método legacy)
@@ -508,6 +517,7 @@ class MyLogic():
 
                 # Actualizar status después de cualquier operación exitosa
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
+                cool_plugin_instance.approved_date = datetime.utcnow()
                 db_session.commit()
                 
                 # Enviar notificación por email al usuario aprobado
@@ -676,9 +686,210 @@ Best regards,
             logger.error(f"Error restoring application record: {e}")
             return jsonify({'success': False, 'error': str(e)}), 500
 
+    @staticmethod
+    def save_admin_note():
+        """Save an admin note for an application record."""
+        context = {'model': model,
+                   'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
+        try:
+            logic.check_access('sysadmin', context, {})
+        except logic.NotAuthorized:
+            return jsonify({'success': False, 'error': 'Not authorized'}), 403
+
+        record_id = request.form.get('record_id')
+        notes = request.form.get('notes', '').strip()
+        if not record_id:
+            return jsonify({'success': False, 'error': 'Missing record_id'}), 400
+
+        try:
+            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+            Session = sessionmaker(bind=engine)
+            session = Session()
+
+            record = session.query(CoolPluginTable).filter_by(id=record_id).first()
+            if not record:
+                session.close()
+                return jsonify({'success': False, 'error': 'Record not found'}), 404
+
+            record.admin_notes = notes
+            session.commit()
+            session.close()
+            logger.info(f"Admin note updated for record {record_id} by {toolkit.g.user}")
+            return jsonify({'success': True})
+        except Exception as e:
+            logger.error(f"Error saving admin note: {e}")
+            return jsonify({'success': False, 'error': str(e)}), 500
 
     @staticmethod
-    def check_status():
+    def export_csv():
+        """Export applications as CSV file. Query param: tab=pending|approved|rejected"""
+        context = {'model': model,
+                   'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
+        try:
+            logic.check_access('sysadmin', context, {})
+        except logic.NotAuthorized:
+            abort(403, 'Not authorized')
+
+        tab = request.args.get('tab', 'pending')
+
+        try:
+            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+            Session = sessionmaker(bind=engine)
+            session = Session()
+
+            query = session.query(CoolPluginTable).filter(
+                CoolPluginTable.deleted_at.is_(None)
+            )
+
+            if tab == 'pending':
+                query = query.filter(
+                    CoolPluginTable.approved == 'Pending',
+                    CoolPluginTable.rejected.is_(None)
+                )
+            elif tab == 'approved':
+                query = query.filter(
+                    CoolPluginTable.approved.isnot(None),
+                    CoolPluginTable.approved != 'Pending'
+                )
+            elif tab == 'rejected':
+                query = query.filter(
+                    CoolPluginTable.rejected.isnot(None)
+                )
+
+            results = query.order_by(CoolPluginTable.created_date.desc()).all()
+            session.close()
+
+            output = io.StringIO()
+            writer = csv.writer(output)
+
+            headers = ['Full Name', 'Username', 'Email', 'Organization',
+                       'Organization Type', 'Title/Position', 'Role',
+                       'Citizens4Water', 'IHP WINS', 'Nationality',
+                       'Gender', 'Age', 'Applied Date']
+            if tab == 'approved':
+                headers += ['Approved By', 'Approved Date']
+            elif tab == 'rejected':
+                headers += ['Rejected By', 'Rejected Date', 'Rejection Reason']
+            headers.append('Admin Notes')
+            writer.writerow(headers)
+
+            for r in results:
+                row = [
+                    r.fullname, r.wins_username, r.email, r.organization_name,
+                    r.organizationType, r.title_within_organization, r.user_role or 'admin',
+                    r.citizens4water, r.ihp_wins, r.nationality,
+                    r.gender, r.age,
+                    r.created_date.strftime('%Y-%m-%d %H:%M') if r.created_date else ''
+                ]
+                if tab == 'approved':
+                    row += [
+                        r.approved or '',
+                        r.approved_date.strftime('%Y-%m-%d %H:%M') if r.approved_date else ''
+                    ]
+                elif tab == 'rejected':
+                    row += [
+                        r.rejected or '',
+                        r.rejected_date.strftime('%Y-%m-%d %H:%M') if r.rejected_date else '',
+                        r.rejection_reason or ''
+                    ]
+                row.append(r.admin_notes or '')
+                writer.writerow(row)
+
+            csv_content = output.getvalue()
+            output.close()
+
+            return Response(
+                csv_content,
+                mimetype='text/csv',
+                headers={'Content-Disposition': f'attachment; filename=colab_{tab}_{datetime.utcnow().strftime("%Y%m%d")}.csv'}
+            )
+        except Exception as e:
+            logger.error(f"Error exporting CSV: {e}")
+            abort(500, str(e))
+
+    @staticmethod
+    def bulk_action():
+        """Handle bulk approve/reject/delete of multiple application records."""
+        context = {'model': model,
+                   'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
+        try:
+            logic.check_access('sysadmin', context, {})
+        except logic.NotAuthorized:
+            return jsonify({'success': False, 'error': 'Not authorized'}), 403
+
+        action = request.form.get('action')
+        record_ids = request.form.getlist('record_ids[]')
+
+        if not action or not record_ids:
+            return jsonify({'success': False, 'error': 'Missing action or record_ids'}), 400
+
+        if action not in ('approve', 'reject', 'delete'):
+            return jsonify({'success': False, 'error': f'Invalid action: {action}'}), 400
+
+        try:
+            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+            Session = sessionmaker(bind=engine)
+            session = Session()
+
+            records = session.query(CoolPluginTable).filter(
+                CoolPluginTable.id.in_(record_ids)
+            ).all()
+
+            processed = 0
+            errors = []
+
+            for record in records:
+                try:
+                    if action == 'delete':
+                        record.deleted_at = datetime.utcnow()
+                        processed += 1
+                    elif action == 'reject':
+                        reason = request.form.get('reason', 'Bulk rejected by admin')
+                        record.rejected = f'rejected by {toolkit.g.user}'
+                        record.rejection_reason = reason
+                        record.rejected_date = datetime.utcnow()
+                        processed += 1
+                    elif action == 'approve':
+                        # Bulk approve uses 'member' as default role
+                        user_role = request.form.get('role', 'member')
+                        wins_username = record.wins_username
+                        organization_name = record.organization_name
+
+                        # Check if CKAN user exists
+                        try:
+                            toolkit.get_action('user_show')({'ignore_auth': True}, {'id': wins_username})
+                        except toolkit.ObjectNotFound:
+                            errors.append(f'{wins_username}: CKAN user does not exist')
+                            continue
+
+                        # Add user to organization
+                        CleanTitle = re.sub(r'[^a-zA-Z0-9\s-]', '', organization_name or '')
+                        CleanTitleStep2 = CleanTitle.replace(" ", "-").lower()
+                        try:
+                            toolkit.get_action('organization_member_create')(
+                                data_dict={'id': CleanTitleStep2, 'username': wins_username,
+                                          'role': user_role})
+                        except Exception as org_err:
+                            errors.append(f'{wins_username}: {str(org_err)}')
+                            continue
+
+                        record.approved = f'approved by {toolkit.g.user}'
+                        record.approved_date = datetime.utcnow()
+                        processed += 1
+                except Exception as rec_err:
+                    errors.append(f'Record {record.id}: {str(rec_err)}')
+
+            session.commit()
+            session.close()
+
+            result = {'success': True, 'processed': processed}
+            if errors:
+                result['errors'] = errors
+            logger.info(f"Bulk {action}: {processed} records by {toolkit.g.user}")
+            return jsonify(result)
+        except Exception as e:
+            logger.error(f"Error in bulk action: {e}")
+            return jsonify({'success': False, 'error': str(e)}), 500
         """Allow applicants to check their application status by username + email."""
         if request.method == 'GET':
             return render_template("status.html")
@@ -1049,6 +1260,7 @@ Best regards,
 
                     cool_plugin_instance.rejected = f'rejected by {toolkit.g.user}'
                     cool_plugin_instance.rejection_reason = reason
+                    cool_plugin_instance.rejected_date = datetime.utcnow()
                     logger.debug(f"Updating instance: {cool_plugin_instance}")
                     
                     db_session.commit()

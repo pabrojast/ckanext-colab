@@ -1268,6 +1268,102 @@
         visibility: visible;
         opacity: 1;
     }
+
+    /* Bulk Actions */
+    .bulk-action-bar {
+        display: none;
+        background: linear-gradient(135deg, var(--unesco-blue-pale), #fff);
+        border: 1px solid var(--unesco-blue);
+        border-radius: 8px;
+        padding: 10px 16px;
+        margin-bottom: 12px;
+        align-items: center;
+        gap: 12px;
+        animation: slideDown 0.2s ease;
+    }
+    .bulk-action-bar.visible { display: flex; }
+    .bulk-count { font-weight: 600; color: var(--unesco-blue-dark); font-size: 13px; }
+    .bulk-action-bar .btn {
+        padding: 5px 14px;
+        font-size: 12px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+    }
+    .bulk-btn-approve { background: #28a745; color: white; }
+    .bulk-btn-reject { background: #dc3545; color: white; }
+    .bulk-btn-delete { background: #6c757d; color: white; }
+    .bulk-btn-clear { background: transparent; color: var(--text-secondary); border: 1px solid #dee2e6 !important; }
+    .bulk-action-bar .btn:hover { opacity: 0.85; }
+    th.col-check, td.col-check { width: 32px; text-align: center; padding: 4px !important; }
+    td.col-check input[type="checkbox"] { cursor: pointer; width: 15px; height: 15px; }
+    th.col-check input[type="checkbox"] { cursor: pointer; width: 15px; height: 15px; }
+    tr.row-selected { background: var(--unesco-blue-pale) !important; }
+
+    /* CSV Export Button */
+    .export-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 12px;
+        font-size: 11px;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        background: white;
+        color: var(--text-secondary);
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .export-btn:hover { border-color: var(--unesco-blue); color: var(--unesco-blue); text-decoration: none; }
+
+    /* Relative date */
+    .date-relative { font-size: 12px; white-space: nowrap; }
+    .date-relative .date-abs { font-size: 10px; color: var(--text-secondary); }
+    .date-pending-days { font-size: 10px; color: #e67e22; font-weight: 500; }
+
+    /* Admin notes in modal */
+    .admin-notes-area {
+        width: 100%;
+        min-height: 60px;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 8px;
+        font-size: 13px;
+        resize: vertical;
+        font-family: inherit;
+    }
+    .admin-notes-area:focus { border-color: var(--unesco-blue); outline: none; }
+    .notes-save-btn {
+        margin-top: 6px;
+        padding: 4px 14px;
+        font-size: 12px;
+        background: var(--unesco-blue);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .notes-save-btn:hover { opacity: 0.85; }
+    .notes-saved { color: #28a745; font-size: 11px; margin-left: 8px; display: none; }
+
+    /* Bulk reject modal */
+    .bulk-reject-reason {
+        width: 100%;
+        min-height: 50px;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 8px;
+        font-size: 13px;
+        resize: vertical;
+        margin: 10px 0;
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 {% endblock %}
 
@@ -1313,7 +1409,7 @@
     </div>
 
     <div class="tabs">
-        <div class="tab-buttons">
+        <div class="tab-buttons" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <button class="tab-button active" data-tab="pending">
                 📋 Pending (<span id="pending-tab-count">0</span>)
             </button>
@@ -1323,6 +1419,18 @@
             <button class="tab-button" data-tab="rejected">
                 ❌ Rejected (<span id="rejected-tab-count">0</span>)
             </button>
+            <a href="/colab/admin/export?tab=pending" class="export-btn" id="csv-export-btn" title="Download current tab as CSV">
+                📥 Export CSV
+            </a>
+        </div>
+
+        <!-- Bulk Action Bar -->
+        <div class="bulk-action-bar" id="bulk-action-bar">
+            <span class="bulk-count"><span id="bulk-selected-count">0</span> selected</span>
+            <button class="btn bulk-btn-approve" onclick="bulkAction('approve')" id="bulk-approve-btn">✅ Approve</button>
+            <button class="btn bulk-btn-reject" onclick="bulkAction('reject')" id="bulk-reject-btn">❌ Reject</button>
+            <button class="btn bulk-btn-delete" onclick="bulkAction('delete')">🗑️ Delete</button>
+            <button class="btn bulk-btn-clear" onclick="clearBulkSelection()">✕ Clear</button>
         </div>
 
         <div class="controls">
@@ -1365,6 +1473,7 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
+                            <th class="col-check"><input type="checkbox" class="select-all-check" data-tab="pending" title="Select all"></th>
                             <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
                             <th>Contact</th>
                             <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
@@ -1378,6 +1487,7 @@
                         {% for result in results %}
                             {% if result.approved == 'Pending' and not result.rejected %}
                                 <tr data-user-id="{{ result.wins_username|e }}" class="user-row"
+                                    data-record-id="{{ result.id }}"
                                     data-is-existing="{{ 'true' if result.wins_username in existing_users else 'false' }}"
                                     data-is-duplicate="{{ 'true' if (result.wins_username in duplicate_usernames or result.email in duplicate_emails) else 'false' }}"
                                     data-has-new-org="{{ 'true' if result.new_organization_name else 'false' }}"
@@ -1387,6 +1497,9 @@
                                     data-org="{{ result.organization_name|lower|e }}"
                                     data-role="{{ (result.user_role or 'admin')|lower|e }}"
                                     data-tab="pending">
+                                    <td class="col-check">
+                                        <input type="checkbox" class="row-check" data-record-id="{{ result.id }}" onchange="updateBulkBar()">
+                                    </td>
                                     <td>
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
@@ -1418,11 +1531,11 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div style="font-size: 12px; white-space: nowrap;">
+                                        <div class="date-relative" data-date="{{ result.created_date.strftime('%Y-%m-%dT%H:%M:%SZ') if result.created_date else '' }}">
                                             {% if result.created_date %}
-                                                {{ result.created_date.strftime('%Y-%m-%d') }}
-                                                <br>
-                                                <small class="text-muted">{{ result.created_date.strftime('%H:%M') }}</small>
+                                                <span class="date-rel-text"></span>
+                                                <br><span class="date-abs">{{ result.created_date.strftime('%Y-%m-%d') }}</span>
+                                                <br><span class="date-pending-days"></span>
                                             {% else %}
                                                 <small class="text-muted">N/A</small>
                                             {% endif %}
@@ -1485,10 +1598,12 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
+                            <th class="col-check"><input type="checkbox" class="select-all-check" data-tab="approved" title="Select all"></th>
                             <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
                             <th>Contact</th>
                             <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
-                            <th class="sortable sorted-desc" data-sort="created-date">Applied <span class="sort-indicator">▼</span></th>
+                            <th class="sortable" data-sort="created-date">Applied <span class="sort-indicator"></span></th>
+                            <th class="sortable sorted-desc" data-sort="approved-date">Approved <span class="sort-indicator">▼</span></th>
                             <th>Platforms</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -1498,12 +1613,17 @@
                         {% for result in results %}
                             {% if result.approved and "approved by" in result.approved %}
                                 <tr data-user-id="{{ result.wins_username|e }}" class="user-row"
+                                    data-record-id="{{ result.id }}"
                                     data-nationality="{{ result.nationality|lower|e }}"
                                     data-created-date="{{ result.created_date.strftime('%Y-%m-%d %H:%M') if result.created_date else '' }}"
+                                    data-approved-date="{{ result.approved_date.strftime('%Y-%m-%d %H:%M') if result.approved_date else '' }}"
                                     data-fullname="{{ result.fullname|lower|e }}"
                                     data-org="{{ result.organization_name|lower|e }}"
                                     data-role="{{ (result.user_role or 'admin')|lower|e }}"
                                     data-tab="approved">
+                                    <td class="col-check">
+                                        <input type="checkbox" class="row-check" data-record-id="{{ result.id }}" onchange="updateBulkBar()">
+                                    </td>
                                     <td>
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
@@ -1526,11 +1646,22 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div style="font-size: 12px; white-space: nowrap;">
+                                        <div class="date-relative" data-date="{{ result.created_date.strftime('%Y-%m-%dT%H:%M:%SZ') if result.created_date else '' }}">
                                             {% if result.created_date %}
-                                                {{ result.created_date.strftime('%Y-%m-%d') }}
+                                                <span class="date-rel-text"></span>
+                                                <br><span class="date-abs">{{ result.created_date.strftime('%Y-%m-%d') }}</span>
                                             {% else %}
                                                 <small class="text-muted">N/A</small>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="date-relative" data-date="{{ result.approved_date.strftime('%Y-%m-%dT%H:%M:%SZ') if result.approved_date else '' }}">
+                                            {% if result.approved_date %}
+                                                <span class="date-rel-text"></span>
+                                                <br><span class="date-abs">{{ result.approved_date.strftime('%Y-%m-%d') }}</span>
+                                            {% else %}
+                                                <small class="text-muted">—</small>
                                             {% endif %}
                                         </div>
                                     </td>
@@ -1566,12 +1697,12 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
+                            <th class="col-check"><input type="checkbox" class="select-all-check" data-tab="rejected" title="Select all"></th>
                             <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
                             <th>Contact</th>
                             <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
-                            <th class="sortable sorted-desc" data-sort="created-date">Applied <span class="sort-indicator">▼</span></th>
-                            <th>Platforms</th>
-                            <th>Status</th>
+                            <th class="sortable" data-sort="created-date">Applied <span class="sort-indicator"></span></th>
+                            <th class="sortable sorted-desc" data-sort="rejected-date">Rejected <span class="sort-indicator">▼</span></th>
                             <th>Reason</th>
                             <th>Actions</th>
                         </tr>
@@ -1580,12 +1711,17 @@
                         {% for result in results %}
                             {% if result.rejected and "rejected by" in result.rejected %}
                                 <tr data-user-id="{{ result.wins_username|e }}" class="user-row"
+                                    data-record-id="{{ result.id }}"
                                     data-nationality="{{ result.nationality|lower|e }}"
                                     data-created-date="{{ result.created_date.strftime('%Y-%m-%d %H:%M') if result.created_date else '' }}"
+                                    data-rejected-date="{{ result.rejected_date.strftime('%Y-%m-%d %H:%M') if result.rejected_date else '' }}"
                                     data-fullname="{{ result.fullname|lower|e }}"
                                     data-org="{{ result.organization_name|lower|e }}"
                                     data-role="{{ (result.user_role or 'admin')|lower|e }}"
                                     data-tab="rejected">
+                                    <td class="col-check">
+                                        <input type="checkbox" class="row-check" data-record-id="{{ result.id }}" onchange="updateBulkBar()">
+                                    </td>
                                     <td>
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
@@ -1608,29 +1744,30 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div style="font-size: 12px; white-space: nowrap;">
+                                        <div class="date-relative" data-date="{{ result.created_date.strftime('%Y-%m-%dT%H:%M:%SZ') if result.created_date else '' }}">
                                             {% if result.created_date %}
-                                                {{ result.created_date.strftime('%Y-%m-%d') }}
+                                                <span class="date-rel-text"></span>
+                                                <br><span class="date-abs">{{ result.created_date.strftime('%Y-%m-%d') }}</span>
                                             {% else %}
                                                 <small class="text-muted">N/A</small>
                                             {% endif %}
                                         </div>
                                     </td>
                                     <td>
-                                        <div>
-                                            <span class="platform-chip {{ 'active' if result.citizens4water == 'yes' else 'inactive' }}">C4W</span>
-                                            <span class="platform-chip {{ 'active' if result.ihp_wins == 'yes' else 'inactive' }}">WINS</span>
+                                        <div class="date-relative" data-date="{{ result.rejected_date.strftime('%Y-%m-%dT%H:%M:%SZ') if result.rejected_date else '' }}">
+                                            {% if result.rejected_date %}
+                                                <span class="date-rel-text"></span>
+                                                <br><span class="date-abs">{{ result.rejected_date.strftime('%Y-%m-%d') }}</span>
+                                            {% else %}
+                                                <small class="text-muted">—</small>
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="status-badge status-rejected" style="font-size: 11px;">{{ result.rejected }}</span>
-                                        <div style="margin-top: 3px; font-size: 10px; color: #666;">
-                                            Role: {{ result.user_role or 'admin' }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="truncate" title="{{ result.rejection_reason|e }}">
+                                        <div class="truncate" title="{{ result.rejection_reason|e }}" style="max-width: 200px;">
                                             {{ result.rejection_reason }}
+                                            <br>
+                                            <small class="text-muted" style="font-size: 10px;">{{ result.rejected }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -1712,6 +1849,7 @@
 let allUsers = [
     {% for result in results %}
     {
+        id: {{ result.id|tojson }},
         fullname: {{ (result.fullname or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         wins_username: {{ (result.wins_username or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         email: {{ (result.email or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
@@ -1728,7 +1866,10 @@ let allUsers = [
         nationality: {{ (result.nationality or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         new_organization_name: {{ (result.new_organization_name or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         citizens4water: {{ (result.citizens4water or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
-        ihp_wins: {{ (result.ihp_wins or '')|replace('\n', ' ')|replace('\r', '')|tojson }}
+        ihp_wins: {{ (result.ihp_wins or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        admin_notes: {{ (result.admin_notes or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        approved_date: {{ (result.approved_date.strftime('%Y-%m-%dT%H:%M:%SZ') if result.approved_date else '')|tojson }},
+        rejected_date: {{ (result.rejected_date.strftime('%Y-%m-%dT%H:%M:%SZ') if result.rejected_date else '')|tojson }}
     }{% if not loop.last %},{% endif %}
     {% endfor %}
 ];
@@ -1747,6 +1888,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupLastProcessedIndicator();
     setupSmartFilters();
     setupSortableHeaders();
+    setupSelectAll();
+    updateRelativeDates();
 });
 
 // Track active smart filter
@@ -1772,13 +1915,19 @@ function initializeAdmin() {
                 smartFilters.style.display = '';
             } else {
                 smartFilters.style.display = 'none';
-                // Clear active smart filter when leaving pending
                 if (activeSmartFilter) {
                     activeSmartFilter = null;
                     document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
                     document.querySelector('.filter-chip-clear').style.display = 'none';
                 }
             }
+            // Update CSV export link for current tab
+            document.getElementById('csv-export-btn').href = '/colab/admin/export?tab=' + tabId;
+            // Bulk approve/reject only visible on pending tab
+            document.getElementById('bulk-approve-btn').style.display = tabId === 'pending' ? '' : 'none';
+            document.getElementById('bulk-reject-btn').style.display = tabId === 'pending' ? '' : 'none';
+            // Clear bulk selection on tab switch
+            clearBulkSelection();
             // Re-apply filters when switching tabs
             filterUsers();
         });
@@ -2036,8 +2185,21 @@ function showUserDetails(username, isPending) {
             <div class="detail-label">📊 Status Information</div>
             <div class="detail-value">
                 <strong>Approval Status:</strong> ${user.approved || 'Pending'}<br>
+                ${user.approved_date ? `<strong>Approved Date:</strong> ${formatDateStr(user.approved_date)}<br>` : ''}
                 ${user.rejected ? `<strong>Rejection Status:</strong> ${user.rejected}<br>` : ''}
+                ${user.rejected_date ? `<strong>Rejected Date:</strong> ${formatDateStr(user.rejected_date)}<br>` : ''}
                 ${user.rejection_reason ? `<strong>Rejection Reason:</strong> ${user.rejection_reason}` : ''}
+            </div>
+        </div>
+
+        <div class="detail-group">
+            <div class="detail-label">📝 Admin Notes</div>
+            <div class="detail-value">
+                <textarea class="admin-notes-area" id="modal-admin-notes" placeholder="Add internal notes about this application...">${user.admin_notes || ''}</textarea>
+                <div style="display: flex; align-items: center;">
+                    <button class="notes-save-btn" onclick="saveAdminNote(${user.id})">💾 Save Notes</button>
+                    <span class="notes-saved" id="notes-saved-indicator">✓ Saved</span>
+                </div>
             </div>
         </div>
     `;
@@ -2608,6 +2770,176 @@ function undoDelete(recordId, btn) {
         btn.textContent = '↩️ Undo';
         showToast('Error', 'Error restoring: ' + err, 'error');
     });
+}
+
+// =========== Relative Dates ===========
+function timeAgo(dateStr) {
+    if (!dateStr) return '';
+    var d = new Date(dateStr);
+    var now = new Date();
+    var diff = Math.floor((now - d) / 1000);
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+    var days = Math.floor(diff/86400);
+    if (days === 1) return '1 day ago';
+    if (days < 30) return days + ' days ago';
+    if (days < 365) return Math.floor(days/30) + ' months ago';
+    return Math.floor(days/365) + 'y ago';
+}
+
+function pendingDays(dateStr) {
+    if (!dateStr) return '';
+    var d = new Date(dateStr);
+    var days = Math.floor((new Date() - d) / 86400000);
+    if (days === 0) return 'Applied today';
+    if (days === 1) return 'Pending 1 day';
+    return 'Pending ' + days + ' days';
+}
+
+function formatDateStr(dateStr) {
+    if (!dateStr) return '';
+    var d = new Date(dateStr);
+    return d.toISOString().slice(0,10) + ' ' + d.toISOString().slice(11,16);
+}
+
+function updateRelativeDates() {
+    document.querySelectorAll('.date-relative').forEach(function(el) {
+        var dateStr = el.getAttribute('data-date');
+        if (!dateStr) return;
+        var relText = el.querySelector('.date-rel-text');
+        if (relText) relText.textContent = timeAgo(dateStr);
+        var pendingEl = el.querySelector('.date-pending-days');
+        if (pendingEl) pendingEl.textContent = pendingDays(dateStr);
+    });
+}
+
+// =========== Select All / Bulk ===========
+function setupSelectAll() {
+    document.querySelectorAll('.select-all-check').forEach(function(check) {
+        check.addEventListener('change', function() {
+            var tab = this.getAttribute('data-tab');
+            var tabEl = document.getElementById(tab);
+            if (!tabEl) return;
+            var rows = tabEl.querySelectorAll('.row-check');
+            rows.forEach(function(r) {
+                var row = r.closest('tr');
+                if (row && row.style.display !== 'none') {
+                    r.checked = check.checked;
+                    row.classList.toggle('row-selected', check.checked);
+                }
+            });
+            updateBulkBar();
+        });
+    });
+}
+
+function updateBulkBar() {
+    var activeTab = document.querySelector('.tab-content.active');
+    var checked = activeTab ? activeTab.querySelectorAll('.row-check:checked') : [];
+    var bar = document.getElementById('bulk-action-bar');
+    var countEl = document.getElementById('bulk-selected-count');
+    countEl.textContent = checked.length;
+    if (checked.length > 0) {
+        bar.classList.add('visible');
+    } else {
+        bar.classList.remove('visible');
+    }
+    // Toggle row-selected class
+    if (activeTab) {
+        activeTab.querySelectorAll('.row-check').forEach(function(r) {
+            var row = r.closest('tr');
+            if (row) row.classList.toggle('row-selected', r.checked);
+        });
+    }
+}
+
+function clearBulkSelection() {
+    document.querySelectorAll('.row-check').forEach(function(c) { c.checked = false; });
+    document.querySelectorAll('.select-all-check').forEach(function(c) { c.checked = false; });
+    document.querySelectorAll('.row-selected').forEach(function(r) { r.classList.remove('row-selected'); });
+    document.getElementById('bulk-action-bar').classList.remove('visible');
+}
+
+function getSelectedIds() {
+    var activeTab = document.querySelector('.tab-content.active');
+    var ids = [];
+    if (activeTab) {
+        activeTab.querySelectorAll('.row-check:checked').forEach(function(c) {
+            ids.push(c.getAttribute('data-record-id'));
+        });
+    }
+    return ids;
+}
+
+function bulkAction(action) {
+    var ids = getSelectedIds();
+    if (ids.length === 0) return;
+
+    if (action === 'reject') {
+        // Show bulk reject reason dialog
+        var reason = prompt('Rejection reason for ' + ids.length + ' application(s):');
+        if (reason === null) return;
+        executeBulkAction(action, ids, {reason: reason});
+    } else if (action === 'delete') {
+        if (!confirm('Delete ' + ids.length + ' application(s)? This is a soft delete and can be undone.')) return;
+        executeBulkAction(action, ids, {});
+    } else if (action === 'approve') {
+        if (!confirm('Approve ' + ids.length + ' application(s) with member role?')) return;
+        executeBulkAction(action, ids, {role: 'member'});
+    }
+}
+
+function executeBulkAction(action, ids, extra) {
+    var formData = new FormData();
+    formData.append('action', action);
+    ids.forEach(function(id) { formData.append('record_ids[]', id); });
+    if (extra.reason) formData.append('reason', extra.reason);
+    if (extra.role) formData.append('role', extra.role);
+
+    fetch('/colab/admin/bulk', {method: 'POST', body: formData})
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.success) {
+                var msg = action.charAt(0).toUpperCase() + action.slice(1) + 'd ' + data.processed + ' application(s)';
+                if (data.errors && data.errors.length > 0) {
+                    msg += '. Errors: ' + data.errors.join('; ');
+                }
+                showToast('Bulk ' + action, msg, data.errors ? 'warning' : 'success');
+                setTimeout(function() { location.reload(); }, 1500);
+            } else {
+                showToast('Error', data.error || 'Bulk action failed', 'error');
+            }
+        })
+        .catch(function(err) {
+            showToast('Error', 'Network error: ' + err, 'error');
+        });
+}
+
+// =========== Admin Notes ===========
+function saveAdminNote(recordId) {
+    var notes = document.getElementById('modal-admin-notes').value;
+    var formData = new FormData();
+    formData.append('record_id', recordId);
+    formData.append('notes', notes);
+
+    fetch('/colab/admin/note', {method: 'POST', body: formData})
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.success) {
+                var indicator = document.getElementById('notes-saved-indicator');
+                indicator.style.display = 'inline';
+                setTimeout(function() { indicator.style.display = 'none'; }, 2000);
+                // Update local data
+                var user = allUsers.find(function(u) { return u.id === recordId; });
+                if (user) user.admin_notes = notes;
+            } else {
+                showToast('Error', data.error || 'Could not save notes', 'error');
+            }
+        })
+        .catch(function(err) {
+            showToast('Error', 'Error saving notes: ' + err, 'error');
+        });
 }
 </script>
 

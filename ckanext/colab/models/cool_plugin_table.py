@@ -30,7 +30,10 @@ cool_plugin_table = Table(
     Column('rejection_reason', types.String),
     Column('citizens4water', types.String),
     Column('ihp_wins', types.String),
-    Column('deleted_at', types.DateTime, nullable=True)
+    Column('deleted_at', types.DateTime, nullable=True),
+    Column('approved_date', types.DateTime, nullable=True),
+    Column('rejected_date', types.DateTime, nullable=True),
+    Column('admin_notes', types.String, nullable=True)
     )
 
 organization_request_table = Table(
@@ -82,6 +85,9 @@ class CoolPluginTable(domain_object.DomainObject):
         self.citizens4water = citizens4water
         self.ihp_wins = ihp_wins
         self.deleted_at = None
+        self.approved_date = None
+        self.rejected_date = None
+        self.admin_notes = None
 
 class OrganizationRequestTable(domain_object.DomainObject):
     def __init__(self, requester_username=None, organization_name=None, organization_description=None, 
