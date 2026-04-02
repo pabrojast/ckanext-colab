@@ -77,6 +77,13 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['POST']
         )
 
+        blueprint.add_url_rule(
+            u'/colab/admin/restore',
+            u'restore_application',
+            MyLogic.restore_application,
+            methods=['POST']
+        )
+
         # Organization request routes
         blueprint.add_url_rule(
             u'/colab/organization-request',

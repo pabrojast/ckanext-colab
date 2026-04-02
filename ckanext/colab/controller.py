@@ -47,6 +47,8 @@ def ensure_colab_schema(engine=None):
         statements.append("ALTER TABLE colab ADD COLUMN age INTEGER")
     if 'c4water_status' not in columns:
         statements.append("ALTER TABLE colab ADD COLUMN c4water_status VARCHAR")
+    if 'deleted_at' not in columns:
+        statements.append("ALTER TABLE colab ADD COLUMN deleted_at TIMESTAMP")
 
     for stmt in statements:
         try:
@@ -567,18 +569,31 @@ Best regards,
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        # Realizar una consulta para recuperar datos (newest first)
-        results = session.query(CoolPluginTable).order_by(CoolPluginTable.created_date.desc()).all()
+        # Realizar una consulta para recuperar datos (newest first, exclude soft-deleted)
+        results = session.query(CoolPluginTable).filter(
+            CoolPluginTable.deleted_at.is_(None)
+        ).order_by(CoolPluginTable.created_date.desc()).all()
 
-        # Check which usernames already exist as CKAN users
+        # Batch check which usernames already exist as CKAN users (single query)
+        all_usernames = {r.wins_username for r in results if r.wins_username}
         existing_users = set()
-        for r in results:
-            if r.wins_username:
-                try:
-                    toolkit.get_action('user_show')({'ignore_auth': True}, {'id': r.wins_username})
-                    existing_users.add(r.wins_username)
-                except toolkit.ObjectNotFound:
-                    pass
+        if all_usernames:
+            try:
+                from sqlalchemy import text as sa_text
+                ckan_users = session.execute(
+                    sa_text("SELECT name FROM public.\"user\" WHERE name IN :names AND state = 'active'"),
+                    {'names': tuple(all_usernames)}
+                ).fetchall()
+                existing_users = {row[0] for row in ckan_users}
+            except Exception as e:
+                logger.warning("Batch user check failed, falling back to individual checks: %s", e)
+                for r in results:
+                    if r.wins_username:
+                        try:
+                            toolkit.get_action('user_show')({'ignore_auth': True}, {'id': r.wins_username})
+                            existing_users.add(r.wins_username)
+                        except toolkit.ObjectNotFound:
+                            pass
 
         # Find duplicate usernames and emails
         from collections import Counter
@@ -618,13 +633,47 @@ Best regards,
                 session.close()
                 return jsonify({'success': False, 'error': 'Record not found'}), 404
 
-            session.delete(record)
+            # Soft delete: set deleted_at timestamp instead of removing
+            from datetime import datetime
+            record.deleted_at = datetime.utcnow()
             session.commit()
             session.close()
-            logger.info(f"Application record {record_id} deleted by {toolkit.g.user}")
-            return jsonify({'success': True})
+            logger.info(f"Application record {record_id} soft-deleted by {toolkit.g.user}")
+            return jsonify({'success': True, 'record_id': record_id})
         except Exception as e:
             logger.error(f"Error deleting application record: {e}")
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @staticmethod
+    def restore_application():
+        context = {'model': model,
+                   'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
+        try:
+            logic.check_access('sysadmin', context, {})
+        except logic.NotAuthorized:
+            return jsonify({'success': False, 'error': 'Not authorized'}), 403
+
+        record_id = request.form.get('record_id')
+        if not record_id:
+            return jsonify({'success': False, 'error': 'Missing record_id'}), 400
+
+        try:
+            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
+            Session = sessionmaker(bind=engine)
+            session = Session()
+
+            record = session.query(CoolPluginTable).filter_by(id=record_id).first()
+            if not record:
+                session.close()
+                return jsonify({'success': False, 'error': 'Record not found'}), 404
+
+            record.deleted_at = None
+            session.commit()
+            session.close()
+            logger.info(f"Application record {record_id} restored by {toolkit.g.user}")
+            return jsonify({'success': True})
+        except Exception as e:
+            logger.error(f"Error restoring application record: {e}")
             return jsonify({'success': False, 'error': str(e)}), 500
 
 

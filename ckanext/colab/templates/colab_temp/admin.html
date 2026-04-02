@@ -1198,6 +1198,10 @@
         }
     }
 
+    .toast-fade-out {
+        animation: fadeOutRow 0.3s ease forwards;
+    }
+
     /* Last processed indicator */
     .last-processed {
         position: fixed;
@@ -1676,6 +1680,33 @@
     </div>
 </div>
 
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content" style="max-width: 480px;">
+        <div class="modal-header" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">
+            <h2 style="color: white;">🗑️ Delete Application</h2>
+            <span class="close" onclick="closeDeleteModal()" style="color: white;">&times;</span>
+        </div>
+        <div class="modal-body" style="padding: 24px;">
+            <p style="font-size: 15px; margin-bottom: 16px;">Are you sure you want to delete this application?</p>
+            <div id="delete-modal-details" style="background: #f8f9fa; border-radius: 8px; padding: 14px; margin-bottom: 16px; font-size: 13px;">
+                <!-- Populated by JS -->
+            </div>
+            <p style="font-size: 12px; color: #6c757d; margin-bottom: 0;">
+                ℹ️ You can undo this action within 15 seconds after deletion.
+            </p>
+        </div>
+        <div style="padding: 16px 24px; display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid #e9ecef;">
+            <button onclick="closeDeleteModal()" style="padding: 8px 20px; border: 1px solid #dee2e6; border-radius: 6px; background: white; cursor: pointer; font-size: 13px;">
+                Cancel
+            </button>
+            <button id="confirm-delete-btn" style="padding: 8px 20px; border: none; border-radius: 6px; background: #dc3545; color: white; cursor: pointer; font-size: 13px; font-weight: 500;">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
 // Store all users data for filtering
 let allUsers = [
@@ -1774,8 +1805,12 @@ function setupEventListeners() {
     // Modal close on outside click
     window.onclick = function(event) {
         const modal = document.getElementById('userModal');
+        const deleteModal = document.getElementById('deleteModal');
         if (event.target === modal) {
             closeModal();
+        }
+        if (event.target === deleteModal) {
+            closeDeleteModal();
         }
     }
 }
@@ -2432,14 +2467,51 @@ function showLastProcessedDetails() {
     }
 }
 
+// Delete modal state
+let pendingDeleteRecordId = null;
+let pendingDeleteBtn = null;
+
 function deleteApplication(btn) {
-    var recordId = btn.getAttribute('data-record-id');
+    pendingDeleteRecordId = btn.getAttribute('data-record-id');
+    pendingDeleteBtn = btn;
     var fullname = btn.getAttribute('data-fullname');
-    if (!confirm('Are you sure you want to delete the application for "' + fullname + '"? This cannot be undone.')) {
-        return;
-    }
+    var row = btn.closest('tr');
+    var username = row ? row.getAttribute('data-user-id') : '';
+    var org = row ? (row.getAttribute('data-org') || '') : '';
+    
+    document.getElementById('delete-modal-details').innerHTML = 
+        '<div><strong>👤 ' + (fullname || 'Unknown') + '</strong></div>' +
+        '<div style="color: #6c757d; margin-top: 4px;">Username: ' + username + '</div>' +
+        (org ? '<div style="color: #6c757d;">Organization: ' + org + '</div>' : '');
+    
+    document.getElementById('deleteModal').style.display = 'block';
+    
+    // Wire up confirm button
+    document.getElementById('confirm-delete-btn').onclick = confirmDelete;
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+    pendingDeleteRecordId = null;
+    pendingDeleteBtn = null;
+}
+
+function confirmDelete() {
+    if (!pendingDeleteRecordId) return;
+    
+    var recordId = pendingDeleteRecordId;
+    var btn = pendingDeleteBtn;
+    var row = btn ? btn.closest('tr') : null;
+    var fullname = btn ? btn.getAttribute('data-fullname') : '';
+    
+    closeDeleteModal();
+    
     var formData = new FormData();
     formData.append('record_id', recordId);
+    
+    // Show processing state
+    if (row) row.classList.add('row-processing');
+    
     fetch('{{ h.url_for("colab.delete_application") }}', {
         method: 'POST',
         body: formData
@@ -2447,14 +2519,94 @@ function deleteApplication(btn) {
     .then(function(response) { return response.json(); })
     .then(function(data) {
         if (data.success) {
-            var row = btn.closest('tr');
-            if (row) row.remove();
+            if (row) {
+                row.classList.remove('row-processing');
+                row.classList.add('row-fade-out');
+                setTimeout(function() { row.style.display = 'none'; }, 400);
+            }
+            // Show toast with undo option
+            showUndoToast(fullname, recordId, row);
+            updateCounts();
         } else {
-            alert('Error: ' + (data.error || 'Unknown error'));
+            if (row) row.classList.remove('row-processing');
+            showToast('Error', data.error || 'Unknown error', 'error');
         }
     })
     .catch(function(err) {
-        alert('Error deleting application: ' + err);
+        if (row) row.classList.remove('row-processing');
+        showToast('Error', 'Error deleting application: ' + err, 'error');
+    });
+}
+
+function showUndoToast(fullname, recordId, row) {
+    var container = document.getElementById('toast-container');
+    var toast = document.createElement('div');
+    toast.className = 'toast toast-warning';
+    toast.innerHTML = 
+        '<div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">' +
+        '<span>🗑️ <strong>' + fullname + '</strong> deleted</span>' +
+        '<button onclick="undoDelete(\'' + recordId + '\', this)" ' +
+        'style="padding:4px 12px; background:white; border:1px solid #856404; border-radius:4px; cursor:pointer; font-size:12px; font-weight:500; white-space:nowrap;">↩️ Undo</button>' +
+        '</div>';
+    container.appendChild(toast);
+    
+    // Store row reference for undo
+    toast.setAttribute('data-row-ref', recordId);
+    if (row) row.setAttribute('data-undo-toast', 'true');
+    
+    // Auto-remove after 15 seconds
+    setTimeout(function() {
+        if (toast.parentNode) {
+            toast.classList.add('toast-fade-out');
+            setTimeout(function() { toast.remove(); }, 300);
+            // Permanently remove the row from DOM after undo window closes
+            if (row && row.style.display === 'none') {
+                row.remove();
+                updateCounts();
+            }
+        }
+    }, 15000);
+}
+
+function undoDelete(recordId, btn) {
+    var formData = new FormData();
+    formData.append('record_id', recordId);
+    
+    btn.disabled = true;
+    btn.textContent = '⏳...';
+    
+    fetch('{{ h.url_for("colab.restore_application") }}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+        if (data.success) {
+            // Restore the hidden row
+            var hiddenRows = document.querySelectorAll('tr.row-fade-out, tr[style*="display: none"]');
+            hiddenRows.forEach(function(row) {
+                var rowDeleteBtn = row.querySelector('.delete-link');
+                if (rowDeleteBtn && rowDeleteBtn.getAttribute('data-record-id') === recordId) {
+                    row.style.display = '';
+                    row.classList.remove('row-fade-out');
+                    row.style.animation = 'fadeIn 0.3s ease';
+                }
+            });
+            // Remove the toast
+            var toast = btn.closest('.toast');
+            if (toast) toast.remove();
+            showToast('Restored', 'Application restored successfully', 'success');
+            updateCounts();
+        } else {
+            btn.disabled = false;
+            btn.textContent = '↩️ Undo';
+            showToast('Error', data.error || 'Could not restore', 'error');
+        }
+    })
+    .catch(function(err) {
+        btn.disabled = false;
+        btn.textContent = '↩️ Undo';
+        showToast('Error', 'Error restoring: ' + err, 'error');
     });
 }
 </script>
