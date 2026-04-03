@@ -3,9 +3,7 @@ import ckan.plugins.toolkit as toolkit
 import ckan.model as model
 import ckan.logic as logic
 from ckanext.colab.models.cool_plugin_table import CoolPluginTable, OrganizationRequestTable, AuditLog
-from sqlalchemy import create_engine, text, inspect, or_
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import text, inspect, or_
 import re 
 import json 
 import logging
@@ -24,8 +22,6 @@ import time
 # Logging configuration
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
-Base = declarative_base()
 
 # Cache with 5 minutes expiration time
 _cache_timestamp = {}
@@ -615,27 +611,23 @@ Best regards,
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
             toolkit.abort(403, 'Need to be system administrator')
-        # Crear una sesión de SQLAlchemy
-        engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-        ensure_colab_schema(engine)
-        Session = sessionmaker(bind=engine)
-        session = Session()
+
+        ensure_colab_schema()
 
         # Realizar una consulta para recuperar datos (newest first, exclude soft-deleted)
-        results = session.query(CoolPluginTable).filter(
+        results = model.Session.query(CoolPluginTable).filter(
             CoolPluginTable.deleted_at.is_(None)
         ).order_by(CoolPluginTable.created_date.desc()).all()
 
-        # Batch check which usernames already exist as CKAN users (single query)
+        # Batch check which usernames already exist as CKAN users
         all_usernames = {r.wins_username for r in results if r.wins_username}
         existing_users = set()
         if all_usernames:
             try:
-                from sqlalchemy import text as sa_text
-                ckan_users = session.execute(
-                    sa_text("SELECT name FROM public.\"user\" WHERE name IN :names AND state = 'active'"),
-                    {'names': tuple(all_usernames)}
-                ).fetchall()
+                ckan_users = model.Session.query(model.User.name).filter(
+                    model.User.name.in_(all_usernames),
+                    model.User.state == 'active'
+                ).all()
                 existing_users = {row[0] for row in ckan_users}
             except Exception as e:
                 logger.warning("Batch user check failed, falling back to individual checks: %s", e)
@@ -664,21 +656,18 @@ Best regards,
 
         # Fetch recent audit log entries (last 50)
         try:
-            audit_entries = session.query(AuditLog).order_by(
+            audit_entries = model.Session.query(AuditLog).order_by(
                 AuditLog.created_at.desc()
             ).limit(50).all()
         except Exception:
             audit_entries = []
 
-        try:
-            return render_template("admin.html", results=results,
-                                   existing_users=existing_users,
-                                   duplicate_usernames=duplicate_usernames,
-                                   duplicate_emails=duplicate_emails,
-                                   avg_processing_days=avg_processing_days,
-                                   audit_entries=audit_entries)
-        finally:
-            session.close()
+        return render_template("admin.html", results=results,
+                               existing_users=existing_users,
+                               duplicate_usernames=duplicate_usernames,
+                               duplicate_emails=duplicate_emails,
+                               avg_processing_days=avg_processing_days,
+                               audit_entries=audit_entries)
 
     @staticmethod
     def delete_application():
@@ -694,24 +683,17 @@ Best regards,
             return jsonify({'success': False, 'error': 'Missing record_id'}), 400
 
         try:
-            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-            Session = sessionmaker(bind=engine)
-            session = Session()
-
-            record = session.query(CoolPluginTable).filter_by(id=record_id).first()
+            record = model.Session.query(CoolPluginTable).filter_by(id=record_id).first()
             if not record:
-                session.close()
                 return jsonify({'success': False, 'error': 'Record not found'}), 404
 
-            # Soft delete: set deleted_at timestamp instead of removing
-            from datetime import datetime
             record.deleted_at = datetime.utcnow()
-            session.commit()
-            session.close()
+            model.Session.commit()
             logger.info(f"Application record {record_id} soft-deleted by {toolkit.g.user}")
             log_audit('delete', toolkit.g.user, int(record_id), record.wins_username, 'Soft delete')
             return jsonify({'success': True, 'record_id': record_id})
         except Exception as e:
+            model.Session.rollback()
             logger.error(f"Error deleting application record: {e}")
             return jsonify({'success': False, 'error': str(e)}), 500
 
@@ -729,22 +711,17 @@ Best regards,
             return jsonify({'success': False, 'error': 'Missing record_id'}), 400
 
         try:
-            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-            Session = sessionmaker(bind=engine)
-            session = Session()
-
-            record = session.query(CoolPluginTable).filter_by(id=record_id).first()
+            record = model.Session.query(CoolPluginTable).filter_by(id=record_id).first()
             if not record:
-                session.close()
                 return jsonify({'success': False, 'error': 'Record not found'}), 404
 
             record.deleted_at = None
-            session.commit()
-            session.close()
+            model.Session.commit()
             logger.info(f"Application record {record_id} restored by {toolkit.g.user}")
             log_audit('restore', toolkit.g.user, int(record_id), record.wins_username, 'Restored from soft delete')
             return jsonify({'success': True})
         except Exception as e:
+            model.Session.rollback()
             logger.error(f"Error restoring application record: {e}")
             return jsonify({'success': False, 'error': str(e)}), 500
 
@@ -764,22 +741,17 @@ Best regards,
             return jsonify({'success': False, 'error': 'Missing record_id'}), 400
 
         try:
-            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-            Session = sessionmaker(bind=engine)
-            session = Session()
-
-            record = session.query(CoolPluginTable).filter_by(id=record_id).first()
+            record = model.Session.query(CoolPluginTable).filter_by(id=record_id).first()
             if not record:
-                session.close()
                 return jsonify({'success': False, 'error': 'Record not found'}), 404
 
             record.admin_notes = notes
-            session.commit()
-            session.close()
+            model.Session.commit()
             logger.info(f"Admin note updated for record {record_id} by {toolkit.g.user}")
             log_audit('note', toolkit.g.user, int(record_id), record.wins_username, f'Note updated')
             return jsonify({'success': True})
         except Exception as e:
+            model.Session.rollback()
             logger.error(f"Error saving admin note: {e}")
             return jsonify({'success': False, 'error': str(e)}), 500
 
@@ -796,11 +768,7 @@ Best regards,
         tab = request.args.get('tab', 'pending')
 
         try:
-            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-            Session = sessionmaker(bind=engine)
-            session = Session()
-
-            query = session.query(CoolPluginTable).filter(
+            query = model.Session.query(CoolPluginTable).filter(
                 CoolPluginTable.deleted_at.is_(None)
             )
 
@@ -820,7 +788,6 @@ Best regards,
                 )
 
             results = query.order_by(CoolPluginTable.created_date.desc()).all()
-            session.close()
 
             output = io.StringIO()
             writer = csv.writer(output)
@@ -890,11 +857,7 @@ Best regards,
             return jsonify({'success': False, 'error': f'Invalid action: {action}'}), 400
 
         try:
-            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-            Session = sessionmaker(bind=engine)
-            session = Session()
-
-            records = session.query(CoolPluginTable).filter(
+            records = model.Session.query(CoolPluginTable).filter(
                 CoolPluginTable.id.in_(record_ids)
             ).all()
 
@@ -942,8 +905,7 @@ Best regards,
                 except Exception as rec_err:
                     errors.append(f'Record {record.id}: {str(rec_err)}')
 
-            session.commit()
-            session.close()
+            model.Session.commit()
 
             result = {'success': True, 'processed': processed}
             if errors:
@@ -1010,17 +972,11 @@ Best regards,
                                    query_username=username, query_email=email)
 
         try:
-            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-            Session = sessionmaker(bind=engine)
-            session = Session()
-
-            application = session.query(CoolPluginTable).filter(
+            application = model.Session.query(CoolPluginTable).filter(
                 CoolPluginTable.wins_username == username,
                 CoolPluginTable.email == email,
                 CoolPluginTable.deleted_at.is_(None)
             ).order_by(CoolPluginTable.created_date.desc()).first()
-
-            session.close()
 
             if application:
                 return render_template("status.html", application=application,
@@ -1199,10 +1155,7 @@ Best regards,
                 # }
                 # Check for existing pending application with same username or email
                 try:
-                    dup_engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-                    DupSession = sessionmaker(bind=dup_engine)
-                    dup_session = DupSession()
-                    existing_application = dup_session.query(CoolPluginTable).filter(
+                    existing_application = model.Session.query(CoolPluginTable).filter(
                         CoolPluginTable.approved == 'Pending',
                         CoolPluginTable.deleted_at.is_(None),
                         or_(
@@ -1210,7 +1163,6 @@ Best regards,
                             CoolPluginTable.email == email
                         )
                     ).first()
-                    dup_session.close()
                     if existing_application:
                         logger.info(f"Duplicate pending application found for {name}/{email}")
                         return render_template("index.html", newuser=False, errornewuserform=True,
@@ -1237,11 +1189,7 @@ Best regards,
                     }
                     
                     # Add data to CoolPluginTable for existing user
-                    engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-                    ensure_colab_schema(engine)
-                    Base.metadata.create_all(engine)
-                    Session = sessionmaker(bind=engine)
-                    session = Session()
+                    ensure_colab_schema()
 
                     db_model = CoolPluginTable(
                         fullname=fullname,
@@ -1265,8 +1213,8 @@ Best regards,
                         created_date=datetime.now(),
                     )
 
-                    session.add(db_model)
-                    session.commit()
+                    model.Session.add(db_model)
+                    model.Session.commit()
                     
                     # Send notification to admins
                     send_admin_notification(user_data)
@@ -1291,11 +1239,7 @@ Best regards,
                             'organizationType': organizationType
                         }
                         # Add data to CoolPluginTable
-                        engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-                        ensure_colab_schema(engine)
-                        Base.metadata.create_all(engine)
-                        Session = sessionmaker(bind=engine)
-                        session = Session()
+                        ensure_colab_schema()
 
                         db_model = CoolPluginTable(
                             fullname=fullname,
@@ -1319,8 +1263,8 @@ Best regards,
                             created_date=datetime.now(),
                         )
 
-                        session.add(db_model)
-                        session.commit()
+                        model.Session.add(db_model)
+                        model.Session.commit()
                         # Enviar notificación a los administradores
                         send_admin_notification(user_data)
                         send_applicant_confirmation(db_model)
@@ -1330,8 +1274,7 @@ Best regards,
                     except logic.NotAuthorized:
                         toolkit.abort(403, 'Not authorized to create users')               
             except Exception as e:
-                if 'session' in locals() and session:
-                    session.rollback()
+                model.Session.rollback()
                 logger.error(f"Error in POST method: {e}")
                 logger.error(f"Error traceback: ", exc_info=True)
                 groups = get_all_groups_cached()
@@ -1528,7 +1471,6 @@ Best regards,
         except logic.NotAuthorized:
             toolkit.abort(403, 'Need to be system administrator')
 
-        session = None
         try:
             # Ensure the table exists (temporary fix until migration is run)
             try:
@@ -1537,20 +1479,12 @@ Best regards,
             except Exception as e:
                 logger.debug(f"Table creation attempt in admin: {e}")
                 
-            engine = create_engine(toolkit.config.get('sqlalchemy.url'))
-            Session = sessionmaker(bind=engine)
-            session = Session()
-            
-            # Get organization requests
-            org_requests = session.query(OrganizationRequestTable).all()
+            org_requests = model.Session.query(OrganizationRequestTable).all()
             
             return render_template("organization_admin.html", requests=org_requests)
         except Exception as e:
             logger.error(f"Error showing organization admin: {e}")
             abort(500)
-        finally:
-            if session is not None:
-                session.close()
 
     @staticmethod
     def approve_organization_request():

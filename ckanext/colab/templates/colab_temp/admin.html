@@ -1618,7 +1618,7 @@
             <button class="tab-button" data-tab="rejected">
                 ❌ Rejected (<span id="rejected-tab-count">0</span>)
             </button>
-            <a href="/colab/admin/export?tab=pending" class="export-btn" id="csv-export-btn" title="Download current tab as CSV">
+            <a href="{{ h.url_for('colab.export_csv', tab='pending') }}" class="export-btn" id="csv-export-btn" title="Download current tab as CSV">
                 📥 Export CSV
             </a>
         </div>
@@ -2082,7 +2082,7 @@ let allUsers = [
         date_of_birth: {{ (result.date_of_birth or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         gender: {{ (result.gender or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         nationality: {{ (result.nationality or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
-        new_organization_name: {{ (result.new_organization_name or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        new_organization_name: {{ result.new_organization_name|default(0)|tojson }},
         citizens4water: {{ (result.citizens4water or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         ihp_wins: {{ (result.ihp_wins or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         admin_notes: {{ (result.admin_notes or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
@@ -2140,7 +2140,7 @@ function initializeAdmin() {
                 }
             }
             // Update CSV export link for current tab
-            document.getElementById('csv-export-btn').href = '/colab/admin/export?tab=' + tabId;
+            document.getElementById('csv-export-btn').href = '{{ h.url_for("colab.export_csv") }}' + '?tab=' + tabId;
             // Bulk approve/reject only visible on pending tab
             document.getElementById('bulk-approve-btn').style.display = tabId === 'pending' ? '' : 'none';
             document.getElementById('bulk-reject-btn').style.display = tabId === 'pending' ? '' : 'none';
@@ -2235,7 +2235,7 @@ function handleApprove(event) {
         formData.append('new_organization_description', newOrgDescription || 'NA');
         formData.append('user_role', selectedRole);
 
-        fetch('/colab/admin/approve', {
+        fetch('{{ h.url_for("colab.approve_post") }}', {
             method: 'POST',
             body: formData
         })
@@ -2487,7 +2487,7 @@ function approveFromModal(username) {
     formData.append('new_organization_description', user.new_organization_description || 'NA');
     formData.append('user_role', selectedRole);
 
-    fetch('/colab/admin/approve', {
+    fetch('{{ h.url_for("colab.approve_post") }}', {
         method: 'POST',
         body: formData
     })
@@ -3136,7 +3136,7 @@ function executeBulkAction(action, ids, extra) {
     if (extra.reason) formData.append('reason', extra.reason);
     if (extra.role) formData.append('role', extra.role);
 
-    fetch('/colab/admin/bulk', {method: 'POST', body: formData})
+    fetch('{{ h.url_for("colab.bulk_action") }}', {method: 'POST', body: formData})
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.success) {
@@ -3162,7 +3162,7 @@ function saveAdminNote(recordId) {
     formData.append('record_id', recordId);
     formData.append('notes', notes);
 
-    fetch('/colab/admin/note', {method: 'POST', body: formData})
+    fetch('{{ h.url_for("colab.save_admin_note") }}', {method: 'POST', body: formData})
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.success) {
