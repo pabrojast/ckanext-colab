@@ -181,7 +181,7 @@ class ThingsBoardLogic:
     @staticmethod
     def user_dashboard():
         """List the current user's device requests."""
-        ThingsBoardLogic._require_login()
+        ThingsBoardLogic._require_sysadmin()
         ThingsBoardLogic._ensure_table()
 
         try:
@@ -199,7 +199,7 @@ class ThingsBoardLogic:
     @staticmethod
     def new_request_form():
         """Show empty device request form."""
-        ThingsBoardLogic._require_login()
+        ThingsBoardLogic._require_sysadmin()
 
         orgs = ThingsBoardLogic._get_user_organizations()
         return render_template('thingsboard/device_form.html',
@@ -211,7 +211,7 @@ class ThingsBoardLogic:
     @staticmethod
     def create_request():
         """Create a new device request as DRAFT."""
-        ThingsBoardLogic._require_login()
+        ThingsBoardLogic._require_sysadmin()
         ThingsBoardLogic._ensure_table()
         orgs = ThingsBoardLogic._get_user_organizations()
         allowed_org_ids = ThingsBoardLogic._allowed_organization_ids(orgs)
@@ -251,7 +251,7 @@ class ThingsBoardLogic:
     @staticmethod
     def edit_request_form(id):
         """Show edit form for a draft or rejected request."""
-        ThingsBoardLogic._require_login()
+        ThingsBoardLogic._require_sysadmin()
         ThingsBoardLogic._ensure_table()
 
         dr = model.Session.query(DeviceRequest).get(id)
@@ -272,7 +272,7 @@ class ThingsBoardLogic:
     @staticmethod
     def update_request(id):
         """Update an existing draft or rejected request."""
-        ThingsBoardLogic._require_login()
+        ThingsBoardLogic._require_sysadmin()
         ThingsBoardLogic._ensure_table()
         orgs = ThingsBoardLogic._get_user_organizations()
         allowed_org_ids = ThingsBoardLogic._allowed_organization_ids(orgs)
@@ -315,7 +315,7 @@ class ThingsBoardLogic:
     @staticmethod
     def submit_request(id):
         """Validate and submit a device request for review."""
-        ThingsBoardLogic._require_login()
+        ThingsBoardLogic._require_sysadmin()
         ThingsBoardLogic._ensure_table()
         orgs = ThingsBoardLogic._get_user_organizations()
         allowed_org_ids = ThingsBoardLogic._allowed_organization_ids(orgs)
