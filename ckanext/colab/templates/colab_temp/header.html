@@ -1,17 +1,1 @@
 {% ckan_extends %}
-
-{% block header_account_logged %}
-  {{ super() }}
-  {% if c.userobj and c.userobj.sysadmin %}
-    {% set pending = h.colab_pending_count() %}
-    {% if pending > 0 %}
-    <li>
-      <a href="{{ h.url_for('colab.show_admin') }}" title="{{ _('Pending user approvals') }}" style="position: relative;">
-        <i class="fa fa-user-plus" aria-hidden="true"></i>
-        <span class="text">{{ _('Approvals') }}</span>
-        <span class="badge" style="background-color: #d9534f; color: #fff;">{{ pending }}</span>
-      </a>
-    </li>
-    {% endif %}
-  {% endif %}
-{% endblock %}
