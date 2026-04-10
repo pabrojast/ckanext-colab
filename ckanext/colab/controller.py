@@ -5,7 +5,6 @@ import ckan.logic as logic
 from ckanext.colab.models.cool_plugin_table import CoolPluginTable, OrganizationRequestTable, AuditLog
 from sqlalchemy import text, inspect, or_
 import re 
-import json 
 import logging
 import csv
 import io
@@ -260,124 +259,79 @@ class MyLogic():
 
     @staticmethod
     def approvegroup(name, new, group, new_group_description):
-        #u'/colab/admin/approvegroup/<name>/<group>/<new>/<new_group_description>',
-        # ckan.logic.action.create.group_create(context, data_dict)
-        # Create a new group.
-
-        # You must be authorized to create groups.
-
-        # Plugins may change the parameters of this function depending on the value of the type parameter, see the IGroupForm plugin interface.
-
-        # Parameters:	
-        # name (string) – the name of the group, a string between 2 and 100 characters long, containing only lowercase alphanumeric characters, - and _
-        # id (string) – the id of the group (optional)
-        # title (string) – the title of the group (optional)
-        # description (string) – the description of the group (optional)
-        # image_url (string) – the URL to an image to be displayed on the group's page (optional)
-        # type (string) – the type of the group (optional, default: 'group'), IGroupForm plugins associate themselves with different group types and provide custom group handling behaviour for these types Cannot be 'organization'
-        # state (string) – the current state of the group, e.g. 'active' or 'deleted', only active groups show up in search results and other lists of groups, this parameter will be ignored if you are not authorized to change the state of the group (optional, default: 'active')
-        # approval_status (string) – (optional)
-        # extras (list of dataset extra dictionaries) – the group's extras (optional), extras are arbitrary (key: value) metadata items that can be added to groups, each extra dictionary should have keys 'key' (a string), 'value' (a string), and optionally 'deleted'
-        # packages (list of dictionaries) – the datasets (packages) that belong to the group, a list of dictionaries each with keys 'name' (string, the id or name of the dataset) and optionally 'title' (string, the title of the dataset)
-        # groups (list of dictionaries) – the groups that belong to the group, a list of dictionaries each with key 'name' (string, the id or name of the group) and optionally 'capacity' (string, the capacity in which the group is a member of the group)
-        # users (list of dictionaries) – the users that belong to the group, a list of dictionaries each with key 'name' (string, the id or name of the user) and optionally 'capacity' (string, the capacity in which the user is a member of the group)
-        # Returns:	
-        # the newly created group (unless 'return_id_only' is set to True in the context, in which case just the group id will be returned)
-
-        # Return type:	
-        # dictionary
+        """Approve a group request: create group or add user to existing group."""
         try:
-            context = {'model': model, 'user': toolkit.c.user}
+            context = {'model': model, 'user': toolkit.g.user}
             try:
                 logic.check_access('organization_create', context)
             except logic.NotAuthorized:
                 toolkit.abort(403, 'Not authorized to create organization')
-            # Generate URL
-            CleanTitle = group.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
-            # Keep hyphens
-            CleanTitleStep2 = re.sub(r'[^A-Za-z0-9-]+', '', CleanTitle)
-            # Add user
-            users = [{'name': format(name),'capacity': 'admin' }]
-            # If it's a new group, create it
+
+            clean_name = group.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
+            clean_name = re.sub(r'[^A-Za-z0-9-]+', '', clean_name)
+            users = [{'name': name, 'capacity': 'admin'}]
+
             db_session = model.Session()
-            if(int(new) == 1):
+            if int(new) == 1:
                 try:
-                    # Retrieve object instance from database
-                    cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(new_group_name=group).first()
-                    
-                    # Modify 'group' field
-                    cool_plugin_instance.group = 0
-                    # Modify status
-                    cool_plugin_instance.approvedgroup = 'approved by '+toolkit.g.user
-                    
-                    # Save changes to database
-                    db_session.commit()
-                    
+                    cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
+                        wins_username=name,
+                        organization_name=group
+                    ).first()
+
+                    if cool_plugin_instance:
+                        cool_plugin_instance.new_organization_name = 0
+                        cool_plugin_instance.approvedgroup = 'approved by ' + toolkit.g.user
+                        db_session.commit()
+                    else:
+                        logger.warning(f"No CoolPluginTable record found for user={name}, org={group}")
                 except Exception as e:
-                    # Handle errors as needed
                     db_session.rollback()
-                    jsonerror={'error': str(e)}
-                    return json.dumps(jsonerror)
+                    return jsonify({'error': str(e)})
                 finally:
                     db_session.close()
+
                 organizationapi = toolkit.get_action('group_create')(
-                data_dict={'name': CleanTitleStep2, 'description': new_group_description, 'title': group, 'users':users  })
-            #si no es una nueva organizacion agregamos al usuario
-            if(int(new) == 0):
-    
-            # ckan.logic.action.create.group_member_create(context, data_dict)
-            # Make a user a member of a group.
-
-            # You must be authorized to edit the group.
-
-            # Parameters:	
-            # id (string) – the id or name of the group
-            # username (string) – name or id of the user to be made member of the group
-            # role (string) – role of the user in the group. One of member, editor, or admin
-            # Returns:	
-            # the newly created (or updated) membership
-
-            # Return type:	
-            # dictionary
-                
+                    context,
+                    {'name': clean_name, 'description': new_group_description,
+                     'title': group, 'users': users})
+            else:
                 try:
-                    # Recuperamos la instancia del objeto desde la base de datos
-                    cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(new_group_name=group).first()
-                    
-                    # Modificamos el campo 'group'
-                    cool_plugin_instance.group = 0
+                    cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
+                        wins_username=name,
+                        organization_name=group
+                    ).first()
 
-                    # Modificamos el status
-                    cool_plugin_instance.approvedgroup = 'approved by '+toolkit.g.user
-                    
-                    # Guardamos los cambios en la base de datos
-                    db_session.commit()
-                    
+                    if cool_plugin_instance:
+                        cool_plugin_instance.new_organization_name = 0
+                        cool_plugin_instance.approvedgroup = 'approved by ' + toolkit.g.user
+                        db_session.commit()
+                    else:
+                        logger.warning(f"No CoolPluginTable record found for user={name}, org={group}")
                 except Exception as e:
-                    # Manejar errores según sea necesario
                     db_session.rollback()
-                    jsonerror={'error': str(e)}
-                    return json.dumps(jsonerror)
+                    return jsonify({'error': str(e)})
                 finally:
-                    db_session.close()  
+                    db_session.close()
+
                 organizationapi = toolkit.get_action('group_member_create')(
-                data_dict={'id': CleanTitleStep2, 'username': format(name), 'role': 'admin'   })          
-            return json.dumps(organizationapi)
+                    context,
+                    {'id': clean_name, 'username': name, 'role': 'admin'})
+
+            return jsonify(organizationapi)
         except Exception as e:
-            jsonerror={'error': str(e)}
-            return json.dumps(jsonerror)
+            return jsonify({'error': str(e)})
     
 
     @staticmethod
     def approve(name, organization, new, new_organization_description):
         try:
-            context = {'model': model, 'user': toolkit.c.user}
+            context = {'model': model, 'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
             try:
-                logic.check_access('organization_create', context)
+                logic.check_access('sysadmin', context, {})
             except logic.NotAuthorized:
-                toolkit.abort(403, 'Not authorized to create organization')
-            
-            # Primero obtenemos la instancia antes de usarla
+                toolkit.abort(403, 'Not authorized to approve users')
+
             db_session = model.Session()
             
             # Modificamos la consulta para ser más específica
@@ -387,7 +341,7 @@ class MyLogic():
             ).first()
             
             if not cool_plugin_instance:
-                return json.dumps({'error': 'User registration not found'})
+                return jsonify({'error': 'User registration not found'})
 
             # Establecer user_role como 'admin' si es None
             user_role = cool_plugin_instance.user_role or 'admin'
@@ -400,37 +354,35 @@ class MyLogic():
             except toolkit.ObjectNotFound:
                 user_exists = False
                 logger.warning(f"CKAN user {name} does not exist - this method should not be called for non-existent users")
-                return json.dumps({
+                return jsonify({
                     'error': f'CKAN user {name} does not exist. The user must complete registration first.',
                     'details': 'This approval method requires an existing CKAN user.'
                 })
 
             # Generamos la URL
-            CleanTitle = organization.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
-            CleanTitleStep2 = re.sub(r'[^A-Za-z0-9-]+', '', CleanTitle)
-            users = [{'name': format(name), 'capacity': user_role}]
+            clean_name = organization.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
+            clean_name = re.sub(r'[^A-Za-z0-9-]+', '', clean_name)
+            users = [{'name': name, 'capacity': user_role}]
 
             try:
                 if int(new) == 1:
-                    # Verificar si la organización ya existe antes de crearla
                     try:
-                        existing_org = toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': CleanTitleStep2})
-                        # Si llegamos aquí, la organización ya existe
-                        # Agregar usuario a organización existente en lugar de crear nueva
-                        logger.warning(f"Organization {CleanTitleStep2} already exists, adding user as member instead")
+                        toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': clean_name})
+                        logger.warning(f"Organization {clean_name} already exists, adding user as member instead")
                         organizationapi = toolkit.get_action('organization_member_create')(
-                            data_dict={'id': CleanTitleStep2, 'username': format(name), 
-                                      'role': user_role})
+                            context,
+                            {'id': clean_name, 'username': name,
+                             'role': user_role})
                     except toolkit.ObjectNotFound:
-                        # La organización no existe, podemos crearla
                         organizationapi = toolkit.get_action('organization_create')(
-                            data_dict={'name': CleanTitleStep2, 'description': new_organization_description, 
-                                      'title': organization, 'users': users})
+                            context,
+                            {'name': clean_name, 'description': new_organization_description,
+                             'title': organization, 'users': users})
                 else:
-                    # Agregar usuario a organización existente
                     organizationapi = toolkit.get_action('organization_member_create')(
-                        data_dict={'id': CleanTitleStep2, 'username': format(name), 
-                                  'role': user_role})
+                        context,
+                        {'id': clean_name, 'username': name,
+                         'role': user_role})
 
                 # Actualizar status después de cualquier operación exitosa
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
@@ -453,28 +405,27 @@ class MyLogic():
                 except Exception as e:
                     logger.error(f"Failed to send approval email: {e}")
                 
-                return json.dumps(organizationapi)
+                return jsonify(organizationapi)
                 
             except Exception as e:
                 db_session.rollback()
-                return json.dumps({'error': str(e)})
+                return jsonify({'error': str(e)})
             finally:
                 db_session.close()
                 
         except Exception as e:
-            return json.dumps({'error': str(e)})
+            return jsonify({'error': str(e)})
 
     @staticmethod
     def approve_post():
         """Handle POST requests for user approval"""
         try:
-            context = {'model': model, 'user': toolkit.c.user}
+            context = {'model': model, 'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
             try:
-                logic.check_access('organization_create', context)
+                logic.check_access('sysadmin', context, {})
             except logic.NotAuthorized:
-                toolkit.abort(403, 'Not authorized to create organization')
+                return jsonify({'error': 'Not authorized'}), 403
             
-            # Obtener datos del formulario POST
             wins_username = request.form.get('wins_username')
             organization_name = request.form.get('organization_name')
             new_organization_name = request.form.get('new_organization_name', '0')
@@ -482,83 +433,68 @@ class MyLogic():
             selected_user_role = request.form.get('user_role', 'admin')
             
             if not wins_username or not organization_name:
-                return json.dumps({'error': 'Missing required parameters'})
+                return jsonify({'error': 'Missing required parameters'}), 400
             
             db_session = model.Session()
             
-            # Buscar la instancia del usuario
             cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
                 wins_username=wins_username,
                 organization_name=organization_name
             ).first()
             
             if not cool_plugin_instance:
-                return json.dumps({'error': 'User registration not found'})
+                return jsonify({'error': 'User registration not found'}), 404
 
-            # Usar el rol seleccionado por el administrador
             user_role = selected_user_role
-            
-            # Actualizar el rol en la base de datos
             cool_plugin_instance.user_role = user_role
 
-            # Verificar si el usuario CKAN existe
+            # Verify CKAN user exists
             try:
-                existing_user = toolkit.get_action('user_show')({'ignore_auth': True}, {'id': wins_username})
-                user_exists = True
-                logger.info(f"CKAN user {wins_username} already exists")
+                toolkit.get_action('user_show')({'ignore_auth': True}, {'id': wins_username})
             except toolkit.ObjectNotFound:
-                user_exists = False
-                logger.info(f"CKAN user {wins_username} does not exist, will need to be created first")
-
-            # Si el usuario no existe en CKAN, no podemos continuar
-            if not user_exists:
-                return json.dumps({
+                return jsonify({
                     'error': f'CKAN user {wins_username} does not exist. The user must complete registration first.',
                     'details': 'User needs to register through the main form to create their CKAN account.'
-                })
+                }), 400
 
-            # Limpiar el nombre de la organización para URL
-            CleanTitle = organization_name.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
-            CleanTitleStep2 = re.sub(r'[^A-Za-z0-9-]+', '', CleanTitle)
-            users = [{'name': format(wins_username), 'capacity': user_role}]
+            # Clean org name for URL
+            clean_name = organization_name.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
+            clean_name = re.sub(r'[^A-Za-z0-9-]+', '', clean_name)
+            users = [{'name': wins_username, 'capacity': user_role}]
 
             try:
                 if new_organization_name == '1':
-                    # Verificar si la organización ya existe antes de crearla
                     try:
-                        existing_org = toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': CleanTitleStep2})
-                        # Si llegamos aquí, la organización ya existe
-                        # Agregar usuario a organización existente en lugar de crear nueva
-                        logger.warning(f"Organization {CleanTitleStep2} already exists, adding user as member instead")
+                        toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': clean_name})
+                        logger.warning(f"Organization {clean_name} already exists, adding user as member instead")
                         organizationapi = toolkit.get_action('organization_member_create')(
-                            data_dict={'id': CleanTitleStep2, 'username': format(wins_username), 
-                                      'role': user_role})
+                            context,
+                            {'id': clean_name, 'username': wins_username,
+                             'role': user_role})
                         organizationapi['message'] = f'User added to existing organization: {organization_name}'
                     except toolkit.ObjectNotFound:
-                        # La organización no existe, podemos crearla
                         organizationapi = toolkit.get_action('organization_create')(
-                            data_dict={'name': CleanTitleStep2, 'description': new_organization_description, 
-                                      'title': organization_name, 'users': users})
+                            context,
+                            {'name': clean_name, 'description': new_organization_description,
+                             'title': organization_name, 'users': users})
                         organizationapi['message'] = f'New organization created: {organization_name}'
                 else:
-                    # Verificar que la organización existe antes de agregar el usuario
                     try:
-                        existing_org = toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': CleanTitleStep2})
-                        # Agregar usuario a organización existente
+                        toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': clean_name})
                         organizationapi = toolkit.get_action('organization_member_create')(
-                            data_dict={'id': CleanTitleStep2, 'username': format(wins_username), 
-                                      'role': user_role})
+                            context,
+                            {'id': clean_name, 'username': wins_username,
+                             'role': user_role})
                         organizationapi['message'] = f'User added to organization: {organization_name}'
                     except toolkit.ObjectNotFound:
-                        return json.dumps({'error': f'Organization {organization_name} does not exist'})
+                        return jsonify({'error': f'Organization {organization_name} does not exist'}), 404
 
-                # Actualizar status después de cualquier operación exitosa
                 cool_plugin_instance.approved = f'approved by {toolkit.g.user}'
                 cool_plugin_instance.approved_date = datetime.utcnow()
                 db_session.commit()
                 log_audit('approve', toolkit.g.user, cool_plugin_instance.id, wins_username, f'Org: {organization_name}, Role: {user_role}')
                 
-                # Enviar notificación por email al usuario aprobado
+                # Send email notification to approved user
                 try:
                     user_email = cool_plugin_instance.email
                     if user_email:
@@ -575,7 +511,6 @@ You can now log in to the system using your username: {wins_username}
 Best regards,
 {toolkit.config.get('ckan.site_title')} Team
 """
-                        # Crear un objeto usuario temporal para usar con mail_user
                         temp_user = type('obj', (object,), {
                             'email': user_email,
                             'name': wins_username,
@@ -587,21 +522,20 @@ Best regards,
                         logger.info(f"Approval notification sent to {user_email}")
                 except Exception as email_error:
                     logger.error(f"Failed to send approval email: {email_error}")
-                    # Don't fail the approval if email fails
                 
                 organizationapi['user'] = toolkit.g.user
-                return json.dumps(organizationapi)
+                return jsonify(organizationapi)
                 
             except Exception as e:
                 db_session.rollback()
                 logger.error(f"Error in approve_post: {e}")
-                return json.dumps({'error': str(e)})
+                return jsonify({'error': str(e)}), 500
             finally:
                 db_session.close()
                 
         except Exception as e:
             logger.error(f"General error in approve_post: {e}")
-            return json.dumps({'error': str(e)})
+            return jsonify({'error': str(e)}), 500
         
     @staticmethod
     def show_admin():
@@ -848,13 +782,19 @@ Best regards,
             return jsonify({'success': False, 'error': 'Not authorized'}), 403
 
         action = request.form.get('action')
-        record_ids = request.form.getlist('record_ids[]')
+        raw_ids = request.form.getlist('record_ids[]')
 
-        if not action or not record_ids:
+        if not action or not raw_ids:
             return jsonify({'success': False, 'error': 'Missing action or record_ids'}), 400
 
         if action not in ('approve', 'reject', 'delete'):
             return jsonify({'success': False, 'error': f'Invalid action: {action}'}), 400
+
+        # Validate record_ids as integers
+        try:
+            record_ids = [int(rid) for rid in raw_ids]
+        except (ValueError, TypeError):
+            return jsonify({'success': False, 'error': 'Invalid record_id values'}), 400
 
         try:
             records = model.Session.query(CoolPluginTable).filter(
@@ -867,16 +807,24 @@ Best regards,
             for record in records:
                 try:
                     if action == 'delete':
+                        if record.deleted_at is not None:
+                            errors.append(f'Record {record.id}: already deleted')
+                            continue
                         record.deleted_at = datetime.utcnow()
                         processed += 1
                     elif action == 'reject':
+                        if record.rejected and 'rejected by' in record.rejected:
+                            errors.append(f'{record.wins_username}: already rejected')
+                            continue
                         reason = request.form.get('reason', 'Bulk rejected by admin')
                         record.rejected = f'rejected by {toolkit.g.user}'
                         record.rejection_reason = reason
                         record.rejected_date = datetime.utcnow()
                         processed += 1
                     elif action == 'approve':
-                        # Bulk approve uses 'member' as default role
+                        if record.approved and 'approved by' in record.approved:
+                            errors.append(f'{record.wins_username}: already approved')
+                            continue
                         user_role = request.form.get('role', 'member')
                         wins_username = record.wins_username
                         organization_name = record.organization_name
@@ -888,13 +836,14 @@ Best regards,
                             errors.append(f'{wins_username}: CKAN user does not exist')
                             continue
 
-                        # Add user to organization
-                        CleanTitle = re.sub(r'[^a-zA-Z0-9\s-]', '', organization_name or '')
-                        CleanTitleStep2 = CleanTitle.replace(" ", "-").lower()
+                        # Clean org name consistently with approve_post
+                        clean_name = (organization_name or '').lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
+                        clean_name = re.sub(r'[^A-Za-z0-9-]+', '', clean_name)
                         try:
                             toolkit.get_action('organization_member_create')(
-                                data_dict={'id': CleanTitleStep2, 'username': wins_username,
-                                          'role': user_role})
+                                {'user': toolkit.g.user},
+                                {'id': clean_name, 'username': wins_username,
+                                 'role': user_role})
                         except Exception as org_err:
                             errors.append(f'{wins_username}: {str(org_err)}')
                             continue
@@ -914,6 +863,7 @@ Best regards,
             log_audit(f'bulk_{action}', toolkit.g.user, details=f'{processed} records processed')
             return jsonify(result)
         except Exception as e:
+            model.Session.rollback()
             logger.error(f"Error in bulk action: {e}")
             return jsonify({'success': False, 'error': str(e)}), 500
 
@@ -922,7 +872,7 @@ Best regards,
         logger.debug(f"Starting rejection for user: {name}, organization: {organization}, reason: {reason}")
         context = {'model': model, 'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
         try:
-            logic.check_access('organization_create', context)
+            logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
             logger.error("User not authorized to reject users")
             toolkit.abort(403, 'Not authorized to reject users')
@@ -1105,8 +1055,8 @@ Best regards,
 
                 if (group_form == "new_group"):
                     group_form = 1
-                    new_group_name = request.form['new_group_name']
-                    new_group_description = request.form['new_group_description']
+                    new_group_name = request.form.get('new_group_name', 'NA')
+                    new_group_description = request.form.get('new_group_description', 'NA')
                 else:
                     new_group_name = "NA"
                     group_form = 0
@@ -1172,7 +1122,7 @@ Best regards,
 
                 # Check if user already exists
                 try:
-                    context = {'model': model, 'user': toolkit.c.user}
+                    context = {'model': model, 'user': toolkit.g.user}
                     # Instead of using the validator directly, use get_action to check if user exists
                     existing_user = toolkit.get_action('user_show')(
                         context, {'id': name}
@@ -1281,8 +1231,7 @@ Best regards,
                 return render_template("index.html", errornewuserform=True, groups=groups,
                                      error_message=f"An error occurred: {str(e)}")
             finally:
-                if 'session' in locals() and session:
-                    session.close()
+                pass
         
 
 
@@ -1293,6 +1242,13 @@ Best regards,
     @staticmethod
     def reject_post():
         """Reject an application via POST without exposing the reason in the URL."""
+        context = {'model': model,
+                   'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
+        try:
+            logic.check_access('sysadmin', context, {})
+        except logic.NotAuthorized:
+            return jsonify({'error': 'Not authorized'}), 403
+
         name = request.form.get('wins_username', '').strip()
         organization = request.form.get('organization_name', '').strip()
         reason = request.form.get('reason', '').strip()
@@ -1496,18 +1452,18 @@ Best regards,
             toolkit.abort(403, 'Need to be system administrator')
         
         if request.method != 'POST':
-            return json.dumps({'error': 'POST method required'})
+            return jsonify({'error': 'POST method required'})
         
         try:
             request_id = request.form.get('request_id')
             if not request_id:
-                return json.dumps({'error': 'Request ID is required'})
+                return jsonify({'error': 'Request ID is required'})
             
             db_session = model.Session()
             try:
                 org_request = db_session.query(OrganizationRequestTable).filter_by(id=request_id).first()
                 if not org_request:
-                    return json.dumps({'error': 'Organization request not found'})
+                    return jsonify({'error': 'Organization request not found'})
                 
                 # Clean organization name for URL
                 clean_name = org_request.organization_name.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
@@ -1541,7 +1497,7 @@ Best regards,
                 
                 db_session.commit()
                 
-                return json.dumps({
+                return jsonify({
                     'success': True, 
                     'message': f'Organization "{org_request.organization_name}" created successfully',
                     'organization_id': org_result['id']
@@ -1550,13 +1506,13 @@ Best regards,
             except Exception as e:
                 db_session.rollback()
                 logger.error(f"Error approving organization request: {e}")
-                return json.dumps({'error': str(e)})
+                return jsonify({'error': str(e)})
             finally:
                 db_session.close()
                 
         except Exception as e:
             logger.error(f"General error in organization approval: {e}")
-            return json.dumps({'error': str(e)})
+            return jsonify({'error': str(e)})
 
     @staticmethod
     def reject_organization_request():
@@ -1568,23 +1524,23 @@ Best regards,
             toolkit.abort(403, 'Need to be system administrator')
         
         if request.method != 'POST':
-            return json.dumps({'error': 'POST method required'})
+            return jsonify({'error': 'POST method required'})
         
         try:
             request_id = request.form.get('request_id')
             rejection_reason = request.form.get('rejection_reason', '').strip()
             
             if not request_id:
-                return json.dumps({'error': 'Request ID is required'})
+                return jsonify({'error': 'Request ID is required'})
             
             if not rejection_reason:
-                return json.dumps({'error': 'Rejection reason is required'})
+                return jsonify({'error': 'Rejection reason is required'})
             
             db_session = model.Session()
             try:
                 org_request = db_session.query(OrganizationRequestTable).filter_by(id=request_id).first()
                 if not org_request:
-                    return json.dumps({'error': 'Organization request not found'})
+                    return jsonify({'error': 'Organization request not found'})
                 
                 # Update request status
                 org_request.status = 'rejected'
@@ -1594,7 +1550,7 @@ Best regards,
                 
                 db_session.commit()
                 
-                return json.dumps({
+                return jsonify({
                     'success': True, 
                     'message': f'Organization request rejected'
                 })
@@ -1602,10 +1558,10 @@ Best regards,
             except Exception as e:
                 db_session.rollback()
                 logger.error(f"Error rejecting organization request: {e}")
-                return json.dumps({'error': str(e)})
+                return jsonify({'error': str(e)})
             finally:
                 db_session.close()
                 
         except Exception as e:
             logger.error(f"General error in organization rejection: {e}")
-            return json.dumps({'error': str(e)})
+            return jsonify({'error': str(e)})

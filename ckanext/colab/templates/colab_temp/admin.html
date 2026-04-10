@@ -2044,6 +2044,21 @@
 </div>
 
 <script>
+// CSRF token helper: CKAN 2.10+ provides a token in a meta tag or cookie
+function getCsrfToken() {
+    // Try meta tag first (CKAN 2.10+)
+    var meta = document.querySelector('meta[name="_csrf_token"]');
+    if (meta) return meta.getAttribute('content');
+    // Fallback: read from cookie
+    var match = document.cookie.match(/(?:^|;\s*)_csrf_token=([^;]+)/);
+    return match ? decodeURIComponent(match[1]) : '';
+}
+function appendCsrfToken(formData) {
+    var token = getCsrfToken();
+    if (token) formData.append('_csrf_token', token);
+    return formData;
+}
+
 // Polyfill for CanvasRenderingContext2D.roundRect (older browsers)
 if (!CanvasRenderingContext2D.prototype.roundRect) {
     CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
@@ -2234,6 +2249,7 @@ function handleApprove(event) {
         formData.append('new_organization_name', newOrgName || '0');
         formData.append('new_organization_description', newOrgDescription || 'NA');
         formData.append('user_role', selectedRole);
+        appendCsrfToken(formData);
 
         fetch('{{ h.url_for("colab.approve_post") }}', {
             method: 'POST',
@@ -2316,6 +2332,7 @@ function handleReject(event) {
         formData.append('wins_username', username);
         formData.append('organization_name', organization);
         formData.append('reason', reason.trim());
+        appendCsrfToken(formData);
 
         fetch('{{ h.url_for("colab.reject_post") }}', {
             method: 'POST',
@@ -2373,22 +2390,22 @@ function showUserDetails(username, isPending) {
         <div class="detail-group">
             <div class="detail-label">👤 Personal Information</div>
             <div class="detail-value">
-                <strong>Full Name:</strong> ${user.fullname}<br>
-                <strong>Username:</strong> ${user.wins_username}<br>
-                <strong>Email:</strong> ${user.email}<br>
-                <strong>Date of Birth:</strong> ${user.date_of_birth}<br>
-                <strong>Gender:</strong> ${user.gender}<br>
-                <strong>Nationality:</strong> ${user.nationality}
+                <strong>Full Name:</strong> ${escapeHtml(user.fullname || '')}<br>
+                <strong>Username:</strong> ${escapeHtml(user.wins_username || '')}<br>
+                <strong>Email:</strong> ${escapeHtml(user.email || '')}<br>
+                <strong>Date of Birth:</strong> ${escapeHtml(user.date_of_birth || '')}<br>
+                <strong>Gender:</strong> ${escapeHtml(user.gender || '')}<br>
+                <strong>Nationality:</strong> ${escapeHtml(user.nationality || '')}
             </div>
         </div>
         
         <div class="detail-group">
             <div class="detail-label">🏢 Organization Information</div>
             <div class="detail-value">
-                <strong>Organization:</strong> ${user.organization_name}<br>
-                <strong>Organization Type:</strong> ${user.organizationType}<br>
-                <strong>Title/Position:</strong> ${user.title_within_organization}<br>
-                <strong>User Role:</strong> ${user.user_role || 'admin'}
+                <strong>Organization:</strong> ${escapeHtml(user.organization_name || '')}<br>
+                <strong>Organization Type:</strong> ${escapeHtml(user.organizationType || '')}<br>
+                <strong>Title/Position:</strong> ${escapeHtml(user.title_within_organization || '')}<br>
+                <strong>User Role:</strong> ${escapeHtml(user.user_role || 'admin')}
             </div>
         </div>
         
@@ -2403,27 +2420,27 @@ function showUserDetails(username, isPending) {
         ${user.new_organization_description ? `
         <div class="detail-group">
             <div class="detail-label">📋 Organization Description</div>
-            <div class="detail-value">${user.new_organization_description}</div>
+            <div class="detail-value">${escapeHtml(user.new_organization_description)}</div>
         </div>
         ` : ''}
         
         <div class="detail-group">
             <div class="detail-label">📊 Status Information</div>
             <div class="detail-value">
-                <strong>Approval Status:</strong> ${user.approved || 'Pending'}<br>
-                ${user.approved_date ? `<strong>Approved Date:</strong> ${formatDateStr(user.approved_date)}<br>` : ''}
-                ${user.rejected ? `<strong>Rejection Status:</strong> ${user.rejected}<br>` : ''}
-                ${user.rejected_date ? `<strong>Rejected Date:</strong> ${formatDateStr(user.rejected_date)}<br>` : ''}
-                ${user.rejection_reason ? `<strong>Rejection Reason:</strong> ${user.rejection_reason}` : ''}
+                <strong>Approval Status:</strong> ${escapeHtml(user.approved || 'Pending')}<br>
+                ${user.approved_date ? `<strong>Approved Date:</strong> ${escapeHtml(formatDateStr(user.approved_date))}<br>` : ''}
+                ${user.rejected ? `<strong>Rejection Status:</strong> ${escapeHtml(user.rejected)}<br>` : ''}
+                ${user.rejected_date ? `<strong>Rejected Date:</strong> ${escapeHtml(formatDateStr(user.rejected_date))}<br>` : ''}
+                ${user.rejection_reason ? `<strong>Rejection Reason:</strong> ${escapeHtml(user.rejection_reason)}` : ''}
             </div>
         </div>
 
         <div class="detail-group">
             <div class="detail-label">📝 Admin Notes</div>
             <div class="detail-value">
-                <textarea class="admin-notes-area" id="modal-admin-notes" placeholder="Add internal notes about this application...">${user.admin_notes || ''}</textarea>
+                <textarea class="admin-notes-area" id="modal-admin-notes" placeholder="Add internal notes about this application...">${escapeHtml(user.admin_notes || '')}</textarea>
                 <div style="display: flex; align-items: center;">
-                    <button class="notes-save-btn" onclick="saveAdminNote(${user.id})">💾 Save Notes</button>
+                    <button class="notes-save-btn" onclick="saveAdminNote(${parseInt(user.id) || 0})">💾 Save Notes</button>
                     <span class="notes-saved" id="notes-saved-indicator">✓ Saved</span>
                 </div>
             </div>
@@ -2433,16 +2450,17 @@ function showUserDetails(username, isPending) {
     const modalActions = document.getElementById('modal-actions');
     if (isPending) {
         const currentRole = user.user_role || 'admin';
+        const safeUsername = escapeHtml(user.wins_username || '');
         modalActions.innerHTML = `
             <select class="modal-role-selector" id="modal-role-selector">
                 <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>🎭 Admin</option>
                 <option value="editor" ${currentRole === 'editor' ? 'selected' : ''}>🎭 Editor</option>
                 <option value="member" ${currentRole === 'member' ? 'selected' : ''}>🎭 Member</option>
             </select>
-            <button class="btn btn-approve" onclick="approveFromModal('${user.wins_username}')">
+            <button class="btn btn-approve" data-username="${safeUsername}" onclick="approveFromModal(this.getAttribute('data-username'))">
                 ✅ Approve
             </button>
-            <button class="btn btn-reject" onclick="rejectFromModal('${user.wins_username}')">
+            <button class="btn btn-reject" data-username="${safeUsername}" onclick="rejectFromModal(this.getAttribute('data-username'))">
                 ❌ Reject
             </button>
         `;
@@ -2486,6 +2504,7 @@ function approveFromModal(username) {
     formData.append('new_organization_name', user.new_organization_name || '0');
     formData.append('new_organization_description', user.new_organization_description || 'NA');
     formData.append('user_role', selectedRole);
+    appendCsrfToken(formData);
 
     fetch('{{ h.url_for("colab.approve_post") }}', {
         method: 'POST',
@@ -2553,6 +2572,7 @@ function rejectFromModal(username) {
     formData.append('wins_username', username);
     formData.append('organization_name', user.organization_name);
     formData.append('reason', reason.trim());
+    appendCsrfToken(formData);
 
     fetch('{{ h.url_for("colab.reject_post") }}', {
         method: 'POST',
@@ -2796,8 +2816,8 @@ function showToast(title, message, type = 'info') {
     toast.innerHTML = `
         <div style="font-size: 20px;">${icon}</div>
         <div class="toast-content">
-            <div class="toast-title">${title}</div>
-            <div class="toast-message">${message}</div>
+            <div class="toast-title">${escapeHtml(title)}</div>
+            <div class="toast-message">${escapeHtml(message)}</div>
         </div>
         <button class="toast-close" onclick="closeToast(this)">×</button>
     `;
@@ -2881,9 +2901,9 @@ function deleteApplication(btn) {
     var org = row ? (row.getAttribute('data-org') || '') : '';
     
     document.getElementById('delete-modal-details').innerHTML = 
-        '<div><strong>👤 ' + (fullname || 'Unknown') + '</strong></div>' +
-        '<div style="color: #6c757d; margin-top: 4px;">Username: ' + username + '</div>' +
-        (org ? '<div style="color: #6c757d;">Organization: ' + org + '</div>' : '');
+        '<div><strong>👤 ' + escapeHtml(fullname || 'Unknown') + '</strong></div>' +
+        '<div style="color: #6c757d; margin-top: 4px;">Username: ' + escapeHtml(username) + '</div>' +
+        (org ? '<div style="color: #6c757d;">Organization: ' + escapeHtml(org) + '</div>' : '');
     
     document.getElementById('deleteModal').style.display = 'block';
     
@@ -2909,8 +2929,7 @@ function confirmDelete() {
     
     var formData = new FormData();
     formData.append('record_id', recordId);
-    
-    // Show processing state
+    appendCsrfToken(formData);
     if (row) row.classList.add('row-processing');
     
     fetch('{{ h.url_for("colab.delete_application") }}', {
@@ -2972,7 +2991,7 @@ function showUndoToast(fullname, recordId, row) {
 function undoDelete(recordId, btn) {
     var formData = new FormData();
     formData.append('record_id', recordId);
-    
+    appendCsrfToken(formData);
     btn.disabled = true;
     btn.textContent = '⏳...';
     
@@ -3129,12 +3148,23 @@ function bulkAction(action) {
     }
 }
 
+var _bulkActionInProgress = false;
+
 function executeBulkAction(action, ids, extra) {
+    if (_bulkActionInProgress) return;
+    _bulkActionInProgress = true;
+
+    // Disable bulk action buttons while processing
+    var bulkBar = document.getElementById('bulk-action-bar');
+    var bulkButtons = bulkBar ? bulkBar.querySelectorAll('button') : [];
+    bulkButtons.forEach(function(b) { b.disabled = true; });
+
     var formData = new FormData();
     formData.append('action', action);
     ids.forEach(function(id) { formData.append('record_ids[]', id); });
     if (extra.reason) formData.append('reason', extra.reason);
     if (extra.role) formData.append('role', extra.role);
+    appendCsrfToken(formData);
 
     fetch('{{ h.url_for("colab.bulk_action") }}', {method: 'POST', body: formData})
         .then(function(r) { return r.json(); })
@@ -3152,6 +3182,10 @@ function executeBulkAction(action, ids, extra) {
         })
         .catch(function(err) {
             showToast('Error', 'Network error: ' + err, 'error');
+        })
+        .finally(function() {
+            _bulkActionInProgress = false;
+            bulkButtons.forEach(function(b) { b.disabled = false; });
         });
 }
 
@@ -3161,6 +3195,7 @@ function saveAdminNote(recordId) {
     var formData = new FormData();
     formData.append('record_id', recordId);
     formData.append('notes', notes);
+    appendCsrfToken(formData);
 
     fetch('{{ h.url_for("colab.save_admin_note") }}', {method: 'POST', body: formData})
         .then(function(r) { return r.json(); })
