@@ -1801,8 +1801,8 @@
                             <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
                             <th>Contact</th>
                             <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
-                            <th class="sortable" data-sort="created-date">Applied <span class="sort-indicator"></span></th>
-                            <th class="sortable sorted-desc" data-sort="approved-date">Approved <span class="sort-indicator">▼</span></th>
+                            <th class="sortable sorted-desc" data-sort="created-date">Applied <span class="sort-indicator">▼</span></th>
+                            <th class="sortable" data-sort="approved-date">Approved <span class="sort-indicator"></span></th>
                             <th>Platforms</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -1900,8 +1900,8 @@
                             <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
                             <th>Contact</th>
                             <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
-                            <th class="sortable" data-sort="created-date">Applied <span class="sort-indicator"></span></th>
-                            <th class="sortable sorted-desc" data-sort="rejected-date">Rejected <span class="sort-indicator">▼</span></th>
+                            <th class="sortable sorted-desc" data-sort="created-date">Applied <span class="sort-indicator">▼</span></th>
+                            <th class="sortable" data-sort="rejected-date">Rejected <span class="sort-indicator"></span></th>
                             <th>Reason</th>
                             <th>Actions</th>
                         </tr>
@@ -2729,11 +2729,38 @@ function setupSmartFilters() {
     });
 }
 
+function isDateSortKey(sortKey) {
+    return sortKey === 'created-date' || sortKey === 'approved-date' || sortKey === 'rejected-date';
+}
+
+function compareSortValues(valA, valB, sortKey) {
+    if (isDateSortKey(sortKey)) {
+        var tA = valA ? new Date(valA.replace(' ', 'T')).getTime() : 0;
+        var tB = valB ? new Date(valB.replace(' ', 'T')).getTime() : 0;
+        if (isNaN(tA)) tA = 0;
+        if (isNaN(tB)) tB = 0;
+        return tA - tB;
+    }
+    return valA.localeCompare(valB, undefined, { numeric: true, sensitivity: 'base' });
+}
+
+function sortTableByKey(table, sortKey, direction) {
+    var tbody = table.querySelector('tbody');
+    if (!tbody) return;
+    var rows = Array.from(tbody.querySelectorAll('tr.user-row'));
+    rows.sort(function(a, b) {
+        var valA = a.getAttribute('data-' + sortKey) || '';
+        var valB = b.getAttribute('data-' + sortKey) || '';
+        var cmp = compareSortValues(valA, valB, sortKey);
+        return direction === 'asc' ? cmp : -cmp;
+    });
+    rows.forEach(function(row) { tbody.appendChild(row); });
+}
+
 function setupSortableHeaders() {
     document.querySelectorAll('.sortable').forEach(th => {
         th.addEventListener('click', function() {
             const table = this.closest('table');
-            const tbody = table.querySelector('tbody');
             const sortKey = this.getAttribute('data-sort');
             const indicator = this.querySelector('.sort-indicator');
             
@@ -2759,20 +2786,13 @@ function setupSortableHeaders() {
                 }
             });
             
-            // Sort rows
-            const rows = Array.from(tbody.querySelectorAll('tr.user-row'));
-            rows.sort((a, b) => {
-                let valA = a.getAttribute('data-' + sortKey) || '';
-                let valB = b.getAttribute('data-' + sortKey) || '';
-                
-                // Compare
-                const cmp = valA.localeCompare(valB, undefined, { numeric: true, sensitivity: 'base' });
-                return direction === 'asc' ? cmp : -cmp;
-            });
-            
-            // Re-append sorted rows
-            rows.forEach(row => tbody.appendChild(row));
+            sortTableByKey(table, sortKey, direction);
         });
+    });
+
+    // Default sort: all tables by created-date descending
+    document.querySelectorAll('.admin-table').forEach(function(table) {
+        sortTableByKey(table, 'created-date', 'desc');
     });
 }
 
