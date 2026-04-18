@@ -29,7 +29,11 @@ cool_plugin_table = Table(
     Column('rejected', types.String),
     Column('rejection_reason', types.String),
     Column('citizens4water', types.String),
-    Column('ihp_wins', types.String)
+    Column('ihp_wins', types.String),
+    Column('deleted_at', types.DateTime, nullable=True),
+    Column('approved_date', types.DateTime, nullable=True),
+    Column('rejected_date', types.DateTime, nullable=True),
+    Column('admin_notes', types.String, nullable=True)
     )
 
 organization_request_table = Table(
@@ -80,6 +84,10 @@ class CoolPluginTable(domain_object.DomainObject):
         self.rejection_reason = rejection_reason
         self.citizens4water = citizens4water
         self.ihp_wins = ihp_wins
+        self.deleted_at = None
+        self.approved_date = None
+        self.rejected_date = None
+        self.admin_notes = None
 
 class OrganizationRequestTable(domain_object.DomainObject):
     def __init__(self, requester_username=None, organization_name=None, organization_description=None, 
@@ -102,3 +110,27 @@ class OrganizationRequestTable(domain_object.DomainObject):
 
 meta.mapper(CoolPluginTable, cool_plugin_table)
 meta.mapper(OrganizationRequestTable, organization_request_table)
+
+audit_log_table = Table(
+    'colab_audit_log',
+    metadata,
+    Column('id', types.Integer, primary_key=True, autoincrement=True),
+    Column('action', types.String, nullable=False),
+    Column('admin_user', types.String, nullable=False),
+    Column('record_id', types.Integer, nullable=True),
+    Column('target_user', types.String, nullable=True),
+    Column('details', types.String, nullable=True),
+    Column('created_at', types.DateTime, default=datetime.utcnow)
+)
+
+class AuditLog(domain_object.DomainObject):
+    def __init__(self, action=None, admin_user=None, record_id=None,
+                 target_user=None, details=None, created_at=None):
+        self.action = action
+        self.admin_user = admin_user
+        self.record_id = record_id
+        self.target_user = target_user
+        self.details = details
+        self.created_at = created_at or datetime.utcnow()
+
+meta.mapper(AuditLog, audit_log_table)

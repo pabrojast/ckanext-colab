@@ -1,7 +1,7 @@
 {% extends "page.html" %}
 
 {% block title %}
-{% trans %}Data Contributor Portal{% endtrans %} - {{ super() }}
+{% trans %}Register{% endtrans %} - {{ super() }}
 {% endblock %}
 
 {% block styles %}
@@ -28,7 +28,7 @@
             <div class="toolbar" role="navigation" aria-label="Breadcrumb">
                 <ol class="breadcrumb">                 
                     <li class="home"><a href="/" aria-label="Home"><i class="fa fa-home"></i><span> Home</span></a></li>
-                    <li class="active"><a href="{{ h.url_for('colab.show_something') }}">{% trans %}Data Contributor Portal{% endtrans %}</a></li>
+                    <li class="active"><a href="{{ h.url_for('colab.show_something') }}">{% trans %}Register{% endtrans %}</a></li>
                 </ol>
             </div>
 
@@ -39,8 +39,8 @@
                 <div class="section-title-bg" style="background-image: url('/colab.jpg');"></div>
                 <div class="section-title-overlay"></div>
                 <div class="section-title-content">
-                  <h1>{{ _('Registration for IHP WINS') }}</h1>
-                  <p class="section-title-description">{{ _('Join our community of data contributors and help enhance water resources management through collaborative data sharing.') }}</p>
+                  <h1>{{ _('Register') }}</h1>
+                  <p class="section-title-description">{{ _('Register to access IHP WINS, Citizens4Water, and related platforms. Contribute data, news, events, and data stories on behalf of your organization.') }}</p>
                 </div>
               </div>
             </section>
@@ -105,7 +105,7 @@
                   <div class="contributor-success-wrapper">
                     <section class="module module-narrow">
                       <div class="module-content">
-                        {% snippet "snippets/thanks.html", input = newuser %}
+                        {% snippet "snippets/thanks.html", input = newuser, application = application %}
                       </div>
                     </section>
                   </div>
@@ -116,7 +116,14 @@
                   <div class="contributor-error-wrapper">
                     <section class="module module-narrow">
                       <div class="module-content">
-                        {% snippet "snippets/error-user-create.html" %}
+                        {% if error_message %}
+                          <div style="padding: 20px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; margin-bottom: 20px;">
+                            <h3 style="color: #856404; margin-top: 0;">⚠️ {{ _('Duplicate Application Detected') }}</h3>
+                            <p style="color: #856404;">{{ error_message }}</p>
+                          </div>
+                        {% else %}
+                          {% snippet "snippets/error-user-create.html" %}
+                        {% endif %}
                       </div>
                     </section>
                   </div>

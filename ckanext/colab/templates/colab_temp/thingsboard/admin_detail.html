@@ -1,0 +1,420 @@
+{% extends "page.html" %}
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    :root {
+      --unesco-blue: #0072BC;
+      --unesco-blue-dark: #005A9C;
+      --unesco-blue-light: #009EE0;
+      --unesco-blue-pale: #E3F2FD;
+      --unesco-gray: #f8f9fa;
+      --text-primary: #2c3e50;
+      --text-secondary: #6c757d;
+      --shadow-light: 0 2px 8px rgba(0, 114, 188, 0.08);
+      --shadow-medium: 0 4px 16px rgba(0, 114, 188, 0.12);
+      --shadow-strong: 0 8px 32px rgba(0, 114, 188, 0.16);
+    }
+
+    .detail-container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+
+    .detail-header {
+      position: relative; height: 200px; overflow: hidden;
+      border-radius: 16px; margin-bottom: 2rem; box-shadow: var(--shadow-strong);
+    }
+    .detail-header-bg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, #005A9C 0%, #0072BC 40%, #009EE0 100%);
+    }
+    .detail-header-content {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center; color: white; z-index: 10; width: 90%;
+    }
+    .detail-header-content h1 {
+      margin: 0 0 0.5rem; font-size: 2rem; font-weight: 700;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+    .detail-header-content p { margin: 0; font-size: 1rem; opacity: 0.9; color: white !important; }
+
+    .info-card {
+      background: white; border-radius: 16px; box-shadow: var(--shadow-medium);
+      margin-bottom: 1.5rem; overflow: hidden; border-left: 5px solid var(--unesco-blue);
+    }
+    .info-card-header {
+      padding: 16px 22px; background: var(--unesco-gray);
+      border-bottom: 2px solid #e9ecef;
+      font-size: 1rem; font-weight: 600; color: var(--text-primary);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .info-card-body { padding: 20px 22px; }
+
+    .info-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    }
+    .info-item { }
+    .info-label {
+      font-size: 12px; font-weight: 600; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;
+    }
+    .info-value { font-size: 15px; color: var(--text-primary); word-break: break-word; }
+
+    .status-badge {
+      display: inline-block; padding: 4px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 600; text-transform: uppercase;
+    }
+    .status-DRAFT { background: #e9ecef; color: #6c757d; }
+    .status-SUBMITTED { background: #cce5ff; color: #004085; }
+    .status-UNDER_REVIEW { background: #fff3cd; color: #856404; }
+    .status-APPROVED { background: #d4edda; color: #155724; }
+    .status-REJECTED { background: #f8d7da; color: #721c24; }
+    .status-synced { background: #c3e6cb; color: #0b5727; }
+    .status-error { background: #ffe0b2; color: #e65100; }
+    .status-pending { background: #cce5ff; color: #004085; }
+
+    .timeline {
+      display: flex; gap: 0; margin: 20px 0; flex-wrap: wrap;
+    }
+    .timeline-step {
+      flex: 1; min-width: 120px; text-align: center; position: relative;
+      padding: 12px 8px;
+    }
+    .timeline-step::after {
+      content: ''; position: absolute; top: 22px; right: -50%;
+      width: 100%; height: 3px; background: #e9ecef; z-index: 0;
+    }
+    .timeline-step:last-child::after { display: none; }
+    .timeline-dot {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #e9ecef; margin: 0 auto 8px; position: relative; z-index: 1;
+    }
+    .timeline-step.active .timeline-dot { background: var(--unesco-blue); }
+    .timeline-step.done .timeline-dot { background: #28a745; }
+    .timeline-step.error .timeline-dot { background: #e65100; }
+    .timeline-label { font-size: 11px; color: var(--text-secondary); }
+    .timeline-date { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
+
+    #detail-map { height: 280px; border-radius: 10px; border: 2px solid #e9ecef; }
+
+    .action-bar {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 1.5rem;
+    }
+    .btn-approve {
+      padding: 12px 28px; background: #28a745; color: white; border: none;
+      border-radius: 25px; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow-medium);
+    }
+    .btn-approve:hover { background: #218838; }
+    .btn-reject-open {
+      padding: 12px 28px; background: #dc3545; color: white; border: none;
+      border-radius: 25px; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .btn-reject-open:hover { background: #c82333; }
+    .btn-retry {
+      padding: 12px 28px; background: #e65100; color: white; border: none;
+      border-radius: 25px; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .btn-retry:hover { background: #bf360c; }
+    .btn-back {
+      padding: 12px 28px; background: #6c757d; color: white; border: none;
+      border-radius: 25px; font-size: 15px; font-weight: 600;
+      cursor: pointer; text-decoration: none; transition: all 0.3s;
+    }
+    .btn-back:hover { background: #5a6268; color: white; text-decoration: none; }
+
+    /* Reject modal */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: white; border-radius: 16px; padding: 28px;
+      max-width: 500px; width: 90%; box-shadow: var(--shadow-strong);
+    }
+    .modal-box h3 { margin: 0 0 16px; color: var(--text-primary); }
+    .modal-box textarea {
+      width: 100%; min-height: 100px; padding: 12px; border: 2px solid #e9ecef;
+      border-radius: 10px; font-size: 14px; resize: vertical; box-sizing: border-box;
+    }
+    .modal-box textarea:focus { outline: none; border-color: var(--unesco-blue); }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+    .btn-cancel {
+      padding: 10px 20px; background: #e9ecef; color: var(--text-primary);
+      border: none; border-radius: 20px; cursor: pointer; font-weight: 500;
+    }
+    .btn-reject-confirm {
+      padding: 10px 20px; background: #dc3545; color: white;
+      border: none; border-radius: 20px; cursor: pointer; font-weight: 600;
+    }
+
+    .sync-error-box {
+      background: #fff3e0; border-left: 4px solid #e65100;
+      border-radius: 8px; padding: 14px 18px; margin-top: 12px;
+    }
+    .sync-error-box strong { color: #e65100; }
+    .sync-error-box pre {
+      background: #fafafa; padding: 10px; border-radius: 6px;
+      font-size: 12px; overflow-x: auto; margin: 8px 0 0;
+    }
+
+    .tb-info-box {
+      background: #e8f5e9; border-left: 4px solid #28a745;
+      border-radius: 8px; padding: 14px 18px; margin-top: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .info-grid { grid-template-columns: 1fr; }
+      .detail-header { height: 160px; }
+      .detail-header-content h1 { font-size: 1.5rem; }
+    }
+  </style>
+{% endblock %}
+
+{% block subtitle %}Device Request #{{ dr.id }}{% endblock %}
+
+{% block secondary %}{% endblock %}
+
+{% block primary %}
+<div class="detail-container">
+  <!-- Header -->
+  <div class="detail-header">
+    <div class="detail-header-bg"></div>
+    <div class="detail-header-content">
+      <h1>Device Request #{{ dr.id }}</h1>
+      <p>{{ dr.device_name or 'Unnamed device' }} — {{ dr.serial_number or 'No serial' }}</p>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="info-card">
+    <div class="info-card-header">Status Timeline</div>
+    <div class="info-card-body">
+      <div class="timeline">
+        <div class="timeline-step done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">Created</div>
+          <div class="timeline-date">{{ dr.created_at.strftime('%Y-%m-%d') if dr.created_at else '' }}</div>
+        </div>
+        <div class="timeline-step {% if dr.submitted_at %}done{% endif %}">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">Submitted</div>
+          <div class="timeline-date">{{ dr.submitted_at.strftime('%Y-%m-%d') if dr.submitted_at else '' }}</div>
+        </div>
+        <div class="timeline-step {% if dr.approved_at %}done{% elif dr.rejected_at %}error{% endif %}">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">{% if dr.rejected_at %}Rejected{% else %}Reviewed{% endif %}</div>
+          <div class="timeline-date">{{ (dr.approved_at or dr.rejected_at).strftime('%Y-%m-%d') if (dr.approved_at or dr.rejected_at) else '' }}</div>
+        </div>
+        <div class="timeline-step {% if dr.sync_status == 'synced' %}done{% elif dr.sync_status == 'error' %}error{% endif %}">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">Synced</div>
+          <div class="timeline-date">{% if dr.sync_status == 'synced' %}OK{% elif dr.sync_status == 'error' %}Failed{% endif %}</div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 10px;">
+        <span class="status-badge status-{{ dr.status }}">{{ dr.status }}</span>
+        {% if dr.sync_status %}
+          <span class="status-badge status-{{ dr.sync_status }}" style="margin-left: 8px;">Sync: {{ dr.sync_status }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Device Info -->
+  <div class="info-card">
+    <div class="info-card-header">Device Information</div>
+    <div class="info-card-body">
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Device Name</div>
+          <div class="info-value">{{ dr.device_name or '—' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Device Label</div>
+          <div class="info-value">{{ dr.device_label or '—' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Serial Number</div>
+          <div class="info-value">{{ dr.serial_number or '—' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Device Profile</div>
+          <div class="info-value">{{ dr.device_profile_name or '—' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Firmware Version</div>
+          <div class="info-value">{{ dr.firmware_version or '—' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Organization</div>
+          <div class="info-value">{{ org_name or '—' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Installation -->
+  <div class="info-card">
+    <div class="info-card-header">Installation Details</div>
+    <div class="info-card-body">
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Site Code</div>
+          <div class="info-value">{{ dr.site_code or '—' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Installer</div>
+          <div class="info-value">{{ dr.installer_name or '—' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Install Date</div>
+          <div class="info-value">{{ dr.install_date.strftime('%Y-%m-%d') if dr.install_date else '—' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Owner</div>
+          <div class="info-value">{{ dr.owner_name or '—' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Survey Completed</div>
+          <div class="info-value">{{ 'Yes' if dr.survey_completed else 'No' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Requested By</div>
+          <div class="info-value">{{ creator.display_name if creator else dr.created_by_user_id }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location -->
+  {% if dr.latitude is not none and dr.longitude is not none %}
+  <div class="info-card">
+    <div class="info-card-header">Location</div>
+    <div class="info-card-body">
+      <div class="info-grid" style="margin-bottom: 14px;">
+        <div class="info-item">
+          <div class="info-label">Coordinates</div>
+          <div class="info-value">{{ dr.latitude }}, {{ dr.longitude }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Address</div>
+          <div class="info-value">{{ dr.address or '—' }}</div>
+        </div>
+      </div>
+      <div id="detail-map"></div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Technical Notes -->
+  {% if dr.technical_notes %}
+  <div class="info-card">
+    <div class="info-card-header">Technical Notes</div>
+    <div class="info-card-body">
+      <div class="info-value">{{ dr.technical_notes }}</div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Rejection reason -->
+  {% if dr.status == 'REJECTED' and dr.rejection_reason %}
+  <div class="info-card" style="border-left-color: #dc3545;">
+    <div class="info-card-header" style="color: #721c24;">Rejection Reason</div>
+    <div class="info-card-body">
+      <div class="info-value" style="color: #721c24;">{{ dr.rejection_reason }}</div>
+      {% if reviewer %}
+      <div style="margin-top: 8px; font-size: 12px; color: var(--text-secondary);">
+        Rejected by {{ reviewer.display_name }} on {{ dr.rejected_at.strftime('%Y-%m-%d %H:%M') if dr.rejected_at else '—' }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Sync error -->
+  {% if dr.sync_status == 'error' and dr.sync_error_message %}
+  <div class="sync-error-box">
+    <strong>Sync Error</strong>
+    <pre>{{ dr.sync_error_message }}</pre>
+  </div>
+  {% endif %}
+
+  <!-- ThingsBoard info -->
+  {% if dr.tb_device_id %}
+  <div class="tb-info-box">
+    <strong style="color: #28a745;">ThingsBoard Device</strong>
+    <div style="margin-top: 8px;">
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">TB Device ID</div>
+          <div class="info-value">{{ dr.tb_device_id }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">TB Customer ID</div>
+          <div class="info-value">{{ dr.tb_customer_id or '—' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Access Token</div>
+          <div class="info-value" style="font-family: monospace;">{{ dr.tb_access_token or '—' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Actions -->
+  <div class="action-bar">
+    <a href="{{ h.url_for('thingsboard.admin_dashboard') }}" class="btn-back">Back to List</a>
+
+    {% if dr.status in ('SUBMITTED', 'UNDER_REVIEW') %}
+    <form action="{{ h.url_for('thingsboard.approve', id=dr.id) }}" method="post" style="margin: 0;">
+      <button type="submit" class="btn-approve" onclick="return confirm('Approve this device request and sync to ThingsBoard?')">
+        Approve & Sync
+      </button>
+    </form>
+    <button type="button" class="btn-reject-open" onclick="document.getElementById('rejectModal').classList.add('active')">
+      Reject
+    </button>
+    {% endif %}
+
+    {% if dr.sync_status == 'error' %}
+    <form action="{{ h.url_for('thingsboard.retry_sync', id=dr.id) }}" method="post" style="margin: 0;">
+      <button type="submit" class="btn-retry" onclick="return confirm('Retry synchronization with ThingsBoard?')">
+        Retry Sync
+      </button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Reject Modal -->
+<div id="rejectModal" class="modal-overlay" onclick="if(event.target===this) this.classList.remove('active')">
+  <div class="modal-box">
+    <h3>Reject Device Request</h3>
+    <form action="{{ h.url_for('thingsboard.reject', id=dr.id) }}" method="post">
+      <textarea name="rejection_reason" placeholder="Enter the reason for rejection..." required></textarea>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="document.getElementById('rejectModal').classList.remove('active')">Cancel</button>
+        <button type="submit" class="btn-reject-confirm">Reject Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% if dr.latitude is not none and dr.longitude is not none %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  var map = L.map('detail-map').setView([{{ dr.latitude }}, {{ dr.longitude }}], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+  L.marker([{{ dr.latitude }}, {{ dr.longitude }}]).addTo(map)
+    .bindPopup('<strong>{{ dr.device_name or "Device" }}</strong><br>{{ dr.address or "" }}')
+    .openPopup();
+</script>
+{% endif %}
+{% endblock %}

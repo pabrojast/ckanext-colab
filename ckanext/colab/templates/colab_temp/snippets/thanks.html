@@ -20,8 +20,43 @@
         <section class="success-message-card">
             <div class="card-content">
                 <p class="main-message">{{ _("Your application has been successfully submitted and is now being reviewed by our team.") }}</p>
+                <p style="font-size: 13px; color: #6c757d; margin-top: 8px;">{{ _("A confirmation email has been sent to your email address.") }}</p>
             </div>
         </section>
+
+        {% if application %}
+        <!-- Application Summary -->
+        <section class="next-steps-card" style="margin-bottom: 20px;">
+            <div class="card-header">
+                <h3>{{ _("Your Application Summary") }}</h3>
+            </div>
+            <div class="card-content">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px;">
+                    <div>
+                        <span style="color: #6c757d;">{{ _("Username:") }}</span>
+                        <strong>{{ application.wins_username }}</strong>
+                    </div>
+                    <div>
+                        <span style="color: #6c757d;">{{ _("Email:") }}</span>
+                        <strong>{{ application.email }}</strong>
+                    </div>
+                    <div>
+                        <span style="color: #6c757d;">{{ _("Organization:") }}</span>
+                        <strong>{{ application.organization_name }}</strong>
+                    </div>
+                    <div>
+                        <span style="color: #6c757d;">{{ _("Role:") }}</span>
+                        <strong>{{ application.user_role or 'admin' }}</strong>
+                    </div>
+                </div>
+                <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid #e9ecef;">
+                    <a href="/colab/status" style="color: #0072bc; font-size: 13px; text-decoration: none;">
+                        🔍 {{ _("Check your application status anytime at") }} <strong>/colab/status</strong>
+                    </a>
+                </div>
+            </div>
+        </section>
+        {% endif %}
         
         <!-- Next Steps -->
         <section class="next-steps-card">
@@ -83,11 +118,11 @@
             <a href="/" class="btn btn-primary btn-lg">
                 <i class="fa fa-home"></i> {{ _("Return to Home") }}
             </a>
+            <a href="/colab/status" class="btn btn-default btn-lg">
+                <i class="fa fa-search"></i> {{ _("Check Application Status") }}
+            </a>
             <a href="/dataset" class="btn btn-default btn-lg">
                 <i class="fa fa-database"></i> {{ _("Browse Datasets") }}
-            </a>
-            <a href="/citizens4water/" class="btn btn-default btn-lg">
-                <i class="fa fa-external-link"></i> {{ _("Citizens4Water platform") }}
             </a>
         </div>
     </div>

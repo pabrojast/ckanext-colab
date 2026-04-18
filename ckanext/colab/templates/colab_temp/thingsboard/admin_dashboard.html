@@ -1,0 +1,284 @@
+{% extends "page.html" %}
+{% block styles %}
+  {{ super() }}
+  <style>
+    :root {
+      --unesco-blue: #0072BC;
+      --unesco-blue-dark: #005A9C;
+      --unesco-blue-light: #009EE0;
+      --unesco-blue-pale: #E3F2FD;
+      --unesco-gray: #f8f9fa;
+      --text-primary: #2c3e50;
+      --text-secondary: #6c757d;
+      --shadow-light: 0 2px 8px rgba(0, 114, 188, 0.08);
+      --shadow-medium: 0 4px 16px rgba(0, 114, 188, 0.12);
+      --shadow-strong: 0 8px 32px rgba(0, 114, 188, 0.16);
+    }
+
+    .admin-container { max-width: 100%; margin: 0 auto; padding: 20px; }
+
+    .admin-header {
+      position: relative; height: 260px; overflow: hidden;
+      border-radius: 16px; margin-bottom: 2rem; box-shadow: var(--shadow-strong);
+    }
+    .admin-header-bg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, #005A9C 0%, #0072BC 40%, #009EE0 100%);
+    }
+    .admin-header-content {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center; color: white; z-index: 10; width: 90%;
+    }
+    .admin-header-content h1 { margin: 0 0 0.8rem; font-size: 2.4rem; font-weight: 700; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); }
+    .admin-header-content p { margin: 0; font-size: 1.1rem; opacity: 0.95; color: white !important; }
+
+    .admin-stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    .stat-card {
+      background: white; padding: 18px; border-radius: 16px;
+      box-shadow: var(--shadow-medium); flex: 1; min-width: 150px;
+      text-align: center; border-left: 5px solid var(--unesco-blue);
+      transition: all 0.3s ease;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-strong); }
+    .stat-number { font-size: 2em; font-weight: bold; color: var(--unesco-blue); }
+    .stat-label { color: var(--text-secondary); margin-top: 4px; font-size: 13px; }
+    .stat-card.warning { border-left-color: #e65100; }
+    .stat-card.warning .stat-number { color: #e65100; }
+    .stat-card.success { border-left-color: #0b5727; }
+    .stat-card.success .stat-number { color: #0b5727; }
+
+    .tabs {
+      background: white; border-radius: 20px;
+      box-shadow: var(--shadow-medium); overflow: hidden;
+      border-left: 6px solid var(--unesco-blue-dark);
+    }
+    .tab-buttons {
+      display: flex; background: var(--unesco-gray);
+      border-bottom: 2px solid #e9ecef; flex-wrap: wrap;
+    }
+    .tab-button {
+      flex: 1; padding: 14px 16px; border: none; background: transparent;
+      cursor: pointer; font-size: 14px; font-weight: 500;
+      color: var(--text-secondary); transition: all 0.3s ease;
+      position: relative; min-width: 120px; text-align: center;
+    }
+    .tab-button:hover { background: #e9ecef; color: var(--text-primary); }
+    .tab-button.active { color: var(--unesco-blue); background: white; }
+    .tab-button.active::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: var(--unesco-blue);
+    }
+    .tab-badge {
+      display: inline-block; background: var(--unesco-blue); color: white;
+      border-radius: 10px; padding: 2px 8px; font-size: 11px;
+      font-weight: 700; margin-left: 6px; vertical-align: middle;
+    }
+    .tab-badge.warning { background: #e65100; }
+    .tab-badge.success { background: #0b5727; }
+    .tab-badge.gray { background: #6c757d; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .requests-table { width: 100%; border-collapse: collapse; }
+    .requests-table thead th {
+      padding: 14px 18px; text-align: left; font-weight: 600;
+      color: var(--text-primary); background: var(--unesco-gray);
+      border-bottom: 2px solid #e9ecef; font-size: 13px;
+    }
+    .requests-table tbody td {
+      padding: 12px 18px; border-bottom: 1px solid #f0f0f0;
+      font-size: 13px; color: var(--text-primary);
+    }
+    .requests-table tbody tr:hover { background: var(--unesco-blue-pale); }
+    .requests-table tbody tr:last-child td { border-bottom: none; }
+
+    .status-badge {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .status-DRAFT { background: #e9ecef; color: #6c757d; }
+    .status-SUBMITTED { background: #cce5ff; color: #004085; }
+    .status-UNDER_REVIEW { background: #fff3cd; color: #856404; }
+    .status-APPROVED { background: #d4edda; color: #155724; }
+    .status-REJECTED { background: #f8d7da; color: #721c24; }
+    .status-synced { background: #c3e6cb; color: #0b5727; }
+    .status-error { background: #ffe0b2; color: #e65100; }
+    .status-pending { background: #cce5ff; color: #004085; }
+
+    .btn-detail {
+      display: inline-block; padding: 5px 14px; border-radius: 15px;
+      font-size: 12px; font-weight: 500; text-decoration: none;
+      border: 1px solid var(--unesco-blue); color: var(--unesco-blue);
+      background: transparent; transition: all 0.2s ease;
+    }
+    .btn-detail:hover { background: var(--unesco-blue); color: white; text-decoration: none; }
+
+    .empty-tab { text-align: center; padding: 50px 20px; color: var(--text-secondary); }
+    .empty-tab h4 { color: var(--text-primary); margin-bottom: 6px; }
+
+    .search-box { padding: 16px 18px; border-bottom: 1px solid #e9ecef; }
+    .search-input {
+      width: 100%; padding: 10px 14px; border: 2px solid #e9ecef;
+      border-radius: 20px; font-size: 14px; transition: all 0.3s;
+      box-sizing: border-box;
+    }
+    .search-input:focus { outline: none; border-color: var(--unesco-blue); }
+
+    @media (max-width: 768px) {
+      .admin-header { height: 200px; }
+      .admin-header-content h1 { font-size: 1.8rem; }
+      .tab-button { font-size: 12px; padding: 10px 8px; }
+      .requests-table thead { display: none; }
+      .requests-table tbody td {
+        display: block; text-align: right; padding: 8px 14px;
+      }
+      .requests-table tbody td::before {
+        content: attr(data-label); float: left; font-weight: 600;
+      }
+      .requests-table tbody tr { display: block; margin-bottom: 8px; border-bottom: 2px solid #e9ecef; }
+    }
+  </style>
+{% endblock %}
+
+{% block subtitle %}Device Requests Admin{% endblock %}
+
+{% block secondary %}{% endblock %}
+
+{% block primary %}
+<div class="admin-container">
+  <!-- Header -->
+  <div class="admin-header">
+    <div class="admin-header-bg"></div>
+    <div class="admin-header-content">
+      <h1>Device Requests Administration</h1>
+      <p>Review, approve, and manage IoT device registration requests</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="admin-stats">
+    <div class="stat-card">
+      <div class="stat-number">{{ pending|length }}</div>
+      <div class="stat-label">Pending Review</div>
+    </div>
+    <div class="stat-card success">
+      <div class="stat-number">{{ synced|length }}</div>
+      <div class="stat-label">Synced</div>
+    </div>
+    <div class="stat-card warning">
+      <div class="stat-number">{{ sync_errors|length }}</div>
+      <div class="stat-label">Sync Errors</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ rejected|length }}</div>
+      <div class="stat-label">Rejected</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab-buttons">
+      <button class="tab-button active" onclick="switchTab('pending', this)">
+        Pending Review <span class="tab-badge">{{ pending|length }}</span>
+      </button>
+      <button class="tab-button" onclick="switchTab('synced', this)">
+        Synced <span class="tab-badge success">{{ synced|length }}</span>
+      </button>
+      <button class="tab-button" onclick="switchTab('sync_errors', this)">
+        Sync Errors <span class="tab-badge warning">{{ sync_errors|length }}</span>
+      </button>
+      <button class="tab-button" onclick="switchTab('rejected', this)">
+        Rejected <span class="tab-badge gray">{{ rejected|length }}</span>
+      </button>
+      <button class="tab-button" onclick="switchTab('drafts', this)">
+        Drafts <span class="tab-badge gray">{{ drafts|length }}</span>
+      </button>
+    </div>
+
+    {% macro render_table(items, show_sync=false) %}
+    {% if items %}
+    <div class="search-box">
+      <input type="text" class="search-input" placeholder="Search by device name, serial number..." onkeyup="filterTable(this)">
+    </div>
+    <table class="requests-table searchable-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Device Name</th>
+          <th>Serial Number</th>
+          <th>Site Code</th>
+          <th>Status</th>
+          {% if show_sync %}<th>Sync</th>{% endif %}
+          <th>Submitted</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for req in items %}
+        <tr>
+          <td data-label="ID">{{ req.id }}</td>
+          <td data-label="Device">{{ req.device_name or '—' }}</td>
+          <td data-label="Serial">{{ req.serial_number or '—' }}</td>
+          <td data-label="Site">{{ req.site_code or '—' }}</td>
+          <td data-label="Status"><span class="status-badge status-{{ req.status }}">{{ req.status }}</span></td>
+          {% if show_sync %}
+          <td data-label="Sync">
+            <span class="status-badge status-{{ req.sync_status or 'none' }}">{{ req.sync_status or '—' }}</span>
+          </td>
+          {% endif %}
+          <td data-label="Submitted">{{ req.submitted_at.strftime('%Y-%m-%d') if req.submitted_at else '—' }}</td>
+          <td data-label="Actions">
+            <a href="{{ h.url_for('thingsboard.admin_detail', id=req.id) }}" class="btn-detail">View Details</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-tab">
+      <h4>No requests in this category</h4>
+      <p>Requests will appear here when their status matches this tab.</p>
+    </div>
+    {% endif %}
+    {% endmacro %}
+
+    <div id="tab-pending" class="tab-content active">
+      {{ render_table(pending) }}
+    </div>
+    <div id="tab-synced" class="tab-content">
+      {{ render_table(synced, show_sync=true) }}
+    </div>
+    <div id="tab-sync_errors" class="tab-content">
+      {{ render_table(sync_errors, show_sync=true) }}
+    </div>
+    <div id="tab-rejected" class="tab-content">
+      {{ render_table(rejected) }}
+    </div>
+    <div id="tab-drafts" class="tab-content">
+      {{ render_table(drafts) }}
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.tab-button').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function filterTable(input) {
+    var filter = input.value.toLowerCase();
+    var table = input.closest('.tab-content').querySelector('.searchable-table');
+    if (!table) return;
+    var rows = table.querySelectorAll('tbody tr');
+    rows.forEach(function(row) {
+      var text = row.textContent.toLowerCase();
+      row.style.display = text.indexOf(filter) > -1 ? '' : 'none';
+    });
+  }
+</script>
+{% endblock %}
