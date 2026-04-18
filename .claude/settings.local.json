@@ -5,12 +5,7 @@
       "Bash(rg:*)",
       "Bash(grep:*)",
       "Bash(python:*)",
-      "Bash(pip show:*)",
-      "Bash(python3 -m py_compile ckanext/colab/plugin.py)",
-      "Bash(python3 -m py_compile ckanext/colab/models/device_request.py)",
-      "Bash(python3 -m py_compile ckanext/colab/services/thingsboard_service.py)",
-      "Bash(python3 -m py_compile ckanext/colab/controllers/thingsboard_controller.py)",
-      "Bash(python3 -m py_compile ckanext/colab/lib/device_email_notifications.py)"
+      "Bash(pip show:*)"
     ],
     "deny": []
   }

@@ -248,7 +248,7 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
         try:
             count = model.Session.query(CoolPluginTable).filter(
                 CoolPluginTable.approved == 'Pending',
-                CoolPluginTable.rejected == None,
+                CoolPluginTable.rejected.is_(None),
                 CoolPluginTable.deleted_at.is_(None)
             ).count()
             return count

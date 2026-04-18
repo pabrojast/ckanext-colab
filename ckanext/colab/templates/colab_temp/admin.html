@@ -2381,10 +2381,18 @@ function handleReject(event) {
     }
 }
 
+function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
 function showUserDetails(username, isPending) {
     const user = allUsers.find(u => u.wins_username === username);
     if (!user) return;
 
+    const e = escapeHtml;
     const modalBody = document.getElementById('modal-body');
     modalBody.innerHTML = `
         <div class="detail-group">

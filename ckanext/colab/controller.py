@@ -3,7 +3,7 @@ import ckan.plugins.toolkit as toolkit
 import ckan.model as model
 import ckan.logic as logic
 from ckanext.colab.models.cool_plugin_table import CoolPluginTable, OrganizationRequestTable, AuditLog
-from sqlalchemy import text, inspect, or_
+from sqlalchemy import text, inspect, or_, func
 import re 
 import logging
 import csv
@@ -149,7 +149,6 @@ def get_all_groups_cached():
     Uses a direct DB query to avoid N+1 overhead from group_list(all_fields=True).
     """
     try:
-        from sqlalchemy import func
         package_count_sq = (
             model.Session.query(
                 model.Member.group_id,
@@ -205,7 +204,6 @@ def get_all_organizations_cached():
     Uses a direct DB query to avoid N+1 overhead from organization_list(all_fields=True).
     """
     try:
-        from sqlalchemy import func
         package_count_sq = (
             model.Session.query(
                 model.Member.group_id,
