@@ -10,7 +10,7 @@ import csv
 import io
 from ckanext.colab.lib.email_notifications import send_admin_notification, send_applicant_confirmation
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from werkzeug.utils import secure_filename
 import ckan.lib.uploader as uploader
@@ -551,25 +551,51 @@ Best regards,
             CoolPluginTable.deleted_at.is_(None)
         ).order_by(CoolPluginTable.created_date.desc()).all()
 
-        # Batch check which usernames already exist as CKAN users
+        # Batch check which applicants had a CKAN account *before* applying.
+        # The /colab POST creates a CKAN user immediately when one doesn't exist,
+        # so a row in model.User by itself is not a useful signal. We only flag
+        # applicants whose CKAN account predates the application by more than
+        # PRE_EXISTING_THRESHOLD — those are users who applied while already
+        # holding an account (typically requesting access to another org).
+        PRE_EXISTING_THRESHOLD = timedelta(seconds=60)
         all_usernames = {r.wins_username for r in results if r.wins_username}
         existing_users = set()
+        ckan_user_created = {}
         if all_usernames:
             try:
-                ckan_users = model.Session.query(model.User.name).filter(
+                ckan_users = model.Session.query(
+                    model.User.name, model.User.created
+                ).filter(
                     model.User.name.in_(all_usernames),
                     model.User.state == 'active'
                 ).all()
-                existing_users = {row[0] for row in ckan_users}
+                ckan_user_created = {row[0]: row[1] for row in ckan_users}
             except Exception as e:
                 logger.warning("Batch user check failed, falling back to individual checks: %s", e)
                 for r in results:
-                    if r.wins_username:
+                    if r.wins_username and r.wins_username not in ckan_user_created:
                         try:
-                            toolkit.get_action('user_show')({'ignore_auth': True}, {'id': r.wins_username})
-                            existing_users.add(r.wins_username)
+                            u = toolkit.get_action('user_show')(
+                                {'ignore_auth': True}, {'id': r.wins_username}
+                            )
+                            ckan_user_created[r.wins_username] = u.get('created')
                         except toolkit.ObjectNotFound:
                             pass
+
+        for r in results:
+            if not r.wins_username or not r.created_date:
+                continue
+            created = ckan_user_created.get(r.wins_username)
+            if not created:
+                continue
+            # user_show returns ISO strings; the ORM returns datetime objects.
+            if isinstance(created, str):
+                try:
+                    created = datetime.fromisoformat(created)
+                except ValueError:
+                    continue
+            if r.created_date - created > PRE_EXISTING_THRESHOLD:
+                existing_users.add(r.wins_username)
 
         # Find duplicate usernames and emails
         from collections import Counter

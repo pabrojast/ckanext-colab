@@ -1656,8 +1656,8 @@
             <button class="filter-chip" data-filter="duplicates" title="Show only duplicate applications">
                 🔁 Duplicates
             </button>
-            <button class="filter-chip" data-filter="existing" title="Show only already-registered users">
-                ⚠️ Already Registered
+            <button class="filter-chip" data-filter="existing" title="Show applications from people who already had a CKAN account before applying">
+                ⚠️ Pre-existing User
             </button>
             <button class="filter-chip" data-filter="new-org" title="Show only applications requesting new organizations">
                 🏢 New Org
@@ -1703,7 +1703,7 @@
                                         <div>
                                             <strong class="truncate" title="{{ result.fullname|e }}">{{ result.fullname }}</strong>
                                             {% if result.wins_username in existing_users %}
-                                                <span class="badge-icon" title="User already has a CKAN account">⚠️</span>
+                                                <span class="badge-icon" title="Applicant already had a CKAN account before applying">⚠️</span>
                                             {% endif %}
                                             {% if result.wins_username in duplicate_usernames or result.email in duplicate_emails %}
                                                 {% set dup_reasons = [] %}
