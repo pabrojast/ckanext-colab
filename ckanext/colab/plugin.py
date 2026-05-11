@@ -7,6 +7,7 @@ from ckanext.colab.controller import MyLogic
 from ckanext.colab.models.cool_plugin_table import CoolPluginTable
 from ckanext.colab.controllers.thingsboard_controller import ThingsBoardLogic
 from ckanext.colab.models.device_request import DeviceRequest
+from ckanext.colab.api_endpoints import colab_api
 
 
 class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
@@ -230,7 +231,7 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['POST']
         )
 
-        return [blueprint, tb_blueprint]
+        return [blueprint, tb_blueprint, colab_api]
     
 
     #ITemplateHelpers
