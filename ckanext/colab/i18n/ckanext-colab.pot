@@ -297,3 +297,589 @@ msgstr ""
 msgid "If you have any questions, feel free to reach out."
 msgstr ""
 
+#: ckanext/colab/templates/colab_temp/organization_request.html:43
+msgid "Request New Organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:44
+msgid "Create a new organization to manage your data and collaborate with team members."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:57
+msgid "Request Submitted Successfully"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:58
+msgid "Your organization request has been submitted and is pending admin approval."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:71
+msgid "Request Error"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:3
+msgid "Application Status"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:207 ckanext/colab/templates/colab_temp/snippets/thanks.html:122
+msgid "Check Application Status"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:208
+msgid "Enter your username and email to check the status of your registration."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:213 ckanext/colab/templates/colab_temp/status.html:248 ckanext/colab/templates/colab_temp/snippets/form.html:37
+msgid "Username"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:215
+msgid "Enter your username"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:219 ckanext/colab/templates/colab_temp/snippets/form.html:43
+msgid "Email"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:221
+msgid "Enter your email address"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:225
+msgid "Check Status"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:232
+msgid "Application Found"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:234
+msgid "Pending Review"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:236
+msgid "Approved"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:238
+msgid "Rejected"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:244
+msgid "Full Name"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:256
+msgid "Role Requested"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:260
+msgid "Submitted"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:274
+msgid "Reason:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:283
+msgid "Application submitted"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:287
+msgid "Under review by administrators"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:291
+msgid "Approval decision"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:295
+msgid "Organization assignment"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:305
+msgid "No application found matching this username and email combination. Please verify your details and try again."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/status.html:311
+msgid "Back to Registration"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/index.html:56
+msgid "Registration Successful"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/index.html:57
+msgid "Welcome to the IHP-WINS platform! Your application has been submitted successfully."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/index.html:70
+msgid "Registration Error"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/index.html:71
+msgid "We encountered an issue processing your registration. Please review the information below."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/index.html:121
+msgid "Duplicate Application Detected"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:12
+msgid "Registration Successful!"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:13
+msgid "Thank you for registering"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:22
+msgid "Your application has been successfully submitted and is now being reviewed by our team."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:23
+msgid "A confirmation email has been sent to your email address."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:31
+msgid "Your Application Summary"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:36
+msgid "Username:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:40
+msgid "Email:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:44
+msgid "Organization:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:48
+msgid "Role:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:54
+msgid "Check your application status anytime at"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:64
+msgid "What happens next?"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:71
+msgid "Email Verification"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:72
+msgid "Email verification will be sent to your provided email address"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:78
+msgid "Application Review"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:79
+msgid "Our team will review your application and organization details"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:85
+msgid "Account Approval"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:86
+msgid "You'll receive a confirmation email once your account is approved"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:92
+msgid "Start Contributing"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:93
+msgid "Start contributing data and information to IHP WINS and related platforms"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:103
+msgid "Need assistance?"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:106
+msgid "If you have any questions about the registration process or need support, please don't hesitate to contact us:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:119 ckanext/colab/templates/colab_temp/snippets/error-user-create.html:98
+msgid "Return to Home"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:125
+msgid "Browse Datasets"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:14
+msgid "Registration Could Not Be Completed"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:15
+msgid "We encountered an issue processing your application"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:20
+msgid "Error:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:24
+msgid "We're sorry, but we couldn't complete your registration at this time. This is typically due to one of the following reasons:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:29
+msgid "Common Issues:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:34
+msgid "Username already exists"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:35
+msgid "The username you chose is already in use. Please try a different username."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:41
+msgid "Email already registered"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:42
+msgid "This email address is already associated with an account. Try logging in instead."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:48
+msgid "Organization restrictions"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:49
+msgid "The organization you selected may have specific registration requirements."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:55
+msgid "Technical issue"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:56
+msgid "A temporary server error occurred. Please try again in a few minutes."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:63
+msgid "What can you do?"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:67 ckanext/colab/templates/colab_temp/snippets/error-user-create.html:96
+msgid "Try Again"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:68
+msgid "Review your information and attempt registration again with different details."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:72 ckanext/colab/templates/colab_temp/snippets/error-user-create.html:97
+msgid "Login Instead"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:73
+msgid "If you already have an account, try logging in with your existing credentials."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:77
+msgid "Get Help"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:78
+msgid "Contact our support team for personalized assistance with your registration."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:84
+msgid "Need Additional Support?"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:85
+msgid "Our team is here to help you resolve any registration issues. Please don't hesitate to reach out:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:92
+msgid "When contacting support, please include the username and email you attempted to register with."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:26
+msgid "Personal Information"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:31
+msgid "Enter your full name"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:32
+msgid "Your full name will help us personalize your experience"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:38
+msgid "e.g., john_doe123"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:44
+msgid "your.email@organization.com"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:45
+msgid "Use your official organization email address"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:52
+msgid "Password"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:53
+msgid "Enter a secure password"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:58
+msgid "Confirm password"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:59
+msgid "Repeat your password"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:60
+msgid "Passwords must match"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:79
+msgid "Must be 16 years or older"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:82
+msgid "Nationality"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:83
+msgid "e.g., French, Canadian, etc."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:84
+msgid "Your country of citizenship"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:89
+msgid "Gender"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:91
+msgid "Please select your gender"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:98
+msgid "This information helps us ensure diverse representation"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:108
+msgid "To be a contributor for IHP WINS you need to be part of an organization. If your organization is not yet active in IHP WINS, you can create a new organization via this form."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:114
+msgid "Select organization type"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:132
+msgid "Organization Name"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:134 ckanext/colab/templates/colab_temp/snippets/form.html:266 ckanext/colab/templates/colab_temp/snippets/form.html:284
+msgid "Select an organization..."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:135
+msgid "Loading organizations..."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:142
+msgid "New Organization Name"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:143
+msgid "Enter organization name"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:144
+msgid "Enter the official name of your organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:149
+msgid "Describe your organization's mission and activities..."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:150
+msgid "Brief description of your organization's purpose and activities"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:156
+msgid "Title Within Represented Organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:157
+msgid "e.g., Data Manager, Research Coordinator"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:158
+msgid "Your current position or role in the organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:161
+msgid "Role in Organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:163
+msgid "Select your role"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:164
+msgid "Member"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:165
+msgid "Editor"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:166
+msgid "Admin"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:168
+msgid "For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:179
+msgid "This registration form will allow you to contribute data and information on IHP WINS and related platforms. Select the related platforms you wish to contribute to from the list."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:186
+msgid "IHP WINS data platform"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:224 ckanext/colab/templates/colab_temp/snippets/form.html:474 ckanext/colab/templates/colab_temp/snippets/form.html:485 ckanext/colab/templates/colab_temp/snippets/form.html:493 ckanext/colab/templates/colab_temp/snippets/form.html:501 ckanext/colab/templates/colab_temp/snippets/form.html:525
+msgid "Submit Application"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:227
+msgid "After submission, you will receive an email verification to complete your registration."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:286
+msgid "Error loading organizations"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:339
+msgid "You must be at least 16 years old to register."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:448
+msgid "Processing..."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:470
+msgid "Passwords do not match!"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:479
+msgid "Please fill in all required fields."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:522
+msgid "reCAPTCHA verification failed. Please try again."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:536
+msgid "Submitting form..."
+msgstr ""
+#: ckanext/colab/templates/colab_temp/organization_request.html:75
+msgid "Please contact your system administrator to run the database migration:"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:98
+msgid "Organization Information"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:109
+msgid "Enter the full name of your organization"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:111
+msgid "The official name of your organization as it should appear publicly."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:124
+msgid "Select the category that best describes your organization."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:135
+msgid "Provide a detailed description of your organization, its mission, goals, and activities..."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:137
+msgid "Describe your organization's purpose, activities, and how it relates to data management or research."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:142
+msgid "Organization Image/Logo"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:152
+msgid "Image preview"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:153
+msgid "Remove"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:156
+msgid "Upload a logo or representative image for your organization (optional). Supported formats: PNG, JPG, JPEG, GIF. Maximum size: 2MB."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:163
+msgid "Administration"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:168
+msgid "Administrator Username"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:175
+msgid "Enter username for organization administrator"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:177
+msgid "The username of the person who will be the administrator of this organization. This user must already exist in the system."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:184
+msgid "Submit Organization Request"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:188
+msgid "Back to Portal"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:207
+msgid "Your organization request has been submitted and is now pending administrator approval. You will be notified once the request has been reviewed."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:211
+msgid "Return to Portal"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:215
+msgid "Submit Another Request"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:77
+msgid "Date of Birth"
+msgstr ""

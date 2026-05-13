@@ -72,7 +72,7 @@
                   <p class="section-title-description">{{ error }}</p>
                   {% if 'table' in error or 'migration' in error %}
                   <p class="section-title-description" style="font-size: 1rem; margin-top: 1rem;">
-                    Please contact your system administrator to run the database migration: <code>ckan -c production.ini db upgrade -p colab</code>
+                    {{ _('Please contact your system administrator to run the database migration:') }} <code>ckan -c production.ini db upgrade -p colab</code>
                   </p>
                   {% endif %}
                 </div>
@@ -95,51 +95,51 @@
                           <div class="form-section">
                             <h3 class="form-section-title">
                               <i class="fa fa-building"></i>
-                              Organization Information
+                              {{ _('Organization Information') }}
                             </h3>
                             
                             <div class="form-group">
                               <label for="organization_name" class="control-label">
-                                <span class="required">*</span> Organization Name
+                                <span class="required">*</span> {{ _('Organization Name') }}
                               </label>
                               <input type="text" 
                                      id="organization_name" 
                                      name="organization_name" 
                                      class="form-control" 
-                                     placeholder="Enter the full name of your organization"
+                                     placeholder="{{ _('Enter the full name of your organization') }}"
                                      required>
-                              <p class="help-block">The official name of your organization as it should appear publicly.</p>
+                              <p class="help-block">{{ _('The official name of your organization as it should appear publicly.') }}</p>
                             </div>
 
                             <div class="form-group">
                               <label for="organization_type" class="control-label">
-                                <span class="required">*</span> Organization Type
+                                <span class="required">*</span> {{ _('Organization Type') }}
                               </label>
                               <select id="organization_type" name="organization_type" class="form-control" required>
-                                <option value="">Select organization type...</option>
+                                <option value="">{{ _('Select organization type') }}...</option>
                                 {% for org_type in org_types %}
                                 <option value="{{ org_type }}">{{ org_type }}</option>
                                 {% endfor %}
                               </select>
-                              <p class="help-block">Select the category that best describes your organization.</p>
+                              <p class="help-block">{{ _('Select the category that best describes your organization.') }}</p>
                             </div>
 
                             <div class="form-group">
                               <label for="organization_description" class="control-label">
-                                <span class="required">*</span> Organization Description
+                                <span class="required">*</span> {{ _('Organization Description') }}
                               </label>
                               <textarea id="organization_description" 
                                         name="organization_description" 
                                         class="form-control" 
                                         rows="6"
-                                        placeholder="Provide a detailed description of your organization, its mission, goals, and activities..."
+                                        placeholder="{{ _('Provide a detailed description of your organization, its mission, goals, and activities...') }}"
                                         required></textarea>
-                              <p class="help-block">Describe your organization's purpose, activities, and how it relates to data management or research.</p>
+                              <p class="help-block">{{ _('Describe your organization\'s purpose, activities, and how it relates to data management or research.') }}</p>
                             </div>
 
                             <div class="form-group">
                               <label for="organization_image" class="control-label">
-                                Organization Image/Logo
+                                {{ _('Organization Image/Logo') }}
                               </label>
                               <div class="file-upload-wrapper">
                                 <input type="file" 
@@ -149,43 +149,43 @@
                                        accept="image/png,image/jpg,image/jpeg,image/gif"
                                        onchange="handleFileSelect(this)">
                                 <div id="file-preview" class="file-preview" style="display: none;">
-                                  <img id="image-preview" src="" alt="Image preview" class="image-preview">
-                                  <button type="button" class="btn-clear-file" onclick="clearFileSelection()">✕ Remove</button>
+                                  <img id="image-preview" src="" alt="{{ _('Image preview') }}" class="image-preview">
+                                  <button type="button" class="btn-clear-file" onclick="clearFileSelection()">✕ {{ _('Remove') }}</button>
                                 </div>
                               </div>
-                              <p class="help-block">Upload a logo or representative image for your organization (optional). Supported formats: PNG, JPG, JPEG, GIF. Maximum size: 2MB.</p>
+                              <p class="help-block">{{ _('Upload a logo or representative image for your organization (optional). Supported formats: PNG, JPG, JPEG, GIF. Maximum size: 2MB.') }}</p>
                             </div>
                           </div>
 
                           <div class="form-section">
                             <h3 class="form-section-title">
                               <i class="fa fa-user-shield"></i>
-                              Administration
+                              {{ _('Administration') }}
                             </h3>
                             
                             <div class="form-group">
                               <label for="admin_username" class="control-label">
-                                <span class="required">*</span> Administrator Username
+                                <span class="required">*</span> {{ _('Administrator Username') }}
                               </label>
                               <input type="text" 
                                      id="admin_username" 
                                      name="admin_username" 
                                      class="form-control"
                                      value="{{ current_user }}"
-                                     placeholder="Enter username for organization administrator"
+                                     placeholder="{{ _('Enter username for organization administrator') }}"
                                      required>
-                              <p class="help-block">The username of the person who will be the administrator of this organization. This user must already exist in the system.</p>
+                              <p class="help-block">{{ _('The username of the person who will be the administrator of this organization. This user must already exist in the system.') }}</p>
                             </div>
                           </div>
 
                           <div class="form-actions">
                             <button type="submit" class="btn btn-primary btn-lg">
                               <i class="fa fa-paper-plane"></i>
-                              Submit Organization Request
+                              {{ _('Submit Organization Request') }}
                             </button>
                             <a href="{{ h.url_for('colab.show_something') }}" class="btn btn-default btn-lg">
                               <i class="fa fa-arrow-left"></i>
-                              Back to Portal
+                              {{ _('Back to Portal') }}
                             </a>
                           </div>
 
@@ -203,16 +203,16 @@
                         <div class="success-icon">
                           <i class="fa fa-check-circle"></i>
                         </div>
-                        <h3>Request Submitted Successfully!</h3>
-                        <p>Your organization request has been submitted and is now pending administrator approval. You will be notified once the request has been reviewed.</p>
+                        <h3>{{ _('Request Submitted Successfully') }}!</h3>
+                        <p>{{ _('Your organization request has been submitted and is now pending administrator approval. You will be notified once the request has been reviewed.') }}</p>
                         <div class="success-actions">
                           <a href="{{ h.url_for('colab.show_something') }}" class="btn btn-primary">
                             <i class="fa fa-arrow-left"></i>
-                            Return to Portal
+                            {{ _('Return to Portal') }}
                           </a>
                           <a href="{{ h.url_for('colab.organization_request_form') }}" class="btn btn-default">
                             <i class="fa fa-plus"></i>
-                            Submit Another Request
+                            {{ _('Submit Another Request') }}
                           </a>
                         </div>
                       </div>

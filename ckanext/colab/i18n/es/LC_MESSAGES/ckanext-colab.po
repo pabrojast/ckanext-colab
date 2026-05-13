@@ -364,3 +364,588 @@ msgstr ""
 msgid "For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets."
 msgstr ""
 "Para nuevas organizaciones, el rol de Admin está disponible por defecto. Para organizaciones existentes, elige Editor si planeas cargar conjuntos de datos o Miembro si solo necesitas ver conjuntos de datos privados."
+#: ckanext/colab/templates/colab_temp/organization_request.html:43
+msgid "Request New Organization"
+msgstr "Solicitar nueva organización"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:44
+msgid "Create a new organization to manage your data and collaborate with team members."
+msgstr "Crea una nueva organización para gestionar tus datos y colaborar con los miembros del equipo."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:57
+msgid "Request Submitted Successfully"
+msgstr "Solicitud enviada con éxito"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:58
+msgid "Your organization request has been submitted and is pending admin approval."
+msgstr "Tu solicitud de organización ha sido enviada y está pendiente de aprobación por parte del administrador."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:71
+msgid "Request Error"
+msgstr "Error en la solicitud"
+
+#: ckanext/colab/templates/colab_temp/status.html:3
+msgid "Application Status"
+msgstr "Estado de la solicitud"
+
+#: ckanext/colab/templates/colab_temp/status.html:207 ckanext/colab/templates/colab_temp/snippets/thanks.html:122
+msgid "Check Application Status"
+msgstr "Consultar estado de la solicitud"
+
+#: ckanext/colab/templates/colab_temp/status.html:208
+msgid "Enter your username and email to check the status of your registration."
+msgstr "Ingresa tu nombre de usuario y correo electrónico para consultar el estado de tu registro."
+
+#: ckanext/colab/templates/colab_temp/status.html:213 ckanext/colab/templates/colab_temp/status.html:248 ckanext/colab/templates/colab_temp/snippets/form.html:37
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: ckanext/colab/templates/colab_temp/status.html:215
+msgid "Enter your username"
+msgstr "Ingresa tu nombre de usuario"
+
+#: ckanext/colab/templates/colab_temp/status.html:219 ckanext/colab/templates/colab_temp/snippets/form.html:43
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: ckanext/colab/templates/colab_temp/status.html:221
+msgid "Enter your email address"
+msgstr "Ingresa tu dirección de correo electrónico"
+
+#: ckanext/colab/templates/colab_temp/status.html:225
+msgid "Check Status"
+msgstr "Consultar estado"
+
+#: ckanext/colab/templates/colab_temp/status.html:232
+msgid "Application Found"
+msgstr "Solicitud encontrada"
+
+#: ckanext/colab/templates/colab_temp/status.html:234
+msgid "Pending Review"
+msgstr "Revisión pendiente"
+
+#: ckanext/colab/templates/colab_temp/status.html:236
+msgid "Approved"
+msgstr "Aprobada"
+
+#: ckanext/colab/templates/colab_temp/status.html:238
+msgid "Rejected"
+msgstr "Rechazada"
+
+#: ckanext/colab/templates/colab_temp/status.html:244
+msgid "Full Name"
+msgstr "Nombre completo"
+
+#: ckanext/colab/templates/colab_temp/status.html:256
+msgid "Role Requested"
+msgstr "Rol solicitado"
+
+#: ckanext/colab/templates/colab_temp/status.html:260
+msgid "Submitted"
+msgstr "Enviada"
+
+#: ckanext/colab/templates/colab_temp/status.html:274
+msgid "Reason:"
+msgstr "Motivo:"
+
+#: ckanext/colab/templates/colab_temp/status.html:283
+msgid "Application submitted"
+msgstr "Solicitud enviada"
+
+#: ckanext/colab/templates/colab_temp/status.html:287
+msgid "Under review by administrators"
+msgstr "En revisión por los administradores"
+
+#: ckanext/colab/templates/colab_temp/status.html:291
+msgid "Approval decision"
+msgstr "Decisión de aprobación"
+
+#: ckanext/colab/templates/colab_temp/status.html:295
+msgid "Organization assignment"
+msgstr "Asignación de organización"
+
+#: ckanext/colab/templates/colab_temp/status.html:305
+msgid "No application found matching this username and email combination. Please verify your details and try again."
+msgstr "No se encontró ninguna solicitud que coincida con esta combinación de nombre de usuario y correo electrónico. Verifica tus datos e inténtalo de nuevo."
+
+#: ckanext/colab/templates/colab_temp/status.html:311
+msgid "Back to Registration"
+msgstr "Volver al registro"
+
+#: ckanext/colab/templates/colab_temp/index.html:56
+msgid "Registration Successful"
+msgstr "Registro exitoso"
+
+#: ckanext/colab/templates/colab_temp/index.html:57
+msgid "Welcome to the IHP-WINS platform! Your application has been submitted successfully."
+msgstr "¡Bienvenido a la plataforma IHP-WINS! Tu solicitud se ha enviado correctamente."
+
+#: ckanext/colab/templates/colab_temp/index.html:70
+msgid "Registration Error"
+msgstr "Error de registro"
+
+#: ckanext/colab/templates/colab_temp/index.html:71
+msgid "We encountered an issue processing your registration. Please review the information below."
+msgstr "Encontramos un problema al procesar tu registro. Revisa la información a continuación."
+
+#: ckanext/colab/templates/colab_temp/index.html:121
+msgid "Duplicate Application Detected"
+msgstr "Se detectó una solicitud duplicada"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:12
+msgid "Registration Successful!"
+msgstr "¡Registro exitoso!"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:13
+msgid "Thank you for registering"
+msgstr "Gracias por registrarte"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:22
+msgid "Your application has been successfully submitted and is now being reviewed by our team."
+msgstr "Tu solicitud se ha enviado correctamente y ahora está siendo revisada por nuestro equipo."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:23
+msgid "A confirmation email has been sent to your email address."
+msgstr "Se ha enviado un correo de confirmación a tu dirección de correo electrónico."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:31
+msgid "Your Application Summary"
+msgstr "Resumen de tu solicitud"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:36
+msgid "Username:"
+msgstr "Nombre de usuario:"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:40
+msgid "Email:"
+msgstr "Correo electrónico:"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:44
+msgid "Organization:"
+msgstr "Organización:"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:48
+msgid "Role:"
+msgstr "Rol:"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:54
+msgid "Check your application status anytime at"
+msgstr "Consulta el estado de tu solicitud en cualquier momento en"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:64
+msgid "What happens next?"
+msgstr "¿Qué sucede después?"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:71
+msgid "Email Verification"
+msgstr "Verificación de correo electrónico"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:72
+msgid "Email verification will be sent to your provided email address"
+msgstr "La verificación por correo electrónico se enviará a la dirección que proporcionaste."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:78
+msgid "Application Review"
+msgstr "Revisión de la solicitud"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:79
+msgid "Our team will review your application and organization details"
+msgstr "Nuestro equipo revisará tu solicitud y los datos de tu organización."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:85
+msgid "Account Approval"
+msgstr "Aprobación de la cuenta"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:86
+msgid "You'll receive a confirmation email once your account is approved"
+msgstr "Recibirás un correo de confirmación una vez que tu cuenta sea aprobada."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:92
+msgid "Start Contributing"
+msgstr "Comenzar a contribuir"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:93
+msgid "Start contributing data and information to IHP WINS and related platforms"
+msgstr "Comienza a aportar datos e información a IHP WINS y a las plataformas relacionadas."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:103
+msgid "Need assistance?"
+msgstr "¿Necesitas ayuda?"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:106
+msgid "If you have any questions about the registration process or need support, please don't hesitate to contact us:"
+msgstr "Si tienes alguna pregunta sobre el proceso de registro o necesitas ayuda, no dudes en contactarnos:"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:119 ckanext/colab/templates/colab_temp/snippets/error-user-create.html:98
+msgid "Return to Home"
+msgstr "Volver al inicio"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:125
+msgid "Browse Datasets"
+msgstr "Explorar conjuntos de datos"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:14
+msgid "Registration Could Not Be Completed"
+msgstr "No se pudo completar el registro"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:15
+msgid "We encountered an issue processing your application"
+msgstr "Encontramos un problema al procesar tu solicitud"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:20
+msgid "Error:"
+msgstr "Error:"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:24
+msgid "We're sorry, but we couldn't complete your registration at this time. This is typically due to one of the following reasons:"
+msgstr "Lo sentimos, no pudimos completar tu registro en este momento. Esto suele deberse a una de las siguientes razones:"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:29
+msgid "Common Issues:"
+msgstr "Problemas comunes:"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:34
+msgid "Username already exists"
+msgstr "El nombre de usuario ya existe"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:35
+msgid "The username you chose is already in use. Please try a different username."
+msgstr "El nombre de usuario que elegiste ya está en uso. Intenta con otro diferente."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:41
+msgid "Email already registered"
+msgstr "Correo electrónico ya registrado"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:42
+msgid "This email address is already associated with an account. Try logging in instead."
+msgstr "Esta dirección de correo electrónico ya está asociada a una cuenta. Intenta iniciar sesión."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:48
+msgid "Organization restrictions"
+msgstr "Restricciones de la organización"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:49
+msgid "The organization you selected may have specific registration requirements."
+msgstr "La organización que seleccionaste puede tener requisitos específicos de registro."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:55
+msgid "Technical issue"
+msgstr "Problema técnico"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:56
+msgid "A temporary server error occurred. Please try again in a few minutes."
+msgstr "Se produjo un error temporal del servidor. Inténtalo de nuevo en unos minutos."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:63
+msgid "What can you do?"
+msgstr "¿Qué puedes hacer?"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:67 ckanext/colab/templates/colab_temp/snippets/error-user-create.html:96
+msgid "Try Again"
+msgstr "Intentar de nuevo"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:68
+msgid "Review your information and attempt registration again with different details."
+msgstr "Revisa tu información e intenta registrarte nuevamente con datos diferentes."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:72 ckanext/colab/templates/colab_temp/snippets/error-user-create.html:97
+msgid "Login Instead"
+msgstr "Iniciar sesión"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:73
+msgid "If you already have an account, try logging in with your existing credentials."
+msgstr "Si ya tienes una cuenta, intenta iniciar sesión con tus credenciales actuales."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:77
+msgid "Get Help"
+msgstr "Obtener ayuda"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:78
+msgid "Contact our support team for personalized assistance with your registration."
+msgstr "Ponte en contacto con nuestro equipo de soporte para recibir ayuda personalizada con tu registro."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:84
+msgid "Need Additional Support?"
+msgstr "¿Necesitas soporte adicional?"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:85
+msgid "Our team is here to help you resolve any registration issues. Please don't hesitate to reach out:"
+msgstr "Nuestro equipo está aquí para ayudarte a resolver cualquier problema de registro. No dudes en comunicarte con nosotros:"
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:92
+msgid "When contacting support, please include the username and email you attempted to register with."
+msgstr "Al contactar con soporte, incluye el nombre de usuario y el correo electrónico con los que intentaste registrarte."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:26
+msgid "Personal Information"
+msgstr "Información personal"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:31
+msgid "Enter your full name"
+msgstr "Ingresa tu nombre completo"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:32
+msgid "Your full name will help us personalize your experience"
+msgstr "Tu nombre completo nos ayudará a personalizar tu experiencia"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:38
+msgid "e.g., john_doe123"
+msgstr "p. ej., juanperez123"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:44
+msgid "your.email@organization.com"
+msgstr "tu.correo@organizacion.com"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:45
+msgid "Use your official organization email address"
+msgstr "Usa el correo electrónico oficial de tu organización"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:52
+msgid "Password"
+msgstr "Contraseña"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:53
+msgid "Enter a secure password"
+msgstr "Ingresa una contraseña segura"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:58
+msgid "Confirm password"
+msgstr "Confirmar contraseña"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:59
+msgid "Repeat your password"
+msgstr "Repite tu contraseña"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:60
+msgid "Passwords must match"
+msgstr "Las contraseñas deben coincidir"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:79
+msgid "Must be 16 years or older"
+msgstr "Debes tener 16 años o más"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:82
+msgid "Nationality"
+msgstr "Nacionalidad"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:83
+msgid "e.g., French, Canadian, etc."
+msgstr "p. ej., francesa, canadiense, etc."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:84
+msgid "Your country of citizenship"
+msgstr "Tu país de ciudadanía"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:89
+msgid "Gender"
+msgstr "Género"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:91
+msgid "Please select your gender"
+msgstr "Selecciona tu género"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:98
+msgid "This information helps us ensure diverse representation"
+msgstr "Esta información nos ayuda a garantizar una representación diversa"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:108
+msgid "To be a contributor for IHP WINS you need to be part of an organization. If your organization is not yet active in IHP WINS, you can create a new organization via this form."
+msgstr "Para ser colaborador de IHP WINS debes formar parte de una organización. Si tu organización aún no está activa en IHP WINS, puedes crear una nueva a través de este formulario."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:114
+msgid "Select organization type"
+msgstr "Selecciona el tipo de organización"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:132
+msgid "Organization Name"
+msgstr "Nombre de la organización"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:134 ckanext/colab/templates/colab_temp/snippets/form.html:266 ckanext/colab/templates/colab_temp/snippets/form.html:284
+msgid "Select an organization..."
+msgstr "Selecciona una organización..."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:135
+msgid "Loading organizations..."
+msgstr "Cargando organizaciones..."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:142
+msgid "New Organization Name"
+msgstr "Nombre de la nueva organización"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:143
+msgid "Enter organization name"
+msgstr "Ingresa el nombre de la organización"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:144
+msgid "Enter the official name of your organization"
+msgstr "Ingresa el nombre oficial de tu organización"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:149
+msgid "Describe your organization's mission and activities..."
+msgstr "Describe la misión y las actividades de tu organización..."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:150
+msgid "Brief description of your organization's purpose and activities"
+msgstr "Breve descripción del propósito y las actividades de tu organización"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:156
+msgid "Title Within Represented Organization"
+msgstr "Cargo dentro de la organización representada"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:157
+msgid "e.g., Data Manager, Research Coordinator"
+msgstr "p. ej., Gestor de datos, Coordinador de investigación"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:158
+msgid "Your current position or role in the organization"
+msgstr "Tu cargo o función actual en la organización"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:161
+msgid "Role in Organization"
+msgstr "Rol en la organización"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:163
+msgid "Select your role"
+msgstr "Selecciona tu rol"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:164
+msgid "Member"
+msgstr "Miembro"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:165
+msgid "Editor"
+msgstr "Editor"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:166
+msgid "Admin"
+msgstr "Admin"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:179
+msgid "This registration form will allow you to contribute data and information on IHP WINS and related platforms. Select the related platforms you wish to contribute to from the list."
+msgstr "Este formulario de registro te permitirá aportar datos e información en IHP WINS y plataformas relacionadas. Selecciona de la lista las plataformas relacionadas a las que deseas contribuir."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:186
+msgid "IHP WINS data platform"
+msgstr "Plataforma de datos IHP WINS"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:224 ckanext/colab/templates/colab_temp/snippets/form.html:474 ckanext/colab/templates/colab_temp/snippets/form.html:485 ckanext/colab/templates/colab_temp/snippets/form.html:493 ckanext/colab/templates/colab_temp/snippets/form.html:501 ckanext/colab/templates/colab_temp/snippets/form.html:525
+msgid "Submit Application"
+msgstr "Enviar solicitud"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:227
+msgid "After submission, you will receive an email verification to complete your registration."
+msgstr "Después del envío, recibirás una verificación por correo electrónico para completar tu registro."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:286
+msgid "Error loading organizations"
+msgstr "Error al cargar las organizaciones"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:339
+msgid "You must be at least 16 years old to register."
+msgstr "Debes tener al menos 16 años para registrarte."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:448
+msgid "Processing..."
+msgstr "Procesando..."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:470
+msgid "Passwords do not match!"
+msgstr "¡Las contraseñas no coinciden!"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:479
+msgid "Please fill in all required fields."
+msgstr "Completa todos los campos obligatorios."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:522
+msgid "reCAPTCHA verification failed. Please try again."
+msgstr "La verificación de reCAPTCHA falló. Inténtalo de nuevo."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:536
+msgid "Submitting form..."
+msgstr "Enviando formulario..."
+#: ckanext/colab/templates/colab_temp/snippets/form.html
+msgid "Kindly note that your submission will undergo a verification process requiring your organization's official email address. This verification step ensures the security and authenticity of the data you submit."
+msgstr "Ten en cuenta que tu envío pasará por un proceso de verificación que requiere la dirección de correo electrónico oficial de tu organización. Este paso de verificación garantiza la seguridad y autenticidad de los datos que envías."
+#: ckanext/colab/templates/colab_temp/organization_request.html:75
+msgid "Please contact your system administrator to run the database migration:"
+msgstr "Por favor, comunícate con el administrador del sistema para ejecutar la migración de la base de datos:"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:98
+msgid "Organization Information"
+msgstr "Información de la organización"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:109
+msgid "Enter the full name of your organization"
+msgstr "Ingresa el nombre completo de tu organización"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:111
+msgid "The official name of your organization as it should appear publicly."
+msgstr "El nombre oficial de tu organización tal como debe aparecer públicamente."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:124
+msgid "Select the category that best describes your organization."
+msgstr "Selecciona la categoría que mejor describa a tu organización."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:135
+msgid "Provide a detailed description of your organization, its mission, goals, and activities..."
+msgstr "Proporciona una descripción detallada de tu organización, su misión, sus objetivos y sus actividades..."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:137
+msgid "Describe your organization's purpose, activities, and how it relates to data management or research."
+msgstr "Describe el propósito de tu organización, sus actividades y su relación con la gestión de datos o la investigación."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:142
+msgid "Organization Image/Logo"
+msgstr "Imagen/logotipo de la organización"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:152
+msgid "Image preview"
+msgstr "Vista previa de la imagen"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:153
+msgid "Remove"
+msgstr "Quitar"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:156
+msgid "Upload a logo or representative image for your organization (optional). Supported formats: PNG, JPG, JPEG, GIF. Maximum size: 2MB."
+msgstr "Sube un logotipo o una imagen representativa de tu organización (opcional). Formatos compatibles: PNG, JPG, JPEG, GIF. Tamaño máximo: 2 MB."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:163
+msgid "Administration"
+msgstr "Administración"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:168
+msgid "Administrator Username"
+msgstr "Nombre de usuario del administrador"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:175
+msgid "Enter username for organization administrator"
+msgstr "Ingresa el nombre de usuario del administrador de la organización"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:177
+msgid "The username of the person who will be the administrator of this organization. This user must already exist in the system."
+msgstr "El nombre de usuario de la persona que será administradora de esta organización. Este usuario ya debe existir en el sistema."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:184
+msgid "Submit Organization Request"
+msgstr "Enviar solicitud de organización"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:188
+msgid "Back to Portal"
+msgstr "Volver al portal"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:207
+msgid "Your organization request has been submitted and is now pending administrator approval. You will be notified once the request has been reviewed."
+msgstr "Tu solicitud de organización se ha enviado y ahora está pendiente de la aprobación de un administrador. Se te notificará una vez que haya sido revisada."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:211
+msgid "Return to Portal"
+msgstr "Regresar al portal"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:215
+msgid "Submit Another Request"
+msgstr "Enviar otra solicitud"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:77
+msgid "Date of Birth"
+msgstr "Fecha de nacimiento"
