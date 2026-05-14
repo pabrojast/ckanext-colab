@@ -251,7 +251,7 @@
 {% endblock %}
 
 {% block subtitle %}
-  {% if device_request %}Edit Device Request{% else %}New Device Request{% endif %}
+  {% if device_request %}{{ _('Edit Device Request') }}{% else %}{{ _('New Device Request') }}{% endif %}
 {% endblock %}
 
 {% block secondary %}{% endblock %}
@@ -262,15 +262,15 @@
   <div class="tb-form-header">
     <div class="tb-form-header-bg"></div>
     <div class="tb-form-header-content">
-      <h1>{% if device_request %}Edit Device Request #{{ device_request.id }}{% else %}New Device Request{% endif %}</h1>
-      <p>Fill in the device details below. Required fields are marked with *</p>
+      <h1>{% if device_request %}{{ _('Edit Device Request #%(id)s') % {'id': device_request.id} }}{% else %}{{ _('New Device Request') }}{% endif %}</h1>
+      <p>{{ _('Fill in the device details below. Required fields are marked with *') }}</p>
     </div>
   </div>
 
   <!-- Errors -->
   {% if errors %}
   <div class="errors-block">
-    <h4>Please fix the following errors:</h4>
+    <h4>{{ _('Please fix the following errors:') }}</h4>
     <ul>
       {% for error in errors %}
       <li>{{ error }}</li>
@@ -288,42 +288,42 @@
     <div class="form-card">
       <div class="form-card-header">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--unesco-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><polyline points="16 3 12 7 8 3"></polyline></svg>
-        Device Information
+        {{ _('Device Information') }}
       </div>
       <div class="form-card-body">
         <div class="form-row">
           <div class="form-group">
-            <label>Device Name <span class="required">*</span></label>
-            <input type="text" name="device_name" class="form-control" placeholder="e.g., WaterLevel-Sensor-01"
+            <label>{{ _('Device Name') }} <span class="required">*</span></label>
+            <input type="text" name="device_name" class="form-control" placeholder="{{ _('e.g., WaterLevel-Sensor-01') }}"
                    value="{{ device_request.device_name or '' if device_request else '' }}">
           </div>
           <div class="form-group">
-            <label>Device Label</label>
-            <input type="text" name="device_label" class="form-control" placeholder="e.g., Water Level Sensor Station 1"
+            <label>{{ _('Device Label') }}</label>
+            <input type="text" name="device_label" class="form-control" placeholder="{{ _('e.g., Water Level Sensor Station 1') }}"
                    value="{{ device_request.device_label or '' if device_request else '' }}">
           </div>
         </div>
         <div class="form-row-3">
           <div class="form-group">
-            <label>Serial Number <span class="required">*</span></label>
-            <input type="text" name="serial_number" class="form-control" placeholder="e.g., SN-2026-001"
+            <label>{{ _('Serial Number') }} <span class="required">*</span></label>
+            <input type="text" name="serial_number" class="form-control" placeholder="{{ _('e.g., SN-2026-001') }}"
                    value="{{ device_request.serial_number or '' if device_request else '' }}">
           </div>
           <div class="form-group">
-            <label>Device Profile Name <span class="required">*</span></label>
-            <input type="text" name="device_profile_name" class="form-control" placeholder="e.g., default"
+            <label>{{ _('Device Profile Name') }} <span class="required">*</span></label>
+            <input type="text" name="device_profile_name" class="form-control" placeholder="{{ _('e.g., default') }}"
                    value="{{ device_request.device_profile_name or '' if device_request else '' }}">
           </div>
           <div class="form-group">
-            <label>Firmware Version</label>
-            <input type="text" name="firmware_version" class="form-control" placeholder="e.g., 1.0.0"
+            <label>{{ _('Firmware Version') }}</label>
+            <input type="text" name="firmware_version" class="form-control" placeholder="{{ _('e.g., 1.0.0') }}"
                    value="{{ device_request.firmware_version or '' if device_request else '' }}">
           </div>
         </div>
         <div class="form-group">
-          <label>Organization</label>
+          <label>{{ _('Organization') }}</label>
           <select name="organization_id" class="form-control">
-            <option value="">— Select Organization —</option>
+            <option value="">— {{ _('Select Organization') }} —</option>
             {% for org in organizations %}
             <option value="{{ org.id or org.name }}" {% if device_request and device_request.organization_id == (org.id or org.name) %}selected{% endif %}>
               {{ org.display_name or org.title or org.name }}
@@ -338,29 +338,29 @@
     <div class="form-card">
       <div class="form-card-header">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--unesco-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-        Installation Details
+        {{ _('Installation Details') }}
       </div>
       <div class="form-card-body">
         <div class="form-row-3">
           <div class="form-group">
-            <label>Site Code <span class="required">*</span></label>
-            <input type="text" name="site_code" class="form-control" placeholder="e.g., POZO-01"
+            <label>{{ _('Site Code') }} <span class="required">*</span></label>
+            <input type="text" name="site_code" class="form-control" placeholder="{{ _('e.g., POZO-01') }}"
                    value="{{ device_request.site_code or '' if device_request else '' }}">
           </div>
           <div class="form-group">
-            <label>Installer Name <span class="required">*</span></label>
-            <input type="text" name="installer_name" class="form-control" placeholder="Full name"
+            <label>{{ _('Installer Name') }} <span class="required">*</span></label>
+            <input type="text" name="installer_name" class="form-control" placeholder="{{ _('Full name') }}"
                    value="{{ device_request.installer_name or '' if device_request else '' }}">
           </div>
           <div class="form-group">
-            <label>Install Date <span class="required">*</span></label>
+            <label>{{ _('Install Date') }} <span class="required">*</span></label>
             <input type="date" name="install_date" class="form-control"
                    value="{{ device_request.install_date.strftime('%Y-%m-%d') if device_request and device_request.install_date else '' }}">
           </div>
         </div>
         <div class="form-group">
-          <label>Owner Name <span class="required">*</span></label>
-          <input type="text" name="owner_name" class="form-control" placeholder="Device owner or responsible person"
+          <label>{{ _('Owner Name') }} <span class="required">*</span></label>
+          <input type="text" name="owner_name" class="form-control" placeholder="{{ _('Device owner or responsible person') }}"
                  value="{{ device_request.owner_name or '' if device_request else '' }}">
         </div>
       </div>
@@ -370,28 +370,28 @@
     <div class="form-card">
       <div class="form-card-header">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--unesco-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-        Location
+        {{ _('Location') }}
       </div>
       <div class="form-card-body">
         <div class="form-row-3">
           <div class="form-group">
-            <label>Latitude</label>
-            <input type="number" step="any" name="latitude" id="latitude" class="form-control" placeholder="-90 to 90"
+            <label>{{ _('Latitude') }}</label>
+            <input type="number" step="any" name="latitude" id="latitude" class="form-control" placeholder="{{ _('-90 to 90') }}"
                    value="{{ device_request.latitude or '' if device_request else '' }}">
           </div>
           <div class="form-group">
-            <label>Longitude</label>
-            <input type="number" step="any" name="longitude" id="longitude" class="form-control" placeholder="-180 to 180"
+            <label>{{ _('Longitude') }}</label>
+            <input type="number" step="any" name="longitude" id="longitude" class="form-control" placeholder="{{ _('-180 to 180') }}"
                    value="{{ device_request.longitude or '' if device_request else '' }}">
           </div>
           <div class="form-group">
-            <label>Address</label>
-            <input type="text" name="address" class="form-control" placeholder="e.g., La Serena, Chile"
+            <label>{{ _('Address') }}</label>
+            <input type="text" name="address" class="form-control" placeholder="{{ _('e.g., La Serena, Chile') }}"
                    value="{{ device_request.address or '' if device_request else '' }}">
           </div>
         </div>
         <div id="map"></div>
-        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;">Click on the map to set coordinates</p>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;">{{ _('Click on the map to set coordinates') }}</p>
       </div>
     </div>
 
@@ -399,19 +399,19 @@
     <div class="form-card">
       <div class="form-card-header">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--unesco-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-        Additional Information
+        {{ _('Additional Information') }}
       </div>
       <div class="form-card-body">
         <div class="form-group">
-          <label>Technical Notes</label>
-          <textarea name="technical_notes" class="form-control" placeholder="Any additional technical information about the device installation...">{{ device_request.technical_notes or '' if device_request else '' }}</textarea>
+          <label>{{ _('Technical Notes') }}</label>
+          <textarea name="technical_notes" class="form-control" placeholder="{{ _('Any additional technical information about the device installation...') }}">{{ device_request.technical_notes or '' if device_request else '' }}</textarea>
         </div>
         <div class="checkbox-group">
           <input type="checkbox" name="survey_completed" id="survey_completed"
                  {% if device_request and device_request.survey_completed %}checked{% endif %}>
           <label for="survey_completed" style="margin-bottom: 0;">
-            Survey completed <span class="required">*</span>
-            <span style="font-size: 12px; color: var(--text-secondary); display: block;">Required for submission</span>
+            {{ _('Survey completed') }} <span class="required">*</span>
+            <span style="font-size: 12px; color: var(--text-secondary); display: block;">{{ _('Required for submission') }}</span>
           </label>
         </div>
       </div>
@@ -419,10 +419,10 @@
 
     <!-- Actions -->
     <div class="form-actions">
-      <a href="{{ h.url_for('thingsboard.dashboard') }}" class="btn-back">Back</a>
-      <button type="submit" class="btn-save">Save as Draft</button>
+      <a href="{{ h.url_for('thingsboard.dashboard') }}" class="btn-back">{{ _('Back') }}</a>
+      <button type="submit" class="btn-save">{{ _('Save as Draft') }}</button>
       {% if device_request %}
-      <button type="button" class="btn-submit" onclick="submitForReview()">Submit for Review</button>
+      <button type="button" class="btn-submit" onclick="submitForReview()">{{ _('Submit for Review') }}</button>
       {% endif %}
     </div>
   </form>
@@ -454,7 +454,7 @@
 
   // Submit for review
   function submitForReview() {
-    if (confirm('Are you sure you want to submit this request for review? You will not be able to edit it after submission.')) {
+    if (confirm('{{ _('Are you sure you want to submit this request for review? You will not be able to edit it after submission.') }}')) {
       var form = document.getElementById('deviceForm');
       form.action = '{{ submit_url }}';
       form.submit();

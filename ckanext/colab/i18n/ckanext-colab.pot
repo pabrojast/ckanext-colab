@@ -883,3 +883,630 @@ msgstr ""
 #: ckanext/colab/templates/colab_temp/snippets/form.html:77
 msgid "Date of Birth"
 msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Applied"
+msgstr ""
+
+msgid "Approve"
+msgstr ""
+
+msgid "Approve & Sync"
+msgstr ""
+
+msgid "Approve this device request and sync to ThingsBoard?"
+msgstr ""
+
+msgid "Approved by %(user)s"
+msgstr ""
+
+msgid "Approved Organizations"
+msgstr ""
+
+msgid "Approved Users"
+msgstr ""
+
+msgid "Are you sure you want to submit this request for review? You will not be able to edit it after submission."
+msgstr ""
+
+msgid "Avg. Days to Approve"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Back to List"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid "Clear Filters"
+msgstr ""
+
+msgid "Clear all filters"
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "Drafts"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Export CSV"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "NGO"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Pending"
+msgstr ""
+
+msgid "Pending Approvals"
+msgstr ""
+
+msgid "Pending Requests"
+msgstr ""
+
+msgid "Platforms"
+msgstr ""
+
+msgid "Quick filters:"
+msgstr ""
+
+msgid "Reason"
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
+msgid "Rejected Requests"
+msgstr ""
+
+msgid "Rejected Users"
+msgstr ""
+
+msgid "Rejected by %(user)s"
+msgstr ""
+
+msgid "Rejected by %(reviewer)s on %(date)s"
+msgstr ""
+
+msgid "Requester"
+msgstr ""
+
+msgid "Reviewed"
+msgstr ""
+
+msgid "Role"
+msgstr ""
+
+msgid "Select all"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Sync"
+msgstr ""
+
+msgid "Sync:"
+msgstr ""
+
+msgid "Synced"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "View Details"
+msgstr ""
+
+msgid "When"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "selected"
+msgstr ""
+
+msgid "All Countries"
+msgstr ""
+
+msgid "All Organizations"
+msgstr ""
+
+msgid "All Roles"
+msgstr ""
+
+msgid "All Types"
+msgstr ""
+
+msgid "Academic Institution"
+msgstr ""
+
+msgid "Government Agency"
+msgstr ""
+
+msgid "International Organization"
+msgstr ""
+
+msgid "Private Company"
+msgstr ""
+
+msgid "Research Institute"
+msgstr ""
+
+msgid "Device Management"
+msgstr ""
+
+msgid "Device Requests Admin"
+msgstr ""
+
+msgid "Device Requests Administration"
+msgstr ""
+
+msgid "My Device Requests"
+msgstr ""
+
+msgid "New Device Request"
+msgstr ""
+
+msgid "Edit Device Request"
+msgstr ""
+
+msgid "Edit Device Request #%(id)s"
+msgstr ""
+
+msgid "Device Request #%(id)s"
+msgstr ""
+
+msgid "Request and track IoT device registrations for ThingsBoard"
+msgstr ""
+
+msgid "Review, approve, and manage IoT device registration requests"
+msgstr ""
+
+msgid "Request #%(id)s rejected:"
+msgstr ""
+
+msgid "Search by device name, serial number..."
+msgstr ""
+
+msgid "Sync Errors"
+msgstr ""
+
+msgid "No requests in this category"
+msgstr ""
+
+msgid "Requests will appear here when their status matches this tab."
+msgstr ""
+
+msgid "No device requests yet"
+msgstr ""
+
+msgid "Create your first device request to get started."
+msgstr ""
+
+msgid "Status Timeline"
+msgstr ""
+
+msgid "Device Information"
+msgstr ""
+
+msgid "Installation Details"
+msgstr ""
+
+msgid "Location"
+msgstr ""
+
+msgid "Technical Notes"
+msgstr ""
+
+msgid "Additional Information"
+msgstr ""
+
+msgid "Rejection Reason"
+msgstr ""
+
+msgid "Sync Error"
+msgstr ""
+
+msgid "ThingsBoard Device"
+msgstr ""
+
+msgid "TB Device ID"
+msgstr ""
+
+msgid "TB Customer ID"
+msgstr ""
+
+msgid "Access Token"
+msgstr ""
+
+msgid "Unnamed device"
+msgstr ""
+
+msgid "No serial"
+msgstr ""
+
+msgid "Device Name"
+msgstr ""
+
+msgid "Device Label"
+msgstr ""
+
+msgid "Serial Number"
+msgstr ""
+
+msgid "Device Profile"
+msgstr ""
+
+msgid "Device Profile Name"
+msgstr ""
+
+msgid "Firmware Version"
+msgstr ""
+
+msgid "Site Code"
+msgstr ""
+
+msgid "Installer"
+msgstr ""
+
+msgid "Installer Name"
+msgstr ""
+
+msgid "Install Date"
+msgstr ""
+
+msgid "Owner"
+msgstr ""
+
+msgid "Owner Name"
+msgstr ""
+
+msgid "Survey Completed"
+msgstr ""
+
+msgid "Survey completed"
+msgstr ""
+
+msgid "Required for submission"
+msgstr ""
+
+msgid "Requested By"
+msgstr ""
+
+msgid "Coordinates"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid "-90 to 90"
+msgstr ""
+
+msgid "-180 to 180"
+msgstr ""
+
+msgid "Click on the map to set coordinates"
+msgstr ""
+
+msgid "Any additional technical information about the device installation..."
+msgstr ""
+
+msgid "Device owner or responsible person"
+msgstr ""
+
+msgid "Full name"
+msgstr ""
+
+msgid "Select Organization"
+msgstr ""
+
+msgid "e.g., WaterLevel-Sensor-01"
+msgstr ""
+
+msgid "e.g., Water Level Sensor Station 1"
+msgstr ""
+
+msgid "e.g., SN-2026-001"
+msgstr ""
+
+msgid "e.g., default"
+msgstr ""
+
+msgid "e.g., 1.0.0"
+msgstr ""
+
+msgid "e.g., POZO-01"
+msgstr ""
+
+msgid "e.g., La Serena, Chile"
+msgstr ""
+
+msgid "Reject Device Request"
+msgstr ""
+
+msgid "Reject Request"
+msgstr ""
+
+msgid "Enter the reason for rejection..."
+msgstr ""
+
+msgid "Retry Sync"
+msgstr ""
+
+msgid "Retry synchronization with ThingsBoard?"
+msgstr ""
+
+msgid "Save as Draft"
+msgstr ""
+
+msgid "Submit for Review"
+msgstr ""
+
+msgid "Please fix the following errors:"
+msgstr ""
+
+msgid "Fill in the device details below. Required fields are marked with *"
+msgstr ""
+
+msgid "Organization Requests"
+msgstr ""
+
+msgid "Organization Requests Dashboard"
+msgstr ""
+
+msgid "Organization Request Details"
+msgstr ""
+
+msgid "Organization Types"
+msgstr ""
+
+msgid "Manage organization creation requests from users"
+msgstr ""
+
+msgid "Search by organization name, requester..."
+msgstr ""
+
+msgid "User Management"
+msgstr ""
+
+msgid "User Management Dashboard"
+msgstr ""
+
+msgid "User Details"
+msgstr ""
+
+msgid "Manage user registrations and organization memberships"
+msgstr ""
+
+msgid "Search by name, email, organization..."
+msgstr ""
+
+msgid "Analytics & Activity Log"
+msgstr ""
+
+msgid "Registration Trend (Monthly)"
+msgstr ""
+
+msgid "Top Countries"
+msgstr ""
+
+msgid "Platform Distribution"
+msgstr ""
+
+msgid "Status Overview"
+msgstr ""
+
+msgid "Recent Admin Activity"
+msgstr ""
+
+msgid "No admin activity recorded yet. Actions will appear here as they are performed."
+msgstr ""
+
+msgid "Download current tab as CSV"
+msgstr ""
+
+msgid "Show only duplicate applications"
+msgstr ""
+
+msgid "Show applications from people who already had a CKAN account before applying"
+msgstr ""
+
+msgid "Show only applications requesting new organizations"
+msgstr ""
+
+msgid "Duplicates"
+msgstr ""
+
+msgid "Pre-existing User"
+msgstr ""
+
+msgid "New Org"
+msgstr ""
+
+msgid "You must be logged in to access this page"
+msgstr ""
+
+msgid "Only system administrators can access this page"
+msgstr ""
+
+msgid "You must be logged in to request an organization"
+msgstr ""
+
+msgid "Not authorized to create organization"
+msgstr ""
+
+msgid "Not authorized to approve users"
+msgstr ""
+
+msgid "Not authorized to reject users"
+msgstr ""
+
+msgid "Not authorized to create users"
+msgstr ""
+
+msgid "Need to be system administrator"
+msgstr ""
+
+msgid "Device request not found"
+msgstr ""
+
+msgid "You can only edit your own requests"
+msgstr ""
+
+msgid "You can only submit your own requests"
+msgstr ""
+
+msgid "This request can no longer be edited"
+msgstr ""
+
+msgid "This request cannot be submitted"
+msgstr ""
+
+msgid "This request cannot be approved in its current state"
+msgstr ""
+
+msgid "This request cannot be rejected in its current state"
+msgstr ""
+
+msgid "Device request saved as draft"
+msgstr ""
+
+msgid "Device request updated"
+msgstr ""
+
+msgid "Device request submitted for review"
+msgstr ""
+
+msgid "Device request approved and synced to ThingsBoard"
+msgstr ""
+
+msgid "Device request rejected"
+msgstr ""
+
+msgid "Device successfully synced to ThingsBoard"
+msgstr ""
+
+msgid "Error approving request"
+msgstr ""
+
+msgid "Error rejecting request"
+msgstr ""
+
+msgid "Rejection reason is required"
+msgstr ""
+
+msgid "Only requests with sync errors can be retried"
+msgstr ""
+
+msgid "Device already exists in ThingsBoard. Manual intervention required."
+msgstr ""
+
+msgid "Cannot approve: %(errors)s"
+msgstr ""
+
+msgid "Request approved but sync failed: %(error)s"
+msgstr ""
+
+msgid "Sync retry failed: %(error)s"
+msgstr ""
+
+msgid "Device name"
+msgstr ""
+
+msgid "Serial number"
+msgstr ""
+
+msgid "Device profile name"
+msgstr ""
+
+msgid "Site code"
+msgstr ""
+
+msgid "Installer name"
+msgstr ""
+
+msgid "Install date"
+msgstr ""
+
+msgid "Owner name"
+msgstr ""
+
+msgid "%(field)s is required"
+msgstr ""
+
+msgid "Survey must be completed before submission"
+msgstr ""
+
+msgid "Serial number already exists"
+msgstr ""
+
+msgid "Latitude must be between -90 and 90"
+msgstr ""
+
+msgid "Latitude must be a valid number"
+msgstr ""
+
+msgid "Longitude must be between -180 and 180"
+msgstr ""
+
+msgid "Longitude must be a valid number"
+msgstr ""
+
+msgid "Selected organization is not available for your user"
+msgstr ""
+
+msgid "Install date must use the YYYY-MM-DD format"
+msgstr ""

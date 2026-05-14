@@ -263,7 +263,7 @@ class MyLogic():
             try:
                 logic.check_access('organization_create', context)
             except logic.NotAuthorized:
-                toolkit.abort(403, 'Not authorized to create organization')
+                toolkit.abort(403, toolkit._('Not authorized to create organization'))
 
             clean_name = group.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
             clean_name = re.sub(r'[^A-Za-z0-9-]+', '', clean_name)
@@ -328,7 +328,7 @@ class MyLogic():
             try:
                 logic.check_access('sysadmin', context, {})
             except logic.NotAuthorized:
-                toolkit.abort(403, 'Not authorized to approve users')
+                toolkit.abort(403, toolkit._('Not authorized to approve users'))
 
             db_session = model.Session()
             
@@ -542,7 +542,7 @@ Best regards,
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            toolkit.abort(403, 'Need to be system administrator')
+            toolkit.abort(403, toolkit._('Need to be system administrator'))
 
         ensure_colab_schema()
 
@@ -899,7 +899,7 @@ Best regards,
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
             logger.error("User not authorized to reject users")
-            toolkit.abort(403, 'Not authorized to reject users')
+            toolkit.abort(403, toolkit._('Not authorized to reject users'))
 
         if not name or not organization or not reason:
             return {'error': 'Missing required rejection parameters'}
@@ -1246,7 +1246,7 @@ Best regards,
                                              application=db_model)
 
                     except logic.NotAuthorized:
-                        toolkit.abort(403, 'Not authorized to create users')               
+                        toolkit.abort(403, toolkit._('Not authorized to create users'))               
             except Exception as e:
                 model.Session.rollback()
                 logger.error(f"Error in POST method: {e}")
@@ -1282,7 +1282,7 @@ Best regards,
     def show_organization_request_form():
         """Show organization request form for logged users"""
         if not toolkit.g.userobj:
-            toolkit.abort(403, 'You must be logged in to request an organization')
+            toolkit.abort(403, toolkit._('You must be logged in to request an organization'))
         
         try:
             # Get organization types for dropdown
@@ -1299,7 +1299,7 @@ Best regards,
     def submit_organization_request():
         """Handle organization request form submission"""
         if not toolkit.g.userobj:
-            toolkit.abort(403, 'You must be logged in to request an organization')
+            toolkit.abort(403, toolkit._('You must be logged in to request an organization'))
         
         if request.method != 'POST':
             return toolkit.redirect_to('colab.organization_request_form')
@@ -1449,7 +1449,7 @@ Best regards,
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            toolkit.abort(403, 'Need to be system administrator')
+            toolkit.abort(403, toolkit._('Need to be system administrator'))
 
         try:
             # Ensure the table exists (temporary fix until migration is run)
@@ -1473,7 +1473,7 @@ Best regards,
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            toolkit.abort(403, 'Need to be system administrator')
+            toolkit.abort(403, toolkit._('Need to be system administrator'))
         
         if request.method != 'POST':
             return jsonify({'error': 'POST method required'})
@@ -1545,7 +1545,7 @@ Best regards,
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            toolkit.abort(403, 'Need to be system administrator')
+            toolkit.abort(403, toolkit._('Need to be system administrator'))
         
         if request.method != 'POST':
             return jsonify({'error': 'POST method required'})

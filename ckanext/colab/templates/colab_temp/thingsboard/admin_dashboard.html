@@ -142,7 +142,7 @@
   </style>
 {% endblock %}
 
-{% block subtitle %}Device Requests Admin{% endblock %}
+{% block subtitle %}{{ _('Device Requests Admin') }}{% endblock %}
 
 {% block secondary %}{% endblock %}
 
@@ -152,8 +152,8 @@
   <div class="admin-header">
     <div class="admin-header-bg"></div>
     <div class="admin-header-content">
-      <h1>Device Requests Administration</h1>
-      <p>Review, approve, and manage IoT device registration requests</p>
+      <h1>{{ _('Device Requests Administration') }}</h1>
+      <p>{{ _('Review, approve, and manage IoT device registration requests') }}</p>
     </div>
   </div>
 
@@ -161,19 +161,19 @@
   <div class="admin-stats">
     <div class="stat-card">
       <div class="stat-number">{{ pending|length }}</div>
-      <div class="stat-label">Pending Review</div>
+      <div class="stat-label">{{ _('Pending Review') }}</div>
     </div>
     <div class="stat-card success">
       <div class="stat-number">{{ synced|length }}</div>
-      <div class="stat-label">Synced</div>
+      <div class="stat-label">{{ _('Synced') }}</div>
     </div>
     <div class="stat-card warning">
       <div class="stat-number">{{ sync_errors|length }}</div>
-      <div class="stat-label">Sync Errors</div>
+      <div class="stat-label">{{ _('Sync Errors') }}</div>
     </div>
     <div class="stat-card">
       <div class="stat-number">{{ rejected|length }}</div>
-      <div class="stat-label">Rejected</div>
+      <div class="stat-label">{{ _('Rejected') }}</div>
     </div>
   </div>
 
@@ -181,38 +181,38 @@
   <div class="tabs">
     <div class="tab-buttons">
       <button class="tab-button active" onclick="switchTab('pending', this)">
-        Pending Review <span class="tab-badge">{{ pending|length }}</span>
+        {{ _('Pending Review') }} <span class="tab-badge">{{ pending|length }}</span>
       </button>
       <button class="tab-button" onclick="switchTab('synced', this)">
-        Synced <span class="tab-badge success">{{ synced|length }}</span>
+        {{ _('Synced') }} <span class="tab-badge success">{{ synced|length }}</span>
       </button>
       <button class="tab-button" onclick="switchTab('sync_errors', this)">
-        Sync Errors <span class="tab-badge warning">{{ sync_errors|length }}</span>
+        {{ _('Sync Errors') }} <span class="tab-badge warning">{{ sync_errors|length }}</span>
       </button>
       <button class="tab-button" onclick="switchTab('rejected', this)">
-        Rejected <span class="tab-badge gray">{{ rejected|length }}</span>
+        {{ _('Rejected') }} <span class="tab-badge gray">{{ rejected|length }}</span>
       </button>
       <button class="tab-button" onclick="switchTab('drafts', this)">
-        Drafts <span class="tab-badge gray">{{ drafts|length }}</span>
+        {{ _('Drafts') }} <span class="tab-badge gray">{{ drafts|length }}</span>
       </button>
     </div>
 
     {% macro render_table(items, show_sync=false) %}
     {% if items %}
     <div class="search-box">
-      <input type="text" class="search-input" placeholder="Search by device name, serial number..." onkeyup="filterTable(this)">
+      <input type="text" class="search-input" placeholder="{{ _('Search by device name, serial number...') }}" onkeyup="filterTable(this)">
     </div>
     <table class="requests-table searchable-table">
       <thead>
         <tr>
           <th>#</th>
-          <th>Device Name</th>
-          <th>Serial Number</th>
-          <th>Site Code</th>
-          <th>Status</th>
-          {% if show_sync %}<th>Sync</th>{% endif %}
-          <th>Submitted</th>
-          <th>Actions</th>
+          <th>{{ _('Device Name') }}</th>
+          <th>{{ _('Serial Number') }}</th>
+          <th>{{ _('Site Code') }}</th>
+          <th>{{ _('Status') }}</th>
+          {% if show_sync %}<th>{{ _('Sync') }}</th>{% endif %}
+          <th>{{ _('Submitted') }}</th>
+          <th>{{ _('Actions') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -230,7 +230,7 @@
           {% endif %}
           <td data-label="Submitted">{{ req.submitted_at.strftime('%Y-%m-%d') if req.submitted_at else '—' }}</td>
           <td data-label="Actions">
-            <a href="{{ h.url_for('thingsboard.admin_detail', id=req.id) }}" class="btn-detail">View Details</a>
+            <a href="{{ h.url_for('thingsboard.admin_detail', id=req.id) }}" class="btn-detail">{{ _('View Details') }}</a>
           </td>
         </tr>
         {% endfor %}
@@ -238,8 +238,8 @@
     </table>
     {% else %}
     <div class="empty-tab">
-      <h4>No requests in this category</h4>
-      <p>Requests will appear here when their status matches this tab.</p>
+      <h4>{{ _('No requests in this category') }}</h4>
+      <p>{{ _('Requests will appear here when their status matches this tab.') }}</p>
     </div>
     {% endif %}
     {% endmacro %}

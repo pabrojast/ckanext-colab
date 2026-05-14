@@ -1503,8 +1503,8 @@
         <div class="admin-header-bg"></div>
         <div class="admin-header-overlay"></div>
         <div class="admin-header-content">
-            <h1>User Management Dashboard</h1>
-            <p>Manage user registrations and organization memberships</p>
+            <h1>{{ _('User Management Dashboard') }}</h1>
+            <p>{{ _('Manage user registrations and organization memberships') }}</p>
         </div>
     </section>
 
@@ -1512,10 +1512,10 @@
     <div class="admin-nav">
         <div class="nav-tabs">
             <a href="{{ h.url_for('colab.show_admin') }}" class="nav-tab active">
-                👥 User Management
+                👥 {{ _('User Management') }}
             </a>
             <a href="{{ h.url_for('colab.organization_admin') }}" class="nav-tab">
-                🏢 Organization Requests
+                🏢 {{ _('Organization Requests') }}
             </a>
         </div>
     </div>
@@ -1523,65 +1523,65 @@
     <div class="admin-stats">
         <div class="stat-card">
             <div class="stat-number" id="pending-count">0</div>
-            <div class="stat-label">Pending Approvals</div>
+            <div class="stat-label">{{ _('Pending Approvals') }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-number" id="approved-count">0</div>
-            <div class="stat-label">Approved Users</div>
+            <div class="stat-label">{{ _('Approved Users') }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-number" id="rejected-count">0</div>
-            <div class="stat-label">Rejected Users</div>
+            <div class="stat-label">{{ _('Rejected Users') }}</div>
         </div>
         <div class="stat-card stat-card-highlight">
             <div class="stat-number">{{ avg_processing_days }}</div>
-            <div class="stat-label">Avg. Days to Approve</div>
+            <div class="stat-label">{{ _('Avg. Days to Approve') }}</div>
         </div>
     </div>
 
     <!-- Analytics Section (collapsible) -->
     <div class="analytics-section">
         <button class="analytics-toggle" onclick="toggleAnalytics(this)">
-            <span class="toggle-arrow">▶</span> 📊 Analytics &amp; Activity Log
+            <span class="toggle-arrow">▶</span> 📊 {{ _('Analytics & Activity Log') }}
         </button>
         <div class="analytics-body" id="analytics-body">
             <div class="charts-grid">
                 <div class="chart-card">
-                    <h4>📈 Registration Trend (Monthly)</h4>
+                    <h4>📈 {{ _('Registration Trend (Monthly)') }}</h4>
                     <canvas id="trend-chart"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h4>🌍 Top Countries</h4>
+                    <h4>🌍 {{ _('Top Countries') }}</h4>
                     <div id="country-breakdown"></div>
                 </div>
                 <div class="chart-card">
-                    <h4>🏢 Organization Types</h4>
+                    <h4>🏢 {{ _('Organization Types') }}</h4>
                     <div id="orgtype-breakdown"></div>
                 </div>
             </div>
             <div class="charts-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="chart-card">
-                    <h4>🌊 Platform Distribution</h4>
+                    <h4>🌊 {{ _('Platform Distribution') }}</h4>
                     <canvas id="platform-chart" style="height: 120px !important;"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h4>📊 Status Overview</h4>
+                    <h4>📊 {{ _('Status Overview') }}</h4>
                     <canvas id="status-chart" style="height: 120px !important;"></canvas>
                 </div>
             </div>
 
             <!-- Audit Log -->
             <div class="audit-section">
-                <h4 style="font-size: 14px; margin: 16px 0 10px;">🕓 Recent Admin Activity</h4>
+                <h4 style="font-size: 14px; margin: 16px 0 10px;">🕓 {{ _('Recent Admin Activity') }}</h4>
                 {% if audit_entries %}
                 <table class="audit-table">
                     <thead>
                         <tr>
-                            <th>When</th>
-                            <th>Action</th>
-                            <th>Admin</th>
-                            <th>User</th>
-                            <th>Details</th>
+                            <th>{{ _('When') }}</th>
+                            <th>{{ _('Action') }}</th>
+                            <th>{{ _('Admin') }}</th>
+                            <th>{{ _('User') }}</th>
+                            <th>{{ _('Details') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1601,7 +1601,7 @@
                     </tbody>
                 </table>
                 {% else %}
-                <p style="color: var(--text-secondary); font-size: 13px;">No admin activity recorded yet. Actions will appear here as they are performed.</p>
+                <p style="color: var(--text-secondary); font-size: 13px;">{{ _('No admin activity recorded yet. Actions will appear here as they are performed.') }}</p>
                 {% endif %}
             </div>
         </div>
@@ -1610,60 +1610,60 @@
     <div class="tabs">
         <div class="tab-buttons" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <button class="tab-button active" data-tab="pending">
-                📋 Pending (<span id="pending-tab-count">0</span>)
+                📋 {{ _('Pending') }} (<span id="pending-tab-count">0</span>)
             </button>
             <button class="tab-button" data-tab="approved">
-                ✅ Approved (<span id="approved-tab-count">0</span>)
+                ✅ {{ _('Approved') }} (<span id="approved-tab-count">0</span>)
             </button>
             <button class="tab-button" data-tab="rejected">
-                ❌ Rejected (<span id="rejected-tab-count">0</span>)
+                ❌ {{ _('Rejected') }} (<span id="rejected-tab-count">0</span>)
             </button>
-            <a href="{{ h.url_for('colab.export_csv', tab='pending') }}" class="export-btn" id="csv-export-btn" title="Download current tab as CSV">
-                📥 Export CSV
+            <a href="{{ h.url_for('colab.export_csv', tab='pending') }}" class="export-btn" id="csv-export-btn" title="{{ _('Download current tab as CSV') }}">
+                📥 {{ _('Export CSV') }}
             </a>
         </div>
 
         <!-- Bulk Action Bar -->
         <div class="bulk-action-bar" id="bulk-action-bar">
-            <span class="bulk-count"><span id="bulk-selected-count">0</span> selected</span>
-            <button class="btn bulk-btn-approve" onclick="bulkAction('approve')" id="bulk-approve-btn">✅ Approve</button>
-            <button class="btn bulk-btn-reject" onclick="bulkAction('reject')" id="bulk-reject-btn">❌ Reject</button>
-            <button class="btn bulk-btn-delete" onclick="bulkAction('delete')">🗑️ Delete</button>
-            <button class="btn bulk-btn-clear" onclick="clearBulkSelection()">✕ Clear</button>
+            <span class="bulk-count"><span id="bulk-selected-count">0</span> {{ _('selected') }}</span>
+            <button class="btn bulk-btn-approve" onclick="bulkAction('approve')" id="bulk-approve-btn">✅ {{ _('Approve') }}</button>
+            <button class="btn bulk-btn-reject" onclick="bulkAction('reject')" id="bulk-reject-btn">❌ {{ _('Reject') }}</button>
+            <button class="btn bulk-btn-delete" onclick="bulkAction('delete')">🗑️ {{ _('Delete') }}</button>
+            <button class="btn bulk-btn-clear" onclick="clearBulkSelection()">✕ {{ _('Clear') }}</button>
         </div>
 
         <div class="controls">
             <div class="search-box">
                 <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="Search by name, email, organization..." id="search-input">
+                <input type="text" class="search-input" placeholder="{{ _('Search by name, email, organization...') }}" id="search-input">
             </div>
             <select class="filter-select" id="org-filter">
-                <option value="">All Organizations</option>
+                <option value="">{{ _('All Organizations') }}</option>
             </select>
             <select class="filter-select" id="role-filter">
-                <option value="">All Roles</option>
-                <option value="admin">Admin</option>
-                <option value="editor">Editor</option>
-                <option value="member">Member</option>
+                <option value="">{{ _('All Roles') }}</option>
+                <option value="admin">{{ _('Admin') }}</option>
+                <option value="editor">{{ _('Editor') }}</option>
+                <option value="member">{{ _('Member') }}</option>
             </select>
             <select class="filter-select" id="nationality-filter">
-                <option value="">All Countries</option>
+                <option value="">{{ _('All Countries') }}</option>
             </select>
         </div>
 
         <div class="smart-filters">
-            <span class="smart-filters-label">Quick filters:</span>
-            <button class="filter-chip" data-filter="duplicates" title="Show only duplicate applications">
-                🔁 Duplicates
+            <span class="smart-filters-label">{{ _('Quick filters:') }}</span>
+            <button class="filter-chip" data-filter="duplicates" title="{{ _('Show only duplicate applications') }}">
+                🔁 {{ _('Duplicates') }}
             </button>
-            <button class="filter-chip" data-filter="existing" title="Show applications from people who already had a CKAN account before applying">
-                ⚠️ Pre-existing User
+            <button class="filter-chip" data-filter="existing" title="{{ _('Show applications from people who already had a CKAN account before applying') }}">
+                ⚠️ {{ _('Pre-existing User') }}
             </button>
-            <button class="filter-chip" data-filter="new-org" title="Show only applications requesting new organizations">
-                🏢 New Org
+            <button class="filter-chip" data-filter="new-org" title="{{ _('Show only applications requesting new organizations') }}">
+                🏢 {{ _('New Org') }}
             </button>
-            <button class="filter-chip filter-chip-clear" data-filter="clear" title="Clear all filters" style="display:none;">
-                ✕ Clear Filters
+            <button class="filter-chip filter-chip-clear" data-filter="clear" title="{{ _('Clear all filters') }}" style="display:none;">
+                ✕ {{ _('Clear Filters') }}
             </button>
         </div>
 
@@ -1672,14 +1672,14 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th class="col-check"><input type="checkbox" class="select-all-check" data-tab="pending" title="Select all"></th>
-                            <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
-                            <th>Contact</th>
-                            <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
-                            <th class="sortable sorted-desc" data-sort="created-date">Applied <span class="sort-indicator">▼</span></th>
-                            <th class="sortable" data-sort="role">Role <span class="sort-indicator"></span></th>
-                            <th>Platforms</th>
-                            <th>Actions</th>
+                            <th class="col-check"><input type="checkbox" class="select-all-check" data-tab="pending" title="{{ _('Select all') }}"></th>
+                            <th class="sortable" data-sort="fullname">{{ _('User') }} <span class="sort-indicator"></span></th>
+                            <th>{{ _('Contact') }}</th>
+                            <th class="sortable" data-sort="org">{{ _('Organization') }} <span class="sort-indicator"></span></th>
+                            <th class="sortable sorted-desc" data-sort="created-date">{{ _('Applied') }} <span class="sort-indicator">▼</span></th>
+                            <th class="sortable" data-sort="role">{{ _('Role') }} <span class="sort-indicator"></span></th>
+                            <th>{{ _('Platforms') }}</th>
+                            <th>{{ _('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1797,15 +1797,15 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th class="col-check"><input type="checkbox" class="select-all-check" data-tab="approved" title="Select all"></th>
-                            <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
-                            <th>Contact</th>
-                            <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
-                            <th class="sortable sorted-desc" data-sort="created-date">Applied <span class="sort-indicator">▼</span></th>
-                            <th class="sortable" data-sort="approved-date">Approved <span class="sort-indicator"></span></th>
-                            <th>Platforms</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th class="col-check"><input type="checkbox" class="select-all-check" data-tab="approved" title="{{ _('Select all') }}"></th>
+                            <th class="sortable" data-sort="fullname">{{ _('User') }} <span class="sort-indicator"></span></th>
+                            <th>{{ _('Contact') }}</th>
+                            <th class="sortable" data-sort="org">{{ _('Organization') }} <span class="sort-indicator"></span></th>
+                            <th class="sortable sorted-desc" data-sort="created-date">{{ _('Applied') }} <span class="sort-indicator">▼</span></th>
+                            <th class="sortable" data-sort="approved-date">{{ _('Approved') }} <span class="sort-indicator"></span></th>
+                            <th>{{ _('Platforms') }}</th>
+                            <th>{{ _('Status') }}</th>
+                            <th>{{ _('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1896,14 +1896,14 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th class="col-check"><input type="checkbox" class="select-all-check" data-tab="rejected" title="Select all"></th>
-                            <th class="sortable" data-sort="fullname">User <span class="sort-indicator"></span></th>
-                            <th>Contact</th>
-                            <th class="sortable" data-sort="org">Organization <span class="sort-indicator"></span></th>
-                            <th class="sortable sorted-desc" data-sort="created-date">Applied <span class="sort-indicator">▼</span></th>
-                            <th class="sortable" data-sort="rejected-date">Rejected <span class="sort-indicator"></span></th>
-                            <th>Reason</th>
-                            <th>Actions</th>
+                            <th class="col-check"><input type="checkbox" class="select-all-check" data-tab="rejected" title="{{ _('Select all') }}"></th>
+                            <th class="sortable" data-sort="fullname">{{ _('User') }} <span class="sort-indicator"></span></th>
+                            <th>{{ _('Contact') }}</th>
+                            <th class="sortable" data-sort="org">{{ _('Organization') }} <span class="sort-indicator"></span></th>
+                            <th class="sortable sorted-desc" data-sort="created-date">{{ _('Applied') }} <span class="sort-indicator">▼</span></th>
+                            <th class="sortable" data-sort="rejected-date">{{ _('Rejected') }} <span class="sort-indicator"></span></th>
+                            <th>{{ _('Reason') }}</th>
+                            <th>{{ _('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2004,7 +2004,7 @@
 <div id="userModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>👤 User Details</h2>
+            <h2>👤 {{ _('User Details') }}</h2>
             <span class="close" onclick="closeModal()">&times;</span>
         </div>
         <div class="modal-body" id="modal-body">

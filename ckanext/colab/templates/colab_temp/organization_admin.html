@@ -819,8 +819,8 @@
         <div class="admin-header-bg"></div>
         <div class="admin-header-overlay"></div>
         <div class="admin-header-content">
-            <h1>Organization Requests Dashboard</h1>
-            <p>Manage organization creation requests from users</p>
+            <h1>{{ _('Organization Requests Dashboard') }}</h1>
+            <p>{{ _('Manage organization creation requests from users') }}</p>
         </div>
     </section>
 
@@ -828,10 +828,10 @@
     <div class="admin-nav">
         <div class="nav-tabs">
             <a href="{{ h.url_for('colab.show_admin') }}" class="nav-tab">
-                👥 User Management
+                👥 {{ _('User Management') }}
             </a>
             <a href="{{ h.url_for('colab.organization_admin') }}" class="nav-tab active">
-                🏢 Organization Requests
+                🏢 {{ _('Organization Requests') }}
             </a>
         </div>
     </div>
@@ -839,45 +839,45 @@
     <div class="admin-stats">
         <div class="stat-card">
             <div class="stat-number" id="pending-org-count">0</div>
-            <div class="stat-label">Pending Requests</div>
+            <div class="stat-label">{{ _('Pending Requests') }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-number" id="approved-org-count">0</div>
-            <div class="stat-label">Approved Organizations</div>
+            <div class="stat-label">{{ _('Approved Organizations') }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-number" id="rejected-org-count">0</div>
-            <div class="stat-label">Rejected Requests</div>
+            <div class="stat-label">{{ _('Rejected Requests') }}</div>
         </div>
     </div>
 
     <div class="tabs">
         <div class="tab-buttons">
             <button class="tab-button active" data-tab="pending">
-                📋 Pending (<span id="pending-tab-count">0</span>)
+                📋 {{ _('Pending') }} (<span id="pending-tab-count">0</span>)
             </button>
             <button class="tab-button" data-tab="approved">
-                ✅ Approved (<span id="approved-tab-count">0</span>)
+                ✅ {{ _('Approved') }} (<span id="approved-tab-count">0</span>)
             </button>
             <button class="tab-button" data-tab="rejected">
-                ❌ Rejected (<span id="rejected-tab-count">0</span>)
+                ❌ {{ _('Rejected') }} (<span id="rejected-tab-count">0</span>)
             </button>
         </div>
 
         <div class="controls">
             <div class="search-box">
                 <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="Search by organization name, requester..." id="search-input">
+                <input type="text" class="search-input" placeholder="{{ _('Search by organization name, requester...') }}" id="search-input">
             </div>
             <select class="filter-select" id="type-filter">
-                <option value="">All Types</option>
-                <option value="Academic Institution">Academic Institution</option>
-                <option value="Government Agency">Government Agency</option>
-                <option value="NGO">NGO</option>
-                <option value="Private Company">Private Company</option>
-                <option value="Research Institute">Research Institute</option>
-                <option value="International Organization">International Organization</option>
-                <option value="Other">Other</option>
+                <option value="">{{ _('All Types') }}</option>
+                <option value="Academic Institution">{{ _('Academic Institution') }}</option>
+                <option value="Government Agency">{{ _('Government Agency') }}</option>
+                <option value="NGO">{{ _('NGO') }}</option>
+                <option value="Private Company">{{ _('Private Company') }}</option>
+                <option value="Research Institute">{{ _('Research Institute') }}</option>
+                <option value="International Organization">{{ _('International Organization') }}</option>
+                <option value="Other">{{ _('Other') }}</option>
             </select>
         </div>
 
@@ -886,12 +886,12 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>🏢 Organization</th>
-                            <th>👤 Requester</th>
-                            <th>🎯 Type</th>
-                            <th>👨‍💼 Admin</th>
-                            <th>📅 Date</th>
-                            <th>⚡ Actions</th>
+                            <th>🏢 {{ _('Organization') }}</th>
+                            <th>👤 {{ _('Requester') }}</th>
+                            <th>🎯 {{ _('Type') }}</th>
+                            <th>👨‍💼 {{ _('Admin') }}</th>
+                            <th>📅 {{ _('Date') }}</th>
+                            <th>⚡ {{ _('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -920,13 +920,13 @@
                                     <td>
                                         <div class="action-buttons">
                                             <button class="btn btn-view" onclick="showRequestDetails('{{ request.id }}')">
-                                                👁️ View
+                                                👁️ {{ _('View') }}
                                             </button>
                                             <button class="btn btn-approve" onclick="approveRequest('{{ request.id }}')">
-                                                ✅ Approve
+                                                ✅ {{ _('Approve') }}
                                             </button>
                                             <button class="btn btn-reject" onclick="rejectRequest('{{ request.id }}')">
-                                                ❌ Reject
+                                                ❌ {{ _('Reject') }}
                                             </button>
                                         </div>
                                     </td>
@@ -943,12 +943,12 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>🏢 Organization</th>
-                            <th>👤 Requester</th>
-                            <th>🎯 Type</th>
-                            <th>👨‍💼 Admin</th>
-                            <th>✅ Status</th>
-                            <th>⚡ Actions</th>
+                            <th>🏢 {{ _('Organization') }}</th>
+                            <th>👤 {{ _('Requester') }}</th>
+                            <th>🎯 {{ _('Type') }}</th>
+                            <th>👨‍💼 {{ _('Admin') }}</th>
+                            <th>✅ {{ _('Status') }}</th>
+                            <th>⚡ {{ _('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -972,7 +972,7 @@
                                         <strong>{{ request.admin_username }}</strong>
                                     </td>
                                     <td>
-                                        <span class="status-badge status-approved">Approved by {{ request.approved_by }}</span>
+                                        <span class="status-badge status-approved">{{ _('Approved by %(user)s') % {'user': request.approved_by} }}</span>
                                         <div style="margin-top: 4px; font-size: 11px; color: #666;">
                                             {{ request.approved_date.strftime('%Y-%m-%d %H:%M') if request.approved_date else 'N/A' }}
                                         </div>
@@ -980,7 +980,7 @@
                                     <td>
                                         <div class="action-buttons">
                                             <button class="btn btn-view" onclick="showRequestDetails('{{ request.id }}')">
-                                                👁️ View
+                                                👁️ {{ _('View') }}
                                             </button>
                                         </div>
                                     </td>
@@ -997,13 +997,13 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>🏢 Organization</th>
-                            <th>👤 Requester</th>
-                            <th>🎯 Type</th>
-                            <th>👨‍💼 Admin</th>
-                            <th>❌ Status</th>
-                            <th>📝 Reason</th>
-                            <th>⚡ Actions</th>
+                            <th>🏢 {{ _('Organization') }}</th>
+                            <th>👤 {{ _('Requester') }}</th>
+                            <th>🎯 {{ _('Type') }}</th>
+                            <th>👨‍💼 {{ _('Admin') }}</th>
+                            <th>❌ {{ _('Status') }}</th>
+                            <th>📝 {{ _('Reason') }}</th>
+                            <th>⚡ {{ _('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1027,7 +1027,7 @@
                                         <strong>{{ request.admin_username }}</strong>
                                     </td>
                                     <td>
-                                        <span class="status-badge status-rejected">Rejected by {{ request.rejected_by }}</span>
+                                        <span class="status-badge status-rejected">{{ _('Rejected by %(user)s') % {'user': request.rejected_by} }}</span>
                                         <div style="margin-top: 4px; font-size: 11px; color: #666;">
                                             {{ request.rejected_date.strftime('%Y-%m-%d %H:%M') if request.rejected_date else 'N/A' }}
                                         </div>
@@ -1040,7 +1040,7 @@
                                     <td>
                                         <div class="action-buttons">
                                             <button class="btn btn-view" onclick="showRequestDetails('{{ request.id }}')">
-                                                👁️ View
+                                                👁️ {{ _('View') }}
                                             </button>
                                         </div>
                                     </td>
@@ -1061,7 +1061,7 @@
 <div id="requestModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>🏢 Organization Request Details</h2>
+            <h2>🏢 {{ _('Organization Request Details') }}</h2>
             <span class="close" onclick="closeModal()">&times;</span>
         </div>
         <div class="modal-body" id="modal-body">

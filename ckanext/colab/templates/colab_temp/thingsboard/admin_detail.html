@@ -173,7 +173,7 @@
   </style>
 {% endblock %}
 
-{% block subtitle %}Device Request #{{ dr.id }}{% endblock %}
+{% block subtitle %}{{ _('Device Request #%(id)s') % {'id': dr.id} }}{% endblock %}
 
 {% block secondary %}{% endblock %}
 
@@ -183,42 +183,42 @@
   <div class="detail-header">
     <div class="detail-header-bg"></div>
     <div class="detail-header-content">
-      <h1>Device Request #{{ dr.id }}</h1>
-      <p>{{ dr.device_name or 'Unnamed device' }} — {{ dr.serial_number or 'No serial' }}</p>
+      <h1>{{ _('Device Request #%(id)s') % {'id': dr.id} }}</h1>
+      <p>{{ dr.device_name or _('Unnamed device') }} — {{ dr.serial_number or _('No serial') }}</p>
     </div>
   </div>
 
   <!-- Timeline -->
   <div class="info-card">
-    <div class="info-card-header">Status Timeline</div>
+    <div class="info-card-header">{{ _('Status Timeline') }}</div>
     <div class="info-card-body">
       <div class="timeline">
         <div class="timeline-step done">
           <div class="timeline-dot"></div>
-          <div class="timeline-label">Created</div>
+          <div class="timeline-label">{{ _('Created') }}</div>
           <div class="timeline-date">{{ dr.created_at.strftime('%Y-%m-%d') if dr.created_at else '' }}</div>
         </div>
         <div class="timeline-step {% if dr.submitted_at %}done{% endif %}">
           <div class="timeline-dot"></div>
-          <div class="timeline-label">Submitted</div>
+          <div class="timeline-label">{{ _('Submitted') }}</div>
           <div class="timeline-date">{{ dr.submitted_at.strftime('%Y-%m-%d') if dr.submitted_at else '' }}</div>
         </div>
         <div class="timeline-step {% if dr.approved_at %}done{% elif dr.rejected_at %}error{% endif %}">
           <div class="timeline-dot"></div>
-          <div class="timeline-label">{% if dr.rejected_at %}Rejected{% else %}Reviewed{% endif %}</div>
+          <div class="timeline-label">{% if dr.rejected_at %}{{ _('Rejected') }}{% else %}{{ _('Reviewed') }}{% endif %}</div>
           <div class="timeline-date">{{ (dr.approved_at or dr.rejected_at).strftime('%Y-%m-%d') if (dr.approved_at or dr.rejected_at) else '' }}</div>
         </div>
         <div class="timeline-step {% if dr.sync_status == 'synced' %}done{% elif dr.sync_status == 'error' %}error{% endif %}">
           <div class="timeline-dot"></div>
-          <div class="timeline-label">Synced</div>
-          <div class="timeline-date">{% if dr.sync_status == 'synced' %}OK{% elif dr.sync_status == 'error' %}Failed{% endif %}</div>
+          <div class="timeline-label">{{ _('Synced') }}</div>
+          <div class="timeline-date">{% if dr.sync_status == 'synced' %}{{ _('OK') }}{% elif dr.sync_status == 'error' %}{{ _('Failed') }}{% endif %}</div>
         </div>
       </div>
 
       <div style="text-align: center; margin-top: 10px;">
         <span class="status-badge status-{{ dr.status }}">{{ dr.status }}</span>
         {% if dr.sync_status %}
-          <span class="status-badge status-{{ dr.sync_status }}" style="margin-left: 8px;">Sync: {{ dr.sync_status }}</span>
+          <span class="status-badge status-{{ dr.sync_status }}" style="margin-left: 8px;">{{ _('Sync:') }} {{ dr.sync_status }}</span>
         {% endif %}
       </div>
     </div>
@@ -226,31 +226,31 @@
 
   <!-- Device Info -->
   <div class="info-card">
-    <div class="info-card-header">Device Information</div>
+    <div class="info-card-header">{{ _('Device Information') }}</div>
     <div class="info-card-body">
       <div class="info-grid">
         <div class="info-item">
-          <div class="info-label">Device Name</div>
+          <div class="info-label">{{ _('Device Name') }}</div>
           <div class="info-value">{{ dr.device_name or '—' }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Device Label</div>
+          <div class="info-label">{{ _('Device Label') }}</div>
           <div class="info-value">{{ dr.device_label or '—' }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Serial Number</div>
+          <div class="info-label">{{ _('Serial Number') }}</div>
           <div class="info-value">{{ dr.serial_number or '—' }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Device Profile</div>
+          <div class="info-label">{{ _('Device Profile') }}</div>
           <div class="info-value">{{ dr.device_profile_name or '—' }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Firmware Version</div>
+          <div class="info-label">{{ _('Firmware Version') }}</div>
           <div class="info-value">{{ dr.firmware_version or '—' }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Organization</div>
+          <div class="info-label">{{ _('Organization') }}</div>
           <div class="info-value">{{ org_name or '—' }}</div>
         </div>
       </div>
@@ -259,31 +259,31 @@
 
   <!-- Installation -->
   <div class="info-card">
-    <div class="info-card-header">Installation Details</div>
+    <div class="info-card-header">{{ _('Installation Details') }}</div>
     <div class="info-card-body">
       <div class="info-grid">
         <div class="info-item">
-          <div class="info-label">Site Code</div>
+          <div class="info-label">{{ _('Site Code') }}</div>
           <div class="info-value">{{ dr.site_code or '—' }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Installer</div>
+          <div class="info-label">{{ _('Installer') }}</div>
           <div class="info-value">{{ dr.installer_name or '—' }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Install Date</div>
+          <div class="info-label">{{ _('Install Date') }}</div>
           <div class="info-value">{{ dr.install_date.strftime('%Y-%m-%d') if dr.install_date else '—' }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Owner</div>
+          <div class="info-label">{{ _('Owner') }}</div>
           <div class="info-value">{{ dr.owner_name or '—' }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Survey Completed</div>
-          <div class="info-value">{{ 'Yes' if dr.survey_completed else 'No' }}</div>
+          <div class="info-label">{{ _('Survey Completed') }}</div>
+          <div class="info-value">{{ _('Yes') if dr.survey_completed else _('No') }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Requested By</div>
+          <div class="info-label">{{ _('Requested By') }}</div>
           <div class="info-value">{{ creator.display_name if creator else dr.created_by_user_id }}</div>
         </div>
       </div>
@@ -293,15 +293,15 @@
   <!-- Location -->
   {% if dr.latitude is not none and dr.longitude is not none %}
   <div class="info-card">
-    <div class="info-card-header">Location</div>
+    <div class="info-card-header">{{ _('Location') }}</div>
     <div class="info-card-body">
       <div class="info-grid" style="margin-bottom: 14px;">
         <div class="info-item">
-          <div class="info-label">Coordinates</div>
+          <div class="info-label">{{ _('Coordinates') }}</div>
           <div class="info-value">{{ dr.latitude }}, {{ dr.longitude }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Address</div>
+          <div class="info-label">{{ _('Address') }}</div>
           <div class="info-value">{{ dr.address or '—' }}</div>
         </div>
       </div>
@@ -313,7 +313,7 @@
   <!-- Technical Notes -->
   {% if dr.technical_notes %}
   <div class="info-card">
-    <div class="info-card-header">Technical Notes</div>
+    <div class="info-card-header">{{ _('Technical Notes') }}</div>
     <div class="info-card-body">
       <div class="info-value">{{ dr.technical_notes }}</div>
     </div>
@@ -323,12 +323,12 @@
   <!-- Rejection reason -->
   {% if dr.status == 'REJECTED' and dr.rejection_reason %}
   <div class="info-card" style="border-left-color: #dc3545;">
-    <div class="info-card-header" style="color: #721c24;">Rejection Reason</div>
+    <div class="info-card-header" style="color: #721c24;">{{ _('Rejection Reason') }}</div>
     <div class="info-card-body">
       <div class="info-value" style="color: #721c24;">{{ dr.rejection_reason }}</div>
       {% if reviewer %}
       <div style="margin-top: 8px; font-size: 12px; color: var(--text-secondary);">
-        Rejected by {{ reviewer.display_name }} on {{ dr.rejected_at.strftime('%Y-%m-%d %H:%M') if dr.rejected_at else '—' }}
+        {{ _('Rejected by %(reviewer)s on %(date)s') % {'reviewer': reviewer.display_name, 'date': dr.rejected_at.strftime('%Y-%m-%d %H:%M') if dr.rejected_at else '—'} }}
       </div>
       {% endif %}
     </div>
@@ -338,7 +338,7 @@
   <!-- Sync error -->
   {% if dr.sync_status == 'error' and dr.sync_error_message %}
   <div class="sync-error-box">
-    <strong>Sync Error</strong>
+    <strong>{{ _('Sync Error') }}</strong>
     <pre>{{ dr.sync_error_message }}</pre>
   </div>
   {% endif %}
@@ -346,19 +346,19 @@
   <!-- ThingsBoard info -->
   {% if dr.tb_device_id %}
   <div class="tb-info-box">
-    <strong style="color: #28a745;">ThingsBoard Device</strong>
+    <strong style="color: #28a745;">{{ _('ThingsBoard Device') }}</strong>
     <div style="margin-top: 8px;">
       <div class="info-grid">
         <div class="info-item">
-          <div class="info-label">TB Device ID</div>
+          <div class="info-label">{{ _('TB Device ID') }}</div>
           <div class="info-value">{{ dr.tb_device_id }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">TB Customer ID</div>
+          <div class="info-label">{{ _('TB Customer ID') }}</div>
           <div class="info-value">{{ dr.tb_customer_id or '—' }}</div>
         </div>
         <div class="info-item">
-          <div class="info-label">Access Token</div>
+          <div class="info-label">{{ _('Access Token') }}</div>
           <div class="info-value" style="font-family: monospace;">{{ dr.tb_access_token or '—' }}</div>
         </div>
       </div>
@@ -368,23 +368,23 @@
 
   <!-- Actions -->
   <div class="action-bar">
-    <a href="{{ h.url_for('thingsboard.admin_dashboard') }}" class="btn-back">Back to List</a>
+    <a href="{{ h.url_for('thingsboard.admin_dashboard') }}" class="btn-back">{{ _('Back to List') }}</a>
 
     {% if dr.status in ('SUBMITTED', 'UNDER_REVIEW') %}
     <form action="{{ h.url_for('thingsboard.approve', id=dr.id) }}" method="post" style="margin: 0;">
-      <button type="submit" class="btn-approve" onclick="return confirm('Approve this device request and sync to ThingsBoard?')">
-        Approve & Sync
+      <button type="submit" class="btn-approve" onclick="return confirm('{{ _('Approve this device request and sync to ThingsBoard?') }}')">
+        {{ _('Approve & Sync') }}
       </button>
     </form>
     <button type="button" class="btn-reject-open" onclick="document.getElementById('rejectModal').classList.add('active')">
-      Reject
+      {{ _('Reject') }}
     </button>
     {% endif %}
 
     {% if dr.sync_status == 'error' %}
     <form action="{{ h.url_for('thingsboard.retry_sync', id=dr.id) }}" method="post" style="margin: 0;">
-      <button type="submit" class="btn-retry" onclick="return confirm('Retry synchronization with ThingsBoard?')">
-        Retry Sync
+      <button type="submit" class="btn-retry" onclick="return confirm('{{ _('Retry synchronization with ThingsBoard?') }}')">
+        {{ _('Retry Sync') }}
       </button>
     </form>
     {% endif %}
@@ -394,12 +394,12 @@
 <!-- Reject Modal -->
 <div id="rejectModal" class="modal-overlay" onclick="if(event.target===this) this.classList.remove('active')">
   <div class="modal-box">
-    <h3>Reject Device Request</h3>
+    <h3>{{ _('Reject Device Request') }}</h3>
     <form action="{{ h.url_for('thingsboard.reject', id=dr.id) }}" method="post">
-      <textarea name="rejection_reason" placeholder="Enter the reason for rejection..." required></textarea>
+      <textarea name="rejection_reason" placeholder="{{ _('Enter the reason for rejection...') }}" required></textarea>
       <div class="modal-actions">
-        <button type="button" class="btn-cancel" onclick="document.getElementById('rejectModal').classList.remove('active')">Cancel</button>
-        <button type="submit" class="btn-reject-confirm">Reject Request</button>
+        <button type="button" class="btn-cancel" onclick="document.getElementById('rejectModal').classList.remove('active')">{{ _('Cancel') }}</button>
+        <button type="submit" class="btn-reject-confirm">{{ _('Reject Request') }}</button>
       </div>
     </form>
   </div>

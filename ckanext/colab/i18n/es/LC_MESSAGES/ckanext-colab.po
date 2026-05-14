@@ -949,3 +949,630 @@ msgstr "Enviar otra solicitud"
 #: ckanext/colab/templates/colab_temp/snippets/form.html:77
 msgid "Date of Birth"
 msgstr "Fecha de nacimiento"
+
+msgid "Actions"
+msgstr "Acciones"
+
+msgid "Action"
+msgstr "Acción"
+
+msgid "Address"
+msgstr "Dirección"
+
+msgid "Applied"
+msgstr "Postuló"
+
+msgid "Approve"
+msgstr "Aprobar"
+
+msgid "Approve & Sync"
+msgstr "Aprobar y sincronizar"
+
+msgid "Approve this device request and sync to ThingsBoard?"
+msgstr "¿Aprobar esta solicitud de dispositivo y sincronizar con ThingsBoard?"
+
+msgid "Approved by %(user)s"
+msgstr "Aprobado por %(user)s"
+
+msgid "Approved Organizations"
+msgstr "Organizaciones aprobadas"
+
+msgid "Approved Users"
+msgstr "Usuarios aprobados"
+
+msgid "Are you sure you want to submit this request for review? You will not be able to edit it after submission."
+msgstr "¿Estás seguro de que deseas enviar esta solicitud para revisión? No podrás editarla después de enviarla."
+
+msgid "Avg. Days to Approve"
+msgstr "Días promedio para aprobar"
+
+msgid "Back"
+msgstr "Atrás"
+
+msgid "Back to List"
+msgstr "Volver a la lista"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Clear"
+msgstr "Limpiar"
+
+msgid "Clear Filters"
+msgstr "Limpiar filtros"
+
+msgid "Clear all filters"
+msgstr "Limpiar todos los filtros"
+
+msgid "Contact"
+msgstr "Contacto"
+
+msgid "Created"
+msgstr "Creado"
+
+msgid "Date"
+msgstr "Fecha"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Details"
+msgstr "Detalles"
+
+msgid "Drafts"
+msgstr "Borradores"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Export CSV"
+msgstr "Exportar CSV"
+
+msgid "Failed"
+msgstr "Fallido"
+
+msgid "NGO"
+msgstr "ONG"
+
+msgid "No"
+msgstr "No"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Pending"
+msgstr "Pendiente"
+
+msgid "Pending Approvals"
+msgstr "Aprobaciones pendientes"
+
+msgid "Pending Requests"
+msgstr "Solicitudes pendientes"
+
+msgid "Platforms"
+msgstr "Plataformas"
+
+msgid "Quick filters:"
+msgstr "Filtros rápidos:"
+
+msgid "Reason"
+msgstr "Motivo"
+
+msgid "Reject"
+msgstr "Rechazar"
+
+msgid "Rejected Requests"
+msgstr "Solicitudes rechazadas"
+
+msgid "Rejected Users"
+msgstr "Usuarios rechazados"
+
+msgid "Rejected by %(user)s"
+msgstr "Rechazado por %(user)s"
+
+msgid "Rejected by %(reviewer)s on %(date)s"
+msgstr "Rechazado por %(reviewer)s el %(date)s"
+
+msgid "Requester"
+msgstr "Solicitante"
+
+msgid "Reviewed"
+msgstr "Revisado"
+
+msgid "Role"
+msgstr "Rol"
+
+msgid "Select all"
+msgstr "Seleccionar todo"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Sync"
+msgstr "Sincronización"
+
+msgid "Sync:"
+msgstr "Sincronización:"
+
+msgid "Synced"
+msgstr "Sincronizado"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "User"
+msgstr "Usuario"
+
+msgid "View"
+msgstr "Ver"
+
+msgid "View Details"
+msgstr "Ver detalles"
+
+msgid "When"
+msgstr "Cuándo"
+
+msgid "Yes"
+msgstr "Sí"
+
+msgid "selected"
+msgstr "seleccionado(s)"
+
+msgid "All Countries"
+msgstr "Todos los países"
+
+msgid "All Organizations"
+msgstr "Todas las organizaciones"
+
+msgid "All Roles"
+msgstr "Todos los roles"
+
+msgid "All Types"
+msgstr "Todos los tipos"
+
+msgid "Academic Institution"
+msgstr "Institución académica"
+
+msgid "Government Agency"
+msgstr "Agencia gubernamental"
+
+msgid "International Organization"
+msgstr "Organización internacional"
+
+msgid "Private Company"
+msgstr "Empresa privada"
+
+msgid "Research Institute"
+msgstr "Instituto de investigación"
+
+msgid "Device Management"
+msgstr "Gestión de dispositivos"
+
+msgid "Device Requests Admin"
+msgstr "Administración de solicitudes de dispositivos"
+
+msgid "Device Requests Administration"
+msgstr "Administración de solicitudes de dispositivos"
+
+msgid "My Device Requests"
+msgstr "Mis solicitudes de dispositivos"
+
+msgid "New Device Request"
+msgstr "Nueva solicitud de dispositivo"
+
+msgid "Edit Device Request"
+msgstr "Editar solicitud de dispositivo"
+
+msgid "Edit Device Request #%(id)s"
+msgstr "Editar solicitud de dispositivo #%(id)s"
+
+msgid "Device Request #%(id)s"
+msgstr "Solicitud de dispositivo #%(id)s"
+
+msgid "Request and track IoT device registrations for ThingsBoard"
+msgstr "Solicita y haz seguimiento de los registros de dispositivos IoT para ThingsBoard"
+
+msgid "Review, approve, and manage IoT device registration requests"
+msgstr "Revisa, aprueba y gestiona las solicitudes de registro de dispositivos IoT"
+
+msgid "Request #%(id)s rejected:"
+msgstr "Solicitud #%(id)s rechazada:"
+
+msgid "Search by device name, serial number..."
+msgstr "Buscar por nombre de dispositivo, número de serie..."
+
+msgid "Sync Errors"
+msgstr "Errores de sincronización"
+
+msgid "No requests in this category"
+msgstr "No hay solicitudes en esta categoría"
+
+msgid "Requests will appear here when their status matches this tab."
+msgstr "Las solicitudes aparecerán aquí cuando su estado coincida con esta pestaña."
+
+msgid "No device requests yet"
+msgstr "Aún no hay solicitudes de dispositivos"
+
+msgid "Create your first device request to get started."
+msgstr "Crea tu primera solicitud de dispositivo para comenzar."
+
+msgid "Status Timeline"
+msgstr "Cronología del estado"
+
+msgid "Device Information"
+msgstr "Información del dispositivo"
+
+msgid "Installation Details"
+msgstr "Detalles de la instalación"
+
+msgid "Location"
+msgstr "Ubicación"
+
+msgid "Technical Notes"
+msgstr "Notas técnicas"
+
+msgid "Additional Information"
+msgstr "Información adicional"
+
+msgid "Rejection Reason"
+msgstr "Motivo del rechazo"
+
+msgid "Sync Error"
+msgstr "Error de sincronización"
+
+msgid "ThingsBoard Device"
+msgstr "Dispositivo de ThingsBoard"
+
+msgid "TB Device ID"
+msgstr "ID de dispositivo TB"
+
+msgid "TB Customer ID"
+msgstr "ID de cliente TB"
+
+msgid "Access Token"
+msgstr "Token de acceso"
+
+msgid "Unnamed device"
+msgstr "Dispositivo sin nombre"
+
+msgid "No serial"
+msgstr "Sin número de serie"
+
+msgid "Device Name"
+msgstr "Nombre del dispositivo"
+
+msgid "Device Label"
+msgstr "Etiqueta del dispositivo"
+
+msgid "Serial Number"
+msgstr "Número de serie"
+
+msgid "Device Profile"
+msgstr "Perfil del dispositivo"
+
+msgid "Device Profile Name"
+msgstr "Nombre del perfil del dispositivo"
+
+msgid "Firmware Version"
+msgstr "Versión del firmware"
+
+msgid "Site Code"
+msgstr "Código del sitio"
+
+msgid "Installer"
+msgstr "Instalador"
+
+msgid "Installer Name"
+msgstr "Nombre del instalador"
+
+msgid "Install Date"
+msgstr "Fecha de instalación"
+
+msgid "Owner"
+msgstr "Propietario"
+
+msgid "Owner Name"
+msgstr "Nombre del propietario"
+
+msgid "Survey Completed"
+msgstr "Encuesta completada"
+
+msgid "Survey completed"
+msgstr "Encuesta completada"
+
+msgid "Required for submission"
+msgstr "Requerido para enviar"
+
+msgid "Requested By"
+msgstr "Solicitado por"
+
+msgid "Coordinates"
+msgstr "Coordenadas"
+
+msgid "Latitude"
+msgstr "Latitud"
+
+msgid "Longitude"
+msgstr "Longitud"
+
+msgid "-90 to 90"
+msgstr "-90 a 90"
+
+msgid "-180 to 180"
+msgstr "-180 a 180"
+
+msgid "Click on the map to set coordinates"
+msgstr "Haz clic en el mapa para fijar las coordenadas"
+
+msgid "Any additional technical information about the device installation..."
+msgstr "Información técnica adicional sobre la instalación del dispositivo..."
+
+msgid "Device owner or responsible person"
+msgstr "Propietario o responsable del dispositivo"
+
+msgid "Full name"
+msgstr "Nombre completo"
+
+msgid "Select Organization"
+msgstr "Selecciona una organización"
+
+msgid "e.g., WaterLevel-Sensor-01"
+msgstr "p. ej., Sensor-NivelAgua-01"
+
+msgid "e.g., Water Level Sensor Station 1"
+msgstr "p. ej., Estación sensora de nivel de agua 1"
+
+msgid "e.g., SN-2026-001"
+msgstr "p. ej., SN-2026-001"
+
+msgid "e.g., default"
+msgstr "p. ej., default"
+
+msgid "e.g., 1.0.0"
+msgstr "p. ej., 1.0.0"
+
+msgid "e.g., POZO-01"
+msgstr "p. ej., POZO-01"
+
+msgid "e.g., La Serena, Chile"
+msgstr "p. ej., La Serena, Chile"
+
+msgid "Reject Device Request"
+msgstr "Rechazar solicitud de dispositivo"
+
+msgid "Reject Request"
+msgstr "Rechazar solicitud"
+
+msgid "Enter the reason for rejection..."
+msgstr "Ingresa el motivo del rechazo..."
+
+msgid "Retry Sync"
+msgstr "Reintentar sincronización"
+
+msgid "Retry synchronization with ThingsBoard?"
+msgstr "¿Reintentar la sincronización con ThingsBoard?"
+
+msgid "Save as Draft"
+msgstr "Guardar como borrador"
+
+msgid "Submit for Review"
+msgstr "Enviar para revisión"
+
+msgid "Please fix the following errors:"
+msgstr "Corrige los siguientes errores:"
+
+msgid "Fill in the device details below. Required fields are marked with *"
+msgstr "Completa los detalles del dispositivo abajo. Los campos obligatorios están marcados con *"
+
+msgid "Organization Requests"
+msgstr "Solicitudes de organización"
+
+msgid "Organization Requests Dashboard"
+msgstr "Panel de solicitudes de organización"
+
+msgid "Organization Request Details"
+msgstr "Detalles de la solicitud de organización"
+
+msgid "Organization Types"
+msgstr "Tipos de organización"
+
+msgid "Manage organization creation requests from users"
+msgstr "Gestiona las solicitudes de creación de organizaciones de los usuarios"
+
+msgid "Search by organization name, requester..."
+msgstr "Buscar por nombre de organización, solicitante..."
+
+msgid "User Management"
+msgstr "Gestión de usuarios"
+
+msgid "User Management Dashboard"
+msgstr "Panel de gestión de usuarios"
+
+msgid "User Details"
+msgstr "Detalles del usuario"
+
+msgid "Manage user registrations and organization memberships"
+msgstr "Gestiona los registros de usuarios y las membresías de organizaciones"
+
+msgid "Search by name, email, organization..."
+msgstr "Buscar por nombre, correo, organización..."
+
+msgid "Analytics & Activity Log"
+msgstr "Analítica y registro de actividad"
+
+msgid "Registration Trend (Monthly)"
+msgstr "Tendencia de registros (mensual)"
+
+msgid "Top Countries"
+msgstr "Principales países"
+
+msgid "Platform Distribution"
+msgstr "Distribución por plataforma"
+
+msgid "Status Overview"
+msgstr "Resumen de estado"
+
+msgid "Recent Admin Activity"
+msgstr "Actividad reciente del administrador"
+
+msgid "No admin activity recorded yet. Actions will appear here as they are performed."
+msgstr "Aún no se ha registrado actividad del administrador. Las acciones aparecerán aquí a medida que se realicen."
+
+msgid "Download current tab as CSV"
+msgstr "Descargar la pestaña actual como CSV"
+
+msgid "Show only duplicate applications"
+msgstr "Mostrar solo solicitudes duplicadas"
+
+msgid "Show applications from people who already had a CKAN account before applying"
+msgstr "Mostrar solicitudes de personas que ya tenían una cuenta de CKAN antes de postular"
+
+msgid "Show only applications requesting new organizations"
+msgstr "Mostrar solo solicitudes que piden nuevas organizaciones"
+
+msgid "Duplicates"
+msgstr "Duplicados"
+
+msgid "Pre-existing User"
+msgstr "Usuario preexistente"
+
+msgid "New Org"
+msgstr "Nueva organización"
+
+msgid "You must be logged in to access this page"
+msgstr "Debes iniciar sesión para acceder a esta página"
+
+msgid "Only system administrators can access this page"
+msgstr "Solo los administradores del sistema pueden acceder a esta página"
+
+msgid "You must be logged in to request an organization"
+msgstr "Debes iniciar sesión para solicitar una organización"
+
+msgid "Not authorized to create organization"
+msgstr "No autorizado para crear organización"
+
+msgid "Not authorized to approve users"
+msgstr "No autorizado para aprobar usuarios"
+
+msgid "Not authorized to reject users"
+msgstr "No autorizado para rechazar usuarios"
+
+msgid "Not authorized to create users"
+msgstr "No autorizado para crear usuarios"
+
+msgid "Need to be system administrator"
+msgstr "Debes ser administrador del sistema"
+
+msgid "Device request not found"
+msgstr "Solicitud de dispositivo no encontrada"
+
+msgid "You can only edit your own requests"
+msgstr "Solo puedes editar tus propias solicitudes"
+
+msgid "You can only submit your own requests"
+msgstr "Solo puedes enviar tus propias solicitudes"
+
+msgid "This request can no longer be edited"
+msgstr "Esta solicitud ya no se puede editar"
+
+msgid "This request cannot be submitted"
+msgstr "Esta solicitud no se puede enviar"
+
+msgid "This request cannot be approved in its current state"
+msgstr "Esta solicitud no puede aprobarse en su estado actual"
+
+msgid "This request cannot be rejected in its current state"
+msgstr "Esta solicitud no puede rechazarse en su estado actual"
+
+msgid "Device request saved as draft"
+msgstr "Solicitud de dispositivo guardada como borrador"
+
+msgid "Device request updated"
+msgstr "Solicitud de dispositivo actualizada"
+
+msgid "Device request submitted for review"
+msgstr "Solicitud de dispositivo enviada para revisión"
+
+msgid "Device request approved and synced to ThingsBoard"
+msgstr "Solicitud de dispositivo aprobada y sincronizada con ThingsBoard"
+
+msgid "Device request rejected"
+msgstr "Solicitud de dispositivo rechazada"
+
+msgid "Device successfully synced to ThingsBoard"
+msgstr "Dispositivo sincronizado correctamente con ThingsBoard"
+
+msgid "Error approving request"
+msgstr "Error al aprobar la solicitud"
+
+msgid "Error rejecting request"
+msgstr "Error al rechazar la solicitud"
+
+msgid "Rejection reason is required"
+msgstr "El motivo del rechazo es obligatorio"
+
+msgid "Only requests with sync errors can be retried"
+msgstr "Solo pueden reintentarse las solicitudes con errores de sincronización"
+
+msgid "Device already exists in ThingsBoard. Manual intervention required."
+msgstr "El dispositivo ya existe en ThingsBoard. Se requiere intervención manual."
+
+msgid "Cannot approve: %(errors)s"
+msgstr "No se puede aprobar: %(errors)s"
+
+msgid "Request approved but sync failed: %(error)s"
+msgstr "Solicitud aprobada pero la sincronización falló: %(error)s"
+
+msgid "Sync retry failed: %(error)s"
+msgstr "El reintento de sincronización falló: %(error)s"
+
+msgid "Device name"
+msgstr "Nombre del dispositivo"
+
+msgid "Serial number"
+msgstr "Número de serie"
+
+msgid "Device profile name"
+msgstr "Nombre del perfil del dispositivo"
+
+msgid "Site code"
+msgstr "Código del sitio"
+
+msgid "Installer name"
+msgstr "Nombre del instalador"
+
+msgid "Install date"
+msgstr "Fecha de instalación"
+
+msgid "Owner name"
+msgstr "Nombre del propietario"
+
+msgid "%(field)s is required"
+msgstr "%(field)s es obligatorio"
+
+msgid "Survey must be completed before submission"
+msgstr "La encuesta debe completarse antes de enviar"
+
+msgid "Serial number already exists"
+msgstr "El número de serie ya existe"
+
+msgid "Latitude must be between -90 and 90"
+msgstr "La latitud debe estar entre -90 y 90"
+
+msgid "Latitude must be a valid number"
+msgstr "La latitud debe ser un número válido"
+
+msgid "Longitude must be between -180 and 180"
+msgstr "La longitud debe estar entre -180 y 180"
+
+msgid "Longitude must be a valid number"
+msgstr "La longitud debe ser un número válido"
+
+msgid "Selected organization is not available for your user"
+msgstr "La organización seleccionada no está disponible para tu usuario"
+
+msgid "Install date must use the YYYY-MM-DD format"
+msgstr "La fecha de instalación debe usar el formato AAAA-MM-DD"

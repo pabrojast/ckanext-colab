@@ -900,3 +900,630 @@ msgstr "إرسال طلب آخر"
 #: ckanext/colab/templates/colab_temp/snippets/form.html:77
 msgid "Date of Birth"
 msgstr "تاريخ الميلاد"
+
+msgid "Actions"
+msgstr "الإجراءات"
+
+msgid "Action"
+msgstr "الإجراء"
+
+msgid "Address"
+msgstr "العنوان"
+
+msgid "Applied"
+msgstr "قدّم الطلب"
+
+msgid "Approve"
+msgstr "الموافقة"
+
+msgid "Approve & Sync"
+msgstr "الموافقة والمزامنة"
+
+msgid "Approve this device request and sync to ThingsBoard?"
+msgstr "هل تريد الموافقة على طلب هذا الجهاز ومزامنته مع ThingsBoard؟"
+
+msgid "Approved by %(user)s"
+msgstr "تمت الموافقة من قِبل %(user)s"
+
+msgid "Approved Organizations"
+msgstr "المنظمات المعتمدة"
+
+msgid "Approved Users"
+msgstr "المستخدمون المعتمدون"
+
+msgid "Are you sure you want to submit this request for review? You will not be able to edit it after submission."
+msgstr "هل أنت متأكد من إرسال هذا الطلب للمراجعة؟ لن تتمكن من تعديله بعد الإرسال."
+
+msgid "Avg. Days to Approve"
+msgstr "متوسط أيام الموافقة"
+
+msgid "Back"
+msgstr "رجوع"
+
+msgid "Back to List"
+msgstr "العودة إلى القائمة"
+
+msgid "Cancel"
+msgstr "إلغاء"
+
+msgid "Clear"
+msgstr "مسح"
+
+msgid "Clear Filters"
+msgstr "مسح المرشحات"
+
+msgid "Clear all filters"
+msgstr "مسح جميع المرشحات"
+
+msgid "Contact"
+msgstr "جهة الاتصال"
+
+msgid "Created"
+msgstr "تم الإنشاء"
+
+msgid "Date"
+msgstr "التاريخ"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "Details"
+msgstr "التفاصيل"
+
+msgid "Drafts"
+msgstr "المسودات"
+
+msgid "Edit"
+msgstr "تعديل"
+
+msgid "Error"
+msgstr "خطأ"
+
+msgid "Export CSV"
+msgstr "تصدير CSV"
+
+msgid "Failed"
+msgstr "فشل"
+
+msgid "NGO"
+msgstr "منظمة غير حكومية"
+
+msgid "No"
+msgstr "لا"
+
+msgid "OK"
+msgstr "تم"
+
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+msgid "Pending Approvals"
+msgstr "الموافقات المعلقة"
+
+msgid "Pending Requests"
+msgstr "الطلبات المعلقة"
+
+msgid "Platforms"
+msgstr "المنصات"
+
+msgid "Quick filters:"
+msgstr "مرشحات سريعة:"
+
+msgid "Reason"
+msgstr "السبب"
+
+msgid "Reject"
+msgstr "رفض"
+
+msgid "Rejected Requests"
+msgstr "الطلبات المرفوضة"
+
+msgid "Rejected Users"
+msgstr "المستخدمون المرفوضون"
+
+msgid "Rejected by %(user)s"
+msgstr "تم الرفض من قِبل %(user)s"
+
+msgid "Rejected by %(reviewer)s on %(date)s"
+msgstr "تم الرفض من قِبل %(reviewer)s في %(date)s"
+
+msgid "Requester"
+msgstr "مقدّم الطلب"
+
+msgid "Reviewed"
+msgstr "تمت المراجعة"
+
+msgid "Role"
+msgstr "الدور"
+
+msgid "Select all"
+msgstr "تحديد الكل"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Sync"
+msgstr "المزامنة"
+
+msgid "Sync:"
+msgstr "المزامنة:"
+
+msgid "Synced"
+msgstr "تمت المزامنة"
+
+msgid "Type"
+msgstr "النوع"
+
+msgid "User"
+msgstr "المستخدم"
+
+msgid "View"
+msgstr "عرض"
+
+msgid "View Details"
+msgstr "عرض التفاصيل"
+
+msgid "When"
+msgstr "متى"
+
+msgid "Yes"
+msgstr "نعم"
+
+msgid "selected"
+msgstr "محدد"
+
+msgid "All Countries"
+msgstr "جميع البلدان"
+
+msgid "All Organizations"
+msgstr "جميع المنظمات"
+
+msgid "All Roles"
+msgstr "جميع الأدوار"
+
+msgid "All Types"
+msgstr "جميع الأنواع"
+
+msgid "Academic Institution"
+msgstr "مؤسسة أكاديمية"
+
+msgid "Government Agency"
+msgstr "وكالة حكومية"
+
+msgid "International Organization"
+msgstr "منظمة دولية"
+
+msgid "Private Company"
+msgstr "شركة خاصة"
+
+msgid "Research Institute"
+msgstr "معهد بحثي"
+
+msgid "Device Management"
+msgstr "إدارة الأجهزة"
+
+msgid "Device Requests Admin"
+msgstr "إدارة طلبات الأجهزة"
+
+msgid "Device Requests Administration"
+msgstr "إدارة طلبات الأجهزة"
+
+msgid "My Device Requests"
+msgstr "طلبات أجهزتي"
+
+msgid "New Device Request"
+msgstr "طلب جهاز جديد"
+
+msgid "Edit Device Request"
+msgstr "تعديل طلب الجهاز"
+
+msgid "Edit Device Request #%(id)s"
+msgstr "تعديل طلب الجهاز رقم %(id)s"
+
+msgid "Device Request #%(id)s"
+msgstr "طلب جهاز رقم %(id)s"
+
+msgid "Request and track IoT device registrations for ThingsBoard"
+msgstr "اطلب وتتبّع تسجيلات أجهزة إنترنت الأشياء (IoT) في ThingsBoard"
+
+msgid "Review, approve, and manage IoT device registration requests"
+msgstr "راجِع طلبات تسجيل أجهزة إنترنت الأشياء واعتمدها وأدِرها"
+
+msgid "Request #%(id)s rejected:"
+msgstr "تم رفض الطلب رقم %(id)s:"
+
+msgid "Search by device name, serial number..."
+msgstr "ابحث باسم الجهاز أو الرقم التسلسلي..."
+
+msgid "Sync Errors"
+msgstr "أخطاء المزامنة"
+
+msgid "No requests in this category"
+msgstr "لا توجد طلبات في هذه الفئة"
+
+msgid "Requests will appear here when their status matches this tab."
+msgstr "ستظهر الطلبات هنا عندما تتطابق حالتها مع هذه التبويبة."
+
+msgid "No device requests yet"
+msgstr "لا توجد طلبات أجهزة بعد"
+
+msgid "Create your first device request to get started."
+msgstr "أنشئ أول طلب جهاز لك للبدء."
+
+msgid "Status Timeline"
+msgstr "الجدول الزمني للحالة"
+
+msgid "Device Information"
+msgstr "معلومات الجهاز"
+
+msgid "Installation Details"
+msgstr "تفاصيل التركيب"
+
+msgid "Location"
+msgstr "الموقع"
+
+msgid "Technical Notes"
+msgstr "ملاحظات فنية"
+
+msgid "Additional Information"
+msgstr "معلومات إضافية"
+
+msgid "Rejection Reason"
+msgstr "سبب الرفض"
+
+msgid "Sync Error"
+msgstr "خطأ في المزامنة"
+
+msgid "ThingsBoard Device"
+msgstr "جهاز ThingsBoard"
+
+msgid "TB Device ID"
+msgstr "معرّف جهاز TB"
+
+msgid "TB Customer ID"
+msgstr "معرّف عميل TB"
+
+msgid "Access Token"
+msgstr "رمز الوصول"
+
+msgid "Unnamed device"
+msgstr "جهاز بدون اسم"
+
+msgid "No serial"
+msgstr "بدون رقم تسلسلي"
+
+msgid "Device Name"
+msgstr "اسم الجهاز"
+
+msgid "Device Label"
+msgstr "تسمية الجهاز"
+
+msgid "Serial Number"
+msgstr "الرقم التسلسلي"
+
+msgid "Device Profile"
+msgstr "ملف تعريف الجهاز"
+
+msgid "Device Profile Name"
+msgstr "اسم ملف تعريف الجهاز"
+
+msgid "Firmware Version"
+msgstr "إصدار البرنامج الثابت"
+
+msgid "Site Code"
+msgstr "رمز الموقع"
+
+msgid "Installer"
+msgstr "القائم بالتركيب"
+
+msgid "Installer Name"
+msgstr "اسم القائم بالتركيب"
+
+msgid "Install Date"
+msgstr "تاريخ التركيب"
+
+msgid "Owner"
+msgstr "المالك"
+
+msgid "Owner Name"
+msgstr "اسم المالك"
+
+msgid "Survey Completed"
+msgstr "تم إكمال الاستبيان"
+
+msgid "Survey completed"
+msgstr "تم إكمال الاستبيان"
+
+msgid "Required for submission"
+msgstr "مطلوب للإرسال"
+
+msgid "Requested By"
+msgstr "بطلب من"
+
+msgid "Coordinates"
+msgstr "الإحداثيات"
+
+msgid "Latitude"
+msgstr "خط العرض"
+
+msgid "Longitude"
+msgstr "خط الطول"
+
+msgid "-90 to 90"
+msgstr "من -90 إلى 90"
+
+msgid "-180 to 180"
+msgstr "من -180 إلى 180"
+
+msgid "Click on the map to set coordinates"
+msgstr "انقر على الخريطة لتحديد الإحداثيات"
+
+msgid "Any additional technical information about the device installation..."
+msgstr "أي معلومات تقنية إضافية حول تركيب الجهاز..."
+
+msgid "Device owner or responsible person"
+msgstr "مالك الجهاز أو الشخص المسؤول"
+
+msgid "Full name"
+msgstr "الاسم الكامل"
+
+msgid "Select Organization"
+msgstr "اختر منظمة"
+
+msgid "e.g., WaterLevel-Sensor-01"
+msgstr "مثال: WaterLevel-Sensor-01"
+
+msgid "e.g., Water Level Sensor Station 1"
+msgstr "مثال: محطة استشعار منسوب المياه 1"
+
+msgid "e.g., SN-2026-001"
+msgstr "مثال: SN-2026-001"
+
+msgid "e.g., default"
+msgstr "مثال: default"
+
+msgid "e.g., 1.0.0"
+msgstr "مثال: 1.0.0"
+
+msgid "e.g., POZO-01"
+msgstr "مثال: POZO-01"
+
+msgid "e.g., La Serena, Chile"
+msgstr "مثال: لا سيرينا، تشيلي"
+
+msgid "Reject Device Request"
+msgstr "رفض طلب الجهاز"
+
+msgid "Reject Request"
+msgstr "رفض الطلب"
+
+msgid "Enter the reason for rejection..."
+msgstr "أدخل سبب الرفض..."
+
+msgid "Retry Sync"
+msgstr "إعادة محاولة المزامنة"
+
+msgid "Retry synchronization with ThingsBoard?"
+msgstr "هل تريد إعادة محاولة المزامنة مع ThingsBoard؟"
+
+msgid "Save as Draft"
+msgstr "حفظ كمسودة"
+
+msgid "Submit for Review"
+msgstr "إرسال للمراجعة"
+
+msgid "Please fix the following errors:"
+msgstr "يرجى تصحيح الأخطاء التالية:"
+
+msgid "Fill in the device details below. Required fields are marked with *"
+msgstr "املأ تفاصيل الجهاز أدناه. الحقول المطلوبة مُحدَّدة بعلامة *"
+
+msgid "Organization Requests"
+msgstr "طلبات المنظمات"
+
+msgid "Organization Requests Dashboard"
+msgstr "لوحة طلبات المنظمات"
+
+msgid "Organization Request Details"
+msgstr "تفاصيل طلب المنظمة"
+
+msgid "Organization Types"
+msgstr "أنواع المنظمات"
+
+msgid "Manage organization creation requests from users"
+msgstr "إدارة طلبات إنشاء المنظمات من المستخدمين"
+
+msgid "Search by organization name, requester..."
+msgstr "ابحث باسم المنظمة أو مقدّم الطلب..."
+
+msgid "User Management"
+msgstr "إدارة المستخدمين"
+
+msgid "User Management Dashboard"
+msgstr "لوحة إدارة المستخدمين"
+
+msgid "User Details"
+msgstr "تفاصيل المستخدم"
+
+msgid "Manage user registrations and organization memberships"
+msgstr "إدارة تسجيلات المستخدمين وعضويات المنظمات"
+
+msgid "Search by name, email, organization..."
+msgstr "ابحث بالاسم أو البريد الإلكتروني أو المنظمة..."
+
+msgid "Analytics & Activity Log"
+msgstr "التحليلات وسجل النشاط"
+
+msgid "Registration Trend (Monthly)"
+msgstr "اتجاه التسجيلات (شهرياً)"
+
+msgid "Top Countries"
+msgstr "الدول الرئيسية"
+
+msgid "Platform Distribution"
+msgstr "توزيع المنصات"
+
+msgid "Status Overview"
+msgstr "نظرة عامة على الحالة"
+
+msgid "Recent Admin Activity"
+msgstr "النشاط الإداري الأخير"
+
+msgid "No admin activity recorded yet. Actions will appear here as they are performed."
+msgstr "لم يتم تسجيل أي نشاط إداري بعد. ستظهر الإجراءات هنا عند تنفيذها."
+
+msgid "Download current tab as CSV"
+msgstr "تنزيل التبويبة الحالية كملف CSV"
+
+msgid "Show only duplicate applications"
+msgstr "عرض الطلبات المكررة فقط"
+
+msgid "Show applications from people who already had a CKAN account before applying"
+msgstr "عرض الطلبات الواردة من أشخاص لديهم حساب CKAN قبل التقديم"
+
+msgid "Show only applications requesting new organizations"
+msgstr "عرض الطلبات التي تطلب منظمات جديدة فقط"
+
+msgid "Duplicates"
+msgstr "مكررة"
+
+msgid "Pre-existing User"
+msgstr "مستخدم موجود مسبقاً"
+
+msgid "New Org"
+msgstr "منظمة جديدة"
+
+msgid "You must be logged in to access this page"
+msgstr "يجب تسجيل الدخول للوصول إلى هذه الصفحة"
+
+msgid "Only system administrators can access this page"
+msgstr "يمكن للمسؤولين عن النظام فقط الوصول إلى هذه الصفحة"
+
+msgid "You must be logged in to request an organization"
+msgstr "يجب تسجيل الدخول لطلب منظمة"
+
+msgid "Not authorized to create organization"
+msgstr "غير مصرّح بإنشاء منظمة"
+
+msgid "Not authorized to approve users"
+msgstr "غير مصرّح بالموافقة على المستخدمين"
+
+msgid "Not authorized to reject users"
+msgstr "غير مصرّح برفض المستخدمين"
+
+msgid "Not authorized to create users"
+msgstr "غير مصرّح بإنشاء مستخدمين"
+
+msgid "Need to be system administrator"
+msgstr "يجب أن تكون مسؤولاً عن النظام"
+
+msgid "Device request not found"
+msgstr "طلب الجهاز غير موجود"
+
+msgid "You can only edit your own requests"
+msgstr "يمكنك تعديل طلباتك فقط"
+
+msgid "You can only submit your own requests"
+msgstr "يمكنك إرسال طلباتك فقط"
+
+msgid "This request can no longer be edited"
+msgstr "لم يعد بالإمكان تعديل هذا الطلب"
+
+msgid "This request cannot be submitted"
+msgstr "لا يمكن إرسال هذا الطلب"
+
+msgid "This request cannot be approved in its current state"
+msgstr "لا يمكن الموافقة على هذا الطلب في حالته الحالية"
+
+msgid "This request cannot be rejected in its current state"
+msgstr "لا يمكن رفض هذا الطلب في حالته الحالية"
+
+msgid "Device request saved as draft"
+msgstr "تم حفظ طلب الجهاز كمسودة"
+
+msgid "Device request updated"
+msgstr "تم تحديث طلب الجهاز"
+
+msgid "Device request submitted for review"
+msgstr "تم إرسال طلب الجهاز للمراجعة"
+
+msgid "Device request approved and synced to ThingsBoard"
+msgstr "تمت الموافقة على طلب الجهاز ومزامنته مع ThingsBoard"
+
+msgid "Device request rejected"
+msgstr "تم رفض طلب الجهاز"
+
+msgid "Device successfully synced to ThingsBoard"
+msgstr "تمت مزامنة الجهاز مع ThingsBoard بنجاح"
+
+msgid "Error approving request"
+msgstr "حدث خطأ أثناء الموافقة على الطلب"
+
+msgid "Error rejecting request"
+msgstr "حدث خطأ أثناء رفض الطلب"
+
+msgid "Rejection reason is required"
+msgstr "سبب الرفض مطلوب"
+
+msgid "Only requests with sync errors can be retried"
+msgstr "يمكن إعادة محاولة الطلبات التي تحتوي على أخطاء مزامنة فقط"
+
+msgid "Device already exists in ThingsBoard. Manual intervention required."
+msgstr "الجهاز موجود بالفعل في ThingsBoard. يلزم تدخل يدوي."
+
+msgid "Cannot approve: %(errors)s"
+msgstr "تعذّر الموافقة: %(errors)s"
+
+msgid "Request approved but sync failed: %(error)s"
+msgstr "تمت الموافقة على الطلب لكن فشلت المزامنة: %(error)s"
+
+msgid "Sync retry failed: %(error)s"
+msgstr "فشلت إعادة محاولة المزامنة: %(error)s"
+
+msgid "Device name"
+msgstr "اسم الجهاز"
+
+msgid "Serial number"
+msgstr "الرقم التسلسلي"
+
+msgid "Device profile name"
+msgstr "اسم ملف تعريف الجهاز"
+
+msgid "Site code"
+msgstr "رمز الموقع"
+
+msgid "Installer name"
+msgstr "اسم القائم بالتركيب"
+
+msgid "Install date"
+msgstr "تاريخ التركيب"
+
+msgid "Owner name"
+msgstr "اسم المالك"
+
+msgid "%(field)s is required"
+msgstr "%(field)s مطلوب"
+
+msgid "Survey must be completed before submission"
+msgstr "يجب إكمال الاستبيان قبل الإرسال"
+
+msgid "Serial number already exists"
+msgstr "الرقم التسلسلي موجود بالفعل"
+
+msgid "Latitude must be between -90 and 90"
+msgstr "يجب أن يكون خط العرض بين -90 و90"
+
+msgid "Latitude must be a valid number"
+msgstr "يجب أن يكون خط العرض رقماً صالحاً"
+
+msgid "Longitude must be between -180 and 180"
+msgstr "يجب أن يكون خط الطول بين -180 و180"
+
+msgid "Longitude must be a valid number"
+msgstr "يجب أن يكون خط الطول رقماً صالحاً"
+
+msgid "Selected organization is not available for your user"
+msgstr "المنظمة المختارة غير متاحة لمستخدمك"
+
+msgid "Install date must use the YYYY-MM-DD format"
+msgstr "يجب أن يكون تاريخ التركيب بصيغة YYYY-MM-DD"

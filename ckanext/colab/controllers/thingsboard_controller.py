@@ -20,7 +20,7 @@ class ThingsBoardLogic:
     @staticmethod
     def _require_login():
         if not toolkit.g.userobj:
-            toolkit.abort(403, 'You must be logged in to access this page')
+            toolkit.abort(403, toolkit._('You must be logged in to access this page'))
 
     @staticmethod
     def _require_sysadmin():
@@ -28,7 +28,7 @@ class ThingsBoardLogic:
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            toolkit.abort(403, 'Only system administrators can access this page')
+            toolkit.abort(403, toolkit._('Only system administrators can access this page'))
 
     # ------------------------------------------------------------------
     # Validation
@@ -39,21 +39,21 @@ class ThingsBoardLogic:
         """Validate a device request for submission. Returns list of error strings."""
         errors = []
         required = {
-            'device_name': 'Device name',
-            'serial_number': 'Serial number',
-            'device_profile_name': 'Device profile name',
-            'site_code': 'Site code',
-            'installer_name': 'Installer name',
-            'install_date': 'Install date',
-            'owner_name': 'Owner name',
+            'device_name': toolkit._('Device name'),
+            'serial_number': toolkit._('Serial number'),
+            'device_profile_name': toolkit._('Device profile name'),
+            'site_code': toolkit._('Site code'),
+            'installer_name': toolkit._('Installer name'),
+            'install_date': toolkit._('Install date'),
+            'owner_name': toolkit._('Owner name'),
         }
         for field, label in required.items():
             val = getattr(req, field, None)
             if not val:
-                errors.append(f'{label} is required')
+                errors.append(toolkit._('%(field)s is required') % {'field': label})
 
         if not req.survey_completed:
-            errors.append('Survey must be completed before submission')
+            errors.append(toolkit._('Survey must be completed before submission'))
 
         # Serial number uniqueness
         if req.serial_number:
@@ -63,24 +63,24 @@ class ThingsBoardLogic:
             if request_id:
                 query = query.filter(DeviceRequest.id != request_id)
             if query.first():
-                errors.append('Serial number already exists')
+                errors.append(toolkit._('Serial number already exists'))
 
         # Lat/lon ranges
         if req.latitude is not None:
             try:
                 lat = float(req.latitude)
                 if lat < -90 or lat > 90:
-                    errors.append('Latitude must be between -90 and 90')
+                    errors.append(toolkit._('Latitude must be between -90 and 90'))
             except (ValueError, TypeError):
-                errors.append('Latitude must be a valid number')
+                errors.append(toolkit._('Latitude must be a valid number'))
 
         if req.longitude is not None:
             try:
                 lon = float(req.longitude)
                 if lon < -180 or lon > 180:
-                    errors.append('Longitude must be between -180 and 180')
+                    errors.append(toolkit._('Longitude must be between -180 and 180'))
             except (ValueError, TypeError):
-                errors.append('Longitude must be a valid number')
+                errors.append(toolkit._('Longitude must be a valid number'))
 
         return errors
 
@@ -132,7 +132,7 @@ class ThingsBoardLogic:
         req.technical_notes = request.form.get('technical_notes', '').strip()
         req.organization_id = request.form.get('organization_id', '').strip() or None
         if req.organization_id and allowed_org_ids is not None and req.organization_id not in allowed_org_ids:
-            errors.append('Selected organization is not available for your user')
+            errors.append(toolkit._('Selected organization is not available for your user'))
         req.survey_completed = request.form.get('survey_completed') == 'on'
 
         # Install date
@@ -142,7 +142,7 @@ class ThingsBoardLogic:
                 req.install_date = datetime.strptime(install_date_str, '%Y-%m-%d').date()
             except ValueError:
                 req.install_date = None
-                errors.append('Install date must use the YYYY-MM-DD format')
+                errors.append(toolkit._('Install date must use the YYYY-MM-DD format'))
         else:
             req.install_date = None
 
@@ -153,12 +153,12 @@ class ThingsBoardLogic:
             req.latitude = float(lat_str) if lat_str else None
         except ValueError:
             req.latitude = None
-            errors.append('Latitude must be a valid number')
+            errors.append(toolkit._('Latitude must be a valid number'))
         try:
             req.longitude = float(lon_str) if lon_str else None
         except ValueError:
             req.longitude = None
-            errors.append('Longitude must be a valid number')
+            errors.append(toolkit._('Longitude must be a valid number'))
 
         req.updated_at = datetime.utcnow()
         return errors
@@ -237,7 +237,7 @@ class ThingsBoardLogic:
             model.Session.add(dr)
             model.Session.commit()
 
-            toolkit.h.flash_success('Device request saved as draft')
+            toolkit.h.flash_success(toolkit._('Device request saved as draft'))
             return toolkit.redirect_to('thingsboard.edit_request', id=dr.id)
         except Exception as e:
             model.Session.rollback()
@@ -256,11 +256,11 @@ class ThingsBoardLogic:
 
         dr = model.Session.query(DeviceRequest).get(id)
         if not dr:
-            toolkit.abort(404, 'Device request not found')
+            toolkit.abort(404, toolkit._('Device request not found'))
         if dr.created_by_user_id != toolkit.g.userobj.id:
-            toolkit.abort(403, 'You can only edit your own requests')
+            toolkit.abort(403, toolkit._('You can only edit your own requests'))
         if dr.status not in ('DRAFT', 'REJECTED'):
-            toolkit.abort(403, 'This request can no longer be edited')
+            toolkit.abort(403, toolkit._('This request can no longer be edited'))
 
         orgs = ThingsBoardLogic._get_user_organizations()
         return render_template('thingsboard/device_form.html',
@@ -279,11 +279,11 @@ class ThingsBoardLogic:
 
         dr = model.Session.query(DeviceRequest).get(id)
         if not dr:
-            toolkit.abort(404, 'Device request not found')
+            toolkit.abort(404, toolkit._('Device request not found'))
         if dr.created_by_user_id != toolkit.g.userobj.id:
-            toolkit.abort(403, 'You can only edit your own requests')
+            toolkit.abort(403, toolkit._('You can only edit your own requests'))
         if dr.status not in ('DRAFT', 'REJECTED'):
-            toolkit.abort(403, 'This request can no longer be edited')
+            toolkit.abort(403, toolkit._('This request can no longer be edited'))
 
         try:
             errors = ThingsBoardLogic._populate_request_from_form(
@@ -301,7 +301,7 @@ class ThingsBoardLogic:
                 dr.rejection_reason = None
                 dr.rejected_at = None
             model.Session.commit()
-            toolkit.h.flash_success('Device request updated')
+            toolkit.h.flash_success(toolkit._('Device request updated'))
             return toolkit.redirect_to('thingsboard.edit_request', id=dr.id)
         except Exception as e:
             model.Session.rollback()
@@ -322,11 +322,11 @@ class ThingsBoardLogic:
 
         dr = model.Session.query(DeviceRequest).get(id)
         if not dr:
-            toolkit.abort(404, 'Device request not found')
+            toolkit.abort(404, toolkit._('Device request not found'))
         if dr.created_by_user_id != toolkit.g.userobj.id:
-            toolkit.abort(403, 'You can only submit your own requests')
+            toolkit.abort(403, toolkit._('You can only submit your own requests'))
         if dr.status not in ('DRAFT', 'REJECTED'):
-            toolkit.abort(403, 'This request cannot be submitted')
+            toolkit.abort(403, toolkit._('This request cannot be submitted'))
 
         form_errors = ThingsBoardLogic._populate_request_from_form(
             dr,
@@ -358,7 +358,7 @@ class ThingsBoardLogic:
             except Exception as e:
                 log.error(f'Error sending device submission notification: {e}')
 
-            toolkit.h.flash_success('Device request submitted for review')
+            toolkit.h.flash_success(toolkit._('Device request submitted for review'))
             return toolkit.redirect_to('thingsboard.dashboard')
         except Exception as e:
             model.Session.rollback()
@@ -412,7 +412,7 @@ class ThingsBoardLogic:
 
         dr = model.Session.query(DeviceRequest).get(id)
         if not dr:
-            toolkit.abort(404, 'Device request not found')
+            toolkit.abort(404, toolkit._('Device request not found'))
 
         # Resolve user names
         creator = model.User.get(dr.created_by_user_id)
@@ -439,15 +439,15 @@ class ThingsBoardLogic:
 
         dr = model.Session.query(DeviceRequest).get(id)
         if not dr:
-            toolkit.abort(404, 'Device request not found')
+            toolkit.abort(404, toolkit._('Device request not found'))
         if dr.status not in ('SUBMITTED', 'UNDER_REVIEW'):
-            toolkit.h.flash_error('This request cannot be approved in its current state')
+            toolkit.h.flash_error(toolkit._('This request cannot be approved in its current state'))
             return toolkit.redirect_to('thingsboard.admin_detail', id=id)
 
         # Validate required fields
         errors = ThingsBoardLogic._validate_for_submission(dr, request_id=dr.id)
         if errors:
-            toolkit.h.flash_error(f'Cannot approve: {", ".join(errors)}')
+            toolkit.h.flash_error(toolkit._('Cannot approve: %(errors)s') % {'errors': ", ".join(errors)})
             return toolkit.redirect_to('thingsboard.admin_detail', id=id)
 
         try:
@@ -461,7 +461,7 @@ class ThingsBoardLogic:
         except Exception as e:
             model.Session.rollback()
             log.error(f'Error approving device request: {e}')
-            toolkit.h.flash_error('Error approving request')
+            toolkit.h.flash_error(toolkit._('Error approving request'))
             return toolkit.redirect_to('thingsboard.admin_detail', id=id)
 
         # Sync to ThingsBoard
@@ -478,14 +478,14 @@ class ThingsBoardLogic:
             dr.updated_at = datetime.utcnow()
             model.Session.commit()
 
-            toolkit.h.flash_success('Device request approved and synced to ThingsBoard')
+            toolkit.h.flash_success(toolkit._('Device request approved and synced to ThingsBoard'))
         except Exception as e:
             dr.sync_status = 'error'
             dr.sync_error_message = str(e)
             dr.updated_at = datetime.utcnow()
             model.Session.commit()
             log.error(f'ThingsBoard sync error for request {id}: {e}')
-            toolkit.h.flash_error(f'Request approved but sync failed: {e}')
+            toolkit.h.flash_error(toolkit._('Request approved but sync failed: %(error)s') % {'error': e})
 
         return toolkit.redirect_to('thingsboard.admin_detail', id=id)
 
@@ -497,14 +497,14 @@ class ThingsBoardLogic:
 
         dr = model.Session.query(DeviceRequest).get(id)
         if not dr:
-            toolkit.abort(404, 'Device request not found')
+            toolkit.abort(404, toolkit._('Device request not found'))
         if dr.status not in ('SUBMITTED', 'UNDER_REVIEW'):
-            toolkit.h.flash_error('This request cannot be rejected in its current state')
+            toolkit.h.flash_error(toolkit._('This request cannot be rejected in its current state'))
             return toolkit.redirect_to('thingsboard.admin_detail', id=id)
 
         reason = request.form.get('rejection_reason', '').strip()
         if not reason:
-            toolkit.h.flash_error('Rejection reason is required')
+            toolkit.h.flash_error(toolkit._('Rejection reason is required'))
             return toolkit.redirect_to('thingsboard.admin_detail', id=id)
 
         try:
@@ -516,11 +516,11 @@ class ThingsBoardLogic:
             dr.updated_at = datetime.utcnow()
             model.Session.commit()
 
-            toolkit.h.flash_success('Device request rejected')
+            toolkit.h.flash_success(toolkit._('Device request rejected'))
         except Exception as e:
             model.Session.rollback()
             log.error(f'Error rejecting device request: {e}')
-            toolkit.h.flash_error('Error rejecting request')
+            toolkit.h.flash_error(toolkit._('Error rejecting request'))
 
         return toolkit.redirect_to('thingsboard.admin_dashboard')
 
@@ -532,14 +532,14 @@ class ThingsBoardLogic:
 
         dr = model.Session.query(DeviceRequest).get(id)
         if not dr:
-            toolkit.abort(404, 'Device request not found')
+            toolkit.abort(404, toolkit._('Device request not found'))
         if dr.sync_status != 'error':
-            toolkit.h.flash_error('Only requests with sync errors can be retried')
+            toolkit.h.flash_error(toolkit._('Only requests with sync errors can be retried'))
             return toolkit.redirect_to('thingsboard.admin_detail', id=id)
 
         # Don't re-create if already exists in TB
         if dr.tb_device_id:
-            toolkit.h.flash_error('Device already exists in ThingsBoard. Manual intervention required.')
+            toolkit.h.flash_error(toolkit._('Device already exists in ThingsBoard. Manual intervention required.'))
             return toolkit.redirect_to('thingsboard.admin_detail', id=id)
 
         try:
@@ -555,14 +555,14 @@ class ThingsBoardLogic:
             dr.updated_at = datetime.utcnow()
             model.Session.commit()
 
-            toolkit.h.flash_success('Device successfully synced to ThingsBoard')
+            toolkit.h.flash_success(toolkit._('Device successfully synced to ThingsBoard'))
         except Exception as e:
             dr.sync_status = 'error'
             dr.sync_error_message = str(e)
             dr.updated_at = datetime.utcnow()
             model.Session.commit()
             log.error(f'ThingsBoard retry sync error for request {id}: {e}')
-            toolkit.h.flash_error(f'Sync retry failed: {e}')
+            toolkit.h.flash_error(toolkit._('Sync retry failed: %(error)s') % {'error': e})
 
         return toolkit.redirect_to('thingsboard.admin_detail', id=id)
 
