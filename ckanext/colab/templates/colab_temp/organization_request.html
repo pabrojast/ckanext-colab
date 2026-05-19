@@ -27,7 +27,7 @@
             <!-- Breadcrumb Navigation -->
             <div class="toolbar" role="navigation" aria-label="Breadcrumb">
                 <ol class="breadcrumb">                 
-                    <li class="home"><a href="/" aria-label="Home"><i class="fa fa-home"></i><span> Home</span></a></li>
+                    <li class="home"><a href="{{ h.url_for('/') }}" aria-label="{{ _('Home') }}"><i class="fa fa-home"></i><span> {{ _('Home') }}</span></a></li>
                     <li><a href="{{ h.url_for('colab.show_something') }}">{% trans %}Register{% endtrans %}</a></li>
                     <li class="active"><a href="{{ h.url_for('colab.organization_request_form') }}">{% trans %}Request New Organization{% endtrans %}</a></li>
                 </ol>
@@ -784,7 +784,7 @@ function handleFileSelect(input) {
         // Validate file type
         const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
         if (!allowedTypes.includes(file.type)) {
-            showErrorMessage('Please select a valid image file (PNG, JPG, JPEG, or GIF)');
+            showErrorMessage({{ _('Please select a valid image file (PNG, JPG, JPEG, or GIF)') | tojson }});
             clearFileSelection();
             return;
         }
@@ -792,7 +792,7 @@ function handleFileSelect(input) {
         // Validate file size (2MB max)
         const maxSize = 2 * 1024 * 1024; // 2MB in bytes
         if (file.size > maxSize) {
-            showErrorMessage('File size must be less than 2MB');
+            showErrorMessage({{ _('File size must be less than 2MB') | tojson }});
             clearFileSelection();
             return;
         }
@@ -862,14 +862,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (hasErrors) {
                 e.preventDefault();
-                alert('Please fill in all required fields');
+                alert({{ _('Please fill in all required fields') | tojson }});
                 return false;
             }
-            
+
             // Show loading state
             const submitBtn = form.querySelector('button[type="submit"]');
             if (submitBtn) {
-                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ' + {{ _('Processing...') | tojson }};
                 submitBtn.disabled = true;
             }
         });

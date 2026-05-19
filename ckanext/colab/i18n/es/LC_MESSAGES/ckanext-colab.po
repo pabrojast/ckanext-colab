@@ -1576,3 +1576,142 @@ msgstr "La organización seleccionada no está disponible para tu usuario"
 
 msgid "Install date must use the YYYY-MM-DD format"
 msgstr "La fecha de instalación debe usar el formato AAAA-MM-DD"
+
+msgid "APPROVE ORGANIZATION REQUEST"
+msgstr "APROBAR SOLICITUD DE ORGANIZACIÓN"
+
+msgid "Type:"
+msgstr "Tipo:"
+
+msgid "Requester:"
+msgstr "Solicitante:"
+
+msgid "Admin:"
+msgstr "Administrador:"
+
+msgid "Do you want to approve this organization request?"
+msgstr "¿Deseas aprobar esta solicitud de organización?"
+
+msgid "Error approving"
+msgstr "Error al aprobar"
+
+msgid "Organization approved"
+msgstr "Organización aprobada"
+
+#, python-format
+msgid "%(name)s has been approved successfully"
+msgstr "%(name)s ha sido aprobado exitosamente"
+
+msgid "Connection error"
+msgstr "Error de conexión"
+
+msgid "Could not process the approval. Please try again."
+msgstr "No se pudo procesar la aprobación. Inténtalo de nuevo."
+
+msgid "📝 Please enter the reason for rejection:"
+msgstr "📝 Por favor, ingresa el motivo del rechazo:"
+
+msgid "Error rejecting"
+msgstr "Error al rechazar"
+
+msgid "Organization rejected"
+msgstr "Organización rechazada"
+
+#, python-format
+msgid "%(name)s has been rejected"
+msgstr "%(name)s ha sido rechazado"
+
+msgid "Could not process the rejection. Please try again."
+msgstr "No se pudo procesar el rechazo. Inténtalo de nuevo."
+
+msgid "APPROVE USER"
+msgstr "APROBAR USUARIO"
+
+msgid "Name:"
+msgstr "Nombre:"
+
+msgid "Title:"
+msgstr "Título:"
+
+msgid "Do you want to approve this user?"
+msgstr "¿Deseas aprobar este usuario?"
+
+#, python-format
+msgid "Role will be changed from \"%(from)s\" to \"%(to)s\""
+msgstr "El rol cambiará de \"%(from)s\" a \"%(to)s\""
+
+msgid "User approved"
+msgstr "Usuario aprobado"
+
+#, python-format
+msgid "Rejection reason for %(count)s application(s):"
+msgstr "Motivo de rechazo para %(count)s solicitud(es):"
+
+#, python-format
+msgid "Delete %(count)s application(s)? This is a soft delete and can be undone."
+msgstr "¿Eliminar %(count)s solicitud(es)? Esta es una eliminación reversible."
+
+#, python-format
+msgid "Approve %(count)s application(s) with member role?"
+msgstr "¿Aprobar %(count)s solicitud(es) con rol de miembro?"
+
+msgid "User rejected"
+msgstr "Usuario rechazado"
+
+msgid "Unknown error"
+msgstr "Error desconocido"
+
+msgid "Error deleting application: "
+msgstr "Error al eliminar la solicitud: "
+
+msgid "deleted"
+msgstr "eliminado"
+
+msgid "Undo"
+msgstr "Deshacer"
+
+msgid "Restored"
+msgstr "Restaurado"
+
+msgid "Application restored successfully"
+msgstr "Solicitud restaurada exitosamente"
+
+msgid "Could not restore"
+msgstr "No se pudo restaurar"
+
+msgid "Error restoring: "
+msgstr "Error al restaurar: "
+
+#, python-format
+msgid "%(action)s %(count)s application(s)"
+msgstr "%(action)s %(count)s solicitud(es)"
+
+msgid ". Errors: "
+msgstr ". Errores: "
+
+msgid "Bulk action failed"
+msgstr "La acción masiva falló"
+
+msgid "Network error: "
+msgstr "Error de red: "
+
+msgid "Could not save notes"
+msgstr "No se pudieron guardar las notas"
+
+msgid "Error saving notes: "
+msgstr "Error al guardar las notas: "
+
+msgid "Home"
+msgstr "Inicio"
+
+msgid "Please fill in all required fields"
+msgstr "Por favor, completa todos los campos obligatorios"
+
+msgid "Please select a valid image file (PNG, JPG, JPEG, or GIF)"
+msgstr "Por favor, selecciona un archivo de imagen válido (PNG, JPG, JPEG o GIF)"
+
+msgid "File size must be less than 2MB"
+msgstr "El tamaño del archivo debe ser menor a 2MB"
+
+msgid "Not authorized"
+msgstr "No autorizado"

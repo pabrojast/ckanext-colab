@@ -1527,3 +1527,142 @@ msgstr "المنظمة المختارة غير متاحة لمستخدمك"
 
 msgid "Install date must use the YYYY-MM-DD format"
 msgstr "يجب أن يكون تاريخ التركيب بصيغة YYYY-MM-DD"
+
+msgid "APPROVE ORGANIZATION REQUEST"
+msgstr "الموافقة على طلب المنظمة"
+
+msgid "Type:"
+msgstr "النوع:"
+
+msgid "Requester:"
+msgstr "مقدم الطلب:"
+
+msgid "Admin:"
+msgstr "المسؤول:"
+
+msgid "Do you want to approve this organization request?"
+msgstr "هل تريد الموافقة على طلب المنظمة هذا؟"
+
+msgid "Error approving"
+msgstr "خطأ في الموافقة"
+
+msgid "Organization approved"
+msgstr "تمت الموافقة على المنظمة"
+
+#, python-format
+msgid "%(name)s has been approved successfully"
+msgstr "تمت الموافقة على %(name)s بنجاح"
+
+msgid "Connection error"
+msgstr "خطأ في الاتصال"
+
+msgid "Could not process the approval. Please try again."
+msgstr "تعذر معالجة الموافقة. يرجى المحاولة مرة أخرى."
+
+msgid "📝 Please enter the reason for rejection:"
+msgstr "📝 يرجى إدخال سبب الرفض:"
+
+msgid "Error rejecting"
+msgstr "خطأ في الرفض"
+
+msgid "Organization rejected"
+msgstr "تم رفض المنظمة"
+
+#, python-format
+msgid "%(name)s has been rejected"
+msgstr "تم رفض %(name)s"
+
+msgid "Could not process the rejection. Please try again."
+msgstr "تعذر معالجة الرفض. يرجى المحاولة مرة أخرى."
+
+msgid "APPROVE USER"
+msgstr "الموافقة على المستخدم"
+
+msgid "Name:"
+msgstr "الاسم:"
+
+msgid "Title:"
+msgstr "العنوان:"
+
+msgid "Do you want to approve this user?"
+msgstr "هل تريد الموافقة على هذا المستخدم؟"
+
+#, python-format
+msgid "Role will be changed from \"%(from)s\" to \"%(to)s\""
+msgstr "سيتم تغيير الدور من \"%(from)s\" إلى \"%(to)s\""
+
+msgid "User approved"
+msgstr "تمت الموافقة على المستخدم"
+
+#, python-format
+msgid "Rejection reason for %(count)s application(s):"
+msgstr "سبب رفض %(count)s طلب:"
+
+#, python-format
+msgid "Delete %(count)s application(s)? This is a soft delete and can be undone."
+msgstr "حذف %(count)s طلب؟ هذا حذف يمكن التراجع عنه."
+
+#, python-format
+msgid "Approve %(count)s application(s) with member role?"
+msgstr "الموافقة على %(count)s طلب بدور عضو؟"
+
+msgid "User rejected"
+msgstr "تم رفض المستخدم"
+
+msgid "Unknown error"
+msgstr "خطأ غير معروف"
+
+msgid "Error deleting application: "
+msgstr "خطأ في حذف الطلب: "
+
+msgid "deleted"
+msgstr "محذوف"
+
+msgid "Undo"
+msgstr "تراجع"
+
+msgid "Restored"
+msgstr "تمت الاستعادة"
+
+msgid "Application restored successfully"
+msgstr "تمت استعادة الطلب بنجاح"
+
+msgid "Could not restore"
+msgstr "تعذرت الاستعادة"
+
+msgid "Error restoring: "
+msgstr "خطأ في الاستعادة: "
+
+#, python-format
+msgid "%(action)s %(count)s application(s)"
+msgstr "%(action)s %(count)s طلب"
+
+msgid ". Errors: "
+msgstr ". أخطاء: "
+
+msgid "Bulk action failed"
+msgstr "فشل الإجراء الجماعي"
+
+msgid "Network error: "
+msgstr "خطأ في الشبكة: "
+
+msgid "Could not save notes"
+msgstr "تعذر حفظ الملاحظات"
+
+msgid "Error saving notes: "
+msgstr "خطأ في حفظ الملاحظات: "
+
+msgid "Home"
+msgstr "الرئيسية"
+
+msgid "Please fill in all required fields"
+msgstr "يرجى ملء جميع الحقول المطلوبة"
+
+msgid "Please select a valid image file (PNG, JPG, JPEG, or GIF)"
+msgstr "يرجى اختيار ملف صورة صالح (PNG أو JPG أو JPEG أو GIF)"
+
+msgid "File size must be less than 2MB"
+msgstr "يجب أن يكون حجم الملف أقل من 2 ميجابايت"
+
+msgid "Not authorized"
+msgstr "غير مصرح"

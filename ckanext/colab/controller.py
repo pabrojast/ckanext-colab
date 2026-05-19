@@ -721,7 +721,7 @@ Best regards,
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            abort(403, 'Not authorized')
+            abort(403, toolkit._('Not authorized'))
 
         tab = request.args.get('tab', 'pending')
 

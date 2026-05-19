@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid #e9ecef;">
-                    <a href="/colab/status" style="color: #0072bc; font-size: 13px; text-decoration: none;">
+                    <a href="{{ h.url_for('/colab/status') }}" style="color: #0072bc; font-size: 13px; text-decoration: none;">
                         🔍 {{ _("Check your application status anytime at") }} <strong>/colab/status</strong>
                     </a>
                 </div>
@@ -115,13 +115,13 @@
 
         <!-- Action Buttons -->
         <div class="thanks-actions">
-            <a href="/" class="btn btn-primary btn-lg">
+            <a href="{{ h.url_for('/') }}" class="btn btn-primary btn-lg">
                 <i class="fa fa-home"></i> {{ _("Return to Home") }}
             </a>
-            <a href="/colab/status" class="btn btn-default btn-lg">
+            <a href="{{ h.url_for('/colab/status') }}" class="btn btn-default btn-lg">
                 <i class="fa fa-search"></i> {{ _("Check Application Status") }}
             </a>
-            <a href="/dataset" class="btn btn-default btn-lg">
+            <a href="{{ h.url_for('/dataset') }}" class="btn btn-default btn-lg">
                 <i class="fa fa-database"></i> {{ _("Browse Datasets") }}
             </a>
         </div>

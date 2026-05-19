@@ -94,8 +94,8 @@
 
             <div class="action-buttons">
                 <a href="#" onclick="history.back()" class="btn-primary">{{ _("Try Again") }}</a>
-                <a href="/user/login" class="btn-secondary">{{ _("Login Instead") }}</a>
-                <a href="/" class="btn-tertiary">{{ _("Return to Home") }}</a>
+                <a href="{{ h.url_for('user.login') }}" class="btn-secondary">{{ _("Login Instead") }}</a>
+                <a href="{{ h.url_for('/') }}" class="btn-tertiary">{{ _("Return to Home") }}</a>
             </div>
         </div>
     </div>

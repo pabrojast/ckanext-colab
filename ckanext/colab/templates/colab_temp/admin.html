@@ -2044,6 +2044,49 @@
 </div>
 
 <script>
+// i18n bridge — strings used by inline JS below
+var _i18n = {
+    approve_user_title:    {{ _('APPROVE USER') | tojson }},
+    name_label:            {{ _('Name:') | tojson }},
+    username_label:        {{ _('Username:') | tojson }},
+    org_label:             {{ _('Organization:') | tojson }},
+    title_label:           {{ _('Title:') | tojson }},
+    email_label:           {{ _('Email:') | tojson }},
+    role_label:            {{ _('Role:') | tojson }},
+    approve_user_confirm:  {{ _('Do you want to approve this user?') | tojson }},
+    role_change_msg:       {{ _('Role will be changed from "%(from)s" to "%(to)s"') | tojson }},
+    processing:            {{ _('Processing...') | tojson }},
+    approve_btn:           {{ _('Approve') | tojson }},
+    err_approve_title:     {{ _('Error approving') | tojson }},
+    conn_err_title:        {{ _('Connection error') | tojson }},
+    approve_conn_err:      {{ _('Could not process the approval. Please try again.') | tojson }},
+    user_approved_title:   {{ _('User approved') | tojson }},
+    user_approved_msg:     {{ _('%(name)s has been approved successfully') | tojson }},
+    reject_prompt:         {{ _('📝 Please enter the reason for rejection:') | tojson }},
+    bulk_reject_prompt:    {{ _('Rejection reason for %(count)s application(s):') | tojson }},
+    bulk_delete_confirm:   {{ _('Delete %(count)s application(s)? This is a soft delete and can be undone.') | tojson }},
+    bulk_approve_confirm:  {{ _('Approve %(count)s application(s) with member role?') | tojson }},
+    err_reject_title:      {{ _('Error rejecting') | tojson }},
+    user_rejected_title:   {{ _('User rejected') | tojson }},
+    user_rejected_msg:     {{ _('%(name)s has been rejected') | tojson }},
+    reject_conn_err:       {{ _('Could not process the rejection. Please try again.') | tojson }},
+    error_title:           {{ _('Error') | tojson }},
+    unknown_error:         {{ _('Unknown error') | tojson }},
+    err_delete_app:        {{ _('Error deleting application: ') | tojson }},
+    deleted_label:         {{ _('deleted') | tojson }},
+    undo_btn:              {{ _('Undo') | tojson }},
+    restored_title:        {{ _('Restored') | tojson }},
+    restored_msg:          {{ _('Application restored successfully') | tojson }},
+    could_not_restore:     {{ _('Could not restore') | tojson }},
+    err_restoring:         {{ _('Error restoring: ') | tojson }},
+    bulk_done_msg:         {{ _('%(action)s %(count)s application(s)') | tojson }},
+    bulk_errors_label:     {{ _('. Errors: ') | tojson }},
+    bulk_action_failed:    {{ _('Bulk action failed') | tojson }},
+    network_error:         {{ _('Network error: ') | tojson }},
+    could_not_save_notes:  {{ _('Could not save notes') | tojson }},
+    err_saving_notes:      {{ _('Error saving notes: ') | tojson }}
+};
+
 // CSRF token helper: CKAN 2.10+ provides a token in a meta tag or cookie
 function getCsrfToken() {
     // Try meta tag first (CKAN 2.10+)
@@ -2216,17 +2259,17 @@ function handleApprove(event) {
     const roleSelector = rowElement ? rowElement.querySelector('.role-selector') : null;
     const selectedRole = roleSelector ? roleSelector.value : (userRole || 'admin');
 
-    const roleChange = selectedRole !== (userRole || 'admin') ? 
-        `\n⚠️ Role will be changed from "${userRole || 'admin'}" to "${selectedRole}"` : '';
-    
-    const confirmMessage = `🎯 APPROVE USER\n\n` +
-                          `👤 Name: ${fullName}\n` +
-                          `🔑 Username: ${winsUsername}\n` +
-                          `🏢 Organization: ${organizationName}\n` +
-                          `📋 Title: ${titleWithinOrganization}\n` +
-                          `📧 Email: ${email}\n` +
-                          `🎭 Role: ${selectedRole}${roleChange}\n\n` +
-                          `Do you want to approve this user?`;
+    const roleChange = selectedRole !== (userRole || 'admin') ?
+        `\n⚠️ ${_i18n.role_change_msg.replace('%(from)s', (userRole || 'admin')).replace('%(to)s', selectedRole)}` : '';
+
+    const confirmMessage = `🎯 ${_i18n.approve_user_title}\n\n` +
+                          `👤 ${_i18n.name_label} ${fullName}\n` +
+                          `🔑 ${_i18n.username_label} ${winsUsername}\n` +
+                          `🏢 ${_i18n.org_label} ${organizationName}\n` +
+                          `📋 ${_i18n.title_label} ${titleWithinOrganization}\n` +
+                          `📧 ${_i18n.email_label} ${email}\n` +
+                          `🎭 ${_i18n.role_label} ${selectedRole}${roleChange}\n\n` +
+                          `${_i18n.approve_user_confirm}`;
 
     if (confirm(confirmMessage)) {
         // Store user info for last processed
@@ -2240,7 +2283,7 @@ function handleApprove(event) {
 
         // Show processing state
         rowElement.classList.add('row-processing');
-        link.innerHTML = '⏳ Processing...';
+        link.innerHTML = '⏳ ' + _i18n.processing;
         link.style.pointerEvents = 'none';
 
         const formData = new FormData();
@@ -2263,17 +2306,17 @@ function handleApprove(event) {
         })
         .then(data => {
             if (data.error) {
-                showToast('Error al aprobar', data.error, 'error');
+                showToast(_i18n.err_approve_title, data.error, 'error');
                 rowElement.classList.remove('row-processing');
-                link.innerHTML = '✅ Approve';
+                link.innerHTML = '✅ ' + _i18n.approve_btn;
                 link.style.pointerEvents = 'auto';
             } else {
                 // Show success state
                 rowElement.classList.remove('row-processing');
                 rowElement.classList.add('row-success');
-                
+
                 // Show success toast
-                showToast('Usuario aprobado', `${fullName} ha sido aprobado exitosamente`, 'success');
+                showToast(_i18n.user_approved_title, _i18n.user_approved_msg.replace('%(name)s', fullName), 'success');
                 
                 // Show last processed indicator
                 showLastProcessedIndicator();
@@ -2294,9 +2337,9 @@ function handleApprove(event) {
         })
         .catch(error => {
             console.error('Error:', error);
-            showToast('Error de conexión', 'No se pudo procesar la aprobación. Inténtalo de nuevo.', 'error');
+            showToast(_i18n.conn_err_title, _i18n.approve_conn_err, 'error');
             rowElement.classList.remove('row-processing');
-            link.innerHTML = '✅ Approve';
+            link.innerHTML = '✅ ' + _i18n.approve_btn;
             link.style.pointerEvents = 'auto';
         });
     }
@@ -2310,7 +2353,7 @@ function handleReject(event) {
     const organization = link.getAttribute('data-organization-name');
     const fullName = link.closest('tr').querySelector('strong').textContent;
     
-    const reason = prompt("📝 Please enter the reason for rejection:");
+    const reason = prompt(_i18n.reject_prompt);
     if (reason && reason.trim()) {
         const rowElement = link.closest('tr');
         
@@ -2325,7 +2368,7 @@ function handleReject(event) {
 
         // Show processing state
         rowElement.classList.add('row-processing');
-        link.innerHTML = '⏳ Processing...';
+        link.innerHTML = '⏳ ' + _i18n.processing;
         link.style.pointerEvents = 'none';
 
         const formData = new FormData();
@@ -2346,7 +2389,7 @@ function handleReject(event) {
             })
             .then(data => {
                 if (data.error) {
-                    showToast('Error al rechazar', data.error, 'error');
+                    showToast(_i18n.err_reject_title, data.error, 'error');
                     rowElement.classList.remove('row-processing');
                     link.innerHTML = '❌ Reject';
                     link.style.pointerEvents = 'auto';
@@ -2356,7 +2399,7 @@ function handleReject(event) {
                     rowElement.classList.add('row-success');
                     
                     // Show toast with rejection
-                    showToast('Usuario rechazado', `${fullName} ha sido rechazado`, 'warning');
+                    showToast(_i18n.user_rejected_title, _i18n.user_rejected_msg.replace('%(name)s', fullName), 'warning');
                     
                     // Show last processed indicator
                     showLastProcessedIndicator();
@@ -2373,7 +2416,7 @@ function handleReject(event) {
             })
             .catch(error => {
                 console.error('Error:', error);
-                showToast('Error de conexión', 'No se pudo procesar el rechazo. Inténtalo de nuevo.', 'error');
+                showToast(_i18n.conn_err_title, _i18n.reject_conn_err, 'error');
                 rowElement.classList.remove('row-processing');
                 link.innerHTML = '❌ Reject';
                 link.style.pointerEvents = 'auto';
@@ -2524,14 +2567,14 @@ function approveFromModal(username) {
     })
     .then(data => {
         if (data.error) {
-            showToast('Error al aprobar', data.error, 'error');
+            showToast(_i18n.err_approve_title, data.error, 'error');
             if (rowElement) rowElement.classList.remove('row-processing');
         } else {
             if (rowElement) {
                 rowElement.classList.remove('row-processing');
                 rowElement.classList.add('row-success');
             }
-            showToast('Usuario aprobado', `${user.fullname} ha sido aprobado exitosamente`, 'success');
+            showToast(_i18n.user_approved_title, _i18n.user_approved_msg.replace('%(name)s', user.fullname), 'success');
             showLastProcessedIndicator();
             setTimeout(() => {
                 if (rowElement) {
@@ -2549,7 +2592,7 @@ function approveFromModal(username) {
     })
     .catch(error => {
         console.error('Error:', error);
-        showToast('Error de conexión', 'No se pudo procesar la aprobación. Inténtalo de nuevo.', 'error');
+        showToast(_i18n.conn_err_title, _i18n.approve_conn_err, 'error');
         if (rowElement) rowElement.classList.remove('row-processing');
     });
 }
@@ -2560,7 +2603,7 @@ function rejectFromModal(username) {
 
     closeModal();
 
-    const reason = prompt("📝 Please enter the reason for rejection:");
+    const reason = prompt(_i18n.reject_prompt);
     if (!reason) return;
 
     const rowElement = document.querySelector(`tr[data-user-id="${username}"]`);
@@ -2592,14 +2635,14 @@ function rejectFromModal(username) {
     })
     .then(data => {
         if (data.error) {
-            showToast('Error al rechazar', data.error, 'error');
+            showToast(_i18n.err_reject_title, data.error, 'error');
             if (rowElement) rowElement.classList.remove('row-processing');
         } else {
             if (rowElement) {
                 rowElement.classList.remove('row-processing');
                 rowElement.classList.add('row-error');
             }
-            showToast('Usuario rechazado', `${user.fullname} ha sido rechazado`, 'info');
+            showToast(_i18n.user_rejected_title, _i18n.user_rejected_msg.replace('%(name)s', user.fullname), 'info');
             showLastProcessedIndicator();
             setTimeout(() => {
                 if (rowElement) {
@@ -2614,7 +2657,7 @@ function rejectFromModal(username) {
     })
     .catch(error => {
         console.error('Error:', error);
-        showToast('Error de conexión', 'No se pudo procesar el rechazo. Inténtalo de nuevo.', 'error');
+        showToast(_i18n.conn_err_title, _i18n.reject_conn_err, 'error');
         if (rowElement) rowElement.classList.remove('row-processing');
     });
 }
@@ -2977,12 +3020,12 @@ function confirmDelete() {
             updateCounts();
         } else {
             if (row) row.classList.remove('row-processing');
-            showToast('Error', data.error || 'Unknown error', 'error');
+            showToast(_i18n.error_title, data.error || _i18n.unknown_error, 'error');
         }
     })
     .catch(function(err) {
         if (row) row.classList.remove('row-processing');
-        showToast('Error', 'Error deleting application: ' + err, 'error');
+        showToast(_i18n.error_title, _i18n.err_delete_app + err, 'error');
     });
 }
 
@@ -2990,11 +3033,11 @@ function showUndoToast(fullname, recordId, row) {
     var container = document.getElementById('toast-container');
     var toast = document.createElement('div');
     toast.className = 'toast toast-warning';
-    toast.innerHTML = 
+    toast.innerHTML =
         '<div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">' +
-        '<span>🗑️ <strong>' + fullname + '</strong> deleted</span>' +
+        '<span>🗑️ <strong>' + fullname + '</strong> ' + _i18n.deleted_label + '</span>' +
         '<button onclick="undoDelete(\'' + recordId + '\', this)" ' +
-        'style="padding:4px 12px; background:white; border:1px solid #856404; border-radius:4px; cursor:pointer; font-size:12px; font-weight:500; white-space:nowrap;">↩️ Undo</button>' +
+        'style="padding:4px 12px; background:white; border:1px solid #856404; border-radius:4px; cursor:pointer; font-size:12px; font-weight:500; white-space:nowrap;">↩️ ' + _i18n.undo_btn + '</button>' +
         '</div>';
     container.appendChild(toast);
     
@@ -3043,18 +3086,18 @@ function undoDelete(recordId, btn) {
             // Remove the toast
             var toast = btn.closest('.toast');
             if (toast) toast.remove();
-            showToast('Restored', 'Application restored successfully', 'success');
+            showToast(_i18n.restored_title, _i18n.restored_msg, 'success');
             updateCounts();
         } else {
             btn.disabled = false;
-            btn.textContent = '↩️ Undo';
-            showToast('Error', data.error || 'Could not restore', 'error');
+            btn.textContent = '↩️ ' + _i18n.undo_btn;
+            showToast(_i18n.error_title, data.error || _i18n.could_not_restore, 'error');
         }
     })
     .catch(function(err) {
         btn.disabled = false;
-        btn.textContent = '↩️ Undo';
-        showToast('Error', 'Error restoring: ' + err, 'error');
+        btn.textContent = '↩️ ' + _i18n.undo_btn;
+        showToast(_i18n.error_title, _i18n.err_restoring + err, 'error');
     });
 }
 
@@ -3164,14 +3207,14 @@ function bulkAction(action) {
 
     if (action === 'reject') {
         // Show bulk reject reason dialog
-        var reason = prompt('Rejection reason for ' + ids.length + ' application(s):');
+        var reason = prompt(_i18n.bulk_reject_prompt.replace('%(count)s', ids.length));
         if (reason === null) return;
         executeBulkAction(action, ids, {reason: reason});
     } else if (action === 'delete') {
-        if (!confirm('Delete ' + ids.length + ' application(s)? This is a soft delete and can be undone.')) return;
+        if (!confirm(_i18n.bulk_delete_confirm.replace('%(count)s', ids.length))) return;
         executeBulkAction(action, ids, {});
     } else if (action === 'approve') {
-        if (!confirm('Approve ' + ids.length + ' application(s) with member role?')) return;
+        if (!confirm(_i18n.bulk_approve_confirm.replace('%(count)s', ids.length))) return;
         executeBulkAction(action, ids, {role: 'member'});
     }
 }
@@ -3198,18 +3241,21 @@ function executeBulkAction(action, ids, extra) {
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.success) {
-                var msg = action.charAt(0).toUpperCase() + action.slice(1) + 'd ' + data.processed + ' application(s)';
+                var actionLabel = action.charAt(0).toUpperCase() + action.slice(1) + 'd';
+                var msg = _i18n.bulk_done_msg
+                    .replace('%(action)s', actionLabel)
+                    .replace('%(count)s', data.processed);
                 if (data.errors && data.errors.length > 0) {
-                    msg += '. Errors: ' + data.errors.join('; ');
+                    msg += _i18n.bulk_errors_label + data.errors.join('; ');
                 }
-                showToast('Bulk ' + action, msg, data.errors ? 'warning' : 'success');
+                showToast(actionLabel, msg, data.errors ? 'warning' : 'success');
                 setTimeout(function() { location.reload(); }, 1500);
             } else {
-                showToast('Error', data.error || 'Bulk action failed', 'error');
+                showToast(_i18n.error_title, data.error || _i18n.bulk_action_failed, 'error');
             }
         })
         .catch(function(err) {
-            showToast('Error', 'Network error: ' + err, 'error');
+            showToast(_i18n.error_title, _i18n.network_error + err, 'error');
         })
         .finally(function() {
             _bulkActionInProgress = false;
@@ -3236,11 +3282,11 @@ function saveAdminNote(recordId) {
                 var user = allUsers.find(function(u) { return u.id === recordId; });
                 if (user) user.admin_notes = notes;
             } else {
-                showToast('Error', data.error || 'Could not save notes', 'error');
+                showToast(_i18n.error_title, data.error || _i18n.could_not_save_notes, 'error');
             }
         })
         .catch(function(err) {
-            showToast('Error', 'Error saving notes: ' + err, 'error');
+            showToast(_i18n.error_title, _i18n.err_saving_notes + err, 'error');
         });
 }
 
@@ -3418,9 +3464,9 @@ function renderStatusChart() {
     });
 
     var data = [
-        {label: 'Pending', value: pending, color: '#ffc107'},
-        {label: 'Approved', value: approved, color: '#28a745'},
-        {label: 'Rejected', value: rejected, color: '#dc3545'}
+        {label: {{ _('Pending') | tojson }}, value: pending, color: '#ffc107'},
+        {label: {{ _('Approved') | tojson }}, value: approved, color: '#28a745'},
+        {label: {{ _('Rejected') | tojson }}, value: rejected, color: '#dc3545'}
     ];
 
     drawHorizontalBars(ctx, data, canvas.width, canvas.height);

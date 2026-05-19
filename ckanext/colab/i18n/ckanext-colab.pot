@@ -1510,3 +1510,142 @@ msgstr ""
 
 msgid "Install date must use the YYYY-MM-DD format"
 msgstr ""
+
+msgid "APPROVE ORGANIZATION REQUEST"
+msgstr ""
+
+msgid "Type:"
+msgstr ""
+
+msgid "Requester:"
+msgstr ""
+
+msgid "Admin:"
+msgstr ""
+
+msgid "Do you want to approve this organization request?"
+msgstr ""
+
+msgid "Error approving"
+msgstr ""
+
+msgid "Organization approved"
+msgstr ""
+
+#, python-format
+msgid "%(name)s has been approved successfully"
+msgstr ""
+
+msgid "Connection error"
+msgstr ""
+
+msgid "Could not process the approval. Please try again."
+msgstr ""
+
+msgid "📝 Please enter the reason for rejection:"
+msgstr ""
+
+msgid "Error rejecting"
+msgstr ""
+
+msgid "Organization rejected"
+msgstr ""
+
+#, python-format
+msgid "%(name)s has been rejected"
+msgstr ""
+
+msgid "Could not process the rejection. Please try again."
+msgstr ""
+
+msgid "APPROVE USER"
+msgstr ""
+
+msgid "Name:"
+msgstr ""
+
+msgid "Title:"
+msgstr ""
+
+msgid "Do you want to approve this user?"
+msgstr ""
+
+#, python-format
+msgid "Role will be changed from \"%(from)s\" to \"%(to)s\""
+msgstr ""
+
+msgid "User approved"
+msgstr ""
+
+#, python-format
+msgid "Rejection reason for %(count)s application(s):"
+msgstr ""
+
+#, python-format
+msgid "Delete %(count)s application(s)? This is a soft delete and can be undone."
+msgstr ""
+
+#, python-format
+msgid "Approve %(count)s application(s) with member role?"
+msgstr ""
+
+msgid "User rejected"
+msgstr ""
+
+msgid "Unknown error"
+msgstr ""
+
+msgid "Error deleting application: "
+msgstr ""
+
+msgid "deleted"
+msgstr ""
+
+msgid "Undo"
+msgstr ""
+
+msgid "Restored"
+msgstr ""
+
+msgid "Application restored successfully"
+msgstr ""
+
+msgid "Could not restore"
+msgstr ""
+
+msgid "Error restoring: "
+msgstr ""
+
+#, python-format
+msgid "%(action)s %(count)s application(s)"
+msgstr ""
+
+msgid ". Errors: "
+msgstr ""
+
+msgid "Bulk action failed"
+msgstr ""
+
+msgid "Network error: "
+msgstr ""
+
+msgid "Could not save notes"
+msgstr ""
+
+msgid "Error saving notes: "
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "Please fill in all required fields"
+msgstr ""
+
+msgid "Please select a valid image file (PNG, JPG, JPEG, or GIF)"
+msgstr ""
+
+msgid "File size must be less than 2MB"
+msgstr ""
+
+msgid "Not authorized"
+msgstr ""

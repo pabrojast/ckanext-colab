@@ -1579,3 +1579,142 @@ msgstr "L'organisation sélectionnée n'est pas disponible pour votre utilisateu
 
 msgid "Install date must use the YYYY-MM-DD format"
 msgstr "La date d'installation doit utiliser le format AAAA-MM-JJ"
+
+msgid "APPROVE ORGANIZATION REQUEST"
+msgstr "APPROUVER LA DEMANDE D'ORGANISATION"
+
+msgid "Type:"
+msgstr "Type :"
+
+msgid "Requester:"
+msgstr "Demandeur :"
+
+msgid "Admin:"
+msgstr "Administrateur :"
+
+msgid "Do you want to approve this organization request?"
+msgstr "Voulez-vous approuver cette demande d'organisation ?"
+
+msgid "Error approving"
+msgstr "Erreur lors de l'approbation"
+
+msgid "Organization approved"
+msgstr "Organisation approuvée"
+
+#, python-format
+msgid "%(name)s has been approved successfully"
+msgstr "%(name)s a été approuvé avec succès"
+
+msgid "Connection error"
+msgstr "Erreur de connexion"
+
+msgid "Could not process the approval. Please try again."
+msgstr "Impossible de traiter l'approbation. Veuillez réessayer."
+
+msgid "📝 Please enter the reason for rejection:"
+msgstr "📝 Veuillez saisir le motif du rejet :"
+
+msgid "Error rejecting"
+msgstr "Erreur lors du rejet"
+
+msgid "Organization rejected"
+msgstr "Organisation rejetée"
+
+#, python-format
+msgid "%(name)s has been rejected"
+msgstr "%(name)s a été rejeté"
+
+msgid "Could not process the rejection. Please try again."
+msgstr "Impossible de traiter le rejet. Veuillez réessayer."
+
+msgid "APPROVE USER"
+msgstr "APPROUVER L'UTILISATEUR"
+
+msgid "Name:"
+msgstr "Nom :"
+
+msgid "Title:"
+msgstr "Titre :"
+
+msgid "Do you want to approve this user?"
+msgstr "Voulez-vous approuver cet utilisateur ?"
+
+#, python-format
+msgid "Role will be changed from \"%(from)s\" to \"%(to)s\""
+msgstr "Le rôle sera modifié de \"%(from)s\" à \"%(to)s\""
+
+msgid "User approved"
+msgstr "Utilisateur approuvé"
+
+#, python-format
+msgid "Rejection reason for %(count)s application(s):"
+msgstr "Motif de rejet pour %(count)s demande(s) :"
+
+#, python-format
+msgid "Delete %(count)s application(s)? This is a soft delete and can be undone."
+msgstr "Supprimer %(count)s demande(s) ? Il s'agit d'une suppression réversible."
+
+#, python-format
+msgid "Approve %(count)s application(s) with member role?"
+msgstr "Approuver %(count)s demande(s) avec le rôle de membre ?"
+
+msgid "User rejected"
+msgstr "Utilisateur rejeté"
+
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+msgid "Error deleting application: "
+msgstr "Erreur lors de la suppression de la demande : "
+
+msgid "deleted"
+msgstr "supprimé"
+
+msgid "Undo"
+msgstr "Annuler"
+
+msgid "Restored"
+msgstr "Restauré"
+
+msgid "Application restored successfully"
+msgstr "Demande restaurée avec succès"
+
+msgid "Could not restore"
+msgstr "Impossible de restaurer"
+
+msgid "Error restoring: "
+msgstr "Erreur lors de la restauration : "
+
+#, python-format
+msgid "%(action)s %(count)s application(s)"
+msgstr "%(action)s %(count)s demande(s)"
+
+msgid ". Errors: "
+msgstr ". Erreurs : "
+
+msgid "Bulk action failed"
+msgstr "L'action en masse a échoué"
+
+msgid "Network error: "
+msgstr "Erreur réseau : "
+
+msgid "Could not save notes"
+msgstr "Impossible d'enregistrer les notes"
+
+msgid "Error saving notes: "
+msgstr "Erreur lors de l'enregistrement des notes : "
+
+msgid "Home"
+msgstr "Accueil"
+
+msgid "Please fill in all required fields"
+msgstr "Veuillez remplir tous les champs obligatoires"
+
+msgid "Please select a valid image file (PNG, JPG, JPEG, or GIF)"
+msgstr "Veuillez sélectionner un fichier image valide (PNG, JPG, JPEG ou GIF)"
+
+msgid "File size must be less than 2MB"
+msgstr "La taille du fichier doit être inférieure à 2 Mo"
+
+msgid "Not authorized"
+msgstr "Non autorisé"
