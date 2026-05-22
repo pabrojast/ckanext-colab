@@ -17,7 +17,8 @@ cool_plugin_table = Table(
     Column('approvedgroup', types.String),
     Column('organization_name', types.String),
     Column('new_organization_name', types.Integer),
-    Column('new_organization_description', types.String), 
+    Column('new_organization_description', types.String),
+    Column('new_organization_image_url', types.String),
     Column('title_within_organization', types.String),
     Column('gender', types.String),
     Column('organizationType', types.String),
@@ -62,9 +63,10 @@ class CoolPluginTable(domain_object.DomainObject):
                  approvedgroup=None, title_within_organization=None, gender=None,
                  date_of_birth=None, organizationType=None, nationality=None, age=None,
                  c4water_status=None, user_role=None, rejected=None, rejection_reason=None,
-                 citizens4water=None, ihp_wins=None, created_date=None):
+                 citizens4water=None, ihp_wins=None, created_date=None,
+                 new_organization_image_url=None):
         self.fullname = fullname
-        self.wins_username = wins_username        
+        self.wins_username = wins_username
         self.email = email
         self.created_date = created_date
         self.organization_name = organization_name
@@ -76,6 +78,7 @@ class CoolPluginTable(domain_object.DomainObject):
         self.date_of_birth = date_of_birth
         self.age = age
         self.new_organization_description = new_organization_description
+        self.new_organization_image_url = new_organization_image_url
         self.organizationType = organizationType
         self.nationality = nationality
         self.c4water_status = c4water_status

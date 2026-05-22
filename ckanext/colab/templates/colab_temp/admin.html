@@ -1721,11 +1721,21 @@
                                     <td>
                                         <div>
                                             <strong class="truncate-org" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
+                                            {% if result.new_organization_name %}
+                                                <span class="badge-icon" title="{{ _('New organization requested') }}">🆕</span>
+                                            {% endif %}
                                             <br>
                                             <small class="text-muted truncate" title="{{ result.organizationType|e }}">{{ result.organizationType }}</small>
                                             {% if result.title_within_organization %}
                                                 <br>
                                                 <small class="text-muted" title="{{ result.title_within_organization|e }}">📋 {{ result.title_within_organization }}</small>
+                                            {% endif %}
+                                            {% if result.new_organization_image_url %}
+                                                <br>
+                                                <img src="{{ h.colab_image_url(result.new_organization_image_url) }}"
+                                                     alt="{{ _('Requested organization logo') }}"
+                                                     title="{{ _('Logo requested for the new organization') }}"
+                                                     style="max-height: 40px; max-width: 90px; border-radius: 4px; border: 1px solid #e9ecef; padding: 2px; background: #fff; margin-top: 4px;">
                                             {% endif %}
                                         </div>
                                     </td>
@@ -1836,11 +1846,21 @@
                                     <td>
                                         <div>
                                             <strong class="truncate-org" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
+                                            {% if result.new_organization_name %}
+                                                <span class="badge-icon" title="{{ _('New organization requested') }}">🆕</span>
+                                            {% endif %}
                                             <br>
                                             <small class="text-muted truncate" title="{{ result.organizationType|e }}">{{ result.organizationType }}</small>
                                             {% if result.title_within_organization %}
                                                 <br>
                                                 <small class="text-muted" title="{{ result.title_within_organization|e }}">📋 {{ result.title_within_organization }}</small>
+                                            {% endif %}
+                                            {% if result.new_organization_image_url %}
+                                                <br>
+                                                <img src="{{ h.colab_image_url(result.new_organization_image_url) }}"
+                                                     alt="{{ _('Requested organization logo') }}"
+                                                     title="{{ _('Logo requested for the new organization') }}"
+                                                     style="max-height: 40px; max-width: 90px; border-radius: 4px; border: 1px solid #e9ecef; padding: 2px; background: #fff; margin-top: 4px;">
                                             {% endif %}
                                         </div>
                                     </td>
@@ -1934,11 +1954,21 @@
                                     <td>
                                         <div>
                                             <strong class="truncate-org" title="{{ result.organization_name|e }}">{{ result.organization_name }}</strong>
+                                            {% if result.new_organization_name %}
+                                                <span class="badge-icon" title="{{ _('New organization requested') }}">🆕</span>
+                                            {% endif %}
                                             <br>
                                             <small class="text-muted truncate" title="{{ result.organizationType|e }}">{{ result.organizationType }}</small>
                                             {% if result.title_within_organization %}
                                                 <br>
                                                 <small class="text-muted" title="{{ result.title_within_organization|e }}">📋 {{ result.title_within_organization }}</small>
+                                            {% endif %}
+                                            {% if result.new_organization_image_url %}
+                                                <br>
+                                                <img src="{{ h.colab_image_url(result.new_organization_image_url) }}"
+                                                     alt="{{ _('Requested organization logo') }}"
+                                                     title="{{ _('Logo requested for the new organization') }}"
+                                                     style="max-height: 40px; max-width: 90px; border-radius: 4px; border: 1px solid #e9ecef; padding: 2px; background: #fff; margin-top: 4px;">
                                             {% endif %}
                                         </div>
                                     </td>
@@ -2133,6 +2163,7 @@ let allUsers = [
         organizationType: {{ (result.organizationType or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         title_within_organization: {{ (result.title_within_organization or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         new_organization_description: {{ (result.new_organization_description or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
+        new_organization_image_url: {{ h.colab_image_url(result.new_organization_image_url)|tojson }},
         user_role: {{ (result.user_role or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         approved: {{ (result.approved or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
         rejected: {{ (result.rejected or '')|replace('\n', ' ')|replace('\r', '')|tojson }},
@@ -2474,7 +2505,18 @@ function showUserDetails(username, isPending) {
             <div class="detail-value">${escapeHtml(user.new_organization_description)}</div>
         </div>
         ` : ''}
-        
+
+        ${user.new_organization_image_url ? `
+        <div class="detail-group">
+            <div class="detail-label">🖼️ Requested Organization Logo</div>
+            <div class="detail-value">
+                <img src="${escapeHtml(user.new_organization_image_url)}" alt="Organization logo"
+                     style="max-width: 220px; max-height: 160px; border-radius: 8px; border: 1px solid #e9ecef; padding: 4px; background: #fff;">
+                <div style="font-size: 12px; color: #6c757d; margin-top: 6px;">This logo will be applied to the organization when approved.</div>
+            </div>
+        </div>
+        ` : ''}
+
         <div class="detail-group">
             <div class="detail-label">📊 Status Information</div>
             <div class="detail-value">

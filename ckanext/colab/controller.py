@@ -52,6 +52,8 @@ def ensure_colab_schema(engine=None):
         statements.append("ALTER TABLE colab ADD COLUMN rejected_date TIMESTAMP")
     if 'admin_notes' not in columns:
         statements.append("ALTER TABLE colab ADD COLUMN admin_notes TEXT")
+    if 'new_organization_image_url' not in columns:
+        statements.append("ALTER TABLE colab ADD COLUMN new_organization_image_url VARCHAR")
 
     for stmt in statements:
         try:
@@ -140,8 +142,61 @@ def verify_recaptcha(recaptcha_response):
     
     response = requests.post(verify_url, data=data)
     result = response.json()
-    
+
     return result.get('success', False) and result.get('score', 0) > 0.5
+
+
+def handle_org_logo_upload(file_field='new_organization_logo'):
+    """Upload an organization logo submitted with the registration form.
+
+    Uses CKAN's built-in uploader (same 'page_images' namespace used by the
+    organization request feature, so the h.colab_image_url() helper can build
+    the public URL). Returns the stored filename, or None when there is no
+    valid file. Never raises: a bad upload simply means no logo is stored.
+    """
+    if file_field not in request.files:
+        return None
+
+    file = request.files[file_field]
+    if not file or not file.filename:
+        return None
+
+    try:
+        upload = uploader.get_uploader('page_images')
+        data_dict = {'image_url': '', 'image_upload': file, 'clear_upload': ''}
+        upload.update_data_dict(data_dict, 'image_url', 'image_upload', 'clear_upload')
+        upload.upload(max_size=2)  # 2MB max
+
+        if upload.filename:
+            filename = os.path.basename(str(upload.filename))
+            logger.info(f"Organization logo uploaded: {filename}")
+            return filename
+
+        logger.warning("Logo upload produced no filename")
+        return None
+    except toolkit.ValidationError as e:
+        logger.warning(f"Logo upload validation error: {e}. Continuing without logo.")
+        return None
+    except Exception as e:
+        logger.warning(f"Unexpected error uploading logo: {e}. Continuing without logo.")
+        return None
+
+
+def org_logo_public_url(filename):
+    """Build a public, fully-qualified URL for a stored organization logo.
+
+    Returns None when there is no logo. Accepts values that are already full
+    URLs or absolute paths and returns them unchanged.
+    """
+    if not filename:
+        return None
+    if filename.startswith(('http://', 'https://', '/')):
+        return filename
+    try:
+        return h.url_for_static('uploads/page_images/%s' % filename, qualified=True)
+    except Exception as e:
+        logger.warning(f"Could not build logo URL for '{filename}': {e}")
+        return None
 
 @timed_lru_cache(seconds=300, maxsize=20)  # Cache de 5 minutos
 def get_all_groups_cached():
@@ -372,10 +427,14 @@ class MyLogic():
                             {'id': clean_name, 'username': name,
                              'role': user_role})
                     except toolkit.ObjectNotFound:
+                        org_data = {'name': clean_name, 'description': new_organization_description,
+                                    'title': organization, 'users': users}
+                        # Carry over the logo the applicant uploaded during registration
+                        logo_url = org_logo_public_url(cool_plugin_instance.new_organization_image_url)
+                        if logo_url:
+                            org_data['image_url'] = logo_url
                         organizationapi = toolkit.get_action('organization_create')(
-                            context,
-                            {'name': clean_name, 'description': new_organization_description,
-                             'title': organization, 'users': users})
+                            context, org_data)
                 else:
                     organizationapi = toolkit.get_action('organization_member_create')(
                         context,
@@ -471,10 +530,14 @@ class MyLogic():
                              'role': user_role})
                         organizationapi['message'] = f'User added to existing organization: {organization_name}'
                     except toolkit.ObjectNotFound:
+                        org_data = {'name': clean_name, 'description': new_organization_description,
+                                    'title': organization_name, 'users': users}
+                        # Carry over the logo the applicant uploaded during registration
+                        logo_url = org_logo_public_url(cool_plugin_instance.new_organization_image_url)
+                        if logo_url:
+                            org_data['image_url'] = logo_url
                         organizationapi = toolkit.get_action('organization_create')(
-                            context,
-                            {'name': clean_name, 'description': new_organization_description,
-                             'title': organization_name, 'users': users})
+                            context, org_data)
                         organizationapi['message'] = f'New organization created: {organization_name}'
                 else:
                     try:
@@ -1094,6 +1157,12 @@ Best regards,
                     user_role = 'admin'  # Force admin role for new organization creators
                 else:
                     new_organization_description = "NA" if not new_organization_description else new_organization_description
+
+                # Handle the logo uploaded for a brand new organization.
+                # Only stored when the applicant is requesting a new org.
+                new_org_logo_filename = None
+                if is_new_organization:
+                    new_org_logo_filename = handle_org_logo_upload()
                 # print(group_form)
                 # print(new_group_name)
                 # print(organization_name)
@@ -1175,6 +1244,7 @@ Best regards,
                         organization_name=organization_name,
                         new_organization_name=1 if is_new_organization else 0,
                         new_organization_description=new_organization_description,
+                        new_organization_image_url=new_org_logo_filename,
                         date_of_birth=dob,
                         age=age_years,
                         gender=gender,
@@ -1189,7 +1259,7 @@ Best regards,
 
                     model.Session.add(db_model)
                     model.Session.commit()
-                    
+
                     # Send notification to admins
                     send_admin_notification(user_data)
                     send_applicant_confirmation(db_model)
@@ -1225,6 +1295,7 @@ Best regards,
                             organization_name = organization_name,
                             new_organization_name = 1 if is_new_organization else 0,
                             new_organization_description = new_organization_description,
+                            new_organization_image_url = new_org_logo_filename,
                             date_of_birth = dob,
                             age = age_years,
                             gender = gender,
