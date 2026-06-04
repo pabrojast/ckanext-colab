@@ -262,7 +262,7 @@
   <div class="tb-form-header">
     <div class="tb-form-header-bg"></div>
     <div class="tb-form-header-content">
-      <h1>{% if device_request %}{{ _('Edit Device Request #%(id)s') % {'id': device_request.id} }}{% else %}{{ _('New Device Request') }}{% endif %}</h1>
+      <h1>{% if device_request %}{{ _('Edit Device Request #%(id)s', id=device_request.id) }}{% else %}{{ _('New Device Request') }}{% endif %}</h1>
       <p>{{ _('Fill in the device details below. Required fields are marked with *') }}</p>
     </div>
   </div>

@@ -20,17 +20,23 @@ def upgrade():
     # Add the new_organization_image_url column to the colab table (idempotent).
     # Stores the uploaded logo filename for new organizations requested
     # through the registration form.
-    try:
+    #
+    # Check existence with the inspector before issuing DDL. The column may
+    # already exist because ensure_colab_schema() adds it at runtime; relying
+    # on try/except around ALTER TABLE is unsafe on PostgreSQL, where a failed
+    # statement aborts the whole migration transaction and breaks the alembic
+    # version update.
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
+    columns = [c['name'] for c in inspector.get_columns('colab')]
+    if 'new_organization_image_url' not in columns:
         op.add_column('colab', sa.Column('new_organization_image_url', sa.String))
-    except Exception:
-        # Column already exists, continue
-        pass
 
 
 def downgrade():
     # Remove the new_organization_image_url column
-    try:
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
+    columns = [c['name'] for c in inspector.get_columns('colab')]
+    if 'new_organization_image_url' in columns:
         op.drop_column('colab', 'new_organization_image_url')
-    except Exception:
-        # Column doesn't exist, continue
-        pass

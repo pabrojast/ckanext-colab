@@ -17,7 +17,14 @@ depends_on = None
 
 
 def upgrade():
-    try:
+    # Idempotent and transaction-safe: check existence with the inspector
+    # before issuing DDL. Relying on try/except around CREATE statements is
+    # unsafe on PostgreSQL because a failed statement aborts the whole
+    # migration transaction, which then breaks the alembic version update.
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
+
+    if 'device_requests' not in inspector.get_table_names():
         op.create_table(
             'device_requests',
             sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
@@ -65,18 +72,22 @@ def upgrade():
             # Constraints
             sa.UniqueConstraint('serial_number', name='uq_device_requests_serial_number'),
         )
+
+    # Re-inspect so newly created table's indexes are visible.
+    existing_indexes = {ix['name'] for ix in sa.inspect(bind).get_indexes('device_requests')}
+    if 'ix_device_requests_status' not in existing_indexes:
         op.create_index('ix_device_requests_status', 'device_requests', ['status'])
+    if 'ix_device_requests_created_by' not in existing_indexes:
         op.create_index('ix_device_requests_created_by', 'device_requests', ['created_by_user_id'])
-    except Exception:
-        # Table already exists, continue
-        pass
 
 
 def downgrade():
-    try:
-        op.drop_index('ix_device_requests_created_by', table_name='device_requests')
-        op.drop_index('ix_device_requests_status', table_name='device_requests')
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
+    if 'device_requests' in inspector.get_table_names():
+        existing_indexes = {ix['name'] for ix in inspector.get_indexes('device_requests')}
+        if 'ix_device_requests_created_by' in existing_indexes:
+            op.drop_index('ix_device_requests_created_by', table_name='device_requests')
+        if 'ix_device_requests_status' in existing_indexes:
+            op.drop_index('ix_device_requests_status', table_name='device_requests')
         op.drop_table('device_requests')
-    except Exception:
-        # Table doesn't exist, continue
-        pass

@@ -972,7 +972,7 @@
                                         <strong>{{ request.admin_username }}</strong>
                                     </td>
                                     <td>
-                                        <span class="status-badge status-approved">{{ _('Approved by %(user)s') % {'user': request.approved_by} }}</span>
+                                        <span class="status-badge status-approved">{{ _('Approved by %(user)s', user=request.approved_by) }}</span>
                                         <div style="margin-top: 4px; font-size: 11px; color: #666;">
                                             {{ request.approved_date.strftime('%Y-%m-%d %H:%M') if request.approved_date else 'N/A' }}
                                         </div>
@@ -1027,7 +1027,7 @@
                                         <strong>{{ request.admin_username }}</strong>
                                     </td>
                                     <td>
-                                        <span class="status-badge status-rejected">{{ _('Rejected by %(user)s') % {'user': request.rejected_by} }}</span>
+                                        <span class="status-badge status-rejected">{{ _('Rejected by %(user)s', user=request.rejected_by) }}</span>
                                         <div style="margin-top: 4px; font-size: 11px; color: #666;">
                                             {{ request.rejected_date.strftime('%Y-%m-%d %H:%M') if request.rejected_date else 'N/A' }}
                                         </div>
@@ -1081,13 +1081,13 @@ var _i18n = {
     approve_confirm:      {{ _('Do you want to approve this organization request?') | tojson }},
     err_approve_title:    {{ _('Error approving') | tojson }},
     approved_title:       {{ _('Organization approved') | tojson }},
-    approved_msg:         {{ _('%(name)s has been approved successfully') | tojson }},
+    approved_msg:         {{ _('%(name)s has been approved successfully', name='%(name)s') | tojson }},
     conn_err_title:       {{ _('Connection error') | tojson }},
     approve_conn_err:     {{ _('Could not process the approval. Please try again.') | tojson }},
     reject_prompt:        {{ _('📝 Please enter the reason for rejection:') | tojson }},
     err_reject_title:     {{ _('Error rejecting') | tojson }},
     rejected_title:       {{ _('Organization rejected') | tojson }},
-    rejected_msg:         {{ _('%(name)s has been rejected') | tojson }},
+    rejected_msg:         {{ _('%(name)s has been rejected', name='%(name)s') | tojson }},
     reject_conn_err:      {{ _('Could not process the rejection. Please try again.') | tojson }}
 };
 
