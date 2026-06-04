@@ -173,7 +173,7 @@
   </style>
 {% endblock %}
 
-{% block subtitle %}{{ _('Device Request #%(id)s') % {'id': dr.id} }}{% endblock %}
+{% block subtitle %}{{ _('Device Request #%(id)s', id=dr.id) }}{% endblock %}
 
 {% block secondary %}{% endblock %}
 
@@ -183,7 +183,7 @@
   <div class="detail-header">
     <div class="detail-header-bg"></div>
     <div class="detail-header-content">
-      <h1>{{ _('Device Request #%(id)s') % {'id': dr.id} }}</h1>
+      <h1>{{ _('Device Request #%(id)s', id=dr.id) }}</h1>
       <p>{{ dr.device_name or _('Unnamed device') }} — {{ dr.serial_number or _('No serial') }}</p>
     </div>
   </div>
@@ -328,7 +328,7 @@
       <div class="info-value" style="color: #721c24;">{{ dr.rejection_reason }}</div>
       {% if reviewer %}
       <div style="margin-top: 8px; font-size: 12px; color: var(--text-secondary);">
-        {{ _('Rejected by %(reviewer)s on %(date)s') % {'reviewer': reviewer.display_name, 'date': dr.rejected_at.strftime('%Y-%m-%d %H:%M') if dr.rejected_at else '—'} }}
+        {{ _('Rejected by %(reviewer)s on %(date)s', reviewer=reviewer.display_name, date=dr.rejected_at.strftime('%Y-%m-%d %H:%M') if dr.rejected_at else '—') }}
       </div>
       {% endif %}
     </div>

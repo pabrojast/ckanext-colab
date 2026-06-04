@@ -309,7 +309,7 @@
   {% for req in requests %}
     {% if req.status == 'REJECTED' and req.rejection_reason %}
     <div style="margin-top: 15px; padding: 15px 20px; background: #fff3f3; border-left: 4px solid #dc3545; border-radius: 8px;">
-      <strong style="color: #721c24;">{{ _('Request #%(id)s rejected:') % {'id': req.id} }}</strong>
+      <strong style="color: #721c24;">{{ _('Request #%(id)s rejected:', id=req.id) }}</strong>
       <span style="color: #856404;">{{ req.rejection_reason }}</span>
     </div>
     {% endif %}
