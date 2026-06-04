@@ -219,7 +219,7 @@
   </style>
 {% endblock %}
 
-{% block subtitle %}Device Management{% endblock %}
+{% block subtitle %}{{ _('Device Management') }}{% endblock %}
 
 {% block secondary %}{% endblock %}
 
@@ -230,17 +230,17 @@
     <div class="tb-header-bg"></div>
     <div class="tb-header-overlay"></div>
     <div class="tb-header-content">
-      <h1>Device Management</h1>
-      <p>Request and track IoT device registrations for ThingsBoard</p>
+      <h1>{{ _('Device Management') }}</h1>
+      <p>{{ _('Request and track IoT device registrations for ThingsBoard') }}</p>
     </div>
   </div>
 
   <!-- Actions bar -->
   <div class="tb-actions-bar">
-    <h2 style="margin: 0; color: var(--text-primary);">My Device Requests</h2>
+    <h2 style="margin: 0; color: var(--text-primary);">{{ _('My Device Requests') }}</h2>
     <a href="{{ h.url_for('thingsboard.new_request') }}" class="btn-new-request">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-      New Device Request
+      {{ _('New Device Request') }}
     </a>
   </div>
 
@@ -251,13 +251,13 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Device Name</th>
-          <th>Serial Number</th>
-          <th>Site Code</th>
-          <th>Status</th>
-          <th>Sync</th>
-          <th>Submitted</th>
-          <th>Actions</th>
+          <th>{{ _('Device Name') }}</th>
+          <th>{{ _('Serial Number') }}</th>
+          <th>{{ _('Site Code') }}</th>
+          <th>{{ _('Status') }}</th>
+          <th>{{ _('Sync') }}</th>
+          <th>{{ _('Submitted') }}</th>
+          <th>{{ _('Actions') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -272,11 +272,11 @@
           </td>
           <td data-label="Sync">
             {% if req.sync_status == 'synced' %}
-              <span class="status-badge status-SYNCED">Synced</span>
+              <span class="status-badge status-SYNCED">{{ _('Synced') }}</span>
             {% elif req.sync_status == 'error' %}
-              <span class="status-badge sync-error">Error</span>
+              <span class="status-badge sync-error">{{ _('Error') }}</span>
             {% elif req.sync_status == 'pending' %}
-              <span class="status-badge status-SUBMITTED">Pending</span>
+              <span class="status-badge status-SUBMITTED">{{ _('Pending') }}</span>
             {% else %}
               —
             {% endif %}
@@ -284,9 +284,9 @@
           <td data-label="Submitted">{{ req.submitted_at.strftime('%Y-%m-%d') if req.submitted_at else '—' }}</td>
           <td data-label="Actions">
             {% if req.status in ('DRAFT', 'REJECTED') %}
-              <a href="{{ h.url_for('thingsboard.edit_request', id=req.id) }}" class="btn-action">Edit</a>
+              <a href="{{ h.url_for('thingsboard.edit_request', id=req.id) }}" class="btn-action">{{ _('Edit') }}</a>
             {% else %}
-              <a href="{{ h.url_for('thingsboard.edit_request', id=req.id) }}" class="btn-action" style="pointer-events: none; opacity: 0.5;">View</a>
+              <a href="{{ h.url_for('thingsboard.edit_request', id=req.id) }}" class="btn-action" style="pointer-events: none; opacity: 0.5;">{{ _('View') }}</a>
             {% endif %}
           </td>
         </tr>
@@ -299,8 +299,8 @@
         <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
         <polyline points="16 3 12 7 8 3"></polyline>
       </svg>
-      <h3>No device requests yet</h3>
-      <p>Create your first device request to get started.</p>
+      <h3>{{ _('No device requests yet') }}</h3>
+      <p>{{ _('Create your first device request to get started.') }}</p>
     </div>
     {% endif %}
   </div>
@@ -309,7 +309,7 @@
   {% for req in requests %}
     {% if req.status == 'REJECTED' and req.rejection_reason %}
     <div style="margin-top: 15px; padding: 15px 20px; background: #fff3f3; border-left: 4px solid #dc3545; border-radius: 8px;">
-      <strong style="color: #721c24;">Request #{{ req.id }} rejected:</strong>
+      <strong style="color: #721c24;">{{ _('Request #%(id)s rejected:') % {'id': req.id} }}</strong>
       <span style="color: #856404;">{{ req.rejection_reason }}</span>
     </div>
     {% endif %}

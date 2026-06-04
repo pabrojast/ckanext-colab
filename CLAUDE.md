@@ -97,10 +97,15 @@ Required settings for full functionality:
 
 ### User Requests (`CoolPluginTable`)
 - User information (fullname, wins_username, email)
-- Organization details (organization_name, new_organization_name, new_organization_description)
+- Organization details (organization_name, new_organization_name, new_organization_description, new_organization_image_url)
 - Approval status (approved, approvedgroup, rejected, rejection_reason)
 - Demographic data (age, gender, nationality, organizationType)
 - User role (admin, editor, member)
+
+When an applicant requests a **new** organization, they can upload a logo on
+the registration form. The filename is stored in `new_organization_image_url`
+(uploaded via CKAN's `page_images` uploader). On approval the logo is passed as
+`image_url` to `organization_create`. Migration `c1d2e3f4a5b6` adds this column.
 
 ### Organization Requests (`OrganizationRequestTable`) - New Feature
 - Request information (requester_username, organization_name, organization_description)

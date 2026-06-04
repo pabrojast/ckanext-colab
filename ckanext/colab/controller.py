@@ -52,6 +52,8 @@ def ensure_colab_schema(engine=None):
         statements.append("ALTER TABLE colab ADD COLUMN rejected_date TIMESTAMP")
     if 'admin_notes' not in columns:
         statements.append("ALTER TABLE colab ADD COLUMN admin_notes TEXT")
+    if 'new_organization_image_url' not in columns:
+        statements.append("ALTER TABLE colab ADD COLUMN new_organization_image_url VARCHAR")
 
     for stmt in statements:
         try:
@@ -140,8 +142,61 @@ def verify_recaptcha(recaptcha_response):
     
     response = requests.post(verify_url, data=data)
     result = response.json()
-    
+
     return result.get('success', False) and result.get('score', 0) > 0.5
+
+
+def handle_org_logo_upload(file_field='new_organization_logo'):
+    """Upload an organization logo submitted with the registration form.
+
+    Uses CKAN's built-in uploader (same 'page_images' namespace used by the
+    organization request feature, so the h.colab_image_url() helper can build
+    the public URL). Returns the stored filename, or None when there is no
+    valid file. Never raises: a bad upload simply means no logo is stored.
+    """
+    if file_field not in request.files:
+        return None
+
+    file = request.files[file_field]
+    if not file or not file.filename:
+        return None
+
+    try:
+        upload = uploader.get_uploader('page_images')
+        data_dict = {'image_url': '', 'image_upload': file, 'clear_upload': ''}
+        upload.update_data_dict(data_dict, 'image_url', 'image_upload', 'clear_upload')
+        upload.upload(max_size=2)  # 2MB max
+
+        if upload.filename:
+            filename = os.path.basename(str(upload.filename))
+            logger.info(f"Organization logo uploaded: {filename}")
+            return filename
+
+        logger.warning("Logo upload produced no filename")
+        return None
+    except toolkit.ValidationError as e:
+        logger.warning(f"Logo upload validation error: {e}. Continuing without logo.")
+        return None
+    except Exception as e:
+        logger.warning(f"Unexpected error uploading logo: {e}. Continuing without logo.")
+        return None
+
+
+def org_logo_public_url(filename):
+    """Build a public, fully-qualified URL for a stored organization logo.
+
+    Returns None when there is no logo. Accepts values that are already full
+    URLs or absolute paths and returns them unchanged.
+    """
+    if not filename:
+        return None
+    if filename.startswith(('http://', 'https://', '/')):
+        return filename
+    try:
+        return h.url_for_static('uploads/page_images/%s' % filename, qualified=True)
+    except Exception as e:
+        logger.warning(f"Could not build logo URL for '{filename}': {e}")
+        return None
 
 @timed_lru_cache(seconds=300, maxsize=20)  # Cache de 5 minutos
 def get_all_groups_cached():
@@ -263,7 +318,7 @@ class MyLogic():
             try:
                 logic.check_access('organization_create', context)
             except logic.NotAuthorized:
-                toolkit.abort(403, 'Not authorized to create organization')
+                toolkit.abort(403, toolkit._('Not authorized to create organization'))
 
             clean_name = group.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
             clean_name = re.sub(r'[^A-Za-z0-9-]+', '', clean_name)
@@ -328,7 +383,7 @@ class MyLogic():
             try:
                 logic.check_access('sysadmin', context, {})
             except logic.NotAuthorized:
-                toolkit.abort(403, 'Not authorized to approve users')
+                toolkit.abort(403, toolkit._('Not authorized to approve users'))
 
             db_session = model.Session()
             
@@ -372,10 +427,14 @@ class MyLogic():
                             {'id': clean_name, 'username': name,
                              'role': user_role})
                     except toolkit.ObjectNotFound:
+                        org_data = {'name': clean_name, 'description': new_organization_description,
+                                    'title': organization, 'users': users}
+                        # Carry over the logo the applicant uploaded during registration
+                        logo_url = org_logo_public_url(cool_plugin_instance.new_organization_image_url)
+                        if logo_url:
+                            org_data['image_url'] = logo_url
                         organizationapi = toolkit.get_action('organization_create')(
-                            context,
-                            {'name': clean_name, 'description': new_organization_description,
-                             'title': organization, 'users': users})
+                            context, org_data)
                 else:
                     organizationapi = toolkit.get_action('organization_member_create')(
                         context,
@@ -471,10 +530,14 @@ class MyLogic():
                              'role': user_role})
                         organizationapi['message'] = f'User added to existing organization: {organization_name}'
                     except toolkit.ObjectNotFound:
+                        org_data = {'name': clean_name, 'description': new_organization_description,
+                                    'title': organization_name, 'users': users}
+                        # Carry over the logo the applicant uploaded during registration
+                        logo_url = org_logo_public_url(cool_plugin_instance.new_organization_image_url)
+                        if logo_url:
+                            org_data['image_url'] = logo_url
                         organizationapi = toolkit.get_action('organization_create')(
-                            context,
-                            {'name': clean_name, 'description': new_organization_description,
-                             'title': organization_name, 'users': users})
+                            context, org_data)
                         organizationapi['message'] = f'New organization created: {organization_name}'
                 else:
                     try:
@@ -542,7 +605,7 @@ Best regards,
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            toolkit.abort(403, 'Need to be system administrator')
+            toolkit.abort(403, toolkit._('Need to be system administrator'))
 
         ensure_colab_schema()
 
@@ -721,7 +784,7 @@ Best regards,
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            abort(403, 'Not authorized')
+            abort(403, toolkit._('Not authorized'))
 
         tab = request.args.get('tab', 'pending')
 
@@ -899,7 +962,7 @@ Best regards,
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
             logger.error("User not authorized to reject users")
-            toolkit.abort(403, 'Not authorized to reject users')
+            toolkit.abort(403, toolkit._('Not authorized to reject users'))
 
         if not name or not organization or not reason:
             return {'error': 'Missing required rejection parameters'}
@@ -1094,6 +1157,12 @@ Best regards,
                     user_role = 'admin'  # Force admin role for new organization creators
                 else:
                     new_organization_description = "NA" if not new_organization_description else new_organization_description
+
+                # Handle the logo uploaded for a brand new organization.
+                # Only stored when the applicant is requesting a new org.
+                new_org_logo_filename = None
+                if is_new_organization:
+                    new_org_logo_filename = handle_org_logo_upload()
                 # print(group_form)
                 # print(new_group_name)
                 # print(organization_name)
@@ -1175,6 +1244,7 @@ Best regards,
                         organization_name=organization_name,
                         new_organization_name=1 if is_new_organization else 0,
                         new_organization_description=new_organization_description,
+                        new_organization_image_url=new_org_logo_filename,
                         date_of_birth=dob,
                         age=age_years,
                         gender=gender,
@@ -1189,7 +1259,7 @@ Best regards,
 
                     model.Session.add(db_model)
                     model.Session.commit()
-                    
+
                     # Send notification to admins
                     send_admin_notification(user_data)
                     send_applicant_confirmation(db_model)
@@ -1225,6 +1295,7 @@ Best regards,
                             organization_name = organization_name,
                             new_organization_name = 1 if is_new_organization else 0,
                             new_organization_description = new_organization_description,
+                            new_organization_image_url = new_org_logo_filename,
                             date_of_birth = dob,
                             age = age_years,
                             gender = gender,
@@ -1246,7 +1317,7 @@ Best regards,
                                              application=db_model)
 
                     except logic.NotAuthorized:
-                        toolkit.abort(403, 'Not authorized to create users')               
+                        toolkit.abort(403, toolkit._('Not authorized to create users'))               
             except Exception as e:
                 model.Session.rollback()
                 logger.error(f"Error in POST method: {e}")
@@ -1282,7 +1353,7 @@ Best regards,
     def show_organization_request_form():
         """Show organization request form for logged users"""
         if not toolkit.g.userobj:
-            toolkit.abort(403, 'You must be logged in to request an organization')
+            toolkit.abort(403, toolkit._('You must be logged in to request an organization'))
         
         try:
             # Get organization types for dropdown
@@ -1299,7 +1370,7 @@ Best regards,
     def submit_organization_request():
         """Handle organization request form submission"""
         if not toolkit.g.userobj:
-            toolkit.abort(403, 'You must be logged in to request an organization')
+            toolkit.abort(403, toolkit._('You must be logged in to request an organization'))
         
         if request.method != 'POST':
             return toolkit.redirect_to('colab.organization_request_form')
@@ -1334,55 +1405,8 @@ Best regards,
                                      org_types=['Academic Institution', 'Government Agency', 'NGO', 'Private Company', 'Research Institute', 'International Organization', 'Other'])
             
             # Handle image upload using CKAN's uploader system (like ckanext-pages)
-            image_filename = None
-            if 'organization_image' in request.files:
-                file = request.files['organization_image']
-                if file and file.filename:
-                    try:
-                        # Use CKAN's uploader system (using page_images namespace for Azure compatibility)
-                        upload = uploader.get_uploader('page_images')
-                        
-                        # Create a mutable dict for the uploader with the correct file field
-                        upload.update_data_dict({'organization_image': file}, 'organization_image', 
-                                              'image_upload', 'clear_upload')
-                        upload.upload(max_size=2)  # 2MB max
-                        
-                        if upload.filename:
-                            # Debug: Log the type and value of upload.filename
-                            logger.debug(f"upload.filename type: {type(upload.filename)}")
-                            logger.debug(f"upload.filename value: {upload.filename}")
-                            
-                            # Extract just the filename string
-                            if hasattr(upload.filename, 'filename'):
-                                # If it's a FileStorage object, get the filename attribute
-                                image_filename = upload.filename.filename
-                                logger.debug(f"Extracted from FileStorage.filename: {image_filename}")
-                            elif hasattr(upload.filename, 'name'):
-                                # If it's a file-like object, get the name
-                                image_filename = upload.filename.name
-                                logger.debug(f"Extracted from name: {image_filename}")
-                            else:
-                                # If it's already a string, use it directly
-                                image_filename = str(upload.filename)
-                                logger.debug(f"Converted to string: {image_filename}")
-                            
-                            # Clean the filename to ensure it's just the basename
-                            import os
-                            image_filename = os.path.basename(image_filename)
-                            
-                            # Final validation that it's a string
-                            image_filename = str(image_filename)
-                            logger.info(f"Final image filename to store: {image_filename} (type: {type(image_filename)})")
-                        else:
-                            logger.warning("No file was uploaded")
-                            
-                    except toolkit.ValidationError as e:
-                        logger.warning(f"File upload validation error: {e}. Continuing without image.")
-                        image_filename = None
-                    except Exception as e:
-                        logger.warning(f"Unexpected error uploading image: {e}. Continuing without image.")
-                        image_filename = None
-            
+            image_filename = handle_org_logo_upload('organization_image')
+
             # Create database entry
             db_session = model.Session()
             
@@ -1394,18 +1418,6 @@ Best regards,
                 logger.debug(f"Table creation attempt: {e}")
             
             try:
-                # Final validation: ensure image_filename is a simple string or None
-                if image_filename is not None:
-                    # Convert to string and validate it's not a complex object
-                    image_filename_str = str(image_filename)
-                    # Ensure it doesn't contain object representation signs
-                    if '<' in image_filename_str or '>' in image_filename_str or 'FileStorage' in image_filename_str:
-                        logger.warning(f"Invalid filename detected: {image_filename_str}. Setting to None.")
-                        image_filename = None
-                    else:
-                        image_filename = image_filename_str
-                        logger.info(f"Validated filename for database: {image_filename}")
-                
                 org_request = OrganizationRequestTable(
                     requester_username=toolkit.g.userobj.name,
                     organization_name=organization_name,
@@ -1449,7 +1461,7 @@ Best regards,
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            toolkit.abort(403, 'Need to be system administrator')
+            toolkit.abort(403, toolkit._('Need to be system administrator'))
 
         try:
             # Ensure the table exists (temporary fix until migration is run)
@@ -1473,7 +1485,7 @@ Best regards,
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            toolkit.abort(403, 'Need to be system administrator')
+            toolkit.abort(403, toolkit._('Need to be system administrator'))
         
         if request.method != 'POST':
             return jsonify({'error': 'POST method required'})
@@ -1545,7 +1557,7 @@ Best regards,
         try:
             logic.check_access('sysadmin', context, {})
         except logic.NotAuthorized:
-            toolkit.abort(403, 'Need to be system administrator')
+            toolkit.abort(403, toolkit._('Need to be system administrator'))
         
         if request.method != 'POST':
             return jsonify({'error': 'POST method required'})

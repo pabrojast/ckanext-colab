@@ -819,8 +819,8 @@
         <div class="admin-header-bg"></div>
         <div class="admin-header-overlay"></div>
         <div class="admin-header-content">
-            <h1>Organization Requests Dashboard</h1>
-            <p>Manage organization creation requests from users</p>
+            <h1>{{ _('Organization Requests Dashboard') }}</h1>
+            <p>{{ _('Manage organization creation requests from users') }}</p>
         </div>
     </section>
 
@@ -828,10 +828,10 @@
     <div class="admin-nav">
         <div class="nav-tabs">
             <a href="{{ h.url_for('colab.show_admin') }}" class="nav-tab">
-                👥 User Management
+                👥 {{ _('User Management') }}
             </a>
             <a href="{{ h.url_for('colab.organization_admin') }}" class="nav-tab active">
-                🏢 Organization Requests
+                🏢 {{ _('Organization Requests') }}
             </a>
         </div>
     </div>
@@ -839,45 +839,45 @@
     <div class="admin-stats">
         <div class="stat-card">
             <div class="stat-number" id="pending-org-count">0</div>
-            <div class="stat-label">Pending Requests</div>
+            <div class="stat-label">{{ _('Pending Requests') }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-number" id="approved-org-count">0</div>
-            <div class="stat-label">Approved Organizations</div>
+            <div class="stat-label">{{ _('Approved Organizations') }}</div>
         </div>
         <div class="stat-card">
             <div class="stat-number" id="rejected-org-count">0</div>
-            <div class="stat-label">Rejected Requests</div>
+            <div class="stat-label">{{ _('Rejected Requests') }}</div>
         </div>
     </div>
 
     <div class="tabs">
         <div class="tab-buttons">
             <button class="tab-button active" data-tab="pending">
-                📋 Pending (<span id="pending-tab-count">0</span>)
+                📋 {{ _('Pending') }} (<span id="pending-tab-count">0</span>)
             </button>
             <button class="tab-button" data-tab="approved">
-                ✅ Approved (<span id="approved-tab-count">0</span>)
+                ✅ {{ _('Approved') }} (<span id="approved-tab-count">0</span>)
             </button>
             <button class="tab-button" data-tab="rejected">
-                ❌ Rejected (<span id="rejected-tab-count">0</span>)
+                ❌ {{ _('Rejected') }} (<span id="rejected-tab-count">0</span>)
             </button>
         </div>
 
         <div class="controls">
             <div class="search-box">
                 <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="Search by organization name, requester..." id="search-input">
+                <input type="text" class="search-input" placeholder="{{ _('Search by organization name, requester...') }}" id="search-input">
             </div>
             <select class="filter-select" id="type-filter">
-                <option value="">All Types</option>
-                <option value="Academic Institution">Academic Institution</option>
-                <option value="Government Agency">Government Agency</option>
-                <option value="NGO">NGO</option>
-                <option value="Private Company">Private Company</option>
-                <option value="Research Institute">Research Institute</option>
-                <option value="International Organization">International Organization</option>
-                <option value="Other">Other</option>
+                <option value="">{{ _('All Types') }}</option>
+                <option value="Academic Institution">{{ _('Academic Institution') }}</option>
+                <option value="Government Agency">{{ _('Government Agency') }}</option>
+                <option value="NGO">{{ _('NGO') }}</option>
+                <option value="Private Company">{{ _('Private Company') }}</option>
+                <option value="Research Institute">{{ _('Research Institute') }}</option>
+                <option value="International Organization">{{ _('International Organization') }}</option>
+                <option value="Other">{{ _('Other') }}</option>
             </select>
         </div>
 
@@ -886,12 +886,12 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>🏢 Organization</th>
-                            <th>👤 Requester</th>
-                            <th>🎯 Type</th>
-                            <th>👨‍💼 Admin</th>
-                            <th>📅 Date</th>
-                            <th>⚡ Actions</th>
+                            <th>🏢 {{ _('Organization') }}</th>
+                            <th>👤 {{ _('Requester') }}</th>
+                            <th>🎯 {{ _('Type') }}</th>
+                            <th>👨‍💼 {{ _('Admin') }}</th>
+                            <th>📅 {{ _('Date') }}</th>
+                            <th>⚡ {{ _('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -920,13 +920,13 @@
                                     <td>
                                         <div class="action-buttons">
                                             <button class="btn btn-view" onclick="showRequestDetails('{{ request.id }}')">
-                                                👁️ View
+                                                👁️ {{ _('View') }}
                                             </button>
                                             <button class="btn btn-approve" onclick="approveRequest('{{ request.id }}')">
-                                                ✅ Approve
+                                                ✅ {{ _('Approve') }}
                                             </button>
                                             <button class="btn btn-reject" onclick="rejectRequest('{{ request.id }}')">
-                                                ❌ Reject
+                                                ❌ {{ _('Reject') }}
                                             </button>
                                         </div>
                                     </td>
@@ -943,12 +943,12 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>🏢 Organization</th>
-                            <th>👤 Requester</th>
-                            <th>🎯 Type</th>
-                            <th>👨‍💼 Admin</th>
-                            <th>✅ Status</th>
-                            <th>⚡ Actions</th>
+                            <th>🏢 {{ _('Organization') }}</th>
+                            <th>👤 {{ _('Requester') }}</th>
+                            <th>🎯 {{ _('Type') }}</th>
+                            <th>👨‍💼 {{ _('Admin') }}</th>
+                            <th>✅ {{ _('Status') }}</th>
+                            <th>⚡ {{ _('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -972,7 +972,7 @@
                                         <strong>{{ request.admin_username }}</strong>
                                     </td>
                                     <td>
-                                        <span class="status-badge status-approved">Approved by {{ request.approved_by }}</span>
+                                        <span class="status-badge status-approved">{{ _('Approved by %(user)s') % {'user': request.approved_by} }}</span>
                                         <div style="margin-top: 4px; font-size: 11px; color: #666;">
                                             {{ request.approved_date.strftime('%Y-%m-%d %H:%M') if request.approved_date else 'N/A' }}
                                         </div>
@@ -980,7 +980,7 @@
                                     <td>
                                         <div class="action-buttons">
                                             <button class="btn btn-view" onclick="showRequestDetails('{{ request.id }}')">
-                                                👁️ View
+                                                👁️ {{ _('View') }}
                                             </button>
                                         </div>
                                     </td>
@@ -997,13 +997,13 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>🏢 Organization</th>
-                            <th>👤 Requester</th>
-                            <th>🎯 Type</th>
-                            <th>👨‍💼 Admin</th>
-                            <th>❌ Status</th>
-                            <th>📝 Reason</th>
-                            <th>⚡ Actions</th>
+                            <th>🏢 {{ _('Organization') }}</th>
+                            <th>👤 {{ _('Requester') }}</th>
+                            <th>🎯 {{ _('Type') }}</th>
+                            <th>👨‍💼 {{ _('Admin') }}</th>
+                            <th>❌ {{ _('Status') }}</th>
+                            <th>📝 {{ _('Reason') }}</th>
+                            <th>⚡ {{ _('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1027,7 +1027,7 @@
                                         <strong>{{ request.admin_username }}</strong>
                                     </td>
                                     <td>
-                                        <span class="status-badge status-rejected">Rejected by {{ request.rejected_by }}</span>
+                                        <span class="status-badge status-rejected">{{ _('Rejected by %(user)s') % {'user': request.rejected_by} }}</span>
                                         <div style="margin-top: 4px; font-size: 11px; color: #666;">
                                             {{ request.rejected_date.strftime('%Y-%m-%d %H:%M') if request.rejected_date else 'N/A' }}
                                         </div>
@@ -1040,7 +1040,7 @@
                                     <td>
                                         <div class="action-buttons">
                                             <button class="btn btn-view" onclick="showRequestDetails('{{ request.id }}')">
-                                                👁️ View
+                                                👁️ {{ _('View') }}
                                             </button>
                                         </div>
                                     </td>
@@ -1061,7 +1061,7 @@
 <div id="requestModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>🏢 Organization Request Details</h2>
+            <h2>🏢 {{ _('Organization Request Details') }}</h2>
             <span class="close" onclick="closeModal()">&times;</span>
         </div>
         <div class="modal-body" id="modal-body">
@@ -1071,6 +1071,26 @@
 </div>
 
 <script>
+// i18n bridge — strings used by inline JS below
+var _i18n = {
+    approve_title:        {{ _('APPROVE ORGANIZATION REQUEST') | tojson }},
+    org_label:            {{ _('Organization:') | tojson }},
+    type_label:           {{ _('Type:') | tojson }},
+    requester_label:      {{ _('Requester:') | tojson }},
+    admin_label:          {{ _('Admin:') | tojson }},
+    approve_confirm:      {{ _('Do you want to approve this organization request?') | tojson }},
+    err_approve_title:    {{ _('Error approving') | tojson }},
+    approved_title:       {{ _('Organization approved') | tojson }},
+    approved_msg:         {{ _('%(name)s has been approved successfully') | tojson }},
+    conn_err_title:       {{ _('Connection error') | tojson }},
+    approve_conn_err:     {{ _('Could not process the approval. Please try again.') | tojson }},
+    reject_prompt:        {{ _('📝 Please enter the reason for rejection:') | tojson }},
+    err_reject_title:     {{ _('Error rejecting') | tojson }},
+    rejected_title:       {{ _('Organization rejected') | tojson }},
+    rejected_msg:         {{ _('%(name)s has been rejected') | tojson }},
+    reject_conn_err:      {{ _('Could not process the rejection. Please try again.') | tojson }}
+};
+
 // Store all requests data for filtering
 let allRequests = [
     {% for request in requests %}
@@ -1175,12 +1195,12 @@ function approveRequest(requestId) {
     const request = allRequests.find(r => r.id === requestId);
     if (!request) return;
 
-    const confirmMessage = `🎯 APPROVE ORGANIZATION REQUEST\n\n` +
-                          `🏢 Organization: ${request.organization_name}\n` +
-                          `🎯 Type: ${request.organization_type}\n` +
-                          `👤 Requester: ${request.requester_username}\n` +
-                          `👨‍💼 Admin: ${request.admin_username}\n\n` +
-                          `Do you want to approve this organization request?`;
+    const confirmMessage = `🎯 ${_i18n.approve_title}\n\n` +
+                          `🏢 ${_i18n.org_label} ${request.organization_name}\n` +
+                          `🎯 ${_i18n.type_label} ${request.organization_type}\n` +
+                          `👤 ${_i18n.requester_label} ${request.requester_username}\n` +
+                          `👨‍💼 ${_i18n.admin_label} ${request.admin_username}\n\n` +
+                          `${_i18n.approve_confirm}`;
 
     if (confirm(confirmMessage)) {
         const rowElement = document.querySelector(`tr[data-request-id="${requestId}"]`);
@@ -1198,12 +1218,12 @@ function approveRequest(requestId) {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                showToast('Error al aprobar', data.error, 'error');
+                showToast(_i18n.err_approve_title, data.error, 'error');
                 if (rowElement) {
                     rowElement.classList.remove('row-processing');
                 }
             } else {
-                showToast('Organización aprobada', `${request.organization_name} ha sido aprobada exitosamente`, 'success');
+                showToast(_i18n.approved_title, _i18n.approved_msg.replace('%(name)s', request.organization_name), 'success');
                 
                 if (rowElement) {
                     rowElement.classList.remove('row-processing');
@@ -1222,7 +1242,7 @@ function approveRequest(requestId) {
         })
         .catch(error => {
             console.error('Error:', error);
-            showToast('Error de conexión', 'No se pudo procesar la aprobación. Inténtalo de nuevo.', 'error');
+            showToast(_i18n.conn_err_title, _i18n.approve_conn_err, 'error');
             if (rowElement) {
                 rowElement.classList.remove('row-processing');
             }
@@ -1234,7 +1254,7 @@ function rejectRequest(requestId) {
     const request = allRequests.find(r => r.id === requestId);
     if (!request) return;
 
-    const reason = prompt("📝 Please enter the reason for rejection:");
+    const reason = prompt(_i18n.reject_prompt);
     if (reason && reason.trim()) {
         const rowElement = document.querySelector(`tr[data-request-id="${requestId}"]`);
         if (rowElement) {
@@ -1252,12 +1272,12 @@ function rejectRequest(requestId) {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                showToast('Error al rechazar', data.error, 'error');
+                showToast(_i18n.err_reject_title, data.error, 'error');
                 if (rowElement) {
                     rowElement.classList.remove('row-processing');
                 }
             } else {
-                showToast('Organización rechazada', `${request.organization_name} ha sido rechazada`, 'warning');
+                showToast(_i18n.rejected_title, _i18n.rejected_msg.replace('%(name)s', request.organization_name), 'warning');
                 
                 if (rowElement) {
                     rowElement.classList.remove('row-processing');
@@ -1276,7 +1296,7 @@ function rejectRequest(requestId) {
         })
         .catch(error => {
             console.error('Error:', error);
-            showToast('Error de conexión', 'No se pudo procesar el rechazo. Inténtalo de nuevo.', 'error');
+            showToast(_i18n.conn_err_title, _i18n.reject_conn_err, 'error');
             if (rowElement) {
                 rowElement.classList.remove('row-processing');
             }
