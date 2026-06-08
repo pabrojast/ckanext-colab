@@ -2317,7 +2317,9 @@ function handleApprove(event) {
         link.innerHTML = '⏳ ' + _i18n.processing;
         link.style.pointerEvents = 'none';
 
+        const recordId = rowElement ? rowElement.getAttribute('data-record-id') : null;
         const formData = new FormData();
+        formData.append('record_id', recordId || '');
         formData.append('wins_username', winsUsername);
         formData.append('organization_name', organizationName);
         formData.append('new_organization_name', newOrgName || '0');
@@ -2329,15 +2331,12 @@ function handleApprove(event) {
             method: 'POST',
             body: formData
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.error) {
-                showToast(_i18n.err_approve_title, data.error, 'error');
+        .then(response => response.json()
+            .catch(() => ({ error: 'HTTP error! status: ' + response.status }))
+            .then(data => ({ ok: response.ok, data })))
+        .then(({ ok, data }) => {
+            if (!ok || data.error) {
+                showToast(_i18n.err_approve_title, data.error || _i18n.err_approve_title, 'error');
                 rowElement.classList.remove('row-processing');
                 link.innerHTML = '✅ ' + _i18n.approve_btn;
                 link.style.pointerEvents = 'auto';
@@ -2402,7 +2401,9 @@ function handleReject(event) {
         link.innerHTML = '⏳ ' + _i18n.processing;
         link.style.pointerEvents = 'none';
 
+        const recordId = rowElement ? rowElement.getAttribute('data-record-id') : null;
         const formData = new FormData();
+        formData.append('record_id', recordId || '');
         formData.append('wins_username', username);
         formData.append('organization_name', organization);
         formData.append('reason', reason.trim());
@@ -2574,7 +2575,8 @@ function approveFromModal(username) {
     if (!user) return;
 
     const selectedRole = document.getElementById('modal-role-selector').value;
-    const rowElement = document.querySelector(`tr[data-user-id="${username}"]`);
+    const rowElement = document.querySelector(`tr[data-record-id="${user.id}"]`) ||
+                       document.querySelector(`tr[data-user-id="${username}"]`);
     const approveLink = rowElement ? rowElement.querySelector('.approve-link') : null;
 
     closeModal();
@@ -2592,6 +2594,7 @@ function approveFromModal(username) {
     }
 
     const formData = new FormData();
+    formData.append('record_id', user.id != null ? user.id : '');
     formData.append('wins_username', user.wins_username);
     formData.append('organization_name', user.organization_name);
     formData.append('new_organization_name', user.new_organization_name || '0');
@@ -2603,13 +2606,12 @@ function approveFromModal(username) {
         method: 'POST',
         body: formData
     })
-    .then(response => {
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        return response.json();
-    })
-    .then(data => {
-        if (data.error) {
-            showToast(_i18n.err_approve_title, data.error, 'error');
+    .then(response => response.json()
+        .catch(() => ({ error: 'HTTP error! status: ' + response.status }))
+        .then(data => ({ ok: response.ok, data })))
+    .then(({ ok, data }) => {
+        if (!ok || data.error) {
+            showToast(_i18n.err_approve_title, data.error || _i18n.err_approve_title, 'error');
             if (rowElement) rowElement.classList.remove('row-processing');
         } else {
             if (rowElement) {
@@ -2648,7 +2650,8 @@ function rejectFromModal(username) {
     const reason = prompt(_i18n.reject_prompt);
     if (!reason) return;
 
-    const rowElement = document.querySelector(`tr[data-user-id="${username}"]`);
+    const rowElement = document.querySelector(`tr[data-record-id="${user.id}"]`) ||
+                       document.querySelector(`tr[data-user-id="${username}"]`);
 
     lastProcessedUser = {
         name: user.fullname,
@@ -2662,6 +2665,7 @@ function rejectFromModal(username) {
     }
 
     const formData = new FormData();
+    formData.append('record_id', user.id != null ? user.id : '');
     formData.append('wins_username', username);
     formData.append('organization_name', user.organization_name);
     formData.append('reason', reason.trim());
