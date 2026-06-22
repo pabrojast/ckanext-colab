@@ -1202,6 +1202,17 @@ Best regards,
                 else:
                     new_organization_description = "NA" if not new_organization_description else new_organization_description
 
+                # Authoritative backstop: the whole approval flow depends on an
+                # organization, so an application can never be saved without one.
+                # The all([...]) check above only sees the literal "new" sentinel,
+                # so a new-org request with a blank name slips through there.
+                if not organization_name:
+                    logger.error("Submission blocked: empty organization after resolving selection")
+                    groups = get_all_groups_cached()
+                    return render_template("index.html", errornewuserform=True,
+                                        error_message=toolkit._("Please select an organization or enter a name for your new organization."),
+                                        groups=groups)
+
                 # Handle the logo uploaded for a brand new organization.
                 # Only stored when the applicant is requesting a new org.
                 new_org_logo_filename = None
