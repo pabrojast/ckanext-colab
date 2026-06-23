@@ -483,24 +483,55 @@ class MyLogic():
             except logic.NotAuthorized:
                 return jsonify({'error': 'Not authorized'}), 403
             
+            record_id = request.form.get('record_id')
             wins_username = request.form.get('wins_username')
             organization_name = request.form.get('organization_name')
-            new_organization_name = request.form.get('new_organization_name', '0')
             new_organization_description = request.form.get('new_organization_description', 'NA')
             selected_user_role = request.form.get('user_role', 'admin')
-            
-            if not wins_username or not organization_name:
-                return jsonify({'error': 'Missing required parameters'}), 400
-            
+
             db_session = model.Session()
-            
-            cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
-                wins_username=wins_username,
-                organization_name=organization_name
-            ).first()
-            
+
+            # Identify the exact application. Prefer the primary key so that
+            # duplicate username/organization rows are never confused. Fall back
+            # to the legacy (username, organization) lookup for older clients,
+            # but only match a pending, non-deleted row (newest first) so we
+            # never silently re-approve an already approved duplicate.
+            cool_plugin_instance = None
+            if record_id:
+                try:
+                    cool_plugin_instance = db_session.query(CoolPluginTable).filter(
+                        CoolPluginTable.id == int(record_id),
+                        CoolPluginTable.deleted_at.is_(None)
+                    ).first()
+                except (ValueError, TypeError):
+                    return jsonify({'error': 'Invalid record_id'}), 400
+            elif wins_username and organization_name:
+                cool_plugin_instance = db_session.query(CoolPluginTable).filter(
+                    CoolPluginTable.wins_username == wins_username,
+                    CoolPluginTable.organization_name == organization_name,
+                    CoolPluginTable.deleted_at.is_(None),
+                    CoolPluginTable.approved == 'Pending'
+                ).order_by(CoolPluginTable.created_date.desc()).first()
+            else:
+                return jsonify({'error': 'Missing required parameters'}), 400
+
             if not cool_plugin_instance:
                 return jsonify({'error': 'User registration not found'}), 404
+
+            # Guard against approving a record that is already approved. With
+            # duplicate rows the optimistic UI would otherwise show a false
+            # success while the genuinely pending row reappears on reload.
+            if cool_plugin_instance.approved and 'approved by' in (cool_plugin_instance.approved or ''):
+                return jsonify({'error': 'This application was already approved.',
+                                'already_approved': True}), 409
+
+            # Use the record's own values from here on (authoritative), so the
+            # organization operations always match the row being approved.
+            wins_username = cool_plugin_instance.wins_username
+            organization_name = cool_plugin_instance.organization_name
+            new_organization_name = '1' if str(cool_plugin_instance.new_organization_name) == '1' else '0'
+            if cool_plugin_instance.new_organization_description:
+                new_organization_description = cool_plugin_instance.new_organization_description
 
             user_role = selected_user_role
             cool_plugin_instance.user_role = user_role
@@ -955,7 +986,7 @@ Best regards,
             return jsonify({'success': False, 'error': str(e)}), 500
 
     @staticmethod
-    def _reject_application(name, organization, reason):
+    def _reject_application(name, organization, reason, record_id=None):
         logger.debug(f"Starting rejection for user: {name}, organization: {organization}, reason: {reason}")
         context = {'model': model, 'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
         try:
@@ -964,15 +995,28 @@ Best regards,
             logger.error("User not authorized to reject users")
             toolkit.abort(403, toolkit._('Not authorized to reject users'))
 
-        if not name or not organization or not reason:
+        if not reason or (not record_id and (not name or not organization)):
             return {'error': 'Missing required rejection parameters'}
 
         db_session = model.Session()
         try:
-            cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
-                wins_username=name,
-                organization_name=organization
-            ).first()
+            # Prefer the primary key so duplicate username/organization rows are
+            # never confused. Fall back to the legacy lookup (non-deleted,
+            # newest first) for older clients.
+            if record_id:
+                try:
+                    cool_plugin_instance = db_session.query(CoolPluginTable).filter(
+                        CoolPluginTable.id == int(record_id),
+                        CoolPluginTable.deleted_at.is_(None)
+                    ).first()
+                except (ValueError, TypeError):
+                    return {'error': 'Invalid record_id'}
+            else:
+                cool_plugin_instance = db_session.query(CoolPluginTable).filter(
+                    CoolPluginTable.wins_username == name,
+                    CoolPluginTable.organization_name == organization,
+                    CoolPluginTable.deleted_at.is_(None)
+                ).order_by(CoolPluginTable.created_date.desc()).first()
 
             if not cool_plugin_instance:
                 logger.error("No corresponding instance found in CoolPluginTable")
@@ -1158,6 +1202,17 @@ Best regards,
                 else:
                     new_organization_description = "NA" if not new_organization_description else new_organization_description
 
+                # Authoritative backstop: the whole approval flow depends on an
+                # organization, so an application can never be saved without one.
+                # The all([...]) check above only sees the literal "new" sentinel,
+                # so a new-org request with a blank name slips through there.
+                if not organization_name:
+                    logger.error("Submission blocked: empty organization after resolving selection")
+                    groups = get_all_groups_cached()
+                    return render_template("index.html", errornewuserform=True,
+                                        error_message=toolkit._("Please select an organization or enter a name for your new organization."),
+                                        groups=groups)
+
                 # Handle the logo uploaded for a brand new organization.
                 # Only stored when the applicant is requesting a new org.
                 new_org_logo_filename = None
@@ -1212,6 +1267,27 @@ Best regards,
                                              error_message='A pending application already exists for this username or email address. Please wait for admin review or contact ihp-wins@unesco.org if you need assistance.')
                 except Exception as e:
                     logger.warning(f"Error checking for duplicate applications: {e}")
+
+                # Block re-applying to an organization the applicant was already
+                # approved for. This prevents creating the duplicate rows that
+                # confuse the approval workflow. Re-applying to a *different*
+                # organization, or after a rejection, is still allowed.
+                try:
+                    approved_application = model.Session.query(CoolPluginTable).filter(
+                        CoolPluginTable.deleted_at.is_(None),
+                        CoolPluginTable.approved.like('approved by%'),
+                        CoolPluginTable.organization_name == organization_name,
+                        or_(
+                            CoolPluginTable.wins_username == name,
+                            CoolPluginTable.email == email
+                        )
+                    ).first()
+                    if approved_application:
+                        logger.info(f"Approved application already exists for {name}/{email} in {organization_name}")
+                        return render_template("index.html", newuser=False, errornewuserform=True,
+                                             error_message='You already have an approved request for this organization. If you need a different role or access to another organization, please contact ihp-wins@unesco.org.')
+                except Exception as e:
+                    logger.warning(f"Error checking for approved duplicate applications: {e}")
 
                 # Check if user already exists
                 try:
@@ -1344,10 +1420,11 @@ Best regards,
         except logic.NotAuthorized:
             return jsonify({'error': 'Not authorized'}), 403
 
+        record_id = request.form.get('record_id', '').strip()
         name = request.form.get('wins_username', '').strip()
         organization = request.form.get('organization_name', '').strip()
         reason = request.form.get('reason', '').strip()
-        return jsonify(MyLogic._reject_application(name, organization, reason))
+        return jsonify(MyLogic._reject_application(name, organization, reason, record_id=record_id or None))
 
     @staticmethod
     def show_organization_request_form():

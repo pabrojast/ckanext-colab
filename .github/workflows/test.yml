@@ -1,5 +1,12 @@
 name: Tests
 on: [push, pull_request]
+env:
+  # The openknowledge/ckan-dev:2.9 container is Alpine-based with an older musl
+  # libc that lacks pthread_getname_np. GitHub now defaults JS-based actions
+  # (checkout, etc.) to Node 24, whose binary fails to start on that container
+  # ("Error relocating .../node24_alpine/bin/node: pthread_getname_np: symbol
+  # not found"), which fails the job. Pin the runner back to Node 20.
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
 jobs:
   test:
     runs-on: ubuntu-latest

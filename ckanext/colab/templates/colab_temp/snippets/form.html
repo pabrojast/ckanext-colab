@@ -128,16 +128,26 @@
                 <div class="help-text">{{ _('Select your affiliation to the UNESCO Water Family. If your organization is not related to the UNESCO Water Family, select other.') }}</div>
             </div>
 
-            <div class="form-group">
+            <div id="existing-org-group" class="form-group">
                 <label for="organization_name" class="required">{{ _('Organization Name') }} <span class="text-danger">*</span></label>
                 <select name="organization_name" id="organization_name" required class="form-control">
                     <option value="">{{ _('Select an organization...') }}</option>
                     <option value="loading" disabled>{{ _('Loading organizations...') }}</option>
                 </select>
-                <div class="help-text">{{ _('Select your organization in the dropdown list or add a new organization.') }}</div>
+                <div class="help-text">{{ _('Select your organization from the list below.') }}</div>
+                <button type="button" id="create-new-org-btn" class="btn-create-org">
+                    + {{ _('My organization is not listed — create a new one') }}
+                </button>
             </div>
 
             <div id="newOrganizationField" class="new-organization-fields">
+                <!-- Hidden sentinel that posts organization_name=new only while in new-org mode.
+                     Disabled by default so it never submits unless the user opted in. -->
+                <input type="hidden" name="organization_name" id="new_org_sentinel" value="new" disabled>
+                <div class="new-org-banner">
+                    <button type="button" id="cancel-new-org-btn" class="btn-back-to-list">← {{ _('Choose from the list instead') }}</button>
+                    <span class="new-org-banner-title">{{ _('Creating a new organization') }}</span>
+                </div>
                 <div class="form-group">
                     <label for="new_organization_name" class="required">{{ _('New Organization Name') }} <span class="text-danger">*</span></label>
                     <input type="text" id="new_organization_name" name="new_organization_name" placeholder="{{ _('Enter organization name') }}" class="form-control">
@@ -252,6 +262,10 @@
     const genderSelect = document.getElementById('genderSelect');
     const genderOtherText = document.getElementById('genderOtherText');
     const organizationSelect = document.getElementById('organization_name');
+    const existingOrgGroup = document.getElementById('existing-org-group');
+    const createNewOrgBtn = document.getElementById('create-new-org-btn');
+    const cancelNewOrgBtn = document.getElementById('cancel-new-org-btn');
+    const newOrgSentinel = document.getElementById('new_org_sentinel');
     const newOrganizationField = document.getElementById('newOrganizationField');
     const newOrganizationNameField = document.getElementById('new_organization_name');
     const userRoleSelect = document.getElementById('user_role');
@@ -274,12 +288,12 @@
                     // Clear the select
                     organizationSelect.innerHTML = '';
                     
-                    // Add default options
+                    // Add default placeholder (the "create new organization" action
+                    // now lives in its own button outside the dropdown).
                     organizationSelect.innerHTML = `
                         <option value="">{{ _('Select an organization...') }}</option>
-                        <option value="new"><strong>{{ _('Create New Organization') }}</strong></option>
                     `;
-                    
+
                     // Add organizations
                     data.result.forEach(function(org) {
                         const option = document.createElement('option');
@@ -295,7 +309,6 @@
                 console.error('Error loading organizations:', error);
                 organizationSelect.innerHTML = `
                     <option value="">{{ _('Select an organization...') }}</option>
-                    <option value="new"><strong>{{ _('Create New Organization') }}</strong></option>
                     <option value="" disabled>{{ _('Error loading organizations') }}</option>
                 `;
             });
@@ -312,7 +325,8 @@
         
         // Add event listeners
         genderSelect.addEventListener('change', toggleGenderOtherField);
-        organizationSelect.addEventListener('change', toggleNewOrganizationField);
+        createNewOrgBtn.addEventListener('click', enterNewOrgMode);
+        cancelNewOrgBtn.addEventListener('click', exitNewOrgMode);
         passwordField.addEventListener('input', checkPasswordMatch);
         confirmPasswordField.addEventListener('input', checkPasswordMatch);
         form.addEventListener('submit', handleFormSubmit);
@@ -320,9 +334,9 @@
             setDOBMaxDate();
             dateOfBirthField.addEventListener('change', validateDOB);
         }
-        
-        // Check initial state of organization selection
-        toggleNewOrganizationField();
+
+        // Start in "select an existing organization" mode
+        exitNewOrgMode();
         toggleGenderOtherField();
         
         // Initialize reCAPTCHA when ready
@@ -373,38 +387,51 @@
         }
     }
     
-    // Organization field toggle
-    function toggleNewOrganizationField() {
-        const isNewOrganization = organizationSelect.value === 'new';
-        
-        console.log('Organization changed:', organizationSelect.value, 'isNew:', isNewOrganization);
-        
-        if (isNewOrganization) {
-            newOrganizationField.style.display = 'block';
-            newOrganizationNameField.required = true;
-            // Set role to admin and disable selector
-            userRoleSelect.value = 'admin';
-            userRoleSelect.disabled = true;
-            userRoleSelect.classList.add('disabled-select');
-            console.log('Role set to admin and disabled');
-        } else {
-            newOrganizationField.style.display = 'none';
-            newOrganizationNameField.required = false;
-            newOrganizationNameField.value = '';
-            document.getElementById('new_organization_description').value = '';
-            // Clear any logo selected for a new organization
-            if (typeof clearLogoSelection === 'function') {
-                clearLogoSelection();
-            }
-            // Enable role selector
-            userRoleSelect.disabled = false;
-            userRoleSelect.classList.remove('disabled-select');
-            // Set default role to member if not new organization
-            if (!userRoleSelect.value) {
-                userRoleSelect.value = 'member';
-            }
-            console.log('Role selector enabled');
+    // Switch the form into "create a new organization" mode. The existing-org
+    // dropdown is hidden and disabled (so it neither validates nor submits) and
+    // the hidden sentinel takes over posting organization_name=new.
+    function enterNewOrgMode() {
+        existingOrgGroup.style.display = 'none';
+        organizationSelect.disabled = true;
+        organizationSelect.required = false;
+        organizationSelect.value = '';
+
+        newOrgSentinel.disabled = false;
+        newOrganizationField.style.display = 'block';
+        newOrganizationNameField.required = true;
+
+        // New organizations: the requester becomes the org admin.
+        userRoleSelect.value = 'admin';
+        userRoleSelect.disabled = true;
+        userRoleSelect.classList.add('disabled-select');
+        console.log('Entered new-organization mode');
+
+        newOrganizationNameField.focus();
+    }
+
+    // Return to "select an existing organization" mode (also the baseline state).
+    function exitNewOrgMode() {
+        newOrganizationField.style.display = 'none';
+        newOrgSentinel.disabled = true;
+        newOrganizationNameField.required = false;
+        newOrganizationNameField.value = '';
+        document.getElementById('new_organization_description').value = '';
+        // Clear any logo selected for a new organization
+        if (typeof clearLogoSelection === 'function') {
+            clearLogoSelection();
         }
+
+        existingOrgGroup.style.display = '';
+        organizationSelect.disabled = false;
+        organizationSelect.required = true;
+
+        // Re-enable the role selector and default to member
+        userRoleSelect.disabled = false;
+        userRoleSelect.classList.remove('disabled-select');
+        if (!userRoleSelect.value || userRoleSelect.value === 'admin') {
+            userRoleSelect.value = 'member';
+        }
+        console.log('Exited new-organization mode');
     }
     
     // Password matching validation
@@ -424,10 +451,10 @@
         }
     }
     
-    // Duplicate organization check
+    // Duplicate organization check (only relevant when creating a new org)
     function checkDuplicateOrganization() {
-        if (organizationSelect.value !== 'new') return true;
-        
+        if (newOrgSentinel.disabled) return true;
+
         const newOrgName = newOrganizationNameField.value.trim();
         const existingOrganizations = Array.from(organizationSelect.options)
             .map(option => option.text.toLowerCase())
@@ -929,6 +956,56 @@ select.form-control {
 }
 
 /* New Organization Fields */
+/* "Create a new organization" call-to-action (outside the dropdown) */
+.btn-create-org {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 12px 18px;
+  background: #ffffff;
+  color: var(--unesco-blue-dark);
+  border: 2px dashed var(--unesco-blue-light);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-create-org:hover {
+  background: var(--unesco-blue-pale);
+  border-color: var(--unesco-blue);
+}
+
+/* Banner + back link at the top of the new-organization panel */
+.new-org-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.new-org-banner-title {
+  font-weight: 700;
+  color: var(--unesco-blue-dark);
+}
+
+.btn-back-to-list {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--unesco-blue);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btn-back-to-list:hover {
+  color: var(--unesco-blue-dark);
+}
+
 .new-organization-fields {
   display: none;
   background: linear-gradient(135deg, var(--unesco-blue-pale) 0%, #ffffff 100%);
