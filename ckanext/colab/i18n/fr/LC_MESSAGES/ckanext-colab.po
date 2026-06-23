@@ -8,398 +8,1070 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-colab 0.0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-07-03 14:58-0400\n"
+"POT-Creation-Date: 2026-06-23 13:38+0000\n"
 "PO-Revision-Date: 2024-07-03 14:59-0400\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:4
-msgid ""
-"We're sorry, but we couldn't complete your registration at this time due "
-"to a possible error. This may be because the username or email address "
-"you provided is already in use on our website."
-msgstr ""
-"Nous sommes désolés, mais nous n'avons pas pu finaliser votre inscription pour le moment en raison d'une possible erreur. Cela peut être dû au fait que le nom d'utilisateur ou l'adresse e-mail que vous avez fournis sont déjà utilisés sur notre site."
+#: ckanext/colab/controller.py:321
+msgid "Not authorized to create organization"
+msgstr "Non autorisé à créer une organisation"
 
-#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:6
-msgid ""
-"Please double-check that you have entered the information correctly and "
-"make sure you're not attempting to create a duplicate account. If you "
-"believe you already have an account with us, try logging in instead of "
-"registering again. If you've forgotten your password, you can reset it "
-"through the \"Forgot my password\" option."
-msgstr ""
-"Veuillez vérifier que vous avez correctement saisi les informations et assurez-vous de ne pas tenter de créer un compte en double. Si vous pensez déjà avoir un compte chez nous, essayez de vous connecter plutôt que de vous inscrire à nouveau. Si vous avez oublié votre mot de passe, vous pouvez le réinitialiser via l'option \"Mot de passe oublié\"."
+#: ckanext/colab/controller.py:386
+msgid "Not authorized to approve users"
+msgstr "Non autorisé à approuver les utilisateurs"
 
-#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:8
-msgid ""
-"If you continue to experience issues or have any questions, please don't "
-"hesitate to contact us through our support page. We're here to help you "
-"resolve any concerns you may have."
-msgstr ""
-"Si vous continuez à rencontrer des problèmes ou si vous avez des questions, n'hésitez pas à nous contacter via notre page de support. Nous sommes là pour vous aider à résoudre tout problème que vous pourriez rencontrer."
+#: ckanext/colab/controller.py:639 ckanext/colab/controller.py:1541
+#: ckanext/colab/controller.py:1565 ckanext/colab/controller.py:1637
+msgid "Need to be system administrator"
+msgstr "Vous devez être administrateur système"
 
-#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:10
-msgid ""
-"We apologize for any confusion or inconvenience this may have caused and "
-"appreciate your interest in joining our community. We hope to see you "
-"soon on our website!"
-msgstr ""
-"Nous nous excusons pour toute confusion ou gêne que cela aurait pu causer et nous apprécions votre intérêt à rejoindre notre communauté. Nous espérons vous voir bientôt sur notre site!"
+#: ckanext/colab/controller.py:818
+msgid "Not authorized"
+msgstr "Non autorisé"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:5
+#: ckanext/colab/controller.py:996
+msgid "Not authorized to reject users"
+msgstr "Non autorisé à rejeter les utilisateurs"
+
+#: ckanext/colab/controller.py:1213
+msgid ""
+"Please select an organization or enter a name for your new organization."
+msgstr "Veuillez sélectionner une organisation ou saisir un nom pour votre nouvelle organisation."
+
+#: ckanext/colab/controller.py:1396
+msgid "Not authorized to create users"
+msgstr "Non autorisé à créer des utilisateurs"
+
+#: ckanext/colab/controller.py:1433 ckanext/colab/controller.py:1450
+msgid "You must be logged in to request an organization"
+msgstr "Vous devez être connecté pour demander une organisation"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:23
+msgid "You must be logged in to access this page"
+msgstr "Vous devez être connecté pour accéder à cette page"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:31
+msgid "Only system administrators can access this page"
+msgstr "Seuls les administrateurs système peuvent accéder à cette page"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:42
+msgid "Device name"
+msgstr "Nom de l'appareil"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:43
+msgid "Serial number"
+msgstr "Numéro de série"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:44
+msgid "Device profile name"
+msgstr "Nom du profil de l'appareil"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:45
+msgid "Site code"
+msgstr "Code du site"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:46
+msgid "Installer name"
+msgstr "Nom de l'installateur"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:47
+msgid "Install date"
+msgstr "Date d'installation"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:48
+msgid "Owner name"
+msgstr "Nom du propriétaire"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:53
+#, python-format
+msgid "%(field)s is required"
+msgstr "%(field)s est requis"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:56
+msgid "Survey must be completed before submission"
+msgstr "L'enquête doit être complétée avant la soumission"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:66
+msgid "Serial number already exists"
+msgstr "Le numéro de série existe déjà"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:73
+msgid "Latitude must be between -90 and 90"
+msgstr "La latitude doit être comprise entre -90 et 90"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:75
+#: ckanext/colab/controllers/thingsboard_controller.py:156
+msgid "Latitude must be a valid number"
+msgstr "La latitude doit être un nombre valide"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:81
+msgid "Longitude must be between -180 and 180"
+msgstr "La longitude doit être comprise entre -180 et 180"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:83
+#: ckanext/colab/controllers/thingsboard_controller.py:161
+msgid "Longitude must be a valid number"
+msgstr "La longitude doit être un nombre valide"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:135
+msgid "Selected organization is not available for your user"
+msgstr ""
+"L'organisation sélectionnée n'est pas disponible pour votre utilisateur"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:145
+msgid "Install date must use the YYYY-MM-DD format"
+msgstr "La date d'installation doit utiliser le format AAAA-MM-JJ"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:240
+msgid "Device request saved as draft"
+msgstr "Demande d'appareil enregistrée en brouillon"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:259
+#: ckanext/colab/controllers/thingsboard_controller.py:282
+#: ckanext/colab/controllers/thingsboard_controller.py:325
+#: ckanext/colab/controllers/thingsboard_controller.py:415
+#: ckanext/colab/controllers/thingsboard_controller.py:442
+#: ckanext/colab/controllers/thingsboard_controller.py:500
+#: ckanext/colab/controllers/thingsboard_controller.py:535
+msgid "Device request not found"
+msgstr "Demande d'appareil introuvable"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:261
+#: ckanext/colab/controllers/thingsboard_controller.py:284
+msgid "You can only edit your own requests"
+msgstr "Vous ne pouvez modifier que vos propres demandes"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:263
+#: ckanext/colab/controllers/thingsboard_controller.py:286
+msgid "This request can no longer be edited"
+msgstr "Cette demande ne peut plus être modifiée"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:304
+msgid "Device request updated"
+msgstr "Demande d'appareil mise à jour"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:327
+msgid "You can only submit your own requests"
+msgstr "Vous ne pouvez soumettre que vos propres demandes"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:329
+msgid "This request cannot be submitted"
+msgstr "Cette demande ne peut pas être soumise"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:361
+msgid "Device request submitted for review"
+msgstr "Demande d'appareil soumise pour examen"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:444
+msgid "This request cannot be approved in its current state"
+msgstr "Cette demande ne peut pas être approuvée dans son état actuel"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:450
+#, python-format
+msgid "Cannot approve: %(errors)s"
+msgstr "Impossible d'approuver : %(errors)s"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:464
+msgid "Error approving request"
+msgstr "Erreur lors de l'approbation de la demande"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:481
+msgid "Device request approved and synced to ThingsBoard"
+msgstr "Demande d'appareil approuvée et synchronisée avec ThingsBoard"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:488
+#, python-format
+msgid "Request approved but sync failed: %(error)s"
+msgstr "Demande approuvée mais la synchronisation a échoué : %(error)s"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:502
+msgid "This request cannot be rejected in its current state"
+msgstr "Cette demande ne peut pas être rejetée dans son état actuel"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:507
+msgid "Rejection reason is required"
+msgstr "Le motif du rejet est obligatoire"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:519
+msgid "Device request rejected"
+msgstr "Demande d'appareil rejetée"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:523
+msgid "Error rejecting request"
+msgstr "Erreur lors du rejet de la demande"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:537
+msgid "Only requests with sync errors can be retried"
+msgstr ""
+"Seules les demandes avec erreurs de synchronisation peuvent être réessayées"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:542
+msgid "Device already exists in ThingsBoard. Manual intervention required."
+msgstr ""
+"L'appareil existe déjà dans ThingsBoard. Intervention manuelle requise."
+
+#: ckanext/colab/controllers/thingsboard_controller.py:558
+msgid "Device successfully synced to ThingsBoard"
+msgstr "Appareil synchronisé avec ThingsBoard avec succès"
+
+#: ckanext/colab/controllers/thingsboard_controller.py:565
+#, python-format
+msgid "Sync retry failed: %(error)s"
+msgstr "Échec de la nouvelle tentative de synchronisation : %(error)s"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1506
+msgid "User Management Dashboard"
+msgstr "Tableau de bord de gestion des utilisateurs"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1507
+msgid "Manage user registrations and organization memberships"
+msgstr ""
+"Gérez les inscriptions d'utilisateurs et les adhésions aux organisations"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1515
+#: ckanext/colab/templates/colab_temp/organization_admin.html:831
+msgid "User Management"
+msgstr "Gestion des utilisateurs"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1518
+#: ckanext/colab/templates/colab_temp/organization_admin.html:834
+msgid "Organization Requests"
+msgstr "Demandes d’organisation"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1526
+msgid "Pending Approvals"
+msgstr "Approbations en attente"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1530
+msgid "Approved Users"
+msgstr "Utilisateurs approuvés"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1534
+msgid "Rejected Users"
+msgstr "Utilisateurs rejetés"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1538
+msgid "Avg. Days to Approve"
+msgstr "Jours moyens d'approbation"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1545
+msgid "Analytics & Activity Log"
+msgstr "Analyses et journal d'activité"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1550
+msgid "Registration Trend (Monthly)"
+msgstr "Tendance des inscriptions (mensuel)"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1554
+msgid "Top Countries"
+msgstr "Principaux pays"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1558
+msgid "Organization Types"
+msgstr "Types d'organisation"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1564
+msgid "Platform Distribution"
+msgstr "Répartition par plateforme"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1568
+msgid "Status Overview"
+msgstr "Vue d'ensemble du statut"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1575
+msgid "Recent Admin Activity"
+msgstr "Activité récente de l'administrateur"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1580
+msgid "When"
+msgstr "Quand"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1581
+msgid "Action"
+msgstr "Action"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1582
+#: ckanext/colab/templates/colab_temp/admin.html:1645
+#: ckanext/colab/templates/colab_temp/organization_admin.html:892
+#: ckanext/colab/templates/colab_temp/organization_admin.html:949
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1003
+#: ckanext/colab/templates/colab_temp/snippets/form.html:189
+msgid "Admin"
+msgstr "Admin"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1583
+#: ckanext/colab/templates/colab_temp/admin.html:1676
+#: ckanext/colab/templates/colab_temp/admin.html:1811
+#: ckanext/colab/templates/colab_temp/admin.html:1920
+msgid "User"
+msgstr "Utilisateur"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1584
+msgid "Details"
+msgstr "Détails"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1604
+msgid ""
+"No admin activity recorded yet. Actions will appear here as they are "
+"performed."
+msgstr ""
+"Aucune activité de l'administrateur enregistrée. Les actions apparaîtront "
+"ici au fur et à mesure."
+
+#: ckanext/colab/templates/colab_temp/admin.html:1613
+#: ckanext/colab/templates/colab_temp/admin.html:3513
+#: ckanext/colab/templates/colab_temp/organization_admin.html:857
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:279
+msgid "Pending"
+msgstr "En attente"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1616
+#: ckanext/colab/templates/colab_temp/admin.html:1815
+#: ckanext/colab/templates/colab_temp/admin.html:3514
+#: ckanext/colab/templates/colab_temp/organization_admin.html:860
+#: ckanext/colab/templates/colab_temp/status.html:236
+msgid "Approved"
+msgstr "Approuvée"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1619
+#: ckanext/colab/templates/colab_temp/admin.html:1924
+#: ckanext/colab/templates/colab_temp/admin.html:3515
+#: ckanext/colab/templates/colab_temp/organization_admin.html:863
+#: ckanext/colab/templates/colab_temp/status.html:238
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:176
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:193
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:208
+msgid "Rejected"
+msgstr "Rejetée"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1621
+msgid "Download current tab as CSV"
+msgstr "Télécharger l'onglet actuel en CSV"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1622
+msgid "Export CSV"
+msgstr "Exporter en CSV"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1628
+msgid "selected"
+msgstr "sélectionné(s)"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1629
+#: ckanext/colab/templates/colab_temp/admin.html:2089
+#: ckanext/colab/templates/colab_temp/organization_admin.html:926
+msgid "Approve"
+msgstr "Approuver"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1630
+#: ckanext/colab/templates/colab_temp/organization_admin.html:929
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:380
+msgid "Reject"
+msgstr "Rejeter"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1631
+msgid "Delete"
+msgstr "Supprimer"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1632
+msgid "Clear"
+msgstr "Effacer"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1638
+msgid "Search by name, email, organization..."
+msgstr "Rechercher par nom, e-mail, organisation..."
+
+#: ckanext/colab/templates/colab_temp/admin.html:1641
+msgid "All Organizations"
+msgstr "Toutes les organisations"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1644
+msgid "All Roles"
+msgstr "Tous les rôles"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1646
+#: ckanext/colab/templates/colab_temp/snippets/form.html:188
+msgid "Editor"
+msgstr "Éditeur"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1647
+#: ckanext/colab/templates/colab_temp/snippets/form.html:187
+msgid "Member"
+msgstr "Membre"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1650
+msgid "All Countries"
+msgstr "Tous les pays"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1655
+msgid "Quick filters:"
+msgstr "Filtres rapides :"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1656
+msgid "Show only duplicate applications"
+msgstr "Afficher uniquement les candidatures en double"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1657
+msgid "Duplicates"
+msgstr "Doublons"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1659
+msgid ""
+"Show applications from people who already had a CKAN account before applying"
+msgstr ""
+"Afficher les candidatures de personnes qui avaient déjà un compte CKAN avant "
+"de postuler"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1660
+msgid "Pre-existing User"
+msgstr "Utilisateur préexistant"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1662
+msgid "Show only applications requesting new organizations"
+msgstr "Afficher uniquement les demandes de nouvelles organisations"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1663
+msgid "New Org"
+msgstr "Nouvelle org."
+
+#: ckanext/colab/templates/colab_temp/admin.html:1665
+msgid "Clear all filters"
+msgstr "Effacer tous les filtres"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1666
+msgid "Clear Filters"
+msgstr "Effacer les filtres"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1675
+#: ckanext/colab/templates/colab_temp/admin.html:1810
+#: ckanext/colab/templates/colab_temp/admin.html:1919
+msgid "Select all"
+msgstr "Tout sélectionner"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1677
+#: ckanext/colab/templates/colab_temp/admin.html:1812
+#: ckanext/colab/templates/colab_temp/admin.html:1921
+msgid "Contact"
+msgstr "Contact"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1678
+#: ckanext/colab/templates/colab_temp/admin.html:1813
+#: ckanext/colab/templates/colab_temp/admin.html:1922
+#: ckanext/colab/templates/colab_temp/organization_admin.html:889
+#: ckanext/colab/templates/colab_temp/organization_admin.html:946
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1000
+#: ckanext/colab/templates/colab_temp/snippets/form.html:105
+#: ckanext/colab/templates/colab_temp/status.html:252
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:253
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:324
+msgid "Organization"
+msgstr "Organisation"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1679
+#: ckanext/colab/templates/colab_temp/admin.html:1814
+#: ckanext/colab/templates/colab_temp/admin.html:1923
+msgid "Applied"
+msgstr "Postulé"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1680
+msgid "Role"
+msgstr "Rôle"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1681
+#: ckanext/colab/templates/colab_temp/admin.html:1816
+msgid "Platforms"
+msgstr "Plateformes"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1682
+#: ckanext/colab/templates/colab_temp/admin.html:1818
+#: ckanext/colab/templates/colab_temp/admin.html:1926
+#: ckanext/colab/templates/colab_temp/organization_admin.html:894
+#: ckanext/colab/templates/colab_temp/organization_admin.html:951
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1006
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:215
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:260
+msgid "Actions"
+msgstr "Actions"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1725
+#: ckanext/colab/templates/colab_temp/admin.html:1850
+#: ckanext/colab/templates/colab_temp/admin.html:1958
+msgid "New organization requested"
+msgstr "Nouvelle organisation demandée"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1736
+#: ckanext/colab/templates/colab_temp/admin.html:1861
+#: ckanext/colab/templates/colab_temp/admin.html:1969
+msgid "Requested organization logo"
+msgstr "Logo de l'organisation demandée"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1737
+#: ckanext/colab/templates/colab_temp/admin.html:1862
+#: ckanext/colab/templates/colab_temp/admin.html:1970
+msgid "Logo requested for the new organization"
+msgstr "Logo demandé pour la nouvelle organisation"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1817
+#: ckanext/colab/templates/colab_temp/organization_admin.html:950
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1004
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:212
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:257
+msgid "Status"
+msgstr "Statut"
+
+#: ckanext/colab/templates/colab_temp/admin.html:1925
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1005
+msgid "Reason"
+msgstr "Motif"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2037
+msgid "User Details"
+msgstr "Détails de l'utilisateur"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2079
+msgid "APPROVE USER"
+msgstr "APPROUVER L'UTILISATEUR"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2080
+msgid "Name:"
+msgstr "Nom :"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2081
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:36
+msgid "Username:"
+msgstr "Nom d'utilisateur :"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2082
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1077
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:44
+msgid "Organization:"
+msgstr "Organisation :"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2083
+msgid "Title:"
+msgstr "Titre :"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2084
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:40
+msgid "Email:"
+msgstr "Adresse e-mail :"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2085
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:48
+msgid "Role:"
+msgstr "Rôle :"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2086
+msgid "Do you want to approve this user?"
+msgstr "Voulez-vous approuver cet utilisateur ?"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2087
+#, python-format
+msgid "Role will be changed from \"%(from)s\" to \"%(to)s\""
+msgstr "Le rôle sera modifié de \"%(from)s\" à \"%(to)s\""
+
+#: ckanext/colab/templates/colab_temp/admin.html:2088
+#: ckanext/colab/templates/colab_temp/organization_request.html:872
+#: ckanext/colab/templates/colab_temp/snippets/form.html:492
+msgid "Processing..."
+msgstr "Traitement en cours..."
+
+#: ckanext/colab/templates/colab_temp/admin.html:2090
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1082
+msgid "Error approving"
+msgstr "Erreur lors de l'approbation"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2091
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1085
+msgid "Connection error"
+msgstr "Erreur de connexion"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2092
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1086
+msgid "Could not process the approval. Please try again."
+msgstr "Impossible de traiter l'approbation. Veuillez réessayer."
+
+#: ckanext/colab/templates/colab_temp/admin.html:2093
+msgid "User approved"
+msgstr "Utilisateur approuvé"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2094
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1084
+#, python-format
+msgid "%(name)s has been approved successfully"
+msgstr "%(name)s a été approuvé avec succès"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2095
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1087
+msgid "📝 Please enter the reason for rejection:"
+msgstr "📝 Veuillez saisir le motif du rejet :"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2096
+#, python-format
+msgid "Rejection reason for %(count)s application(s):"
+msgstr "Motif de rejet pour %(count)s demande(s) :"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2097
+#, python-format
+msgid ""
+"Delete %(count)s application(s)? This is a soft delete and can be undone."
+msgstr ""
+"Supprimer %(count)s demande(s) ? Il s'agit d'une suppression réversible."
+
+#: ckanext/colab/templates/colab_temp/admin.html:2098
+#, python-format
+msgid "Approve %(count)s application(s) with member role?"
+msgstr "Approuver %(count)s demande(s) avec le rôle de membre ?"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2099
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1088
+msgid "Error rejecting"
+msgstr "Erreur lors du rejet"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2100
+msgid "User rejected"
+msgstr "Utilisateur rejeté"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2101
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1090
+#, python-format
+msgid "%(name)s has been rejected"
+msgstr "%(name)s a été rejeté"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2102
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1091
+msgid "Could not process the rejection. Please try again."
+msgstr "Impossible de traiter le rejet. Veuillez réessayer."
+
+#: ckanext/colab/templates/colab_temp/admin.html:2103
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:277
+msgid "Error"
+msgstr "Erreur"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2104
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2105
+msgid "Error deleting application: "
+msgstr "Erreur lors de la suppression de la demande : "
+
+#: ckanext/colab/templates/colab_temp/admin.html:2106
+msgid "deleted"
+msgstr "supprimé"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2107
+msgid "Undo"
+msgstr "Annuler"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2108
+msgid "Restored"
+msgstr "Restauré"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2109
+msgid "Application restored successfully"
+msgstr "Demande restaurée avec succès"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2110
+msgid "Could not restore"
+msgstr "Impossible de restaurer"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2111
+msgid "Error restoring: "
+msgstr "Erreur lors de la restauration : "
+
+#: ckanext/colab/templates/colab_temp/admin.html:2112
+#, python-format
+msgid "%(action)s %(count)s application(s)"
+msgstr "%(action)s %(count)s demande(s)"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2113
+msgid ". Errors: "
+msgstr ". Erreurs : "
+
+#: ckanext/colab/templates/colab_temp/admin.html:2114
+msgid "Bulk action failed"
+msgstr "L'action en masse a échoué"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2115
+msgid "Network error: "
+msgstr "Erreur réseau : "
+
+#: ckanext/colab/templates/colab_temp/admin.html:2116
+msgid "Could not save notes"
+msgstr "Impossible d'enregistrer les notes"
+
+#: ckanext/colab/templates/colab_temp/admin.html:2117
+msgid "Error saving notes: "
+msgstr "Erreur lors de l'enregistrement des notes : "
+
+#: ckanext/colab/templates/colab_temp/index.html:4
+#: ckanext/colab/templates/colab_temp/index.html:31
+#: ckanext/colab/templates/colab_temp/index.html:42
+#: ckanext/colab/templates/colab_temp/organization_request.html:31
 msgid "Register"
 msgstr "S'inscrire"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:6
-msgid "Register to access IHP WINS, Citizens4Water, and related platforms. Contribute data, news, events, and data stories on behalf of your organization."
-msgstr "Inscrivez-vous pour accéder à IHP WINS, Citizens4Water et aux plateformes associées. Contribuez avec des données, des actualités, des événements et des histoires de données au nom de votre organisation."
+#: ckanext/colab/templates/colab_temp/index.html:30
+#: ckanext/colab/templates/colab_temp/organization_request.html:30
+msgid "Home"
+msgstr "Accueil"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:7
+#: ckanext/colab/templates/colab_temp/index.html:43
 msgid ""
-"Welcome to the registration form. By completing this form, you will be able to "
-"access IHP WINS, Citizens4Water, and related platforms to contribute data, news, events, "
-"and data stories on behalf of your organization."
-msgstr ""
-"Bienvenue au formulaire d'inscription. En remplissant ce formulaire, vous pourrez accéder à "
-"IHP WINS, Citizens4Water et aux plateformes associées pour contribuer avec des données, "
-"des actualités, des événements et des histoires de données au nom de votre organisation."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:8
-msgid ""
-"Kindly note that your submission will undergo a verification "
-"process, requiring your organization's official email address. This "
-"verification step ensures the security and authenticity of the data you "
-"submit."
-msgstr ""
-"Veuillez noter que votre soumission sera soumise à un processus de vérification, nécessitant l'adresse e-mail officielle de votre organisation. Cette étape de vérification garantit la sécurité et l'authenticité des données que vous soumettez."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:9
-msgid ""
-"If you encounter any issues with the registration process, please contact us at "
-"ihp-wins@unesco.org for assistance."
-msgstr ""
-"Si vous rencontrez des problèmes avec le processus d'inscription, veuillez nous contacter à ihp-wins@unesco.org pour obtenir de l'aide."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:14
-msgid "Full Name (Optional)"
-msgstr ""
-"Nom complet (Optionnel)"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:17
-msgid "Username *"
-msgstr "Nom d'utilisateur *"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:18
-msgid "Your username should consist solely of lowercase letters and numbers."
-msgstr ""
-"Votre nom d'utilisateur doit se composer uniquement de lettres minuscules et de chiffres."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:21
-msgid "Password *"
-msgstr ""
-"Mot de passe *"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:22
-msgid "Your password must be 8 characters or longer"
-msgstr ""
-"Votre mot de passe doit contenir au moins 8 caractères"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:24
-msgid "Confirm password *"
-msgstr ""
-"Confirmer le mot de passe *"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:28
-msgid "Email *"
-msgstr ""
-"Email *"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:32
-msgid "Demographics"
-msgstr "Démographie"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:33
-msgid ""
-"UNESCO's overarching priorities encompass gender equality, age "
-"inclusivity, and geographic diversity. Accordingly, we kindly request "
-"your input in the demography fields of this form to ensure we understand "
-"who our diverse contributors are."
-msgstr ""
-"Les priorités générales de l'UNESCO incluent l'égalité des sexes, l'inclusivité en termes d'âge et la diversité géographique. En conséquence, nous vous demandons gentiment de fournir vos informations dans les champs de démographie de ce formulaire pour nous assurer de comprendre qui sont nos contributeurs divers."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:36
-msgid "Age*"
-msgstr ""
-"Âge*"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:39
-msgid "Gender *"
-msgstr ""
-"Genre *"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:41
-msgid "Woman"
-msgstr ""
-"Femme"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:42
-msgid "Man"
-msgstr ""
-"Homme"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:43
-msgid "Other (to fill in)"
-msgstr ""
-"Autre (à remplir)"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:44
-msgid "Prefer not to say"
-msgstr ""
-"Préfère ne pas dire"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:47
-msgid "Please specify"
-msgstr ""
-"Veuillez préciser"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:50
-msgid "Nationality *"
-msgstr ""
-"Nationalité *"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:54
-msgid "Organization"
-msgstr ""
-"Organisation"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:55
-msgid ""
-"To be a contributor for IHP WINS you need to be part of an organization. If your "
-"organization is not yet active in IHP WINS, you can create a new organization via "
-"this form. Depending on your role, your data is either uploaded to the overall "
-"institutional data or to the data repository specific to your organization."
-msgstr ""
-"Pour être un contributeur pour IHP WINS, vous devez faire partie d'une organisation. Si votre "
-"organisation n'est pas encore active dans IHP WINS, vous pouvez créer une nouvelle organisation "
-"via ce formulaire. Selon votre rôle, vos données sont soit téléchargées dans les données "
-"institutionnelles globales, soit dans le dépôt de données spécifique à votre organisation."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:58
-msgid "Organization Type"
-msgstr ""
-"Type d'organisation"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:60
-msgid "UNESCO IHP Secretariat"
-msgstr ""
-"Secrétariat du PHI de l'UNESCO"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:61
-msgid "UNESCO Field Office"
-msgstr ""
-"Bureau de l'UNESCO sur le terrain"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:62
-msgid "IHP National Committee"
-msgstr ""
-"Comité national du PHI"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:63
-msgid "UNESCO Category I Center"
-msgstr ""
-"Centre de catégorie I de l'UNESCO"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:64
-msgid "UNESCO Category II Center"
-msgstr ""
-"Centre de catégorie II de l'UNESCO"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:65
-msgid "UNESCO Chair or UNITWIN"
-msgstr ""
-"Chaire UNESCO ou UNITWIN"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:66
-msgid "Non-Governmental Organization"
-msgstr ""
-"Organisation non-gouvernementale"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:67
-msgid "Governmental Organization"
-msgstr ""
-"Organisation gouvernementale"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:68
-msgid "University"
-msgstr ""
-"Université"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:69
-msgid "Private Partner"
-msgstr ""
-"Partenaire privé"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:70
-msgid "Research Institution"
-msgstr ""
-"Institut de recherche"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:71
-msgid "Other"
-msgstr ""
-"Autre"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:74
-msgid "Organization Name *"
-msgstr ""
-"Nom de l'organisation *"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:75
-msgid "Select your organization in the dropdown list or add a new organization."
-msgstr ""
-"Sélectionnez votre organisation dans la liste déroulante ou ajoutez une nouvelle organisation."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:79
-msgid "Create New Organization"
-msgstr ""
-"Créer une nouvelle organisation"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:86
-msgid "New Organization Name *"
-msgstr ""
-"Nom de la nouvelle organisation *"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:88
-msgid "Organization Description"
-msgstr ""
-"Description de l'organisation"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:72
-msgid "Select your affiliation to the UNESCO Water Family. If your organization is not related to the UNESCO Water Family, select other."
-msgstr "Sélectionnez votre affiliation à la Famille de l'Eau de l'UNESCO. Si votre organisation n'est pas liée à la Famille de l'Eau de l'UNESCO, sélectionnez autre."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:93
-msgid "Title Within Represented Organization *"
-msgstr ""
-"Titre au sein de l'organisation représentée *"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:95
-msgid "Related platforms"
-msgstr "Plateformes associées"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:96
-msgid ""
-"This registration form will allow you to contribute data and information on IHP WINS "
-"and related platforms. Select the related platforms you wish to contribute to and "
-"agree you may be contacted about."
-msgstr ""
-"Ce formulaire d'inscription vous permettra de contribuer des données et informations sur IHP WINS "
-"et les plateformes associées. Sélectionnez les plateformes associées auxquelles vous souhaitez "
-"contribuer et acceptez d'être contacté à ce sujet."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:97
-msgid "Citizens4Water platform"
-msgstr "Plateforme Citizens4Water"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:98
-msgid ""
-"Accept and acknowledge the responsibilities and guidelines that the "
-"authorized user must follow when uploading data on behalf of the "
+"Register to access IHP WINS, Citizens4Water, and related platforms. "
+"Contribute data, news, events, and data stories on behalf of your "
 "organization."
 msgstr ""
-"Accepter et reconnaître les responsabilités et les directives que l'utilisateur autorisé doit suivre lors du téléchargement de données au nom de l'organisation."
+"Inscrivez-vous pour accéder à IHP WINS, Citizens4Water et aux plateformes "
+"associées. Contribuez avec des données, des actualités, des événements et "
+"des histoires de données au nom de votre organisation."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:101
-msgid "Submit"
+#: ckanext/colab/templates/colab_temp/index.html:56
+msgid "Registration Successful"
+msgstr "Inscription réussie"
+
+#: ckanext/colab/templates/colab_temp/index.html:57
+msgid ""
+"Welcome to the IHP-WINS platform! Your application has been submitted "
+"successfully."
 msgstr ""
-"Soumettre"
+"Bienvenue sur la plateforme IHP-WINS ! Votre demande a été soumise avec "
+"succès."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:169
-msgid "Passwords match!"
+#: ckanext/colab/templates/colab_temp/index.html:70
+msgid "Registration Error"
+msgstr "Erreur d'inscription"
+
+#: ckanext/colab/templates/colab_temp/index.html:71
+msgid ""
+"We encountered an issue processing your registration. Please review the "
+"information below."
 msgstr ""
-"Les mots de passe correspondent !"
+"Nous avons rencontré un problème lors du traitement de votre inscription. "
+"Veuillez consulter les informations ci-dessous."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:172
-msgid "Passwords do not match"
-msgstr ""
-"Les mots de passe ne correspondent pas"
+#: ckanext/colab/templates/colab_temp/index.html:121
+msgid "Duplicate Application Detected"
+msgstr "Demande en double détectée"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:189
-msgid "This organization already exists in the list."
-msgstr ""
-"Cette organisation existe déjà dans la liste."
+#: ckanext/colab/templates/colab_temp/organization_admin.html:822
+msgid "Organization Requests Dashboard"
+msgstr "Tableau de bord des demandes d'organisation"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:209
-msgid "This group already exists in the list."
-msgstr ""
-"Ce groupe existe déjà dans la liste."
+#: ckanext/colab/templates/colab_temp/organization_admin.html:823
+msgid "Manage organization creation requests from users"
+msgstr "Gérez les demandes de création d’organisation des utilisateurs"
 
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:4
-msgid "Thank you for registering with us!"
-msgstr ""
-"Merci de vous être inscrit chez nous !"
+#: ckanext/colab/templates/colab_temp/organization_admin.html:842
+msgid "Pending Requests"
+msgstr "Demandes en attente"
 
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:5
-msgid "Your details have been received, and we appreciate your interest."
-msgstr ""
-"Vos informations ont été reçues et nous apprécions votre intérêt."
+#: ckanext/colab/templates/colab_temp/organization_admin.html:846
+msgid "Approved Organizations"
+msgstr "Organisations approuvées"
 
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:6
-msgid "Our team will review your request shortly."
-msgstr ""
-"Notre équipe examinera votre demande sous peu."
+#: ckanext/colab/templates/colab_temp/organization_admin.html:850
+msgid "Rejected Requests"
+msgstr "Demandes rejetées"
 
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:7
-msgid "If you have any questions, feel free to reach out."
-msgstr ""
-"Si vous avez des questions, n'hésitez pas à nous contacter."
+#: ckanext/colab/templates/colab_temp/organization_admin.html:870
+msgid "Search by organization name, requester..."
+msgstr "Rechercher par nom d'organisation, demandeur..."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:102
-msgid "For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets."
-msgstr ""
-"Pour les nouvelles organisations, le rôle Admin est disponible par défaut. Pour les organisations existantes, choisissez Editeur si vous souhaitez télécharger des ensembles de données, ou Membre si vous n'avez besoin que de consulter les ensembles de données privés."
+#: ckanext/colab/templates/colab_temp/organization_admin.html:873
+msgid "All Types"
+msgstr "Tous les types"
 
+#: ckanext/colab/templates/colab_temp/organization_admin.html:874
+msgid "Academic Institution"
+msgstr "Institution académique"
 
+#: ckanext/colab/templates/colab_temp/organization_admin.html:875
+msgid "Government Agency"
+msgstr "Agence gouvernementale"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:876
+msgid "NGO"
+msgstr "ONG"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:877
+msgid "Private Company"
+msgstr "Entreprise privée"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:878
+msgid "Research Institute"
+msgstr "Institut de recherche"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:879
+msgid "International Organization"
+msgstr "Organisation internationale"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:880
+#: ckanext/colab/templates/colab_temp/snippets/form.html:126
+msgid "Other"
+msgstr "Autre"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:890
+#: ckanext/colab/templates/colab_temp/organization_admin.html:947
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1001
+msgid "Requester"
+msgstr "Demandeur"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:891
+#: ckanext/colab/templates/colab_temp/organization_admin.html:948
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1002
+msgid "Type"
+msgstr "Type"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:893
+msgid "Date"
+msgstr "Date"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:923
+#: ckanext/colab/templates/colab_temp/organization_admin.html:983
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1043
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:289
+msgid "View"
+msgstr "Voir"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:975
+#, python-format
+msgid "Approved by %(user)s"
+msgstr "Approuvé par %(user)s"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1030
+#, python-format
+msgid "Rejected by %(user)s"
+msgstr "Rejeté par %(user)s"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1064
+msgid "Organization Request Details"
+msgstr "Détails de la demande d'organisation"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1076
+msgid "APPROVE ORGANIZATION REQUEST"
+msgstr "APPROUVER LA DEMANDE D'ORGANISATION"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1078
+msgid "Type:"
+msgstr "Type :"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1079
+msgid "Requester:"
+msgstr "Demandeur :"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1080
+msgid "Admin:"
+msgstr "Administrateur :"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1081
+msgid "Do you want to approve this organization request?"
+msgstr "Voulez-vous approuver cette demande d'organisation ?"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1083
+msgid "Organization approved"
+msgstr "Organisation approuvée"
+
+#: ckanext/colab/templates/colab_temp/organization_admin.html:1089
+msgid "Organization rejected"
+msgstr "Organisation rejetée"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:4
+#: ckanext/colab/templates/colab_temp/organization_request.html:32
 #: ckanext/colab/templates/colab_temp/organization_request.html:43
 msgid "Request New Organization"
 msgstr "Demander une nouvelle organisation"
 
 #: ckanext/colab/templates/colab_temp/organization_request.html:44
-msgid "Create a new organization to manage your data and collaborate with team members."
-msgstr "Créez une nouvelle organisation pour gérer vos données et collaborer avec les membres de votre équipe."
+msgid ""
+"Create a new organization to manage your data and collaborate with team "
+"members."
+msgstr ""
+"Créez une nouvelle organisation pour gérer vos données et collaborer avec "
+"les membres de votre équipe."
 
 #: ckanext/colab/templates/colab_temp/organization_request.html:57
+#: ckanext/colab/templates/colab_temp/organization_request.html:206
 msgid "Request Submitted Successfully"
 msgstr "Demande envoyée avec succès"
 
 #: ckanext/colab/templates/colab_temp/organization_request.html:58
-msgid "Your organization request has been submitted and is pending admin approval."
-msgstr "Votre demande d'organisation a été soumise et est en attente d'approbation par un administrateur."
+msgid ""
+"Your organization request has been submitted and is pending admin approval."
+msgstr ""
+"Votre demande d'organisation a été soumise et est en attente d'approbation "
+"par un administrateur."
 
 #: ckanext/colab/templates/colab_temp/organization_request.html:71
 msgid "Request Error"
 msgstr "Erreur de demande"
 
+#: ckanext/colab/templates/colab_temp/organization_request.html:75
+msgid "Please contact your system administrator to run the database migration:"
+msgstr ""
+"Veuillez contacter votre administrateur système pour exécuter la migration "
+"de la base de données :"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:98
+msgid "Organization Information"
+msgstr "Informations sur l'organisation"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:103
+#: ckanext/colab/templates/colab_temp/snippets/form.html:132
+msgid "Organization Name"
+msgstr "Nom de l'organisation"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:109
+msgid "Enter the full name of your organization"
+msgstr "Saisissez le nom complet de votre organisation"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:111
+msgid "The official name of your organization as it should appear publicly."
+msgstr ""
+"Le nom officiel de votre organisation tel qu'il doit apparaître publiquement."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:116
+#: ckanext/colab/templates/colab_temp/snippets/form.html:112
+msgid "Organization Type"
+msgstr "Type d'organisation"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:119
+#: ckanext/colab/templates/colab_temp/snippets/form.html:114
+msgid "Select organization type"
+msgstr "Sélectionnez le type d'organisation"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:124
+msgid "Select the category that best describes your organization."
+msgstr "Sélectionnez la catégorie qui décrit le mieux votre organisation."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:129
+#: ckanext/colab/templates/colab_temp/snippets/form.html:158
+msgid "Organization Description"
+msgstr "Description de l'organisation"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:135
+msgid ""
+"Provide a detailed description of your organization, its mission, goals, and "
+"activities..."
+msgstr ""
+"Fournissez une description détaillée de votre organisation, de sa mission, "
+"de ses objectifs et de ses activités..."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:137
+msgid ""
+"Describe your organization's purpose, activities, and how it relates to data "
+"management or research."
+msgstr ""
+"Décrivez l'objectif de votre organisation, ses activités et son lien avec la "
+"gestion des données ou la recherche."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:142
+msgid "Organization Image/Logo"
+msgstr "Image/logo de l'organisation"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:152
+msgid "Image preview"
+msgstr "Aperçu de l'image"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:153
+#: ckanext/colab/templates/colab_temp/snippets/form.html:169
+msgid "Remove"
+msgstr "Supprimer"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:156
+msgid ""
+"Upload a logo or representative image for your organization (optional). "
+"Supported formats: PNG, JPG, JPEG, GIF. Maximum size: 2MB."
+msgstr ""
+"Téléchargez un logo ou une image représentative de votre organisation "
+"(facultatif). Formats pris en charge : PNG, JPG, JPEG, GIF. Taille "
+"maximale : 2 Mo."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:163
+msgid "Administration"
+msgstr "Administration"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:168
+msgid "Administrator Username"
+msgstr "Nom d'utilisateur de l'administrateur"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:175
+msgid "Enter username for organization administrator"
+msgstr "Saisissez le nom d'utilisateur de l'administrateur de l'organisation"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:177
+msgid ""
+"The username of the person who will be the administrator of this "
+"organization. This user must already exist in the system."
+msgstr ""
+"Le nom d'utilisateur de la personne qui sera l'administrateur de cette "
+"organisation. Cet utilisateur doit déjà exister dans le système."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:184
+msgid "Submit Organization Request"
+msgstr "Soumettre la demande d'organisation"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:188
+msgid "Back to Portal"
+msgstr "Retour au portail"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:207
+msgid ""
+"Your organization request has been submitted and is now pending "
+"administrator approval. You will be notified once the request has been "
+"reviewed."
+msgstr ""
+"Votre demande d'organisation a été soumise et est maintenant en attente de "
+"l'approbation d'un administrateur. Vous serez averti une fois la demande "
+"examinée."
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:211
+msgid "Return to Portal"
+msgstr "Retourner au portail"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:215
+msgid "Submit Another Request"
+msgstr "Soumettre une autre demande"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:787
+#: ckanext/colab/templates/colab_temp/snippets/form.html:619
+msgid "Please select a valid image file (PNG, JPG, JPEG, or GIF)"
+msgstr "Veuillez sélectionner un fichier image valide (PNG, JPG, JPEG ou GIF)"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:795
+#: ckanext/colab/templates/colab_temp/snippets/form.html:627
+msgid "File size must be less than 2MB"
+msgstr "La taille du fichier doit être inférieure à 2 Mo"
+
+#: ckanext/colab/templates/colab_temp/organization_request.html:865
+msgid "Please fill in all required fields"
+msgstr "Veuillez remplir tous les champs obligatoires"
+
 #: ckanext/colab/templates/colab_temp/status.html:3
 msgid "Application Status"
 msgstr "Statut de la demande"
 
-#: ckanext/colab/templates/colab_temp/status.html:207 ckanext/colab/templates/colab_temp/snippets/thanks.html:122
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:122
+#: ckanext/colab/templates/colab_temp/status.html:207
 msgid "Check Application Status"
 msgstr "Vérifier le statut de la demande"
 
 #: ckanext/colab/templates/colab_temp/status.html:208
 msgid "Enter your username and email to check the status of your registration."
-msgstr "Saisissez votre nom d'utilisateur et votre adresse e-mail pour vérifier le statut de votre inscription."
+msgstr ""
+"Saisissez votre nom d'utilisateur et votre adresse e-mail pour vérifier le "
+"statut de votre inscription."
 
-#: ckanext/colab/templates/colab_temp/status.html:213 ckanext/colab/templates/colab_temp/status.html:248 ckanext/colab/templates/colab_temp/snippets/form.html:37
+#: ckanext/colab/templates/colab_temp/snippets/form.html:37
+#: ckanext/colab/templates/colab_temp/status.html:213
+#: ckanext/colab/templates/colab_temp/status.html:248
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
@@ -407,7 +1079,8 @@ msgstr "Nom d'utilisateur"
 msgid "Enter your username"
 msgstr "Saisissez votre nom d'utilisateur"
 
-#: ckanext/colab/templates/colab_temp/status.html:219 ckanext/colab/templates/colab_temp/snippets/form.html:43
+#: ckanext/colab/templates/colab_temp/snippets/form.html:43
+#: ckanext/colab/templates/colab_temp/status.html:219
 msgid "Email"
 msgstr "Adresse e-mail"
 
@@ -424,16 +1097,10 @@ msgid "Application Found"
 msgstr "Demande trouvée"
 
 #: ckanext/colab/templates/colab_temp/status.html:234
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:164
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:184
 msgid "Pending Review"
 msgstr "En attente d'examen"
-
-#: ckanext/colab/templates/colab_temp/status.html:236
-msgid "Approved"
-msgstr "Approuvée"
-
-#: ckanext/colab/templates/colab_temp/status.html:238
-msgid "Rejected"
-msgstr "Rejetée"
 
 #: ckanext/colab/templates/colab_temp/status.html:244
 msgid "Full Name"
@@ -444,6 +1111,9 @@ msgid "Role Requested"
 msgstr "Rôle demandé"
 
 #: ckanext/colab/templates/colab_temp/status.html:260
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:214
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:203
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:259
 msgid "Submitted"
 msgstr "Soumise"
 
@@ -468,124 +1138,16 @@ msgid "Organization assignment"
 msgstr "Attribution à une organisation"
 
 #: ckanext/colab/templates/colab_temp/status.html:305
-msgid "No application found matching this username and email combination. Please verify your details and try again."
-msgstr "Aucune demande ne correspond à cette combinaison de nom d'utilisateur et d'adresse e-mail. Vérifiez vos informations et réessayez."
+msgid ""
+"No application found matching this username and email combination. Please "
+"verify your details and try again."
+msgstr ""
+"Aucune demande ne correspond à cette combinaison de nom d'utilisateur et "
+"d'adresse e-mail. Vérifiez vos informations et réessayez."
 
 #: ckanext/colab/templates/colab_temp/status.html:311
 msgid "Back to Registration"
 msgstr "Retour à l'inscription"
-
-#: ckanext/colab/templates/colab_temp/index.html:56
-msgid "Registration Successful"
-msgstr "Inscription réussie"
-
-#: ckanext/colab/templates/colab_temp/index.html:57
-msgid "Welcome to the IHP-WINS platform! Your application has been submitted successfully."
-msgstr "Bienvenue sur la plateforme IHP-WINS ! Votre demande a été soumise avec succès."
-
-#: ckanext/colab/templates/colab_temp/index.html:70
-msgid "Registration Error"
-msgstr "Erreur d'inscription"
-
-#: ckanext/colab/templates/colab_temp/index.html:71
-msgid "We encountered an issue processing your registration. Please review the information below."
-msgstr "Nous avons rencontré un problème lors du traitement de votre inscription. Veuillez consulter les informations ci-dessous."
-
-#: ckanext/colab/templates/colab_temp/index.html:121
-msgid "Duplicate Application Detected"
-msgstr "Demande en double détectée"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:12
-msgid "Registration Successful!"
-msgstr "Inscription réussie !"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:13
-msgid "Thank you for registering"
-msgstr "Merci pour votre inscription"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:22
-msgid "Your application has been successfully submitted and is now being reviewed by our team."
-msgstr "Votre demande a été soumise avec succès et est en cours d'examen par notre équipe."
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:23
-msgid "A confirmation email has been sent to your email address."
-msgstr "Un e-mail de confirmation a été envoyé à votre adresse e-mail."
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:31
-msgid "Your Application Summary"
-msgstr "Résumé de votre demande"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:36
-msgid "Username:"
-msgstr "Nom d'utilisateur :"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:40
-msgid "Email:"
-msgstr "Adresse e-mail :"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:44
-msgid "Organization:"
-msgstr "Organisation :"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:48
-msgid "Role:"
-msgstr "Rôle :"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:54
-msgid "Check your application status anytime at"
-msgstr "Consultez le statut de votre demande à tout moment à l'adresse"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:64
-msgid "What happens next?"
-msgstr "Que se passe-t-il ensuite ?"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:71
-msgid "Email Verification"
-msgstr "Vérification de l'adresse e-mail"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:72
-msgid "Email verification will be sent to your provided email address"
-msgstr "Un e-mail de vérification sera envoyé à l'adresse e-mail que vous avez fournie"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:78
-msgid "Application Review"
-msgstr "Examen de la demande"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:79
-msgid "Our team will review your application and organization details"
-msgstr "Notre équipe examinera votre demande et les détails de votre organisation"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:85
-msgid "Account Approval"
-msgstr "Approbation du compte"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:86
-msgid "You'll receive a confirmation email once your account is approved"
-msgstr "Vous recevrez un e-mail de confirmation une fois votre compte approuvé"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:92
-msgid "Start Contributing"
-msgstr "Commencer à contribuer"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:93
-msgid "Start contributing data and information to IHP WINS and related platforms"
-msgstr "Commencez à contribuer des données et des informations à IHP WINS et aux plateformes associées"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:103
-msgid "Need assistance?"
-msgstr "Besoin d'aide ?"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:106
-msgid "If you have any questions about the registration process or need support, please don't hesitate to contact us:"
-msgstr "Si vous avez des questions sur le processus d'inscription ou si vous avez besoin d'aide, n'hésitez pas à nous contacter :"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:119 ckanext/colab/templates/colab_temp/snippets/error-user-create.html:98
-msgid "Return to Home"
-msgstr "Retour à l'accueil"
-
-#: ckanext/colab/templates/colab_temp/snippets/thanks.html:125
-msgid "Browse Datasets"
-msgstr "Parcourir les jeux de données"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:14
 msgid "Registration Could Not Be Completed"
@@ -600,8 +1162,12 @@ msgid "Error:"
 msgstr "Erreur :"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:24
-msgid "We're sorry, but we couldn't complete your registration at this time. This is typically due to one of the following reasons:"
-msgstr "Nous sommes désolés, mais nous n'avons pas pu finaliser votre inscription pour le moment. Cela est généralement dû à l'une des raisons suivantes :"
+msgid ""
+"We're sorry, but we couldn't complete your registration at this time. This "
+"is typically due to one of the following reasons:"
+msgstr ""
+"Nous sommes désolés, mais nous n'avons pas pu finaliser votre inscription "
+"pour le moment. Cela est généralement dû à l'une des raisons suivantes :"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:29
 msgid "Common Issues:"
@@ -612,24 +1178,34 @@ msgid "Username already exists"
 msgstr "Le nom d'utilisateur existe déjà"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:35
-msgid "The username you chose is already in use. Please try a different username."
-msgstr "Le nom d'utilisateur que vous avez choisi est déjà utilisé. Veuillez en essayer un autre."
+msgid ""
+"The username you chose is already in use. Please try a different username."
+msgstr ""
+"Le nom d'utilisateur que vous avez choisi est déjà utilisé. Veuillez en "
+"essayer un autre."
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:41
 msgid "Email already registered"
 msgstr "Adresse e-mail déjà enregistrée"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:42
-msgid "This email address is already associated with an account. Try logging in instead."
-msgstr "Cette adresse e-mail est déjà associée à un compte. Essayez de vous connecter à la place."
+msgid ""
+"This email address is already associated with an account. Try logging in "
+"instead."
+msgstr ""
+"Cette adresse e-mail est déjà associée à un compte. Essayez de vous "
+"connecter à la place."
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:48
 msgid "Organization restrictions"
 msgstr "Restrictions de l'organisation"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:49
-msgid "The organization you selected may have specific registration requirements."
-msgstr "L'organisation que vous avez sélectionnée peut avoir des exigences d'inscription particulières."
+msgid ""
+"The organization you selected may have specific registration requirements."
+msgstr ""
+"L'organisation que vous avez sélectionnée peut avoir des exigences "
+"d'inscription particulières."
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:55
 msgid "Technical issue"
@@ -637,51 +1213,113 @@ msgstr "Problème technique"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:56
 msgid "A temporary server error occurred. Please try again in a few minutes."
-msgstr "Une erreur temporaire du serveur s'est produite. Veuillez réessayer dans quelques minutes."
+msgstr ""
+"Une erreur temporaire du serveur s'est produite. Veuillez réessayer dans "
+"quelques minutes."
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:63
 msgid "What can you do?"
 msgstr "Que pouvez-vous faire ?"
 
-#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:67 ckanext/colab/templates/colab_temp/snippets/error-user-create.html:96
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:67
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:96
 msgid "Try Again"
 msgstr "Réessayer"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:68
-msgid "Review your information and attempt registration again with different details."
-msgstr "Vérifiez vos informations et essayez de vous inscrire à nouveau avec d'autres informations."
+msgid ""
+"Review your information and attempt registration again with different "
+"details."
+msgstr ""
+"Vérifiez vos informations et essayez de vous inscrire à nouveau avec "
+"d'autres informations."
 
-#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:72 ckanext/colab/templates/colab_temp/snippets/error-user-create.html:97
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:72
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:97
 msgid "Login Instead"
 msgstr "Se connecter à la place"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:73
-msgid "If you already have an account, try logging in with your existing credentials."
-msgstr "Si vous avez déjà un compte, essayez de vous connecter avec vos identifiants existants."
+msgid ""
+"If you already have an account, try logging in with your existing "
+"credentials."
+msgstr ""
+"Si vous avez déjà un compte, essayez de vous connecter avec vos identifiants "
+"existants."
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:77
 msgid "Get Help"
 msgstr "Obtenir de l'aide"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:78
-msgid "Contact our support team for personalized assistance with your registration."
-msgstr "Contactez notre équipe d'assistance pour obtenir une aide personnalisée concernant votre inscription."
+msgid ""
+"Contact our support team for personalized assistance with your registration."
+msgstr ""
+"Contactez notre équipe d'assistance pour obtenir une aide personnalisée "
+"concernant votre inscription."
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:84
 msgid "Need Additional Support?"
 msgstr "Besoin d'une aide supplémentaire ?"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:85
-msgid "Our team is here to help you resolve any registration issues. Please don't hesitate to reach out:"
-msgstr "Notre équipe est là pour vous aider à résoudre tout problème d'inscription. N'hésitez pas à nous contacter :"
+msgid ""
+"Our team is here to help you resolve any registration issues. Please don't "
+"hesitate to reach out:"
+msgstr ""
+"Notre équipe est là pour vous aider à résoudre tout problème d'inscription. "
+"N'hésitez pas à nous contacter :"
 
 #: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:92
-msgid "When contacting support, please include the username and email you attempted to register with."
-msgstr "Lorsque vous contactez l'assistance, veuillez inclure le nom d'utilisateur et l'adresse e-mail avec lesquels vous avez essayé de vous inscrire."
+msgid ""
+"When contacting support, please include the username and email you attempted "
+"to register with."
+msgstr ""
+"Lorsque vous contactez l'assistance, veuillez inclure le nom d'utilisateur "
+"et l'adresse e-mail avec lesquels vous avez essayé de vous inscrire."
+
+#: ckanext/colab/templates/colab_temp/snippets/error-user-create.html:98
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:119
+msgid "Return to Home"
+msgstr "Retour à l'accueil"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:13
+msgid ""
+"Welcome to the registration form. By completing this form, you will be able "
+"to access IHP WINS, Citizens4Water, and related platforms to contribute "
+"data, news, events, and data stories on behalf of your organization."
+msgstr ""
+"Bienvenue au formulaire d'inscription. En remplissant ce formulaire, vous "
+"pourrez accéder à IHP WINS, Citizens4Water et aux plateformes associées pour "
+"contribuer avec des données, des actualités, des événements et des histoires "
+"de données au nom de votre organisation."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:15
+msgid ""
+"Kindly note that your submission will undergo a verification process "
+"requiring your organization's official email address. This verification step "
+"ensures the security and authenticity of the data you submit."
+msgstr ""
+"Veuillez noter que votre soumission fera l'objet d'un processus de "
+"vérification qui nécessite l'adresse e-mail officielle de votre "
+"organisation. Cette étape de vérification garantit la sécurité et "
+"l'authenticité des données que vous soumettez."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:17
+msgid ""
+"If you encounter any issues with the registration process, please contact us "
+"at ihp-wins@unesco.org for assistance."
+msgstr ""
+"Si vous rencontrez des problèmes avec le processus d'inscription, veuillez "
+"nous contacter à ihp-wins@unesco.org pour obtenir de l'aide."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:26
 msgid "Personal Information"
 msgstr "Informations personnelles"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:30
+msgid "Full Name (Optional)"
+msgstr "Nom complet (Optionnel)"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:31
 msgid "Enter your full name"
@@ -694,6 +1332,12 @@ msgstr "Votre nom complet nous aidera à personnaliser votre expérience"
 #: ckanext/colab/templates/colab_temp/snippets/form.html:38
 msgid "e.g., john_doe123"
 msgstr "ex. : jean_dupont123"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:39
+msgid "Your username should consist solely of lowercase letters and numbers."
+msgstr ""
+"Votre nom d'utilisateur doit se composer uniquement de lettres minuscules et "
+"de chiffres."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:44
 msgid "your.email@organization.com"
@@ -711,6 +1355,10 @@ msgstr "Mot de passe"
 msgid "Enter a secure password"
 msgstr "Saisissez un mot de passe sécurisé"
 
+#: ckanext/colab/templates/colab_temp/snippets/form.html:54
+msgid "Your password must be 8 characters or longer"
+msgstr "Votre mot de passe doit contenir au moins 8 caractères"
+
 #: ckanext/colab/templates/colab_temp/snippets/form.html:58
 msgid "Confirm password"
 msgstr "Confirmer le mot de passe"
@@ -722,6 +1370,27 @@ msgstr "Saisissez à nouveau votre mot de passe"
 #: ckanext/colab/templates/colab_temp/snippets/form.html:60
 msgid "Passwords must match"
 msgstr "Les mots de passe doivent correspondre"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:69
+msgid "Demographics"
+msgstr "Démographie"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:72
+msgid ""
+"UNESCO's overarching priorities encompass gender equality, age inclusivity, "
+"and geographic diversity. Accordingly, we kindly request your input in the "
+"demography fields of this form to ensure we understand who our diverse "
+"contributors are."
+msgstr ""
+"Les priorités générales de l'UNESCO incluent l'égalité des sexes, "
+"l'inclusivité en termes d'âge et la diversité géographique. En conséquence, "
+"nous vous demandons gentiment de fournir vos informations dans les champs de "
+"démographie de ce formulaire pour nous assurer de comprendre qui sont nos "
+"contributeurs divers."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:77
+msgid "Date of Birth"
+msgstr "Date de naissance"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:79
 msgid "Must be 16 years or older"
@@ -747,23 +1416,96 @@ msgstr "Genre"
 msgid "Please select your gender"
 msgstr "Veuillez sélectionner votre genre"
 
+#: ckanext/colab/templates/colab_temp/snippets/form.html:92
+msgid "Woman"
+msgstr "Femme"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:93
+msgid "Man"
+msgstr "Homme"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:94
+msgid "Other (to fill in)"
+msgstr "Autre (à remplir)"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:95
+msgid "Prefer not to say"
+msgstr "Préfère ne pas dire"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:97
+msgid "Please specify"
+msgstr "Veuillez préciser"
+
 #: ckanext/colab/templates/colab_temp/snippets/form.html:98
 msgid "This information helps us ensure diverse representation"
 msgstr "Ces informations nous aident à garantir une représentation diversifiée"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:108
-msgid "To be a contributor for IHP WINS you need to be part of an organization. If your organization is not yet active in IHP WINS, you can create a new organization via this form."
-msgstr "Pour contribuer à IHP WINS, vous devez faire partie d'une organisation. Si votre organisation n'est pas encore active dans IHP WINS, vous pouvez en créer une nouvelle via ce formulaire."
+msgid ""
+"To be a contributor for IHP WINS you need to be part of an organization. If "
+"your organization is not yet active in IHP WINS, you can create a new "
+"organization via this form."
+msgstr ""
+"Pour contribuer à IHP WINS, vous devez faire partie d'une organisation. Si "
+"votre organisation n'est pas encore active dans IHP WINS, vous pouvez en "
+"créer une nouvelle via ce formulaire."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:114
-msgid "Select organization type"
-msgstr "Sélectionnez le type d'organisation"
+#: ckanext/colab/templates/colab_temp/snippets/form.html:115
+msgid "UNESCO IHP Secretariat"
+msgstr "Secrétariat du PHI de l'UNESCO"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:132
-msgid "Organization Name"
-msgstr "Nom de l'organisation"
+#: ckanext/colab/templates/colab_temp/snippets/form.html:116
+msgid "UNESCO Field Office"
+msgstr "Bureau de l'UNESCO sur le terrain"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:134 ckanext/colab/templates/colab_temp/snippets/form.html:266 ckanext/colab/templates/colab_temp/snippets/form.html:284
+#: ckanext/colab/templates/colab_temp/snippets/form.html:117
+msgid "IHP National Committee"
+msgstr "Comité national du PHI"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:118
+msgid "UNESCO Category I Center"
+msgstr "Centre de catégorie I de l'UNESCO"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:119
+msgid "UNESCO Category II Center"
+msgstr "Centre de catégorie II de l'UNESCO"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:120
+msgid "UNESCO Chair or UNITWIN"
+msgstr "Chaire UNESCO ou UNITWIN"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:121
+msgid "Non-Governmental Organization"
+msgstr "Organisation non-gouvernementale"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:122
+msgid "Governmental Organization"
+msgstr "Organisation gouvernementale"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:123
+msgid "University"
+msgstr "Université"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:124
+msgid "Private Partner"
+msgstr "Partenaire privé"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:125
+msgid "Research Institution"
+msgstr "Institut de recherche"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:128
+msgid ""
+"Select your affiliation to the UNESCO Water Family. If your organization is "
+"not related to the UNESCO Water Family, select other."
+msgstr ""
+"Sélectionnez votre affiliation à la Famille de l'Eau de l'UNESCO. Si votre "
+"organisation n'est pas liée à la Famille de l'Eau de l'UNESCO, sélectionnez "
+"autre."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:134
+#: ckanext/colab/templates/colab_temp/snippets/form.html:294
+#: ckanext/colab/templates/colab_temp/snippets/form.html:311
 msgid "Select an organization..."
 msgstr "Sélectionnez une organisation..."
 
@@ -771,950 +1513,802 @@ msgstr "Sélectionnez une organisation..."
 msgid "Loading organizations..."
 msgstr "Chargement des organisations..."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:142
+#: ckanext/colab/templates/colab_temp/snippets/form.html:137
+msgid "Select your organization from the list below."
+msgstr "Sélectionnez votre organisation dans la liste ci-dessous."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:139
+msgid "My organization is not listed — create a new one"
+msgstr "Mon organisation n'est pas dans la liste — en créer une nouvelle"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:148
+msgid "Choose from the list instead"
+msgstr "Choisir plutôt dans la liste"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:149
+msgid "Creating a new organization"
+msgstr "Création d'une nouvelle organisation"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:152
 msgid "New Organization Name"
 msgstr "Nom de la nouvelle organisation"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:143
+#: ckanext/colab/templates/colab_temp/snippets/form.html:153
 msgid "Enter organization name"
 msgstr "Saisissez le nom de l'organisation"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:144
+#: ckanext/colab/templates/colab_temp/snippets/form.html:154
 msgid "Enter the official name of your organization"
 msgstr "Saisissez le nom officiel de votre organisation"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:149
+#: ckanext/colab/templates/colab_temp/snippets/form.html:159
 msgid "Describe your organization's mission and activities..."
 msgstr "Décrivez la mission et les activités de votre organisation..."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:150
+#: ckanext/colab/templates/colab_temp/snippets/form.html:160
 msgid "Brief description of your organization's purpose and activities"
 msgstr "Brève description de l'objectif et des activités de votre organisation"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:156
+#: ckanext/colab/templates/colab_temp/snippets/form.html:164
+msgid "Organization Logo"
+msgstr "Logo de l'organisation"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:168
+msgid "Logo preview"
+msgstr "Aperçu du logo"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:173
+msgid ""
+"Optional. Upload a logo for the organization you are requesting. It will be "
+"applied to the organization once an administrator approves it. Supported "
+"formats: PNG, JPG, JPEG, GIF. Maximum size: 2MB."
+msgstr "Facultatif. Téléchargez un logo pour l'organisation que vous demandez. Il sera appliqué à l'organisation une fois qu'un administrateur l'aura approuvée. Formats pris en charge : PNG, JPG, JPEG, GIF. Taille maximale : 2 Mo."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:179
 msgid "Title Within Represented Organization"
 msgstr "Titre au sein de l'organisation représentée"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:157
+#: ckanext/colab/templates/colab_temp/snippets/form.html:180
 msgid "e.g., Data Manager, Research Coordinator"
 msgstr "ex. : gestionnaire de données, coordinateur de recherche"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:158
+#: ckanext/colab/templates/colab_temp/snippets/form.html:181
 msgid "Your current position or role in the organization"
 msgstr "Votre poste ou rôle actuel dans l'organisation"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:161
+#: ckanext/colab/templates/colab_temp/snippets/form.html:184
 msgid "Role in Organization"
 msgstr "Rôle dans l'organisation"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:163
+#: ckanext/colab/templates/colab_temp/snippets/form.html:186
 msgid "Select your role"
 msgstr "Sélectionnez votre rôle"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:164
-msgid "Member"
-msgstr "Membre"
+#: ckanext/colab/templates/colab_temp/snippets/form.html:191
+msgid ""
+"For new organizations, only Admin role is available by default. For existing "
+"organizations, choose Editor if you will upload datasets, or Member if you "
+"only need to view private datasets."
+msgstr ""
+"Pour les nouvelles organisations, le rôle Admin est disponible par défaut. "
+"Pour les organisations existantes, choisissez Editeur si vous souhaitez "
+"télécharger des ensembles de données, ou Membre si vous n'avez besoin que de "
+"consulter les ensembles de données privés."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:165
-msgid "Editor"
-msgstr "Éditeur"
+#: ckanext/colab/templates/colab_temp/snippets/form.html:199
+msgid "Related platforms"
+msgstr "Plateformes associées"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:166
-msgid "Admin"
-msgstr "Admin"
+#: ckanext/colab/templates/colab_temp/snippets/form.html:202
+msgid ""
+"This registration form will allow you to contribute data and information on "
+"IHP WINS and related platforms. Select the related platforms you wish to "
+"contribute to from the list."
+msgstr ""
+"Ce formulaire d'inscription vous permettra de contribuer des données et des "
+"informations à IHP WINS et aux plateformes associées. Sélectionnez dans la "
+"liste les plateformes auxquelles vous souhaitez contribuer."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:179
-msgid "This registration form will allow you to contribute data and information on IHP WINS and related platforms. Select the related platforms you wish to contribute to from the list."
-msgstr "Ce formulaire d'inscription vous permettra de contribuer des données et des informations à IHP WINS et aux plateformes associées. Sélectionnez dans la liste les plateformes auxquelles vous souhaitez contribuer."
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:186
+#: ckanext/colab/templates/colab_temp/snippets/form.html:209
 msgid "IHP WINS data platform"
 msgstr "Plateforme de données IHP WINS"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:224 ckanext/colab/templates/colab_temp/snippets/form.html:474 ckanext/colab/templates/colab_temp/snippets/form.html:485 ckanext/colab/templates/colab_temp/snippets/form.html:493 ckanext/colab/templates/colab_temp/snippets/form.html:501 ckanext/colab/templates/colab_temp/snippets/form.html:525
+#: ckanext/colab/templates/colab_temp/snippets/form.html:215
+msgid "Citizens4Water platform"
+msgstr "Plateforme Citizens4Water"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:227
+msgid ""
+"Accept and acknowledge the responsibilities and guidelines that the "
+"authorized user must follow when uploading data on behalf of the "
+"organization."
+msgstr ""
+"Accepter et reconnaître les responsabilités et les directives que "
+"l'utilisateur autorisé doit suivre lors du téléchargement de données au nom "
+"de l'organisation."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:247
+#: ckanext/colab/templates/colab_temp/snippets/form.html:518
+#: ckanext/colab/templates/colab_temp/snippets/form.html:529
+#: ckanext/colab/templates/colab_temp/snippets/form.html:537
+#: ckanext/colab/templates/colab_temp/snippets/form.html:545
+#: ckanext/colab/templates/colab_temp/snippets/form.html:569
 msgid "Submit Application"
 msgstr "Soumettre la demande"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:227
-msgid "After submission, you will receive an email verification to complete your registration."
-msgstr "Après l'envoi, vous recevrez un e-mail de vérification pour finaliser votre inscription."
+#: ckanext/colab/templates/colab_temp/snippets/form.html:250
+msgid ""
+"After submission, you will receive an email verification to complete your "
+"registration."
+msgstr ""
+"Après l'envoi, vous recevrez un e-mail de vérification pour finaliser votre "
+"inscription."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:286
+#: ckanext/colab/templates/colab_temp/snippets/form.html:312
 msgid "Error loading organizations"
 msgstr "Erreur lors du chargement des organisations"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:339
+#: ckanext/colab/templates/colab_temp/snippets/form.html:366
 msgid "You must be at least 16 years old to register."
 msgstr "Vous devez avoir au moins 16 ans pour vous inscrire."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:448
-msgid "Processing..."
-msgstr "Traitement en cours..."
+#: ckanext/colab/templates/colab_temp/snippets/form.html:443
+msgid "Passwords match!"
+msgstr "Les mots de passe correspondent !"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:470
+#: ckanext/colab/templates/colab_temp/snippets/form.html:446
+msgid "Passwords do not match"
+msgstr "Les mots de passe ne correspondent pas"
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:464
+msgid "This organization already exists in the list."
+msgstr "Cette organisation existe déjà dans la liste."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:514
 msgid "Passwords do not match!"
 msgstr "Les mots de passe ne correspondent pas !"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:479
+#: ckanext/colab/templates/colab_temp/snippets/form.html:523
 msgid "Please fill in all required fields."
 msgstr "Veuillez remplir tous les champs obligatoires."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:522
+#: ckanext/colab/templates/colab_temp/snippets/form.html:566
 msgid "reCAPTCHA verification failed. Please try again."
 msgstr "La vérification reCAPTCHA a échoué. Veuillez réessayer."
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:536
+#: ckanext/colab/templates/colab_temp/snippets/form.html:580
 msgid "Submitting form..."
 msgstr "Envoi du formulaire..."
-#: ckanext/colab/templates/colab_temp/snippets/form.html
-msgid "Kindly note that your submission will undergo a verification process requiring your organization's official email address. This verification step ensures the security and authenticity of the data you submit."
-msgstr "Veuillez noter que votre soumission fera l'objet d'un processus de vérification qui nécessite l'adresse e-mail officielle de votre organisation. Cette étape de vérification garantit la sécurité et l'authenticité des données que vous soumettez."
-#: ckanext/colab/templates/colab_temp/organization_request.html:75
-msgid "Please contact your system administrator to run the database migration:"
-msgstr "Veuillez contacter votre administrateur système pour exécuter la migration de la base de données :"
 
-#: ckanext/colab/templates/colab_temp/organization_request.html:98
-msgid "Organization Information"
-msgstr "Informations sur l'organisation"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:109
-msgid "Enter the full name of your organization"
-msgstr "Saisissez le nom complet de votre organisation"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:111
-msgid "The official name of your organization as it should appear publicly."
-msgstr "Le nom officiel de votre organisation tel qu'il doit apparaître publiquement."
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:124
-msgid "Select the category that best describes your organization."
-msgstr "Sélectionnez la catégorie qui décrit le mieux votre organisation."
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:135
-msgid "Provide a detailed description of your organization, its mission, goals, and activities..."
-msgstr "Fournissez une description détaillée de votre organisation, de sa mission, de ses objectifs et de ses activités..."
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:137
-msgid "Describe your organization's purpose, activities, and how it relates to data management or research."
-msgstr "Décrivez l'objectif de votre organisation, ses activités et son lien avec la gestion des données ou la recherche."
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:142
-msgid "Organization Image/Logo"
-msgstr "Image/logo de l'organisation"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:152
-msgid "Image preview"
-msgstr "Aperçu de l'image"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:153
-msgid "Remove"
-msgstr "Supprimer"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:156
-msgid "Upload a logo or representative image for your organization (optional). Supported formats: PNG, JPG, JPEG, GIF. Maximum size: 2MB."
-msgstr "Téléchargez un logo ou une image représentative de votre organisation (facultatif). Formats pris en charge : PNG, JPG, JPEG, GIF. Taille maximale : 2 Mo."
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:163
-msgid "Administration"
-msgstr "Administration"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:168
-msgid "Administrator Username"
-msgstr "Nom d'utilisateur de l'administrateur"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:175
-msgid "Enter username for organization administrator"
-msgstr "Saisissez le nom d'utilisateur de l'administrateur de l'organisation"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:177
-msgid "The username of the person who will be the administrator of this organization. This user must already exist in the system."
-msgstr "Le nom d'utilisateur de la personne qui sera l'administrateur de cette organisation. Cet utilisateur doit déjà exister dans le système."
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:184
-msgid "Submit Organization Request"
-msgstr "Soumettre la demande d'organisation"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:188
-msgid "Back to Portal"
-msgstr "Retour au portail"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:207
-msgid "Your organization request has been submitted and is now pending administrator approval. You will be notified once the request has been reviewed."
-msgstr "Votre demande d'organisation a été soumise et est maintenant en attente de l'approbation d'un administrateur. Vous serez averti une fois la demande examinée."
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:211
-msgid "Return to Portal"
-msgstr "Retourner au portail"
-
-#: ckanext/colab/templates/colab_temp/organization_request.html:215
-msgid "Submit Another Request"
-msgstr "Soumettre une autre demande"
-
-#: ckanext/colab/templates/colab_temp/snippets/form.html:77
-msgid "Date of Birth"
-msgstr "Date de naissance"
-
-msgid "Actions"
-msgstr "Actions"
-
-msgid "Action"
-msgstr "Action"
-
-msgid "Address"
-msgstr "Adresse"
-
-msgid "Applied"
-msgstr "Postulé"
-
-msgid "Approve"
-msgstr "Approuver"
-
-msgid "Approve & Sync"
-msgstr "Approuver et synchroniser"
-
-msgid "Approve this device request and sync to ThingsBoard?"
-msgstr "Approuver cette demande d'appareil et la synchroniser vers ThingsBoard ?"
-
-msgid "Approved by %(user)s"
-msgstr "Approuvé par %(user)s"
-
-msgid "Approved Organizations"
-msgstr "Organisations approuvées"
-
-msgid "Approved Users"
-msgstr "Utilisateurs approuvés"
-
-msgid "Are you sure you want to submit this request for review? You will not be able to edit it after submission."
-msgstr "Voulez-vous vraiment soumettre cette demande pour examen ? Vous ne pourrez plus la modifier après envoi."
-
-msgid "Avg. Days to Approve"
-msgstr "Jours moyens d'approbation"
-
-msgid "Back"
-msgstr "Retour"
-
-msgid "Back to List"
-msgstr "Retour à la liste"
-
-msgid "Cancel"
-msgstr "Annuler"
-
-msgid "Clear"
-msgstr "Effacer"
-
-msgid "Clear Filters"
-msgstr "Effacer les filtres"
-
-msgid "Clear all filters"
-msgstr "Effacer tous les filtres"
-
-msgid "Contact"
-msgstr "Contact"
-
-msgid "Created"
-msgstr "Créé"
-
-msgid "Date"
-msgstr "Date"
-
-msgid "Delete"
-msgstr "Supprimer"
-
-msgid "Details"
-msgstr "Détails"
-
-msgid "Drafts"
-msgstr "Brouillons"
-
-msgid "Edit"
-msgstr "Modifier"
-
-msgid "Error"
-msgstr "Erreur"
-
-msgid "Export CSV"
-msgstr "Exporter en CSV"
-
-msgid "Failed"
-msgstr "Échec"
-
-msgid "NGO"
-msgstr "ONG"
-
-msgid "No"
-msgstr "Non"
-
-msgid "OK"
-msgstr "OK"
-
-msgid "Pending"
-msgstr "En attente"
-
-msgid "Pending Approvals"
-msgstr "Approbations en attente"
-
-msgid "Pending Requests"
-msgstr "Demandes en attente"
-
-msgid "Platforms"
-msgstr "Plateformes"
-
-msgid "Quick filters:"
-msgstr "Filtres rapides :"
-
-msgid "Reason"
-msgstr "Motif"
-
-msgid "Reject"
-msgstr "Rejeter"
-
-msgid "Rejected Requests"
-msgstr "Demandes rejetées"
-
-msgid "Rejected Users"
-msgstr "Utilisateurs rejetés"
-
-msgid "Rejected by %(user)s"
-msgstr "Rejeté par %(user)s"
-
-msgid "Rejected by %(reviewer)s on %(date)s"
-msgstr "Rejeté par %(reviewer)s le %(date)s"
-
-msgid "Requester"
-msgstr "Demandeur"
-
-msgid "Reviewed"
-msgstr "Examiné"
-
-msgid "Role"
-msgstr "Rôle"
-
-msgid "Select all"
-msgstr "Tout sélectionner"
-
-msgid "Status"
-msgstr "Statut"
-
-msgid "Sync"
-msgstr "Synchronisation"
-
-msgid "Sync:"
-msgstr "Synchronisation :"
-
-msgid "Synced"
-msgstr "Synchronisé"
-
-msgid "Type"
-msgstr "Type"
-
-msgid "User"
-msgstr "Utilisateur"
-
-msgid "View"
-msgstr "Voir"
-
-msgid "View Details"
-msgstr "Voir les détails"
-
-msgid "When"
-msgstr "Quand"
-
-msgid "Yes"
-msgstr "Oui"
-
-msgid "selected"
-msgstr "sélectionné(s)"
-
-msgid "All Countries"
-msgstr "Tous les pays"
-
-msgid "All Organizations"
-msgstr "Toutes les organisations"
-
-msgid "All Roles"
-msgstr "Tous les rôles"
-
-msgid "All Types"
-msgstr "Tous les types"
-
-msgid "Academic Institution"
-msgstr "Institution académique"
-
-msgid "Government Agency"
-msgstr "Agence gouvernementale"
-
-msgid "International Organization"
-msgstr "Organisation internationale"
-
-msgid "Private Company"
-msgstr "Entreprise privée"
-
-msgid "Research Institute"
-msgstr "Institut de recherche"
-
-msgid "Device Management"
-msgstr "Gestion des appareils"
-
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:12
+msgid "Registration Successful!"
+msgstr "Inscription réussie !"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:13
+msgid "Thank you for registering"
+msgstr "Merci pour votre inscription"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:22
+msgid ""
+"Your application has been successfully submitted and is now being reviewed "
+"by our team."
+msgstr ""
+"Votre demande a été soumise avec succès et est en cours d'examen par notre "
+"équipe."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:23
+msgid "A confirmation email has been sent to your email address."
+msgstr "Un e-mail de confirmation a été envoyé à votre adresse e-mail."
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:31
+msgid "Your Application Summary"
+msgstr "Résumé de votre demande"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:54
+msgid "Check your application status anytime at"
+msgstr "Consultez le statut de votre demande à tout moment à l'adresse"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:64
+msgid "What happens next?"
+msgstr "Que se passe-t-il ensuite ?"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:71
+msgid "Email Verification"
+msgstr "Vérification de l'adresse e-mail"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:72
+msgid "Email verification will be sent to your provided email address"
+msgstr ""
+"Un e-mail de vérification sera envoyé à l'adresse e-mail que vous avez "
+"fournie"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:78
+msgid "Application Review"
+msgstr "Examen de la demande"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:79
+msgid "Our team will review your application and organization details"
+msgstr ""
+"Notre équipe examinera votre demande et les détails de votre organisation"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:85
+msgid "Account Approval"
+msgstr "Approbation du compte"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:86
+msgid "You'll receive a confirmation email once your account is approved"
+msgstr "Vous recevrez un e-mail de confirmation une fois votre compte approuvé"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:92
+msgid "Start Contributing"
+msgstr "Commencer à contribuer"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:93
+msgid ""
+"Start contributing data and information to IHP WINS and related platforms"
+msgstr ""
+"Commencez à contribuer des données et des informations à IHP WINS et aux "
+"plateformes associées"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:103
+msgid "Need assistance?"
+msgstr "Besoin d'aide ?"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:106
+msgid ""
+"If you have any questions about the registration process or need support, "
+"please don't hesitate to contact us:"
+msgstr ""
+"Si vous avez des questions sur le processus d'inscription ou si vous avez "
+"besoin d'aide, n'hésitez pas à nous contacter :"
+
+#: ckanext/colab/templates/colab_temp/snippets/thanks.html:125
+msgid "Browse Datasets"
+msgstr "Parcourir les jeux de données"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:145
 msgid "Device Requests Admin"
 msgstr "Admin des demandes d'appareils"
 
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:155
 msgid "Device Requests Administration"
 msgstr "Administration des demandes d'appareils"
 
-msgid "My Device Requests"
-msgstr "Mes demandes d'appareils"
-
-msgid "New Device Request"
-msgstr "Nouvelle demande d'appareil"
-
-msgid "Edit Device Request"
-msgstr "Modifier la demande d'appareil"
-
-msgid "Edit Device Request #%(id)s"
-msgstr "Modifier la demande d'appareil n°%(id)s"
-
-msgid "Device Request #%(id)s"
-msgstr "Demande d'appareil n°%(id)s"
-
-msgid "Request and track IoT device registrations for ThingsBoard"
-msgstr "Demandez et suivez les enregistrements d'appareils IoT pour ThingsBoard"
-
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:156
 msgid "Review, approve, and manage IoT device registration requests"
-msgstr "Examinez, approuvez et gérez les demandes d'enregistrement d'appareils IoT"
+msgstr ""
+"Examinez, approuvez et gérez les demandes d'enregistrement d'appareils IoT"
 
-msgid "Request #%(id)s rejected:"
-msgstr "Demande n°%(id)s rejetée :"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:168
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:187
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:213
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:275
+msgid "Synced"
+msgstr "Synchronisé"
 
-msgid "Search by device name, serial number..."
-msgstr "Rechercher par nom d'appareil, numéro de série..."
-
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:172
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:190
 msgid "Sync Errors"
 msgstr "Erreurs de synchronisation"
 
-msgid "No requests in this category"
-msgstr "Aucune demande dans cette catégorie"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:196
+msgid "Drafts"
+msgstr "Brouillons"
 
-msgid "Requests will appear here when their status matches this tab."
-msgstr "Les demandes apparaîtront ici lorsque leur statut correspondra à cet onglet."
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:203
+msgid "Search by device name, serial number..."
+msgstr "Rechercher par nom d'appareil, numéro de série..."
 
-msgid "No device requests yet"
-msgstr "Aucune demande d'appareil pour le moment"
-
-msgid "Create your first device request to get started."
-msgstr "Créez votre première demande d'appareil pour commencer."
-
-msgid "Status Timeline"
-msgstr "Chronologie du statut"
-
-msgid "Device Information"
-msgstr "Informations sur l'appareil"
-
-msgid "Installation Details"
-msgstr "Détails de l'installation"
-
-msgid "Location"
-msgstr "Emplacement"
-
-msgid "Technical Notes"
-msgstr "Notes techniques"
-
-msgid "Additional Information"
-msgstr "Informations supplémentaires"
-
-msgid "Rejection Reason"
-msgstr "Motif du rejet"
-
-msgid "Sync Error"
-msgstr "Erreur de synchronisation"
-
-msgid "ThingsBoard Device"
-msgstr "Appareil ThingsBoard"
-
-msgid "TB Device ID"
-msgstr "ID d'appareil TB"
-
-msgid "TB Customer ID"
-msgstr "ID de client TB"
-
-msgid "Access Token"
-msgstr "Jeton d'accès"
-
-msgid "Unnamed device"
-msgstr "Appareil sans nom"
-
-msgid "No serial"
-msgstr "Sans numéro de série"
-
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:209
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:233
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:254
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:296
 msgid "Device Name"
 msgstr "Nom de l'appareil"
 
-msgid "Device Label"
-msgstr "Étiquette de l'appareil"
-
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:210
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:241
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:255
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:308
 msgid "Serial Number"
 msgstr "Numéro de série"
 
-msgid "Device Profile"
-msgstr "Profil de l'appareil"
-
-msgid "Device Profile Name"
-msgstr "Nom du profil de l'appareil"
-
-msgid "Firmware Version"
-msgstr "Version du firmware"
-
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:211
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:266
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:256
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:346
 msgid "Site Code"
 msgstr "Code du site"
 
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:213
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:258
+msgid "Sync"
+msgstr "Synchronisation"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:233
+msgid "View Details"
+msgstr "Voir les détails"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:241
+msgid "No requests in this category"
+msgstr "Aucune demande dans cette catégorie"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_dashboard.html:242
+msgid "Requests will appear here when their status matches this tab."
+msgstr ""
+"Les demandes apparaîtront ici lorsque leur statut correspondra à cet onglet."
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:176
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:186
+#, python-format
+msgid "Device Request #%(id)s"
+msgstr "Demande d'appareil n°%(id)s"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:187
+msgid "Unnamed device"
+msgstr "Appareil sans nom"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:187
+msgid "No serial"
+msgstr "Sans numéro de série"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:193
+msgid "Status Timeline"
+msgstr "Chronologie du statut"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:198
+msgid "Created"
+msgstr "Créé"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:208
+msgid "Reviewed"
+msgstr "Examiné"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:214
+msgid "OK"
+msgstr "OK"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:214
+msgid "Failed"
+msgstr "Échec"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:221
+msgid "Sync:"
+msgstr "Synchronisation :"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:229
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:291
+msgid "Device Information"
+msgstr "Informations sur l'appareil"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:237
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:301
+msgid "Device Label"
+msgstr "Étiquette de l'appareil"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:245
+msgid "Device Profile"
+msgstr "Profil de l'appareil"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:249
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:318
+msgid "Firmware Version"
+msgstr "Version du firmware"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:262
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:341
+msgid "Installation Details"
+msgstr "Détails de l'installation"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:270
 msgid "Installer"
 msgstr "Installateur"
 
-msgid "Installer Name"
-msgstr "Nom de l'installateur"
-
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:274
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:356
 msgid "Install Date"
 msgstr "Date d'installation"
 
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:278
 msgid "Owner"
 msgstr "Propriétaire"
 
-msgid "Owner Name"
-msgstr "Nom du propriétaire"
-
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:282
 msgid "Survey Completed"
 msgstr "Enquête terminée"
 
-msgid "Survey completed"
-msgstr "Enquête terminée"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:283
+msgid "Yes"
+msgstr "Oui"
 
-msgid "Required for submission"
-msgstr "Obligatoire pour soumettre"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:283
+msgid "No"
+msgstr "Non"
 
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:286
 msgid "Requested By"
 msgstr "Demandé par"
 
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:296
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:373
+msgid "Location"
+msgstr "Emplacement"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:300
 msgid "Coordinates"
 msgstr "Coordonnées"
 
-msgid "Latitude"
-msgstr "Latitude"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:304
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:388
+msgid "Address"
+msgstr "Adresse"
 
-msgid "Longitude"
-msgstr "Longitude"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:316
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:406
+msgid "Technical Notes"
+msgstr "Notes techniques"
 
-msgid "-90 to 90"
-msgstr "-90 à 90"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:326
+msgid "Rejection Reason"
+msgstr "Motif du rejet"
 
-msgid "-180 to 180"
-msgstr "-180 à 180"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:331
+#, python-format
+msgid "Rejected by %(reviewer)s on %(date)s"
+msgstr "Rejeté par %(reviewer)s le %(date)s"
 
-msgid "Click on the map to set coordinates"
-msgstr "Cliquez sur la carte pour définir les coordonnées"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:341
+msgid "Sync Error"
+msgstr "Erreur de synchronisation"
 
-msgid "Any additional technical information about the device installation..."
-msgstr "Toute information technique supplémentaire sur l'installation de l'appareil..."
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:349
+msgid "ThingsBoard Device"
+msgstr "Appareil ThingsBoard"
 
-msgid "Device owner or responsible person"
-msgstr "Propriétaire de l'appareil ou personne responsable"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:353
+msgid "TB Device ID"
+msgstr "ID d'appareil TB"
 
-msgid "Full name"
-msgstr "Nom complet"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:357
+msgid "TB Customer ID"
+msgstr "ID de client TB"
 
-msgid "Select Organization"
-msgstr "Sélectionner une organisation"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:361
+msgid "Access Token"
+msgstr "Jeton d'accès"
 
-msgid "e.g., WaterLevel-Sensor-01"
-msgstr "p. ex., Capteur-NiveauEau-01"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:371
+msgid "Back to List"
+msgstr "Retour à la liste"
 
-msgid "e.g., Water Level Sensor Station 1"
-msgstr "p. ex., Station de capteur de niveau d'eau 1"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:375
+msgid "Approve this device request and sync to ThingsBoard?"
+msgstr ""
+"Approuver cette demande d'appareil et la synchroniser vers ThingsBoard ?"
 
-msgid "e.g., SN-2026-001"
-msgstr "p. ex., SN-2026-001"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:376
+msgid "Approve & Sync"
+msgstr "Approuver et synchroniser"
 
-msgid "e.g., default"
-msgstr "p. ex., default"
-
-msgid "e.g., 1.0.0"
-msgstr "p. ex., 1.0.0"
-
-msgid "e.g., POZO-01"
-msgstr "p. ex., POZO-01"
-
-msgid "e.g., La Serena, Chile"
-msgstr "p. ex., La Serena, Chili"
-
-msgid "Reject Device Request"
-msgstr "Rejeter la demande d'appareil"
-
-msgid "Reject Request"
-msgstr "Rejeter la demande"
-
-msgid "Enter the reason for rejection..."
-msgstr "Indiquez le motif du rejet..."
-
-msgid "Retry Sync"
-msgstr "Réessayer la synchronisation"
-
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:386
 msgid "Retry synchronization with ThingsBoard?"
 msgstr "Réessayer la synchronisation avec ThingsBoard ?"
 
-msgid "Save as Draft"
-msgstr "Enregistrer en brouillon"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:387
+msgid "Retry Sync"
+msgstr "Réessayer la synchronisation"
 
-msgid "Submit for Review"
-msgstr "Soumettre pour examen"
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:397
+msgid "Reject Device Request"
+msgstr "Rejeter la demande d'appareil"
 
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:399
+msgid "Enter the reason for rejection..."
+msgstr "Indiquez le motif du rejet..."
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:401
+msgid "Cancel"
+msgstr "Annuler"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/admin_detail.html:402
+msgid "Reject Request"
+msgstr "Rejeter la demande"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:222
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:233
+msgid "Device Management"
+msgstr "Gestion des appareils"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:234
+msgid "Request and track IoT device registrations for ThingsBoard"
+msgstr ""
+"Demandez et suivez les enregistrements d'appareils IoT pour ThingsBoard"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:240
+msgid "My Device Requests"
+msgstr "Mes demandes d'appareils"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:243
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:254
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:265
+msgid "New Device Request"
+msgstr "Nouvelle demande d'appareil"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:287
+msgid "Edit"
+msgstr "Modifier"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:302
+msgid "No device requests yet"
+msgstr "Aucune demande d'appareil pour le moment"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:303
+msgid "Create your first device request to get started."
+msgstr "Créez votre première demande d'appareil pour commencer."
+
+#: ckanext/colab/templates/colab_temp/thingsboard/dashboard.html:312
+#, python-format
+msgid "Request #%(id)s rejected:"
+msgstr "Demande n°%(id)s rejetée :"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:254
+msgid "Edit Device Request"
+msgstr "Modifier la demande d'appareil"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:265
+#, python-format
+msgid "Edit Device Request #%(id)s"
+msgstr "Modifier la demande d'appareil n°%(id)s"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:266
+msgid "Fill in the device details below. Required fields are marked with *"
+msgstr ""
+"Remplissez les détails de l'appareil ci-dessous. Les champs obligatoires "
+"sont marqués d'un *"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:273
 msgid "Please fix the following errors:"
 msgstr "Veuillez corriger les erreurs suivantes :"
 
-msgid "Fill in the device details below. Required fields are marked with *"
-msgstr "Remplissez les détails de l'appareil ci-dessous. Les champs obligatoires sont marqués d'un *"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:297
+msgid "e.g., WaterLevel-Sensor-01"
+msgstr "p. ex., Capteur-NiveauEau-01"
 
-msgid "Organization Requests"
-msgstr "Demandes d’organisation"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:302
+msgid "e.g., Water Level Sensor Station 1"
+msgstr "p. ex., Station de capteur de niveau d'eau 1"
 
-msgid "Organization Requests Dashboard"
-msgstr "Tableau de bord des demandes d'organisation"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:309
+msgid "e.g., SN-2026-001"
+msgstr "p. ex., SN-2026-001"
 
-msgid "Organization Request Details"
-msgstr "Détails de la demande d'organisation"
-
-msgid "Organization Types"
-msgstr "Types d'organisation"
-
-msgid "Manage organization creation requests from users"
-msgstr "Gérez les demandes de création d’organisation des utilisateurs"
-
-msgid "Search by organization name, requester..."
-msgstr "Rechercher par nom d'organisation, demandeur..."
-
-msgid "User Management"
-msgstr "Gestion des utilisateurs"
-
-msgid "User Management Dashboard"
-msgstr "Tableau de bord de gestion des utilisateurs"
-
-msgid "User Details"
-msgstr "Détails de l'utilisateur"
-
-msgid "Manage user registrations and organization memberships"
-msgstr "Gérez les inscriptions d'utilisateurs et les adhésions aux organisations"
-
-msgid "Search by name, email, organization..."
-msgstr "Rechercher par nom, e-mail, organisation..."
-
-msgid "Analytics & Activity Log"
-msgstr "Analyses et journal d'activité"
-
-msgid "Registration Trend (Monthly)"
-msgstr "Tendance des inscriptions (mensuel)"
-
-msgid "Top Countries"
-msgstr "Principaux pays"
-
-msgid "Platform Distribution"
-msgstr "Répartition par plateforme"
-
-msgid "Status Overview"
-msgstr "Vue d'ensemble du statut"
-
-msgid "Recent Admin Activity"
-msgstr "Activité récente de l'administrateur"
-
-msgid "No admin activity recorded yet. Actions will appear here as they are performed."
-msgstr "Aucune activité de l'administrateur enregistrée. Les actions apparaîtront ici au fur et à mesure."
-
-msgid "Download current tab as CSV"
-msgstr "Télécharger l'onglet actuel en CSV"
-
-msgid "Show only duplicate applications"
-msgstr "Afficher uniquement les candidatures en double"
-
-msgid "Show applications from people who already had a CKAN account before applying"
-msgstr "Afficher les candidatures de personnes qui avaient déjà un compte CKAN avant de postuler"
-
-msgid "Show only applications requesting new organizations"
-msgstr "Afficher uniquement les demandes de nouvelles organisations"
-
-msgid "Duplicates"
-msgstr "Doublons"
-
-msgid "Pre-existing User"
-msgstr "Utilisateur préexistant"
-
-msgid "New Org"
-msgstr "Nouvelle org."
-
-msgid "You must be logged in to access this page"
-msgstr "Vous devez être connecté pour accéder à cette page"
-
-msgid "Only system administrators can access this page"
-msgstr "Seuls les administrateurs système peuvent accéder à cette page"
-
-msgid "You must be logged in to request an organization"
-msgstr "Vous devez être connecté pour demander une organisation"
-
-msgid "Not authorized to create organization"
-msgstr "Non autorisé à créer une organisation"
-
-msgid "Not authorized to approve users"
-msgstr "Non autorisé à approuver les utilisateurs"
-
-msgid "Not authorized to reject users"
-msgstr "Non autorisé à rejeter les utilisateurs"
-
-msgid "Not authorized to create users"
-msgstr "Non autorisé à créer des utilisateurs"
-
-msgid "Need to be system administrator"
-msgstr "Vous devez être administrateur système"
-
-msgid "Device request not found"
-msgstr "Demande d'appareil introuvable"
-
-msgid "You can only edit your own requests"
-msgstr "Vous ne pouvez modifier que vos propres demandes"
-
-msgid "You can only submit your own requests"
-msgstr "Vous ne pouvez soumettre que vos propres demandes"
-
-msgid "This request can no longer be edited"
-msgstr "Cette demande ne peut plus être modifiée"
-
-msgid "This request cannot be submitted"
-msgstr "Cette demande ne peut pas être soumise"
-
-msgid "This request cannot be approved in its current state"
-msgstr "Cette demande ne peut pas être approuvée dans son état actuel"
-
-msgid "This request cannot be rejected in its current state"
-msgstr "Cette demande ne peut pas être rejetée dans son état actuel"
-
-msgid "Device request saved as draft"
-msgstr "Demande d'appareil enregistrée en brouillon"
-
-msgid "Device request updated"
-msgstr "Demande d'appareil mise à jour"
-
-msgid "Device request submitted for review"
-msgstr "Demande d'appareil soumise pour examen"
-
-msgid "Device request approved and synced to ThingsBoard"
-msgstr "Demande d'appareil approuvée et synchronisée avec ThingsBoard"
-
-msgid "Device request rejected"
-msgstr "Demande d'appareil rejetée"
-
-msgid "Device successfully synced to ThingsBoard"
-msgstr "Appareil synchronisé avec ThingsBoard avec succès"
-
-msgid "Error approving request"
-msgstr "Erreur lors de l'approbation de la demande"
-
-msgid "Error rejecting request"
-msgstr "Erreur lors du rejet de la demande"
-
-msgid "Rejection reason is required"
-msgstr "Le motif du rejet est obligatoire"
-
-msgid "Only requests with sync errors can be retried"
-msgstr "Seules les demandes avec erreurs de synchronisation peuvent être réessayées"
-
-msgid "Device already exists in ThingsBoard. Manual intervention required."
-msgstr "L'appareil existe déjà dans ThingsBoard. Intervention manuelle requise."
-
-msgid "Cannot approve: %(errors)s"
-msgstr "Impossible d'approuver : %(errors)s"
-
-msgid "Request approved but sync failed: %(error)s"
-msgstr "Demande approuvée mais la synchronisation a échoué : %(error)s"
-
-msgid "Sync retry failed: %(error)s"
-msgstr "Échec de la nouvelle tentative de synchronisation : %(error)s"
-
-msgid "Device name"
-msgstr "Nom de l'appareil"
-
-msgid "Serial number"
-msgstr "Numéro de série"
-
-msgid "Device profile name"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:313
+msgid "Device Profile Name"
 msgstr "Nom du profil de l'appareil"
 
-msgid "Site code"
-msgstr "Code du site"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:314
+msgid "e.g., default"
+msgstr "p. ex., default"
 
-msgid "Installer name"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:319
+msgid "e.g., 1.0.0"
+msgstr "p. ex., 1.0.0"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:326
+msgid "Select Organization"
+msgstr "Sélectionner une organisation"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:347
+msgid "e.g., POZO-01"
+msgstr "p. ex., POZO-01"
+
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:351
+msgid "Installer Name"
 msgstr "Nom de l'installateur"
 
-msgid "Install date"
-msgstr "Date d'installation"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:352
+msgid "Full name"
+msgstr "Nom complet"
 
-msgid "Owner name"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:362
+msgid "Owner Name"
 msgstr "Nom du propriétaire"
 
-msgid "%(field)s is required"
-msgstr "%(field)s est requis"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:363
+msgid "Device owner or responsible person"
+msgstr "Propriétaire de l'appareil ou personne responsable"
 
-msgid "Survey must be completed before submission"
-msgstr "L'enquête doit être complétée avant la soumission"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:378
+msgid "Latitude"
+msgstr "Latitude"
 
-msgid "Serial number already exists"
-msgstr "Le numéro de série existe déjà"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:379
+msgid "-90 to 90"
+msgstr "-90 à 90"
 
-msgid "Latitude must be between -90 and 90"
-msgstr "La latitude doit être comprise entre -90 et 90"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:383
+msgid "Longitude"
+msgstr "Longitude"
 
-msgid "Latitude must be a valid number"
-msgstr "La latitude doit être un nombre valide"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:384
+msgid "-180 to 180"
+msgstr "-180 à 180"
 
-msgid "Longitude must be between -180 and 180"
-msgstr "La longitude doit être comprise entre -180 et 180"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:389
+msgid "e.g., La Serena, Chile"
+msgstr "p. ex., La Serena, Chili"
 
-msgid "Longitude must be a valid number"
-msgstr "La longitude doit être un nombre valide"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:394
+msgid "Click on the map to set coordinates"
+msgstr "Cliquez sur la carte pour définir les coordonnées"
 
-msgid "Selected organization is not available for your user"
-msgstr "L'organisation sélectionnée n'est pas disponible pour votre utilisateur"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:402
+msgid "Additional Information"
+msgstr "Informations supplémentaires"
 
-msgid "Install date must use the YYYY-MM-DD format"
-msgstr "La date d'installation doit utiliser le format AAAA-MM-JJ"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:407
+msgid "Any additional technical information about the device installation..."
+msgstr ""
+"Toute information technique supplémentaire sur l'installation de "
+"l'appareil..."
 
-msgid "APPROVE ORGANIZATION REQUEST"
-msgstr "APPROUVER LA DEMANDE D'ORGANISATION"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:413
+msgid "Survey completed"
+msgstr "Enquête terminée"
 
-msgid "Type:"
-msgstr "Type :"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:414
+msgid "Required for submission"
+msgstr "Obligatoire pour soumettre"
 
-msgid "Requester:"
-msgstr "Demandeur :"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:422
+msgid "Back"
+msgstr "Retour"
 
-msgid "Admin:"
-msgstr "Administrateur :"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:423
+msgid "Save as Draft"
+msgstr "Enregistrer en brouillon"
 
-msgid "Do you want to approve this organization request?"
-msgstr "Voulez-vous approuver cette demande d'organisation ?"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:425
+msgid "Submit for Review"
+msgstr "Soumettre pour examen"
 
-msgid "Error approving"
-msgstr "Erreur lors de l'approbation"
+#: ckanext/colab/templates/colab_temp/thingsboard/device_form.html:457
+msgid ""
+"Are you sure you want to submit this request for review? You will not be "
+"able to edit it after submission."
+msgstr ""
+"Voulez-vous vraiment soumettre cette demande pour examen ? Vous ne pourrez "
+"plus la modifier après envoi."
 
-msgid "Organization approved"
-msgstr "Organisation approuvée"
+#~ msgid ""
+#~ "We're sorry, but we couldn't complete your registration at this time due "
+#~ "to a possible error. This may be because the username or email address "
+#~ "you provided is already in use on our website."
+#~ msgstr ""
+#~ "Nous sommes désolés, mais nous n'avons pas pu finaliser votre inscription "
+#~ "pour le moment en raison d'une possible erreur. Cela peut être dû au fait "
+#~ "que le nom d'utilisateur ou l'adresse e-mail que vous avez fournis sont "
+#~ "déjà utilisés sur notre site."
 
-#, python-format
-msgid "%(name)s has been approved successfully"
-msgstr "%(name)s a été approuvé avec succès"
+#~ msgid ""
+#~ "Please double-check that you have entered the information correctly and "
+#~ "make sure you're not attempting to create a duplicate account. If you "
+#~ "believe you already have an account with us, try logging in instead of "
+#~ "registering again. If you've forgotten your password, you can reset it "
+#~ "through the \"Forgot my password\" option."
+#~ msgstr ""
+#~ "Veuillez vérifier que vous avez correctement saisi les informations et "
+#~ "assurez-vous de ne pas tenter de créer un compte en double. Si vous "
+#~ "pensez déjà avoir un compte chez nous, essayez de vous connecter plutôt "
+#~ "que de vous inscrire à nouveau. Si vous avez oublié votre mot de passe, "
+#~ "vous pouvez le réinitialiser via l'option \"Mot de passe oublié\"."
 
-msgid "Connection error"
-msgstr "Erreur de connexion"
+#~ msgid ""
+#~ "If you continue to experience issues or have any questions, please don't "
+#~ "hesitate to contact us through our support page. We're here to help you "
+#~ "resolve any concerns you may have."
+#~ msgstr ""
+#~ "Si vous continuez à rencontrer des problèmes ou si vous avez des "
+#~ "questions, n'hésitez pas à nous contacter via notre page de support. Nous "
+#~ "sommes là pour vous aider à résoudre tout problème que vous pourriez "
+#~ "rencontrer."
 
-msgid "Could not process the approval. Please try again."
-msgstr "Impossible de traiter l'approbation. Veuillez réessayer."
+#~ msgid ""
+#~ "We apologize for any confusion or inconvenience this may have caused and "
+#~ "appreciate your interest in joining our community. We hope to see you "
+#~ "soon on our website!"
+#~ msgstr ""
+#~ "Nous nous excusons pour toute confusion ou gêne que cela aurait pu causer "
+#~ "et nous apprécions votre intérêt à rejoindre notre communauté. Nous "
+#~ "espérons vous voir bientôt sur notre site!"
 
-msgid "📝 Please enter the reason for rejection:"
-msgstr "📝 Veuillez saisir le motif du rejet :"
+#~ msgid ""
+#~ "Kindly note that your submission will undergo a verification process, "
+#~ "requiring your organization's official email address. This verification "
+#~ "step ensures the security and authenticity of the data you submit."
+#~ msgstr ""
+#~ "Veuillez noter que votre soumission sera soumise à un processus de "
+#~ "vérification, nécessitant l'adresse e-mail officielle de votre "
+#~ "organisation. Cette étape de vérification garantit la sécurité et "
+#~ "l'authenticité des données que vous soumettez."
 
-msgid "Error rejecting"
-msgstr "Erreur lors du rejet"
+#~ msgid "Username *"
+#~ msgstr "Nom d'utilisateur *"
 
-msgid "Organization rejected"
-msgstr "Organisation rejetée"
+#~ msgid "Password *"
+#~ msgstr "Mot de passe *"
 
-#, python-format
-msgid "%(name)s has been rejected"
-msgstr "%(name)s a été rejeté"
+#~ msgid "Confirm password *"
+#~ msgstr "Confirmer le mot de passe *"
 
-msgid "Could not process the rejection. Please try again."
-msgstr "Impossible de traiter le rejet. Veuillez réessayer."
+#~ msgid "Email *"
+#~ msgstr "Email *"
 
-msgid "APPROVE USER"
-msgstr "APPROUVER L'UTILISATEUR"
+#~ msgid "Age*"
+#~ msgstr "Âge*"
 
-msgid "Name:"
-msgstr "Nom :"
+#~ msgid "Gender *"
+#~ msgstr "Genre *"
 
-msgid "Title:"
-msgstr "Titre :"
+#~ msgid "Nationality *"
+#~ msgstr "Nationalité *"
 
-msgid "Do you want to approve this user?"
-msgstr "Voulez-vous approuver cet utilisateur ?"
+#~ msgid ""
+#~ "To be a contributor for IHP WINS you need to be part of an organization. "
+#~ "If your organization is not yet active in IHP WINS, you can create a new "
+#~ "organization via this form. Depending on your role, your data is either "
+#~ "uploaded to the overall institutional data or to the data repository "
+#~ "specific to your organization."
+#~ msgstr ""
+#~ "Pour être un contributeur pour IHP WINS, vous devez faire partie d'une "
+#~ "organisation. Si votre organisation n'est pas encore active dans IHP "
+#~ "WINS, vous pouvez créer une nouvelle organisation via ce formulaire. "
+#~ "Selon votre rôle, vos données sont soit téléchargées dans les données "
+#~ "institutionnelles globales, soit dans le dépôt de données spécifique à "
+#~ "votre organisation."
 
-#, python-format
-msgid "Role will be changed from \"%(from)s\" to \"%(to)s\""
-msgstr "Le rôle sera modifié de \"%(from)s\" à \"%(to)s\""
+#~ msgid "Organization Name *"
+#~ msgstr "Nom de l'organisation *"
 
-msgid "User approved"
-msgstr "Utilisateur approuvé"
+#~ msgid ""
+#~ "Select your organization in the dropdown list or add a new organization."
+#~ msgstr ""
+#~ "Sélectionnez votre organisation dans la liste déroulante ou ajoutez une "
+#~ "nouvelle organisation."
 
-#, python-format
-msgid "Rejection reason for %(count)s application(s):"
-msgstr "Motif de rejet pour %(count)s demande(s) :"
+#~ msgid "Create New Organization"
+#~ msgstr "Créer une nouvelle organisation"
 
-#, python-format
-msgid "Delete %(count)s application(s)? This is a soft delete and can be undone."
-msgstr "Supprimer %(count)s demande(s) ? Il s'agit d'une suppression réversible."
+#~ msgid "New Organization Name *"
+#~ msgstr "Nom de la nouvelle organisation *"
 
-#, python-format
-msgid "Approve %(count)s application(s) with member role?"
-msgstr "Approuver %(count)s demande(s) avec le rôle de membre ?"
+#~ msgid "Title Within Represented Organization *"
+#~ msgstr "Titre au sein de l'organisation représentée *"
 
-msgid "User rejected"
-msgstr "Utilisateur rejeté"
+#~ msgid ""
+#~ "This registration form will allow you to contribute data and information "
+#~ "on IHP WINS and related platforms. Select the related platforms you wish "
+#~ "to contribute to and agree you may be contacted about."
+#~ msgstr ""
+#~ "Ce formulaire d'inscription vous permettra de contribuer des données et "
+#~ "informations sur IHP WINS et les plateformes associées. Sélectionnez les "
+#~ "plateformes associées auxquelles vous souhaitez contribuer et acceptez "
+#~ "d'être contacté à ce sujet."
 
-msgid "Unknown error"
-msgstr "Erreur inconnue"
+#~ msgid "Submit"
+#~ msgstr "Soumettre"
 
-msgid "Error deleting application: "
-msgstr "Erreur lors de la suppression de la demande : "
+#~ msgid "This group already exists in the list."
+#~ msgstr "Ce groupe existe déjà dans la liste."
 
-msgid "deleted"
-msgstr "supprimé"
+#~ msgid "Thank you for registering with us!"
+#~ msgstr "Merci de vous être inscrit chez nous !"
 
-msgid "Undo"
-msgstr "Annuler"
+#~ msgid "Your details have been received, and we appreciate your interest."
+#~ msgstr "Vos informations ont été reçues et nous apprécions votre intérêt."
 
-msgid "Restored"
-msgstr "Restauré"
+#~ msgid "Our team will review your request shortly."
+#~ msgstr "Notre équipe examinera votre demande sous peu."
 
-msgid "Application restored successfully"
-msgstr "Demande restaurée avec succès"
-
-msgid "Could not restore"
-msgstr "Impossible de restaurer"
-
-msgid "Error restoring: "
-msgstr "Erreur lors de la restauration : "
-
-#, python-format
-msgid "%(action)s %(count)s application(s)"
-msgstr "%(action)s %(count)s demande(s)"
-
-msgid ". Errors: "
-msgstr ". Erreurs : "
-
-msgid "Bulk action failed"
-msgstr "L'action en masse a échoué"
-
-msgid "Network error: "
-msgstr "Erreur réseau : "
-
-msgid "Could not save notes"
-msgstr "Impossible d'enregistrer les notes"
-
-msgid "Error saving notes: "
-msgstr "Erreur lors de l'enregistrement des notes : "
-
-msgid "Home"
-msgstr "Accueil"
-
-msgid "Please fill in all required fields"
-msgstr "Veuillez remplir tous les champs obligatoires"
-
-msgid "Please select a valid image file (PNG, JPG, JPEG, or GIF)"
-msgstr "Veuillez sélectionner un fichier image valide (PNG, JPG, JPEG ou GIF)"
-
-msgid "File size must be less than 2MB"
-msgstr "La taille du fichier doit être inférieure à 2 Mo"
-
-msgid "Not authorized"
-msgstr "Non autorisé"
+#~ msgid "If you have any questions, feel free to reach out."
+#~ msgstr "Si vous avez des questions, n'hésitez pas à nous contacter."
