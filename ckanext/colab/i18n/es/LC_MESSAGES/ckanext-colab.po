@@ -1434,13 +1434,13 @@ msgstr "Esta información nos ayuda a garantizar una representación diversa"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:108
 msgid ""
-"To be a contributor for IHP WINS you need to be part of an organization. If "
-"your organization is not yet active in IHP WINS, you can create a new "
-"organization via this form."
+"To be a contributor for IHP WINS you need to be part of an organization. "
+"Search for your organization first. Only request a new one if it does not "
+"appear in the results."
 msgstr ""
-"Para ser colaborador de IHP WINS debes formar parte de una organización. Si "
-"tu organización aún no está activa en IHP WINS, puedes crear una nueva a "
-"través de este formulario."
+"Para ser colaborador de IHP WINS debes formar parte de una organización. "
+"Busca primero tu organización. Solicita una nueva solo si no aparece en los "
+"resultados."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:115
 msgid "UNESCO IHP Secretariat"
@@ -1504,6 +1504,44 @@ msgstr "Selecciona una organización..."
 #: ckanext/colab/templates/colab_temp/snippets/form.html:135
 msgid "Loading organizations..."
 msgstr "Cargando organizaciones..."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:147
+msgid "Type to find your organization..."
+msgstr "Escribe para encontrar tu organización..."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:168
+msgid "Type the name of your organization. You can search by full name or a keyword."
+msgstr "Escribe el nombre de tu organización. Puedes buscar por nombre completo o por una palabra clave."
+
+msgid "Start typing to search your organization."
+msgstr "Empieza a escribir para buscar tu organización."
+
+msgid "No organization matches \"%(query)s\"."
+msgstr "Ninguna organización coincide con \"%(query)s\"."
+
+msgid "Showing %(shown)s of %(total)s"
+msgstr "Mostrando %(shown)s de %(total)s"
+
+msgid "Request a new organization named \"%(query)s\""
+msgstr "Solicitar una nueva organización llamada \"%(query)s\""
+
+msgid "Could not load organizations. Please try again."
+msgstr "No se pudieron cargar las organizaciones. Inténtalo de nuevo."
+
+msgid "Did you mean one of these existing organizations?"
+msgstr "¿Quisiste decir una de estas organizaciones existentes?"
+
+msgid "This organization already exists. Select it instead of creating a duplicate."
+msgstr "Esta organización ya existe. Selecciónala en lugar de crear un duplicado."
+
+msgid "Please select an organization from the search results."
+msgstr "Selecciona una organización de los resultados de búsqueda."
+
+msgid "Choose this organization"
+msgstr "Elegir esta organización"
+
+msgid "Change organization"
+msgstr "Cambiar organización"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:137
 msgid "Select your organization from the list below."

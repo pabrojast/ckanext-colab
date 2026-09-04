@@ -18,6 +18,10 @@ from ckanext.colab.models.cool_plugin_table import (
     CoolPluginTable,
     OrganizationRequestTable,
 )
+from ckanext.colab.lib.org_search import (
+    filter_organizations,
+    slim_organization,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -112,6 +116,42 @@ def _resolve_org(name_or_slug):
         except Exception as exc:
             logger.warning("_resolve_org slug fallback '%s' failed: %s", slug, exc)
     return None, raw, raw
+
+
+@colab_api.route('/api/colab/organizations', methods=['GET'])
+def organizations_lookup():
+    """Public lightweight list of active organizations for the registration picker.
+
+    Query params:
+        q: optional search string. When present, results are filtered and
+           ranked (accent-insensitive, case-insensitive, token AND).
+    """
+    query = (request.args.get('q') or '').strip()
+    try:
+        from ckanext.colab.controller import get_all_organizations_cached
+        raw = get_all_organizations_cached() or []
+    except Exception as exc:
+        logger.exception("organizations_lookup: failed to list organizations: %s", exc)
+        return _error('Failed to list organizations.', 500)
+
+    results = []
+    seen = set()
+    for org in raw:
+        slim = slim_organization(org)
+        name = slim.get('name')
+        if not name or name in seen:
+            continue
+        seen.add(name)
+        results.append(slim)
+
+    if query:
+        results = filter_organizations(results, query)
+
+    return _json_response({
+        'count': len(results),
+        'query': query,
+        'results': results,
+    })
 
 
 @colab_api.route('/api/colab/user-organizations', methods=['GET'])

@@ -37,3 +37,29 @@ def test_reject_blueprint_routes_are_post_only():
         plugin_source,
         re.DOTALL,
     )
+
+
+FORM_PATH = BASE_DIR / 'ckanext' / 'colab' / 'templates' / 'colab_temp' / 'snippets' / 'form.html'
+API_PATH = BASE_DIR / 'ckanext' / 'colab' / 'api_endpoints.py'
+
+
+def test_organizations_lookup_route_is_public():
+    api_source = API_PATH.read_text()
+    assert "/api/colab/organizations" in api_source
+    assert "def organizations_lookup(" in api_source
+    assert "get_all_organizations_cached" in api_source
+    assert "filter_organizations" in api_source
+
+
+def test_registration_form_uses_searchable_combobox():
+    form_source = FORM_PATH.read_text()
+    assert 'role="combobox"' in form_source
+    assert 'id="organization_search"' in form_source
+    assert 'id="new_org_sentinel"' in form_source
+    assert 'name="organization_name"' in form_source
+    assert 'value="new"' in form_source
+    assert 'organization_list?all_fields=true' not in form_source
+    assert '<select name="organization_name"' not in form_source
+    assert 'colab_api.organizations_lookup' in form_source
+    assert 'org-create-from-search' in form_source
+    assert 'org-similar' in form_source

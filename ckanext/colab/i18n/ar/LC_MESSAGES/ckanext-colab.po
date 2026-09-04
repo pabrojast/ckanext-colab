@@ -1396,12 +1396,12 @@ msgstr "تساعدنا هذه المعلومات على ضمان تمثيل مت
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:108
 msgid ""
-"To be a contributor for IHP WINS you need to be part of an organization. If "
-"your organization is not yet active in IHP WINS, you can create a new "
-"organization via this form."
+"To be a contributor for IHP WINS you need to be part of an organization. "
+"Search for your organization first. Only request a new one if it does not "
+"appear in the results."
 msgstr ""
-"لكي تكون مساهمًا في IHP WINS، يجب أن تكون جزءًا من منظمة. إذا لم تكن منظمتك "
-"نشطة بعد في IHP WINS، يمكنك إنشاء منظمة جديدة عبر هذا النموذج."
+"لكي تكون مساهمًا في IHP WINS، يجب أن تكون جزءًا من منظمة. ابحث عن منظمتك أولاً. "
+"اطلب منظمة جديدة فقط إذا لم تظهر في النتائج."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:115
 msgid "UNESCO IHP Secretariat"
@@ -1464,6 +1464,44 @@ msgstr "اختر منظمة..."
 #: ckanext/colab/templates/colab_temp/snippets/form.html:135
 msgid "Loading organizations..."
 msgstr "جاري تحميل المنظمات..."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:147
+msgid "Type to find your organization..."
+msgstr "اكتب للعثور على منظمتك..."
+
+#: ckanext/colab/templates/colab_temp/snippets/form.html:168
+msgid "Type the name of your organization. You can search by full name or a keyword."
+msgstr "اكتب اسم منظمتك. يمكنك البحث بالاسم الكامل أو بكلمة مفتاحية."
+
+msgid "Start typing to search your organization."
+msgstr "ابدأ بالكتابة للبحث عن منظمتك."
+
+msgid "No organization matches \"%(query)s\"."
+msgstr "لا توجد منظمة تطابق \"%(query)s\"."
+
+msgid "Showing %(shown)s of %(total)s"
+msgstr "عرض %(shown)s من %(total)s"
+
+msgid "Request a new organization named \"%(query)s\""
+msgstr "طلب منظمة جديدة باسم \"%(query)s\""
+
+msgid "Could not load organizations. Please try again."
+msgstr "تعذر تحميل المنظمات. يرجى المحاولة مرة أخرى."
+
+msgid "Did you mean one of these existing organizations?"
+msgstr "هل تقصد إحدى هذه المنظمات الموجودة؟"
+
+msgid "This organization already exists. Select it instead of creating a duplicate."
+msgstr "هذه المنظمة موجودة بالفعل. حددها بدلاً من إنشاء نسخة مكررة."
+
+msgid "Please select an organization from the search results."
+msgstr "يرجى اختيار منظمة من نتائج البحث."
+
+msgid "Choose this organization"
+msgstr "اختيار هذه المنظمة"
+
+msgid "Change organization"
+msgstr "تغيير المنظمة"
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:137
 msgid "Select your organization from the list below."
