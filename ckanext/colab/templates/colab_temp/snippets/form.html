@@ -328,9 +328,9 @@
     const orgI18n = {
         loading: {{ _('Loading organizations...')|tojson }},
         startTyping: {{ _('Start typing to search your organization.')|tojson }},
-        noMatches: {{ _('No organization matches "%(query)s".')|tojson }},
-        showing: {{ _('Showing %(shown)s of %(total)s')|tojson }},
-        createNamed: {{ _('Request a new organization named "%(query)s"')|tojson }},
+        noMatches: {{ _('No organization matches "%(query)s".', query='%(query)s')|tojson }},
+        showing: {{ _('Showing %(shown)s of %(total)s', shown='%(shown)s', total='%(total)s')|tojson }},
+        createNamed: {{ _('Request a new organization named "%(query)s"', query='%(query)s')|tojson }},
         errorLoad: {{ _('Could not load organizations. Please try again.')|tojson }},
         didYouMean: {{ _('Did you mean one of these existing organizations?')|tojson }},
         alreadyExists: {{ _('This organization already exists. Select it instead of creating a duplicate.')|tojson }},

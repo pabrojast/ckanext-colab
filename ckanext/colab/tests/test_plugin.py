@@ -63,3 +63,8 @@ def test_registration_form_uses_searchable_combobox():
     assert 'colab_api.organizations_lookup' in form_source
     assert 'org-create-from-search' in form_source
     assert 'org-similar' in form_source
+    # CKAN Jinja newstyle gettext runs `msgstr % variables`. A bare
+    # `_('...%(query)s...')` raises KeyError('query') and 500s /colab.
+    assert "query='%(query)s'" in form_source
+    assert "shown='%(shown)s'" in form_source
+    assert "total='%(total)s'" in form_source
