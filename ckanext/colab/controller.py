@@ -1128,7 +1128,7 @@ Best regards,
                         gender_other = request.form.get('genderOther', '').strip()
                         if gender_other:
                             gender = gender_other
-                    user_role = request.form.get('user_role', 'admin')  # Default to 'admin' if not specified
+                    user_role = request.form.get('user_role', '').strip()
                     citizens4water = request.form.get('citizens4water', '')  # Get citizens4water checkbox value
                     ihp_wins = request.form.get('ihp_wins', '')  # Get IHP WINS checkbox value
                     
@@ -1201,6 +1201,12 @@ Best regards,
                     user_role = 'admin'  # Force admin role for new organization creators
                 else:
                     new_organization_description = "NA" if not new_organization_description else new_organization_description
+
+                if user_role not in ('editor', 'admin'):
+                    groups = get_all_groups_cached()
+                    return render_template("index.html", errornewuserform=True,
+                                        error_message=toolkit._("Please select Editor or Admin as your role in the organization."),
+                                        groups=groups)
 
                 # Authoritative backstop: the whole approval flow depends on an
                 # organization, so an application can never be saved without one.

@@ -1574,15 +1574,9 @@ msgstr "الدور في المنظمة"
 msgid "Select your role"
 msgstr "اختر دورك"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:191
-msgid ""
-"For new organizations, only Admin role is available by default. For existing "
-"organizations, choose Editor if you will upload datasets, or Member if you "
-"only need to view private datasets."
-msgstr ""
-"بالنسبة للمنظمات الجديدة، يكون دور المسؤول متاحًا افتراضيًا فقط. أما للمنظمات "
-"القائمة، فاختر محررًا إذا كنت ستقوم بتحميل مجموعات البيانات، أو عضوًا إذا كنت "
-"تحتاج فقط إلى عرض مجموعات البيانات الخاصة."
+#: ckanext/colab/templates/colab_temp/snippets/form.html:224
+msgid "For new organizations, the role is Admin. For existing organizations, choose Editor to upload datasets or Admin to manage the organization."
+msgstr "للمنظمات الجديدة، يكون الدور هو المسؤول. للمنظمات القائمة، اختر محررًا لتحميل مجموعات البيانات أو مسؤولًا لإدارة المنظمة."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:199
 msgid "Related platforms"
@@ -2283,3 +2277,7 @@ msgstr ""
 
 #~ msgid "If you have any questions, feel free to reach out."
 #~ msgstr "إذا كان لديك أي أسئلة، لا تتردد في التواصل معنا."
+
+#: ckanext/colab/controller.py:1209
+msgid "Please select Editor or Admin as your role in the organization."
+msgstr "يرجى اختيار محرر أو مسؤول لدورك في المنظمة."

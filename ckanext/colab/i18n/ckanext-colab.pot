@@ -1526,11 +1526,8 @@ msgstr ""
 msgid "Select your role"
 msgstr ""
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:191
-msgid ""
-"For new organizations, only Admin role is available by default. For existing "
-"organizations, choose Editor if you will upload datasets, or Member if you "
-"only need to view private datasets."
+#: ckanext/colab/templates/colab_temp/snippets/form.html:224
+msgid "For new organizations, the role is Admin. For existing organizations, choose Editor to upload datasets or Admin to manage the organization."
 msgstr ""
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:199
@@ -2090,3 +2087,7 @@ msgid ""
 " to edit it after submission."
 msgstr ""
 
+
+#: ckanext/colab/controller.py:1209
+msgid "Please select Editor or Admin as your role in the organization."
+msgstr ""

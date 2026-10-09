@@ -1614,15 +1614,9 @@ msgstr "Rol en la organización"
 msgid "Select your role"
 msgstr "Selecciona tu rol"
 
-#: ckanext/colab/templates/colab_temp/snippets/form.html:191
-msgid ""
-"For new organizations, only Admin role is available by default. For existing "
-"organizations, choose Editor if you will upload datasets, or Member if you "
-"only need to view private datasets."
-msgstr ""
-"Para nuevas organizaciones, el rol de Admin está disponible por defecto. "
-"Para organizaciones existentes, elige Editor si planeas cargar conjuntos de "
-"datos o Miembro si solo necesitas ver conjuntos de datos privados."
+#: ckanext/colab/templates/colab_temp/snippets/form.html:224
+msgid "For new organizations, the role is Admin. For existing organizations, choose Editor to upload datasets or Admin to manage the organization."
+msgstr "Para las organizaciones nuevas, el rol es Admin. Para las organizaciones existentes, elige Editor para cargar conjuntos de datos o Admin para administrar la organización."
 
 #: ckanext/colab/templates/colab_temp/snippets/form.html:199
 msgid "Related platforms"
@@ -2337,3 +2331,7 @@ msgstr ""
 
 #~ msgid "If you have any questions, feel free to reach out."
 #~ msgstr "Si tienes alguna pregunta, no dudes en contactarnos."
+
+#: ckanext/colab/controller.py:1209
+msgid "Please select Editor or Admin as your role in the organization."
+msgstr "Selecciona Editor o Admin como tu rol en la organización."

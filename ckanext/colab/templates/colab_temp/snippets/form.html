@@ -218,36 +218,10 @@
                     <label for="user_role" class="required">{{ _('Role in Organization') }} <span class="text-danger">*</span></label>
                     <select name="user_role" id="user_role" required class="form-control">
                         <option value="">{{ _('Select your role') }}</option>
-                        <option value="member">{{ _('Member') }}</option>
-                        <option value="editor">{{ _('Editor') }}</option>
+                        <option value="editor" selected>{{ _('Editor') }}</option>
                         <option value="admin">{{ _('Admin') }}</option>
                     </select>
-                    <div class="help-text">{{ _('For new organizations, only Admin role is available by default. For existing organizations, choose Editor if you will upload datasets, or Member if you only need to view private datasets.') }}</div>
-                </div>
-            </div>
-        </div>
-    </fieldset>
-
-    <!-- Related Platforms Section -->
-    <fieldset class="form-section">
-        <legend>{{ _('Related platforms') }}</legend>
-        <div class="form-section-content">
-            <div class="platforms-intro">
-                <p class="section-description">{{ _('This registration form will allow you to contribute data and information on IHP WINS and related platforms. Select the related platforms you wish to contribute to from the list.') }}</p>
-            </div>
-            
-            <div class="form-group">
-                <div class="checkbox-container" style="margin-bottom: 0.5rem;">
-                    <input type="checkbox" id="ihp_wins" name="ihp_wins" value="yes">
-                    <label for="ihp_wins" class="checkbox-label">
-                        {{ _('IHP WINS data platform') }}
-                    </label>
-                </div>
-                <div class="checkbox-container">
-                    <input type="checkbox" id="citizens4water" name="citizens4water" value="yes">
-                    <label for="citizens4water" class="checkbox-label">
-                        {{ _('Citizens4Water platform') }}
-                    </label>
+                    <div class="help-text">{{ _('For new organizations, the role is Admin. For existing organizations, choose Editor to upload datasets or Admin to manage the organization.') }}</div>
                 </div>
             </div>
         </div>
@@ -810,11 +784,11 @@
         organizationNameInput.disabled = false;
         orgSearchInput.disabled = false;
 
-        // Re-enable the role selector and default to member
+        // Re-enable the role selector and default to editor
         userRoleSelect.disabled = false;
         userRoleSelect.classList.remove('disabled-select');
         if (!userRoleSelect.value || userRoleSelect.value === 'admin') {
-            userRoleSelect.value = 'member';
+            userRoleSelect.value = 'editor';
         }
     }
     
@@ -1184,8 +1158,7 @@ function hideLogoError() {
 }
 
 .demographics-intro,
-.organization-intro,
-.platforms-intro {
+.organization-intro {
   margin-bottom: 2rem;
 }
 
