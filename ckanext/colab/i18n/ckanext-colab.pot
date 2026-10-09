@@ -2331,3 +2331,15 @@ msgstr ""
 #. Existing-account profile completion
 msgid "Since 2026, UNESCO is required to report on its activities with beneficiaries disaggregated by gender, by age group and by the Member States benefitting. Your answers are used for these statistics only: they are never shown publicly and never shared individually. If you prefer not to disclose your gender or nationality, choose “Prefer not to say”."
 msgstr ""
+
+#. Existing-account profile completion
+msgid "From Colab"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "We also found details from your Colab registration. Review them before saving your profile."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "In Colab: %(value)s. Choose the matching option below."
+msgstr ""

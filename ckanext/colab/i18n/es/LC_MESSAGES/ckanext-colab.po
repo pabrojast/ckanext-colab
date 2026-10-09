@@ -2689,3 +2689,15 @@ msgstr "¿Por qué se solicita esta información?"
 #. Existing-account profile completion
 msgid "Since 2026, UNESCO is required to report on its activities with beneficiaries disaggregated by gender, by age group and by the Member States benefitting. Your answers are used for these statistics only: they are never shown publicly and never shared individually. If you prefer not to disclose your gender or nationality, choose “Prefer not to say”."
 msgstr "Desde 2026, la UNESCO debe informar sobre las personas beneficiarias de sus actividades por género, grupo de edad y Estado Miembro. Tus respuestas se usan únicamente para estas estadísticas: nunca se muestran públicamente ni se comparten de forma individual. Si prefieres no indicar tu género o nacionalidad, selecciona «Prefiero no decirlo»."
+
+#. Existing-account profile completion
+msgid "From Colab"
+msgstr "Desde Colab"
+
+#. Existing-account profile completion
+msgid "We also found details from your Colab registration. Review them before saving your profile."
+msgstr "También encontramos datos de tu registro en Colab. Revísalos antes de guardar tu perfil."
+
+#. Existing-account profile completion
+msgid "In Colab: %(value)s. Choose the matching option below."
+msgstr "En Colab: %(value)s. Selecciona la opción correspondiente."
