@@ -2199,3 +2199,135 @@ msgstr ""
 #. Common Citizen Scientist onboarding
 msgid "Save this Project Manager access decision?"
 msgstr ""
+
+#. Existing-account profile completion
+msgid "Complete your Citizen Science profile"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Your account is already registered. Add the missing details to take part in Citizen Science."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Your account"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Your saved details are already filled in. You can review and update them below."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Once your profile is complete, you can request to join a project or request Project Manager access to propose one."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "To complete"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "All fields are required unless marked optional."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Please review the highlighted fields."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Your changes have not been saved yet."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "About you"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Language preferences"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Your interests"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Share what motivates you to participate or what you would like to contribute."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Use between 20 and 500 characters."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Use no more than 64 characters."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Save and continue"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Select an option"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Select an option."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Enter your full name."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Enter a valid date of birth."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Other language (optional)"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "I accept the"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "UNESCO Terms of Use"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "UNESCO Citizen Science"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Please accept the terms to continue."
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Why would you like to take part?"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Date of birth"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Preferred language"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Female"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Male"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Non-binary"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Why is this information requested?"
+msgstr ""
+
+#. Existing-account profile completion
+msgid "Since 2026, UNESCO is required to report on its activities with beneficiaries disaggregated by gender, by age group and by the Member States benefitting. Your answers are used for these statistics only: they are never shown publicly and never shared individually. If you prefer not to disclose your gender or nationality, choose “Prefer not to say”."
+msgstr ""

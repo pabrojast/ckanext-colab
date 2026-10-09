@@ -2503,3 +2503,135 @@ msgstr "متطلبات اقتراح مشروع"
 #. Common Citizen Scientist onboarding
 msgid "Save this Project Manager access decision?"
 msgstr "هل تريد حفظ هذا القرار بشأن صلاحية Project Manager؟"
+
+#. Existing-account profile completion
+msgid "Complete your Citizen Science profile"
+msgstr "أكمل ملفك في علوم المواطن"
+
+#. Existing-account profile completion
+msgid "Your account is already registered. Add the missing details to take part in Citizen Science."
+msgstr "حسابك مسجّل بالفعل. أضف المعلومات الناقصة للمشاركة في علوم المواطن."
+
+#. Existing-account profile completion
+msgid "Your account"
+msgstr "حسابك"
+
+#. Existing-account profile completion
+msgid "Your saved details are already filled in. You can review and update them below."
+msgstr "تم ملء معلوماتك المحفوظة مسبقًا. يمكنك مراجعتها وتحديثها في النموذج."
+
+#. Existing-account profile completion
+msgid "Once your profile is complete, you can request to join a project or request Project Manager access to propose one."
+msgstr "بعد إكمال ملفك، يمكنك طلب الانضمام إلى مشروع أو طلب صلاحية مدير مشروع لاقتراح مشروع."
+
+#. Existing-account profile completion
+msgid "To complete"
+msgstr "مطلوب إكماله"
+
+#. Existing-account profile completion
+msgid "All fields are required unless marked optional."
+msgstr "جميع الحقول مطلوبة ما لم يُذكر أنها اختيارية."
+
+#. Existing-account profile completion
+msgid "Please review the highlighted fields."
+msgstr "يرجى مراجعة الحقول المحددة."
+
+#. Existing-account profile completion
+msgid "Your changes have not been saved yet."
+msgstr "لم تُحفظ تغييراتك بعد."
+
+#. Existing-account profile completion
+msgid "About you"
+msgstr "نبذة عنك"
+
+#. Existing-account profile completion
+msgid "Language preferences"
+msgstr "تفضيلات اللغة"
+
+#. Existing-account profile completion
+msgid "Your interests"
+msgstr "اهتماماتك"
+
+#. Existing-account profile completion
+msgid "Share what motivates you to participate or what you would like to contribute."
+msgstr "أخبرنا بما يحفّزك على المشاركة أو بما تودّ المساهمة به."
+
+#. Existing-account profile completion
+msgid "Use between 20 and 500 characters."
+msgstr "اكتب ما بين 20 و500 حرف."
+
+#. Existing-account profile completion
+msgid "Use no more than 64 characters."
+msgstr "استخدم 64 حرفًا كحد أقصى."
+
+#. Existing-account profile completion
+msgid "Save and continue"
+msgstr "حفظ ومتابعة"
+
+#. Existing-account profile completion
+msgid "Select an option"
+msgstr "اختر خيارًا"
+
+#. Existing-account profile completion
+msgid "Select an option."
+msgstr "اختر خيارًا."
+
+#. Existing-account profile completion
+msgid "Enter your full name."
+msgstr "أدخل اسمك الكامل."
+
+#. Existing-account profile completion
+msgid "Enter a valid date of birth."
+msgstr "أدخل تاريخ ميلاد صحيحًا."
+
+#. Existing-account profile completion
+msgid "Other language (optional)"
+msgstr "لغة أخرى (اختياري)"
+
+#. Existing-account profile completion
+msgid "I accept the"
+msgstr "أوافق على"
+
+#. Existing-account profile completion
+msgid "UNESCO Terms of Use"
+msgstr "شروط استخدام اليونسكو"
+
+#. Existing-account profile completion
+msgid "UNESCO Citizen Science"
+msgstr "علوم المواطن في اليونسكو"
+
+#. Existing-account profile completion
+msgid "Please accept the terms to continue."
+msgstr "يرجى قبول الشروط للمتابعة."
+
+#. Existing-account profile completion
+msgid "Why would you like to take part?"
+msgstr "لماذا تودّ المشاركة؟"
+
+#. Existing-account profile completion
+msgid "Date of birth"
+msgstr "تاريخ الميلاد"
+
+#. Existing-account profile completion
+msgid "Preferred language"
+msgstr "اللغة المفضلة"
+
+#. Existing-account profile completion
+msgid "Female"
+msgstr "أنثى"
+
+#. Existing-account profile completion
+msgid "Male"
+msgstr "ذكر"
+
+#. Existing-account profile completion
+msgid "Non-binary"
+msgstr "غير ثنائي"
+
+#. Existing-account profile completion
+msgid "Why is this information requested?"
+msgstr "لماذا تُطلب هذه المعلومات؟"
+
+#. Existing-account profile completion
+msgid "Since 2026, UNESCO is required to report on its activities with beneficiaries disaggregated by gender, by age group and by the Member States benefitting. Your answers are used for these statistics only: they are never shown publicly and never shared individually. If you prefer not to disclose your gender or nationality, choose “Prefer not to say”."
+msgstr "منذ عام 2026، يجب على اليونسكو تقديم تقارير عن المستفيدين من أنشطتها مصنّفة حسب النوع الاجتماعي والفئة العمرية والدول الأعضاء المستفيدة. تُستخدم إجاباتك لهذه الإحصاءات فقط، ولا تُعرض علنًا أو تُشارك بشكل فردي. إذا كنت تفضّل عدم الإفصاح عن نوعك الاجتماعي أو جنسيتك، فاختر «أفضل عدم الإجابة»."
