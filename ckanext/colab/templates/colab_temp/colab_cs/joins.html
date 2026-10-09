@@ -6,7 +6,7 @@
         <div class="cs-review-cards">
           {% for j in join_requests %}
           <article class="cs-review-account">
-            <div class="cs-review-account-head"><div><h3>{{ j.user_name or j.user_login }}</h3><p>{{ j.user_email }} · {{ j.user_login }}</p><p><strong>{{ j.project_title }}</strong></p></div>{% if j.registration.email_verification_required and not j.email_verified %}<span class="cs-status-badge">{{ _('Email not verified') }}</span>{% endif %}</div>
+            <div class="cs-review-account-head"><div><h3>{{ j.user_name or j.user_login }}</h3><p>{% if j.user_email %}{{ j.user_email }} · {% endif %}{{ j.user_login }}</p><p><strong>{{ j.project_title }}</strong></p></div>{% if j.registration.email_verification_required and not j.email_verified %}<span class="cs-status-badge">{{ _('Email not verified') }}</span>{% endif %}</div>
             <details class="cs-dossier-details"><summary>{{ _('View registration details') }}</summary>{{ dossier(j.registration or {}) }}</details>
             {% if j.note %}<p class="cs-join-note">{{ j.note }}</p>{% endif %}
             <div class="cs-review-account-actions">

@@ -6,7 +6,7 @@
   <div class="cs-review-cards">
   {% for person in result.results %}
     <article class="cs-review-account">
-      <div class="cs-review-account-head"><div><h2>{{ person.fullname or person.username }}</h2><p>{{ person.email }} · {{ person.username }}</p><p>{{ person.organization_title or _('Not provided') }}</p></div><span class="cs-status-badge">{{ _(person.manager_decision or ('Pending review' if person.email_verified else 'Email not verified')) }}</span></div>
+      <div class="cs-review-account-head"><div><h2>{{ person.fullname or person.username }}</h2><p>{% if person.email %}{{ person.email }} · {% endif %}{{ person.username }}</p><p>{{ person.organization_title or _('Not provided') }}</p></div><span class="cs-status-badge">{{ _(person.manager_decision or ('Pending review' if person.email_verified else 'Email not verified')) }}</span></div>
       <details class="cs-dossier-details"><summary>{{ _('View registration details') }}</summary>{{ dossier(person) }}</details>
       {% if person.manager_decision != 'approved' and person.email_verified %}
       <form class="cs-review-decision" method="post" action="{{ h.url_for('colab_cs.manager_decision', username=person.username, decision='approve') }}" data-confirm="{{ _('Save this account review decision?') }}">
