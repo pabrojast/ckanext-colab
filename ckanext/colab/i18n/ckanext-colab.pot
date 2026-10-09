@@ -2091,3 +2091,75 @@ msgstr ""
 #: ckanext/colab/controller.py:1209
 msgid "Please select Editor or Admin as your role in the organization."
 msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Start by registering as a Citizen Scientist and verifying your email. Then you can join projects or request Project Manager access to propose your own."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Already have an account? Sign in"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Complete your Citizen Scientist registration before joining or proposing a project."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Complete my registration"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Verify your email to complete your Citizen Scientist registration."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Your Citizen Scientist registration is complete. Choose your next step."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Join a project"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Choose a project or scan its QR code. Its Project Manager reviews your request before you can take part."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Once accepted, collect observations with the Toolbox app and follow your contributions in the Data Viewer."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Propose a project"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "After registering and verifying your email, request Project Manager access with your organization details. You can then submit a project proposal."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "You can submit your proposal while your Project Manager request is reviewed. Both must be approved before the project is published."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Administrators review Project Manager requests and project proposals separately in Colab."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Project Manager access requests"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Approve Project Manager access"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "To propose a project, first register as a Citizen Scientist and verify your email. If you already have an account, sign in to continue from your current step."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Tell us about your Citizen Science project. Your proposal will be sent for review in Colab. Publication requires approval of your Project Manager request and the project."
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "After confirming your email, sign in to join a project or request Project Manager access."
+msgstr ""

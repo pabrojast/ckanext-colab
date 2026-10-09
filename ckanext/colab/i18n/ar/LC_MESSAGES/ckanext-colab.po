@@ -2395,3 +2395,75 @@ msgstr "رفض طلب المشاركة؟"
 
 msgid "Email verification is required before approval."
 msgstr "يجب تأكيد البريد الإلكتروني قبل الموافقة."
+
+#. Common Citizen Scientist onboarding
+msgid "Start by registering as a Citizen Scientist and verifying your email. Then you can join projects or request Project Manager access to propose your own."
+msgstr "ابدأ بالتسجيل بصفتك Citizen Scientist وتأكيد بريدك الإلكتروني. بعد ذلك يمكنك طلب الانضمام إلى المشاريع أو طلب صلاحية Project Manager لاقتراح مشروعك."
+
+#. Common Citizen Scientist onboarding
+msgid "Already have an account? Sign in"
+msgstr "لديك حساب بالفعل؟ سجّل الدخول"
+
+#. Common Citizen Scientist onboarding
+msgid "Complete your Citizen Scientist registration before joining or proposing a project."
+msgstr "أكمل تسجيلك بصفتك Citizen Scientist قبل الانضمام إلى مشروع أو اقتراح مشروع."
+
+#. Common Citizen Scientist onboarding
+msgid "Complete my registration"
+msgstr "إكمال تسجيلي"
+
+#. Common Citizen Scientist onboarding
+msgid "Verify your email to complete your Citizen Scientist registration."
+msgstr "أكّد بريدك الإلكتروني لإكمال تسجيلك بصفتك Citizen Scientist."
+
+#. Common Citizen Scientist onboarding
+msgid "Your Citizen Scientist registration is complete. Choose your next step."
+msgstr "اكتمل تسجيلك بصفتك Citizen Scientist. اختر خطوتك التالية."
+
+#. Common Citizen Scientist onboarding
+msgid "Join a project"
+msgstr "المشاركة في مشروع"
+
+#. Common Citizen Scientist onboarding
+msgid "Choose a project or scan its QR code. Its Project Manager reviews your request before you can take part."
+msgstr "اختر مشروعًا أو امسح رمز QR الخاص به. يراجع Project Manager طلبك قبل أن تتمكن من المشاركة."
+
+#. Common Citizen Scientist onboarding
+msgid "Once accepted, collect observations with the Toolbox app and follow your contributions in the Data Viewer."
+msgstr "بعد قبولك، اجمع الملاحظات باستخدام تطبيق Toolbox وتابع مساهماتك في عارض البيانات."
+
+#. Common Citizen Scientist onboarding
+msgid "Propose a project"
+msgstr "اقتراح مشروع"
+
+#. Common Citizen Scientist onboarding
+msgid "After registering and verifying your email, request Project Manager access with your organization details. You can then submit a project proposal."
+msgstr "بعد التسجيل وتأكيد بريدك الإلكتروني، اطلب صلاحية Project Manager وأدخل بيانات مؤسستك. يمكنك بعد ذلك تقديم مقترح مشروع."
+
+#. Common Citizen Scientist onboarding
+msgid "You can submit your proposal while your Project Manager request is reviewed. Both must be approved before the project is published."
+msgstr "يمكنك تقديم مقترحك أثناء مراجعة طلب صلاحية Project Manager. يجب الموافقة على كليهما قبل نشر المشروع."
+
+#. Common Citizen Scientist onboarding
+msgid "Administrators review Project Manager requests and project proposals separately in Colab."
+msgstr "يراجع المسؤولون طلبات صلاحية Project Manager ومقترحات المشاريع بشكل منفصل في Colab."
+
+#. Common Citizen Scientist onboarding
+msgid "Project Manager access requests"
+msgstr "طلبات صلاحية Project Manager"
+
+#. Common Citizen Scientist onboarding
+msgid "Approve Project Manager access"
+msgstr "الموافقة على صلاحية Project Manager"
+
+#. Common Citizen Scientist onboarding
+msgid "To propose a project, first register as a Citizen Scientist and verify your email. If you already have an account, sign in to continue from your current step."
+msgstr "لاقتراح مشروع، سجّل أولًا بصفتك Citizen Scientist وأكّد بريدك الإلكتروني. إذا كان لديك حساب، فسجّل الدخول للمتابعة من خطوتك الحالية."
+
+#. Common Citizen Scientist onboarding
+msgid "Tell us about your Citizen Science project. Your proposal will be sent for review in Colab. Publication requires approval of your Project Manager request and the project."
+msgstr "أخبرنا عن مشروعك للعلوم التشاركية. سيُرسل المقترح للمراجعة في Colab. يتطلب النشر الموافقة على طلب صلاحية Project Manager وعلى المشروع."
+
+#. Common Citizen Scientist onboarding
+msgid "After confirming your email, sign in to join a project or request Project Manager access."
+msgstr "بعد تأكيد بريدك الإلكتروني، سجّل الدخول للانضمام إلى مشروع أو طلب صلاحية Project Manager."

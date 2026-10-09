@@ -2461,3 +2461,75 @@ msgstr "Rejeter cette demande de participation ?"
 
 msgid "Email verification is required before approval."
 msgstr "Le courriel doit être vérifié avant validation."
+
+#. Common Citizen Scientist onboarding
+msgid "Start by registering as a Citizen Scientist and verifying your email. Then you can join projects or request Project Manager access to propose your own."
+msgstr "Commencez par vous inscrire comme Citizen Scientist et vérifier votre adresse e-mail. Vous pourrez ensuite rejoindre des projets ou demander un accès Project Manager pour proposer le vôtre."
+
+#. Common Citizen Scientist onboarding
+msgid "Already have an account? Sign in"
+msgstr "Vous avez déjà un compte ? Connectez-vous"
+
+#. Common Citizen Scientist onboarding
+msgid "Complete your Citizen Scientist registration before joining or proposing a project."
+msgstr "Complétez votre inscription comme Citizen Scientist avant de rejoindre ou de proposer un projet."
+
+#. Common Citizen Scientist onboarding
+msgid "Complete my registration"
+msgstr "Compléter mon inscription"
+
+#. Common Citizen Scientist onboarding
+msgid "Verify your email to complete your Citizen Scientist registration."
+msgstr "Vérifiez votre adresse e-mail pour terminer votre inscription comme Citizen Scientist."
+
+#. Common Citizen Scientist onboarding
+msgid "Your Citizen Scientist registration is complete. Choose your next step."
+msgstr "Votre inscription comme Citizen Scientist est complète. Choisissez la prochaine étape."
+
+#. Common Citizen Scientist onboarding
+msgid "Join a project"
+msgstr "Rejoindre un projet"
+
+#. Common Citizen Scientist onboarding
+msgid "Choose a project or scan its QR code. Its Project Manager reviews your request before you can take part."
+msgstr "Choisissez un projet ou scannez son code QR. Son Project Manager examine votre demande avant votre participation."
+
+#. Common Citizen Scientist onboarding
+msgid "Once accepted, collect observations with the Toolbox app and follow your contributions in the Data Viewer."
+msgstr "Une fois votre demande acceptée, recueillez des observations avec l’application Toolbox et suivez vos contributions dans le visualiseur de données."
+
+#. Common Citizen Scientist onboarding
+msgid "Propose a project"
+msgstr "Proposer un projet"
+
+#. Common Citizen Scientist onboarding
+msgid "After registering and verifying your email, request Project Manager access with your organization details. You can then submit a project proposal."
+msgstr "Après votre inscription et la vérification de votre adresse e-mail, demandez un accès Project Manager en renseignant votre organisation. Vous pourrez ensuite soumettre une proposition de projet."
+
+#. Common Citizen Scientist onboarding
+msgid "You can submit your proposal while your Project Manager request is reviewed. Both must be approved before the project is published."
+msgstr "Vous pouvez soumettre votre proposition pendant l’examen de votre demande Project Manager. Les deux doivent être approuvées avant la publication du projet."
+
+#. Common Citizen Scientist onboarding
+msgid "Administrators review Project Manager requests and project proposals separately in Colab."
+msgstr "Les administrateurs examinent séparément les demandes Project Manager et les propositions de projets dans Colab."
+
+#. Common Citizen Scientist onboarding
+msgid "Project Manager access requests"
+msgstr "Demandes d’accès Project Manager"
+
+#. Common Citizen Scientist onboarding
+msgid "Approve Project Manager access"
+msgstr "Approuver l’accès Project Manager"
+
+#. Common Citizen Scientist onboarding
+msgid "To propose a project, first register as a Citizen Scientist and verify your email. If you already have an account, sign in to continue from your current step."
+msgstr "Pour proposer un projet, inscrivez-vous d’abord comme Citizen Scientist et vérifiez votre adresse e-mail. Si vous avez déjà un compte, connectez-vous pour reprendre à l’étape qui vous correspond."
+
+#. Common Citizen Scientist onboarding
+msgid "Tell us about your Citizen Science project. Your proposal will be sent for review in Colab. Publication requires approval of your Project Manager request and the project."
+msgstr "Présentez votre projet de science citoyenne. Votre proposition sera examinée dans Colab. Sa publication nécessite l’approbation de votre demande Project Manager et du projet."
+
+#. Common Citizen Scientist onboarding
+msgid "After confirming your email, sign in to join a project or request Project Manager access."
+msgstr "Après avoir confirmé votre adresse e-mail, connectez-vous pour rejoindre un projet ou demander un accès Project Manager."

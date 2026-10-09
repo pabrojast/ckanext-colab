@@ -16,7 +16,7 @@
           {% if person.org_name_requested %}<details class="cs-affiliation"><summary>{{ _('Use an existing organization instead') }}</summary><p class="cs-hint">{{ _('Only choose this if the requested organization already exists. Confirm the membership role before approval.') }}</p><label>{{ _('Organization') }}<select name="organization_id"><option value="">{{ _('Create the requested organization') }}</option>{% for org in organizations %}<option value="{{ org.name }}">{{ org.title }}</option>{% endfor %}</select></label><label>{{ _('Role in existing organization') }}<select name="organization_role"><option value="member">{{ _('Member') }}</option><option value="admin">{{ _('Admin') }}</option></select></label></details>{% endif %}
           <div class="cs-review-decision-buttons">
             <button class="cs-btn cs-btn-secondary" type="submit" formaction="{{ h.url_for('colab_cs.manager_decision', username=person.username, decision='reject') }}">{{ _('Reject') }}</button>
-            <button class="cs-btn cs-btn-primary" type="submit">{{ _('Approve account') }}</button>
+            <button class="cs-btn cs-btn-primary" type="submit">{{ _('Approve Project Manager access') }}</button>
           </div>
       </form>
       {% endif %}
