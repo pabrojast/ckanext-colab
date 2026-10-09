@@ -2467,3 +2467,39 @@ msgstr "أخبرنا عن مشروعك للعلوم التشاركية. سيُر
 #. Common Citizen Scientist onboarding
 msgid "After confirming your email, sign in to join a project or request Project Manager access."
 msgstr "بعد تأكيد بريدك الإلكتروني، سجّل الدخول للانضمام إلى مشروع أو طلب صلاحية Project Manager."
+
+#. Common Citizen Scientist onboarding
+msgid "Get on board"
+msgstr "شارك معنا"
+
+#. Common Citizen Scientist onboarding
+msgid "Get on board with us!"
+msgstr "انضم إلينا!"
+
+#. Common Citizen Scientist onboarding
+msgid "Back to Citizen Science"
+msgstr "العودة إلى العلوم التشاركية"
+
+#. Common Citizen Scientist onboarding
+msgid "Already have an account?"
+msgstr "لديك حساب بالفعل؟"
+
+#. Common Citizen Scientist onboarding
+msgid "Sign in"
+msgstr "تسجيل الدخول"
+
+#. Common Citizen Scientist onboarding
+msgid "Resend verification email"
+msgstr "إعادة إرسال رسالة التحقق"
+
+#. Common Citizen Scientist onboarding
+msgid "Who can propose a project?"
+msgstr "كيف يمكنني اقتراح مشروع؟"
+
+#. Common Citizen Scientist onboarding
+msgid "Project proposal requirements"
+msgstr "متطلبات اقتراح مشروع"
+
+#. Common Citizen Scientist onboarding
+msgid "Save this Project Manager access decision?"
+msgstr "هل تريد حفظ هذا القرار بشأن صلاحية Project Manager؟"

@@ -2521,3 +2521,39 @@ msgstr "Cuéntanos sobre tu proyecto de ciencia ciudadana. La propuesta se envia
 #. Common Citizen Scientist onboarding
 msgid "After confirming your email, sign in to join a project or request Project Manager access."
 msgstr "Después de confirmar tu correo, inicia sesión para participar en un proyecto o solicitar acceso como Project Manager."
+
+#. Common Citizen Scientist onboarding
+msgid "Get on board"
+msgstr "Participa"
+
+#. Common Citizen Scientist onboarding
+msgid "Get on board with us!"
+msgstr "¡Únete a nosotros!"
+
+#. Common Citizen Scientist onboarding
+msgid "Back to Citizen Science"
+msgstr "Volver a Citizen Science"
+
+#. Common Citizen Scientist onboarding
+msgid "Already have an account?"
+msgstr "¿Ya tienes cuenta?"
+
+#. Common Citizen Scientist onboarding
+msgid "Sign in"
+msgstr "Iniciar sesión"
+
+#. Common Citizen Scientist onboarding
+msgid "Resend verification email"
+msgstr "Reenviar correo de verificación"
+
+#. Common Citizen Scientist onboarding
+msgid "Who can propose a project?"
+msgstr "¿Cómo puedo proponer un proyecto?"
+
+#. Common Citizen Scientist onboarding
+msgid "Project proposal requirements"
+msgstr "Requisitos para proponer un proyecto"
+
+#. Common Citizen Scientist onboarding
+msgid "Save this Project Manager access decision?"
+msgstr "¿Guardar esta decisión sobre el acceso como Project Manager?"

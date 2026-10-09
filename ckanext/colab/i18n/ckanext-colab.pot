@@ -2163,3 +2163,39 @@ msgstr ""
 #. Common Citizen Scientist onboarding
 msgid "After confirming your email, sign in to join a project or request Project Manager access."
 msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Get on board"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Get on board with us!"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Back to Citizen Science"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Already have an account?"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Sign in"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Resend verification email"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Who can propose a project?"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Project proposal requirements"
+msgstr ""
+
+#. Common Citizen Scientist onboarding
+msgid "Save this Project Manager access decision?"
+msgstr ""
