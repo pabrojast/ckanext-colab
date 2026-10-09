@@ -631,6 +631,10 @@ Best regards,
         
     @staticmethod
     def show_admin():
+        from ckanext.colab import cs_reviews
+        if request.args.get('tab') in cs_reviews.TABS or (
+                not getattr(toolkit.g.userobj, 'sysadmin', False) and cs_reviews.can_review()):
+            return cs_reviews.show()
         context = {'model': model,
                    'user': toolkit.g.user, 'auth_user_obj': toolkit.g.userobj}
         try:

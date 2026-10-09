@@ -231,13 +231,17 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
             methods=['POST']
         )
 
-        return [blueprint, tb_blueprint, colab_api]
+        from ckanext.colab.cs_reviews import blueprint as cs_blueprint
+        return [blueprint, tb_blueprint, colab_api, cs_blueprint]
     
 
     #ITemplateHelpers
 
     def get_helpers(self):
+        from ckanext.colab import cs_reviews
         return {
+            'colab_cs_can_review': cs_reviews.can_review,
+            'colab_cs_capabilities': cs_reviews.capabilities,
             'get_site_key': lambda: toolkit.config.get('ckan.recaptcha.publickey'),
             'colab_image_url': self._colab_image_url,
             'colab_pending_count': self._colab_pending_count,
@@ -247,7 +251,11 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
     def _colab_pending_count(self):
         """Return the number of pending user approval requests."""
         try:
-            count = model.Session.query(CoolPluginTable).filter(
+            from ckanext.colab import cs_reviews
+            count = cs_reviews.pending_count()
+            if not getattr(getattr(toolkit.g, 'userobj', None), 'sysadmin', False):
+                return count
+            count += model.Session.query(CoolPluginTable).filter(
                 CoolPluginTable.approved == 'Pending',
                 CoolPluginTable.rejected.is_(None),
                 CoolPluginTable.deleted_at.is_(None)

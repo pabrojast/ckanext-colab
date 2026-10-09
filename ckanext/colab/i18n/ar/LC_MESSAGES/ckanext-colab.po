@@ -2281,3 +2281,117 @@ msgstr ""
 #: ckanext/colab/controller.py:1209
 msgid "Please select Editor or Admin as your role in the organization."
 msgstr "يرجى اختيار محرر أو مسؤول لدورك في المنظمة."
+
+msgid "Citizen Science requests"
+msgstr "طلبات علوم المواطنين"
+
+msgid "Colab requests"
+msgstr "الطلبات في Colab"
+
+msgid "Collaborators"
+msgstr "المتعاونون"
+
+msgid "Project Manager accounts"
+msgstr "حسابات مديري المشاريع"
+
+msgid "Join requests"
+msgstr "طلبات المشاركة"
+
+msgid "Project requests"
+msgstr "مقترحات المشاريع"
+
+msgid "Search applicants"
+msgstr "البحث عن المتقدمين"
+
+msgid "Name, username or email"
+msgstr "الاسم أو اسم المستخدم أو البريد الإلكتروني"
+
+msgid "Pending review"
+msgstr "بانتظار المراجعة"
+
+msgid "Email not verified"
+msgstr "البريد الإلكتروني غير مؤكد"
+
+msgid "Email verified"
+msgstr "البريد الإلكتروني مؤكد"
+
+msgid "All requests"
+msgstr "جميع الطلبات"
+
+msgid "View registration details"
+msgstr "عرض تفاصيل التسجيل"
+
+msgid "Save this account review decision?"
+msgstr "حفظ قرار المراجعة؟"
+
+msgid "Reviewer note (optional)"
+msgstr "ملاحظة المراجع (اختيارية)"
+
+msgid "Use an existing organization instead"
+msgstr "استخدام منظمة موجودة"
+
+msgid "Only choose this if the requested organization already exists. Confirm the membership role before approval."
+msgstr "اختر هذا الخيار فقط إذا كانت المنظمة موجودة بالفعل. أكد دور العضوية قبل الموافقة."
+
+msgid "Create the requested organization"
+msgstr "إنشاء المنظمة المطلوبة"
+
+msgid "Role in existing organization"
+msgstr "الدور في المنظمة الموجودة"
+
+msgid "Approve account"
+msgstr "الموافقة على الحساب"
+
+msgid "No requests match these filters."
+msgstr "لا توجد طلبات تطابق هذه المرشحات."
+
+msgid "No join requests are awaiting review."
+msgstr "لا توجد طلبات مشاركة بانتظار المراجعة."
+
+msgid "No project requests are awaiting review."
+msgstr "لا توجد مقترحات مشاريع بانتظار المراجعة."
+
+msgid "Recently decided"
+msgstr "القرارات الأخيرة"
+
+msgid "Decided by"
+msgstr "صاحب القرار"
+
+msgid "Review decision saved."
+msgstr "تم حفظ القرار."
+
+msgid "This request is no longer available."
+msgstr "لم يعد هذا الطلب متاحًا."
+
+msgid "Request Project Manager access"
+msgstr "طلب صلاحية مدير مشروع"
+
+msgid "Submit PM request"
+msgstr "إرسال طلب مدير مشروع"
+
+msgid "Your Citizen Scientist registration is complete. Add your organization and responsibilities to request Project Manager access."
+msgstr "اكتمل تسجيلك كعالم مواطن. أضف منظمتك واقبل المسؤوليات لطلب صلاحية مدير مشروع."
+
+msgid "You can submit a project while your PM request is reviewed. Publication requires approval of both your PM request and your project."
+msgstr "يمكنك تقديم مشروع أثناء مراجعة طلب مدير المشروع. يتطلب النشر الموافقة على طلبك وعلى المشروع."
+
+msgid "Register as a Citizen Scientist"
+msgstr "التسجيل كعالم مواطن"
+
+msgid "Your existing account"
+msgstr "حسابك الحالي"
+
+msgid "Update your account details"
+msgstr "تحديث بيانات حسابك"
+
+msgid "Review the submission"
+msgstr "مراجعة المقترح"
+
+msgid "Approve this join request?"
+msgstr "الموافقة على طلب المشاركة؟"
+
+msgid "Reject this join request?"
+msgstr "رفض طلب المشاركة؟"
+
+msgid "Email verification is required before approval."
+msgstr "يجب تأكيد البريد الإلكتروني قبل الموافقة."

@@ -1,0 +1,10 @@
+{% extends 'colab_cs/base.html' %}
+{% from 'csunesco/snippets/registration_dossier.html' import dossier with context %}
+{% block subtitle %}{{ _('Citizen Science requests') }}{% endblock %}
+{% block cs_content %}
+{% include 'colab_cs/' ~ tab ~ '.html' %}
+<nav class="cs-review-pagination" aria-label="{{ _('Pagination') }}">
+{% if offset > 0 %}<a href="{{ h.url_for('colab.show_admin',tab=tab,status=status,q=q,offset=[0,offset-page_size]|max) }}">{{ _('Previous') }}</a>{% endif %}
+<span>{{ offset+1 if count else 0 }}–{{ [offset+page_size,count]|min }} / {{ count }}</span>
+{% if offset+page_size < count %}<a href="{{ h.url_for('colab.show_admin',tab=tab,status=status,q=q,offset=offset+page_size) }}">{{ _('Next') }}</a>{% endif %}
+</nav>{% endblock %}

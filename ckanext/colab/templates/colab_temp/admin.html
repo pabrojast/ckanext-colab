@@ -1,6 +1,7 @@
 {% extends "page.html" %}
 {% block styles %}
   {{ super() }}
+  {% include 'colab_cs/styles.html' %}
   <link rel="stylesheet" href="/adminuserform.css" />
   <style>
     /* UNESCO Data Contributor Portal Admin Theme */
@@ -1499,6 +1500,7 @@
 
 {% block primary %}
 <div class="admin-container">
+{% if h.colab_cs_can_review() %}{% set capabilities = h.colab_cs_capabilities() %}{% include 'colab_cs/nav.html' %}{% endif %}
     <section class="admin-header">
         <div class="admin-header-bg"></div>
         <div class="admin-header-overlay"></div>

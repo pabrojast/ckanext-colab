@@ -1,0 +1,69 @@
+    {# ---- Project requests (sysadmin / initiative admin) --------------- #}
+    {% if can_review_projects %}
+      <div class="colab-review-panel" id="cs-tab-projects" role="region"
+           aria-label="{{ _('Project requests') }}" data-tabpanel="projects">
+        <h2 class="cs-visually-hidden">{{ _("Project requests") }}</h2>
+        {% if project_requests %}
+          <div class="cs-table-scroll">
+            <table class="cs-admin-table">
+              <thead>
+                <tr>
+                  <th scope="col">{{ _("Project") }}</th>
+                  <th scope="col">{{ _("Initiative") }}</th>
+                  <th scope="col">{{ _("Actions") }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for p in project_requests %}
+                  <tr>
+                    <td data-label="{{ _('Project') }}">
+                      <strong>{{ p.title }}</strong>
+                      {% if p.slug %}<br><span class="cs-muted">{{ p.slug }}</span>{% endif %}
+                      {#
+                        Everything the requester actually filled in. It used to
+                        be title + slug + initiative only, so approving was a
+                        decision made without the countries, the description,
+                        the dates or the contact. Folded into a <details> rather
+                        than new columns: the &lt;=640px rule turns this table
+                        into data-label cards, which seven more columns would
+                        wreck.
+                      #}
+                      <details class="cs-review-details">
+                        <summary>{{ _("Review the submission") }}</summary>
+                        {% if p.short_description %}
+                          <p class="cs-facts-text">{{ p.short_description | striptags }}</p>
+                        {% endif %}
+                        {% snippet "csunesco/snippets/project_facts.html",
+                                   project=p, compact=true %}
+                      </details>
+                    </td>
+                    <td data-label="{{ _('Initiative') }}">{{ p.initiative_title or p.initiative_group or _("Not part of an initiative") }}</td>
+                    <td data-label="{{ _('Actions') }}" class="cs-admin-actions">
+                      <a class="cs-btn cs-btn-secondary cs-btn-sm"
+                         href="{{ h.url_for('colab_cs.project_review', project_id=p.id) }}">{{ _("Review") }}</a>
+                      <form method="post"
+                            action="{{ h.url_for('colab_cs.project_decision', project_id=p.id, decision='approve') }}"
+                            data-confirm="{{ _('Approve this project?') }}">
+                        {{ h.csrf_input() }}
+                        <button type="submit" class="cs-btn cs-btn-primary cs-btn-sm">{{ _("Approve") }}</button>
+                      </form>
+                      <form method="post" class="cs-reject-form"
+                            action="{{ h.url_for('colab_cs.project_decision', project_id=p.id, decision='reject') }}"
+                            data-confirm="{{ _('Reject this project?') }}">
+                        {{ h.csrf_input() }}
+                        <label class="cs-visually-hidden" for="reason-p-{{ p.id }}">{{ _("Reason") }}</label>
+                        <input type="text" id="reason-p-{{ p.id }}" name="reason"
+                               class="cs-reject-reason" placeholder="{{ _('Reason (optional)') }}">
+                        <button type="submit" class="cs-btn cs-btn-danger cs-btn-sm">{{ _("Reject") }}</button>
+                      </form>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p class="cs-empty cs-wb-empty">{{ h.csunesco_icon('inbox', 22) }} {{ _("No project requests are awaiting review.") }}</p>
+        {% endif %}
+      </div>
+    {% endif %}

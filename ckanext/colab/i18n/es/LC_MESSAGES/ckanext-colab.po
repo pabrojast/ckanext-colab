@@ -2335,3 +2335,117 @@ msgstr ""
 #: ckanext/colab/controller.py:1209
 msgid "Please select Editor or Admin as your role in the organization."
 msgstr "Selecciona Editor o Admin como tu rol en la organización."
+
+msgid "Citizen Science requests"
+msgstr "Solicitudes de ciencia ciudadana"
+
+msgid "Colab requests"
+msgstr "Solicitudes en Colab"
+
+msgid "Collaborators"
+msgstr "Colaboradores"
+
+msgid "Project Manager accounts"
+msgstr "Cuentas de responsables de proyectos"
+
+msgid "Join requests"
+msgstr "Solicitudes de participación"
+
+msgid "Project requests"
+msgstr "Propuestas de proyectos"
+
+msgid "Search applicants"
+msgstr "Buscar solicitantes"
+
+msgid "Name, username or email"
+msgstr "Nombre, usuario o correo"
+
+msgid "Pending review"
+msgstr "Pendiente de revisión"
+
+msgid "Email not verified"
+msgstr "Correo sin verificar"
+
+msgid "Email verified"
+msgstr "Correo verificado"
+
+msgid "All requests"
+msgstr "Todas las solicitudes"
+
+msgid "View registration details"
+msgstr "Ver datos de registro"
+
+msgid "Save this account review decision?"
+msgstr "¿Guardar esta decisión?"
+
+msgid "Reviewer note (optional)"
+msgstr "Nota del revisor (opcional)"
+
+msgid "Use an existing organization instead"
+msgstr "Usar una organización existente"
+
+msgid "Only choose this if the requested organization already exists. Confirm the membership role before approval."
+msgstr "Seleccione esta opción solo si la organización ya existe. Confirme el rol antes de aprobar."
+
+msgid "Create the requested organization"
+msgstr "Crear la organización solicitada"
+
+msgid "Role in existing organization"
+msgstr "Rol en la organización existente"
+
+msgid "Approve account"
+msgstr "Aprobar cuenta"
+
+msgid "No requests match these filters."
+msgstr "No hay solicitudes con estos filtros."
+
+msgid "No join requests are awaiting review."
+msgstr "No hay solicitudes de participación pendientes."
+
+msgid "No project requests are awaiting review."
+msgstr "No hay propuestas de proyectos pendientes."
+
+msgid "Recently decided"
+msgstr "Decisiones recientes"
+
+msgid "Decided by"
+msgstr "Decisión de"
+
+msgid "Review decision saved."
+msgstr "Decisión guardada."
+
+msgid "This request is no longer available."
+msgstr "Esta solicitud ya no está disponible."
+
+msgid "Request Project Manager access"
+msgstr "Solicitar acceso como responsable de proyecto"
+
+msgid "Submit PM request"
+msgstr "Enviar solicitud de responsable"
+
+msgid "Your Citizen Scientist registration is complete. Add your organization and responsibilities to request Project Manager access."
+msgstr "Su registro como científico ciudadano está completo. Añada su organización y acepte las responsabilidades para solicitar acceso como responsable de proyecto."
+
+msgid "You can submit a project while your PM request is reviewed. Publication requires approval of both your PM request and your project."
+msgstr "Puede proponer un proyecto mientras se revisa su solicitud de responsable. La publicación requiere aprobar tanto su solicitud como el proyecto."
+
+msgid "Register as a Citizen Scientist"
+msgstr "Registrarse como científico ciudadano"
+
+msgid "Your existing account"
+msgstr "Su cuenta existente"
+
+msgid "Update your account details"
+msgstr "Actualizar datos de su cuenta"
+
+msgid "Review the submission"
+msgstr "Revisar la propuesta"
+
+msgid "Approve this join request?"
+msgstr "¿Aprobar esta solicitud de participación?"
+
+msgid "Reject this join request?"
+msgstr "¿Rechazar esta solicitud de participación?"
+
+msgid "Email verification is required before approval."
+msgstr "Debe verificarse el correo antes de aprobar."

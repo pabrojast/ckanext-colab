@@ -1,0 +1,6 @@
+{% extends "page.html" %}
+{% block styles %}{{ super() }}{% asset 'csunesco/csunesco-css' %}
+{% include 'colab_cs/styles.html' %}{% endblock %}
+{% block secondary %}{% endblock %}
+{% block primary %}<div class="colab-review-content"><h1>{{ _('Colab') }} · {{ _('Citizen Science requests') }}</h1>{% include 'colab_cs/nav.html' %}{% block cs_content %}{% endblock %}</div>{% endblock %}
+{% block scripts %}{{ super() }}{% asset 'csunesco/csunesco-js' %}{% endblock %}
