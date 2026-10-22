@@ -1,3 +1,4 @@
+from ckanext.colab.membership import ensure_organization_member, resolve_organization
 from flask import render_template, request, abort, jsonify, Response
 import ckan.plugins.toolkit as toolkit
 import ckan.model as model
@@ -391,10 +392,19 @@ class MyLogic():
             cool_plugin_instance = db_session.query(CoolPluginTable).filter_by(
                 wins_username=name,
                 organization_name=organization
-            ).first()
+            ).populate_existing().with_for_update().first()
             
             if not cool_plugin_instance:
                 return jsonify({'error': 'User registration not found'})
+
+            if cool_plugin_instance.approved and 'approved by' in cool_plugin_instance.approved:
+                result = ensure_organization_member(context, {
+                    'id': cool_plugin_instance.organization_name,
+                    'username': cool_plugin_instance.wins_username,
+                    'role': cool_plugin_instance.user_role or 'member'})
+                db_session.commit()
+                db_session.close()
+                return jsonify(dict(result, already_approved=True))
 
             # Establecer user_role como 'admin' si es None
             user_role = cool_plugin_instance.user_role or 'admin'
@@ -415,6 +425,9 @@ class MyLogic():
             # Generamos la URL
             clean_name = organization.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
             clean_name = re.sub(r'[^A-Za-z0-9-]+', '', clean_name)
+            resolved_org = resolve_organization(organization)
+            if resolved_org is not None:
+                clean_name = resolved_org.id
             users = [{'name': name, 'capacity': user_role}]
 
             try:
@@ -422,7 +435,7 @@ class MyLogic():
                     try:
                         toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': clean_name})
                         logger.warning(f"Organization {clean_name} already exists, adding user as member instead")
-                        organizationapi = toolkit.get_action('organization_member_create')(
+                        organizationapi = ensure_organization_member(
                             context,
                             {'id': clean_name, 'username': name,
                              'role': user_role})
@@ -434,11 +447,14 @@ class MyLogic():
                         if logo_url:
                             org_data['image_url'] = logo_url
                         organizationapi = toolkit.get_action('organization_create')(
-                            context, org_data)
+                            dict(context, defer_commit=True), org_data)
+                        model.Session.flush()
+                        ensure_organization_member(context, {'id': organizationapi['id'],
+                            'username': users[0]['name'], 'role': user_role})
                 else:
-                    organizationapi = toolkit.get_action('organization_member_create')(
+                    organizationapi = ensure_organization_member(
                         context,
-                        {'id': clean_name, 'username': name,
+                        {'id': organization, 'username': name,
                          'role': user_role})
 
                 # Actualizar status después de cualquier operación exitosa
@@ -502,7 +518,7 @@ class MyLogic():
                     cool_plugin_instance = db_session.query(CoolPluginTable).filter(
                         CoolPluginTable.id == int(record_id),
                         CoolPluginTable.deleted_at.is_(None)
-                    ).first()
+                    ).populate_existing().with_for_update().first()
                 except (ValueError, TypeError):
                     return jsonify({'error': 'Invalid record_id'}), 400
             elif wins_username and organization_name:
@@ -511,19 +527,22 @@ class MyLogic():
                     CoolPluginTable.organization_name == organization_name,
                     CoolPluginTable.deleted_at.is_(None),
                     CoolPluginTable.approved == 'Pending'
-                ).order_by(CoolPluginTable.created_date.desc()).first()
+                ).order_by(CoolPluginTable.created_date.desc()).populate_existing().with_for_update().first()
             else:
                 return jsonify({'error': 'Missing required parameters'}), 400
 
             if not cool_plugin_instance:
                 return jsonify({'error': 'User registration not found'}), 404
 
-            # Guard against approving a record that is already approved. With
-            # duplicate rows the optimistic UI would otherwise show a false
-            # success while the genuinely pending row reappears on reload.
+            # Retry the same row idempotently, confirming its actual membership.
             if cool_plugin_instance.approved and 'approved by' in (cool_plugin_instance.approved or ''):
-                return jsonify({'error': 'This application was already approved.',
-                                'already_approved': True}), 409
+                result = ensure_organization_member(context, {
+                    'id': cool_plugin_instance.organization_name,
+                    'username': cool_plugin_instance.wins_username,
+                    'role': cool_plugin_instance.user_role or 'member'})
+                db_session.commit()
+                db_session.close()
+                return jsonify(dict(result, already_approved=True))
 
             # Use the record's own values from here on (authoritative), so the
             # organization operations always match the row being approved.
@@ -546,8 +565,11 @@ class MyLogic():
                 }), 400
 
             # Clean org name for URL
+            resolved_org = resolve_organization(organization_name)
             clean_name = organization_name.lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
             clean_name = re.sub(r'[^A-Za-z0-9-]+', '', clean_name)
+            if resolved_org is not None:
+                clean_name = resolved_org.id
             users = [{'name': wins_username, 'capacity': user_role}]
 
             try:
@@ -555,7 +577,7 @@ class MyLogic():
                     try:
                         toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': clean_name})
                         logger.warning(f"Organization {clean_name} already exists, adding user as member instead")
-                        organizationapi = toolkit.get_action('organization_member_create')(
+                        organizationapi = ensure_organization_member(
                             context,
                             {'id': clean_name, 'username': wins_username,
                              'role': user_role})
@@ -568,12 +590,15 @@ class MyLogic():
                         if logo_url:
                             org_data['image_url'] = logo_url
                         organizationapi = toolkit.get_action('organization_create')(
-                            context, org_data)
+                            dict(context, defer_commit=True), org_data)
+                        model.Session.flush()
+                        ensure_organization_member(context, {'id': organizationapi['id'],
+                            'username': users[0]['name'], 'role': user_role})
                         organizationapi['message'] = f'New organization created: {organization_name}'
                 else:
                     try:
                         toolkit.get_action('organization_show')({'ignore_auth': True}, {'id': clean_name})
-                        organizationapi = toolkit.get_action('organization_member_create')(
+                        organizationapi = ensure_organization_member(
                             context,
                             {'id': clean_name, 'username': wins_username,
                              'role': user_role})
@@ -626,6 +651,7 @@ Best regards,
                 db_session.close()
                 
         except Exception as e:
+            model.Session.rollback()
             logger.error(f"General error in approve_post: {e}")
             return jsonify({'error': str(e)}), 500
         
@@ -921,7 +947,7 @@ Best regards,
         try:
             records = model.Session.query(CoolPluginTable).filter(
                 CoolPluginTable.id.in_(record_ids)
-            ).all()
+            ).populate_existing().with_for_update().all()
 
             processed = 0
             errors = []
@@ -961,17 +987,13 @@ Best regards,
                         # Clean org name consistently with approve_post
                         clean_name = (organization_name or '').lower().replace(" ", "-").replace("'", "").replace(".", "").replace("(", "").replace(")", "")
                         clean_name = re.sub(r'[^A-Za-z0-9-]+', '', clean_name)
-                        try:
-                            toolkit.get_action('organization_member_create')(
-                                {'user': toolkit.g.user},
-                                {'id': clean_name, 'username': wins_username,
-                                 'role': user_role})
-                        except Exception as org_err:
-                            errors.append(f'{wins_username}: {str(org_err)}')
-                            continue
-
-                        record.approved = f'approved by {toolkit.g.user}'
-                        record.approved_date = datetime.utcnow()
+                        with model.Session.begin_nested():
+                            ensure_organization_member(
+                                context, {'id': organization_name, 'username': wins_username,
+                                          'role': user_role})
+                            record.user_role = user_role
+                            record.approved = f'approved by {toolkit.g.user}'
+                            record.approved_date = datetime.utcnow()
                         processed += 1
                 except Exception as rec_err:
                     errors.append(f'Record {record.id}: {str(rec_err)}')

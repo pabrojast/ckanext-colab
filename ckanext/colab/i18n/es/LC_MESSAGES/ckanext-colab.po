@@ -2701,3 +2701,9 @@ msgstr "También encontramos datos de tu registro en Colab. Revísalos antes de 
 #. Existing-account profile completion
 msgid "In Colab: %(value)s. Choose the matching option below."
 msgstr "En Colab: %(value)s. Selecciona la opción correspondiente."
+
+msgid "Approval also adds this person as a member of the project organization:"
+msgstr "La aprobación también incorpora a esta persona como miembro de la organización del proyecto:"
+
+msgid "Any existing higher role is preserved."
+msgstr "Se conserva cualquier rol superior que ya tenga."
