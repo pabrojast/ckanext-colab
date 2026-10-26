@@ -1,0 +1,42 @@
+{% extends "account_users.html" %}
+{% block subtitle %}{{ _('Edit account') }}{% endblock %}
+{% block primary %}
+<section class="account-editor">
+  <nav><a href="{{ h.url_for('colab_accounts.users') }}">{{ _('User accounts') }}</a></nav>
+  <h1>{{ _('Edit account') }}: {{ account.name }}</h1>
+  {% if errors %}<div class="alert alert-error" role="alert"><p>{{ _('The account could not be saved.') }}</p><ul>
+    {% for field, messages in errors.items() %}{% for message in messages %}<li>{{ message }}</li>{% endfor %}{% endfor %}
+  </ul></div>{% endif %}
+  {% if events and events[0].status != 'synced' %}
+  <div class="alert" role="status">
+    <p>{{ _('The account is saved in IHP-WINS. Toolbox synchronization is pending.') }}</p>
+    {% if events[0].error %}<p>{{ _('A Toolbox account changed or conflicts with this update. Resolve the conflict before retrying.') }}</p>{% endif %}
+    <form method="post" action="{{ h.url_for('colab_accounts.retry', ident=account.id) }}">{{ h.csrf_input() }}
+      <button type="submit" class="btn">{{ _('Retry synchronization') }}</button>
+    </form>
+  </div>
+  {% endif %}
+  <form method="post" id="account-edit-form">
+    {{ h.csrf_input() }}<input type="hidden" name="version" value="{{ version }}">
+    <fieldset {% if account.state != 'active' or (events and events[0].status != 'synced') %}disabled{% endif %}>
+      {% for key, label in [('name', _('Username')), ('fullname', _('Full name')), ('email', _('Email address'))] %}
+      <div class="account-field">
+        <label for="account-{{ key }}">{{ label }}</label>
+        <input id="account-{{ key }}" name="{{ key }}" type="{{ 'email' if key == 'email' else 'text' }}"
+          value="{{ values[key] }}" maxlength="{{ 100 if key == 'name' else 254 if key == 'email' else 256 }}"
+          {% if key != 'fullname' %}required{% endif %} data-original="{{ current[key] }}" aria-describedby="current-{{ key }}">
+        <small id="current-{{ key }}">{{ _('Current value') }}: {{ current[key] or '—' }}</small>
+      </div>
+      {% endfor %}
+      <p>{{ _('Username and email changes update the linked Toolbox account and invalidate previous recovery links. Existing passwords and project access are preserved.') }}</p>
+      <section id="account-changes" hidden aria-live="polite"><h2>{{ _('Proposed changes') }}</h2><ul></ul></section>
+      <button class="btn btn-primary" type="submit">{{ _('Save changes') }}</button>
+      <a class="btn" href="{{ h.url_for('colab_accounts.users') }}">{{ _('Cancel') }}</a>
+    </fieldset>
+  </form>
+  {% if events %}<section class="account-history"><h2>{{ _('Recent updates') }}</h2>
+    <ul>{% for event in events %}<li>{{ event.created_at.strftime('%Y-%m-%d %H:%M') }} UTC — {{ _('Synchronized') if event.status == 'synced' else _('Needs attention') if event.status == 'failed' else _('Synchronization pending') }}</li>{% endfor %}</ul>
+  </section>{% endif %}
+</section>
+{% endblock %}
+{% block scripts %}{{ super() }}<script src="{{ h.url_for_static('/account-editor.js') }}"></script>{% endblock %}

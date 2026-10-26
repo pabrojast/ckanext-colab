@@ -1513,6 +1513,7 @@
     <!-- Navigation between admin panels -->
     <div class="admin-nav">
         <div class="nav-tabs">
+            <a href="{{ h.url_for('colab_accounts.users') }}" class="nav-tab">{{ _('User accounts') }}</a>
             <a href="{{ h.url_for('colab.show_admin') }}" class="nav-tab active">
                 👥 {{ _('User Management') }}
             </a>

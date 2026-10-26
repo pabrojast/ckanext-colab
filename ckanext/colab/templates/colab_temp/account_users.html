@@ -1,0 +1,30 @@
+{% extends "page.html" %}
+{% block subtitle %}{{ _('User accounts') }}{% endblock %}
+{% block secondary %}{% endblock %}
+{% block styles %}{{ super() }}<link rel="stylesheet" href="{{ h.url_for_static('/account-editor.css') }}">{% endblock %}
+{% block primary %}
+<section class="account-editor">
+  <nav aria-label="{{ _('Administration') }}"><a href="{{ h.url_for('colab.show_admin') }}">{{ _('Colab administration') }}</a></nav>
+  <h1>{{ _('User accounts') }}</h1>
+  <p>{{ _('Find an IHP-WINS account to update its username, full name or email address.') }}</p>
+  <form method="get" class="account-search">
+    <label for="account-query">{{ _('Name, username or email') }}</label>
+    <div><input id="account-query" name="q" value="{{ q }}" type="search" maxlength="200"><button class="btn btn-primary" type="submit">{{ _('Search') }}</button></div>
+  </form>
+  <p>{{ _('%(count)s accounts', count=count) }}</p>
+  <div class="account-list">
+  {% for user in users %}
+    <article class="account-card">
+      <div><h2>{{ user.name }}</h2><p>{{ user.fullname or '' }}</p><p>{{ user.email or '' }}</p></div>
+      <div><span class="account-state">{{ _('Active') if user.state == 'active' else _('Inactive') }}</span>
+      <a class="btn" href="{{ h.url_for('colab_accounts.edit', ident=user.id) }}">{{ _('Edit account') if user.state == 'active' else _('View account') }}</a></div>
+    </article>
+  {% else %}<p>{{ _('No accounts match your search.') }}</p>{% endfor %}
+  </div>
+  <nav class="account-pagination" aria-label="{{ _('Pagination') }}">
+    {% if page > 1 %}<a class="btn" href="{{ h.url_for('colab_accounts.users', q=q, page=page-1) }}">{{ _('Previous') }}</a>{% endif %}
+    <span>{{ _('Page %(page)s', page=page) }}</span>
+    {% if page * 25 < count %}<a class="btn" href="{{ h.url_for('colab_accounts.users', q=q, page=page+1) }}">{{ _('Next') }}</a>{% endif %}
+  </nav>
+</section>
+{% endblock %}

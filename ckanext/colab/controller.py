@@ -85,6 +85,12 @@ def ensure_colab_schema(engine=None):
 
 ensure_colab_schema()
 
+try:
+    from ckanext.colab.models.account_update import ensure_table
+    ensure_table(model.meta.engine)
+except Exception as exc:
+    logger.warning('Could not initialize account update receipts: %s', type(exc).__name__)
+
 
 def log_audit(action, admin_user, record_id=None, target_user=None, details=None):
     """Log an admin action to the audit trail."""
