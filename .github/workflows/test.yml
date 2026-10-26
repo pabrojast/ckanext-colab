@@ -1,55 +1,35 @@
 name: Tests
 on: [push, pull_request]
-env:
-  # The openknowledge/ckan-dev:2.9 container is Alpine-based with an older musl
-  # libc that lacks pthread_getname_np. GitHub now defaults JS-based actions
-  # (checkout, etc.) to Node 24, whose binary fails to start on that container
-  # ("Error relocating .../node24_alpine/bin/node: pthread_getname_np: symbol
-  # not found"), which fails the job. Pin the runner back to Node 20.
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
+permissions:
+  contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
-    container:
-      # The CKAN version tag of the Solr and Postgres containers should match
-      # the one of the container the tests run on.
-      # You can switch this base image with a custom image tailored to your project
-      image: openknowledge/ckan-dev:2.9
     services:
-      solr:
-        image: ckan/ckan-solr:2.9
       postgres:
-        image: ckan/ckan-postgres-dev:2.9
+        image: postgres:17
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      redis:
-          image: redis:3
-
+          POSTGRES_DB: colab_test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     env:
-      CKAN_SQLALCHEMY_URL: postgresql://ckan_default:pass@postgres/ckan_test
-      CKAN_DATASTORE_WRITE_URL: postgresql://datastore_write:pass@postgres/datastore_test
-      CKAN_DATASTORE_READ_URL: postgresql://datastore_read:pass@postgres/datastore_test
-      CKAN_SOLR_URL: http://solr:8983/solr/ckan
-      CKAN_REDIS_URL: redis://redis:6379/1
-
+      # CKAN 2.10 and the integration dependencies used by the deployed portal.
+      CKAN_IMAGE: pabrojast/ckan-base210:home-loading-prod-20261023-r1@sha256:3c79c1d7e8396114dd0d93da18253144ae48c3c7bf8797818af51080ecddd97c
+      COLAB_ACCOUNT_TEST_DB: postgresql://postgres:postgres@127.0.0.1:5432/colab_test
     steps:
-    - uses: actions/checkout@v2
-    - name: Install requirements
-      # Install any extra requirements your extension has here (dev requirements, other extensions etc)
-      run: |
-        pip install -r requirements.txt
-        pip install -r dev-requirements.txt
-        pip install -e .
-    - name: Setup extension
-      # Extra initialization steps
-      run: |
-        # Replace default path to CKAN core config file with the one on the container
-        sed -i -e 's/use = config:.*/use = config:\/srv\/app\/src\/ckan\/test-core.ini/' test.ini
-
-        ckan -c test.ini db init
-    - name: Run tests
-      run: pytest --ckan-ini=test.ini --cov=ckanext.colab --disable-warnings ckanext/colab
-
+      # Run JavaScript actions on the host, outside the legacy Alpine runtime.
+      - uses: actions/checkout@v4
+      - name: Test Colab with CKAN and an isolated PostgreSQL database
+        run: |
+          docker run --rm --network host --user root \
+            -v "$GITHUB_WORKSPACE:/app/src/ckanext-colab" \
+            -e COLAB_ACCOUNT_TEST_DB -e PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+            "$CKAN_IMAGE" sh -c '
+              set -eu
+              pip install pytest pytest-cov
+              python /app/src/ckanext-colab/ckanext/colab/tests/bootstrap_accounts.py
+              python -m pytest -q /app/src/ckanext-colab/ckanext/colab/tests --tb=short
+            '

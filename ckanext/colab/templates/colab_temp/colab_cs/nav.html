@@ -1,5 +1,5 @@
 <nav class="colab-review-nav" aria-label="{{ _('Requests') }}">
-{% if c.userobj.sysadmin %}<a href="{{ h.url_for('colab.show_admin') }}">{{ _('Collaborators') }}</a><a href="{{ h.url_for('colab.organization_admin') }}">{{ _('Organizations') }}</a>{% endif %}
+{% if c.userobj.sysadmin %}<a href="{{ h.url_for('colab.show_admin') }}">{{ _('Collaborators') }}</a><a href="{{ h.url_for('colab.organization_admin') }}">{{ _('Organizations') }}</a><a href="{{ h.url_for('colab_accounts.users') }}">{{ _('User accounts') }}</a>{% endif %}
 {% for key,label in [('managers',_('Project Manager access requests')),('joins',_('Join requests')),('projects',_('Project requests'))] %}
 {% if capabilities[key] %}<a href="{{ h.url_for('colab.show_admin', tab=key) }}" {% if tab == key %}aria-current="page"{% endif %}>{{ label }}{% if counts is defined %} · {{ counts.get({'managers':'managers','joins':'join_requests','projects':'project_requests'}[key],0) }}{% endif %}</a>{% endif %}
 {% endfor %}</nav>

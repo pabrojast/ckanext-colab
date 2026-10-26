@@ -8,6 +8,7 @@ from ckanext.colab.models.cool_plugin_table import CoolPluginTable
 from ckanext.colab.controllers.thingsboard_controller import ThingsBoardLogic
 from ckanext.colab.models.device_request import DeviceRequest
 from ckanext.colab.api_endpoints import colab_api
+from ckanext.colab import account_editor
 
 
 class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
@@ -15,6 +16,8 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.ITranslation)   # Implementar ITemplateHelpers
     plugins.implements(plugins.ITemplateHelpers)
+    plugins.implements(plugins.IActions)
+    plugins.implements(plugins.IAuthFunctions)
 
     # IConfigurer
 
@@ -232,7 +235,14 @@ class ColabPlugin(plugins.SingletonPlugin, DefaultTranslation):
         )
 
         from ckanext.colab.cs_reviews import blueprint as cs_blueprint
-        return [blueprint, tb_blueprint, colab_api, cs_blueprint]
+        return [blueprint, tb_blueprint, colab_api, cs_blueprint, account_editor.blueprint]
+
+    def get_actions(self):
+        return {name: getattr(account_editor, name) for name in (
+            'colab_account_updates_pending', 'colab_account_update_show', 'colab_account_update_ack')}
+
+    def get_auth_functions(self):
+        return {name: account_editor.auth for name in self.get_actions()}
     
 
     #ITemplateHelpers
