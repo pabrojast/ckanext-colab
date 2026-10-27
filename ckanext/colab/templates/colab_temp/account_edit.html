@@ -4,6 +4,7 @@
 <section class="account-editor">
   <nav><a href="{{ h.url_for('colab_accounts.users') }}">{{ _('User accounts') }}</a></nav>
   <h1>{{ _('Edit account') }}: {{ account.name }}</h1>
+  {% if account.state == 'active' %}<p><a class="btn" href="{{ h.url_for('colab_accounts.reset_link', ident=account.id) }}">{{ _('Password reset link') }}</a></p>{% endif %}
   {% if errors %}<div class="alert alert-error" role="alert"><p>{{ _('The account could not be saved.') }}</p><ul>
     {% for field, messages in errors.items() %}{% for message in messages %}<li>{{ message }}</li>{% endfor %}{% endfor %}
   </ul></div>{% endif %}

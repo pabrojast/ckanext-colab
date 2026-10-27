@@ -26,6 +26,7 @@ def protect_request():
 @blueprint.after_request
 def private_response(response):
     response.headers['Cache-Control'] = 'private, no-store'
+    response.headers['Referrer-Policy'] = 'no-referrer'
     return response
 
 
@@ -203,6 +204,32 @@ def deliver(ident, event_id):
     return _event(event_id)
 
 
+def reset_version(user):
+    """Detect stale forms and repeated submissions without exposing a key."""
+    return hashlib.sha256((version(user) + (user.reset_key or '')).encode()).hexdigest()
+
+
+def create_password_reset_link(ctx, ident, expected_version):
+    from ckan.lib import mailer
+    require_admin(ctx)
+    user = account(ident, lock=True)
+    if user.state != 'active':
+        raise tk.ValidationError({'general': [tk._('Only active accounts can receive a password reset link.')]})
+    if reset_version(user) != expected_version:
+        raise tk.ValidationError({'general': [tk._('This account or its reset link changed. Reload the page before generating a link.')]})
+    if model.Session.query(AccountUpdate).filter(
+            AccountUpdate.ckan_id == user.id, AccountUpdate.status != 'synced').first():
+        raise tk.ValidationError({'general': [tk._('Finish the pending Toolbox synchronization before generating a reset link.')]})
+    # Use CKAN's recovery flow. Commit the key and audit entry together, without
+    # invoking the mail sender or putting the key in logs, sessions or URLs here.
+    user.reset_key = mailer.make_key()
+    link = mailer.get_reset_link(user)
+    model.Session.add(AuditLog(action='account_reset_link', admin_user=ctx['user'],
+                              target_user=user.id, details=json.dumps({'actor_id': ctx['auth_user_obj'].id})))
+    model.Session.commit()
+    return link
+
+
 @blueprint.route('/colab/admin/users')
 def users():
     context()
@@ -274,3 +301,29 @@ def retry(ident):
         model.Session.commit()
         deliver(ident, row.id)
     return tk.redirect_to('colab_accounts.edit', ident=ident)
+
+
+@blueprint.route('/colab/admin/users/<uuid:ident>/reset-link', methods=['GET', 'POST'])
+def reset_link(ident):
+    ctx = context()
+    ident = str(ident)
+    try:
+        user = account(ident)
+    except tk.ObjectNotFound:
+        tk.abort(404, tk._('User not found'))
+    link, errors = None, {}
+    status = 200
+    if request.method == 'POST':
+        try:
+            link = create_password_reset_link(ctx, ident, request.form.get('version', ''))
+        except tk.ValidationError as exc:
+            model.Session.rollback()
+            errors, status = exc.error_dict, 409
+        except Exception:
+            model.Session.rollback()
+            raise
+    pending = model.Session.query(AccountUpdate).filter(
+        AccountUpdate.ckan_id == ident, AccountUpdate.status != 'synced').first() is not None
+    return tk.render('account_reset_link.html', extra_vars={
+        'account': user, 'reset_link': link, 'errors': errors,
+        'reset_version': reset_version(user), 'pending': pending}), status

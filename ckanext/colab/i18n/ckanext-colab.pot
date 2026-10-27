@@ -2343,3 +2343,63 @@ msgstr ""
 #. Existing-account profile completion
 msgid "In Colab: %(value)s. Choose the matching option below."
 msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Password reset link"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Generate a link to share directly with this user. No email will be sent and the password will only change when the user completes the reset."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "This resets the IHP-WINS password, also used to sign in to the linked Toolbox account."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "The link has no time limit. It stops working after use or when replaced by another IHP-WINS reset link. Share it only with the account owner."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Generating a new link invalidates any previous IHP-WINS reset link for this user."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Generated link"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Copy link"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Link copied."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Select and copy the link manually."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Generate new reset link"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Only active accounts can receive a password reset link."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "This account or its reset link changed. Reload the page before generating a link."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Finish the pending Toolbox synchronization before generating a reset link."
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "User accounts"
+msgstr ""
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Edit account"
+msgstr ""
