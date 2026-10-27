@@ -17,7 +17,8 @@
     <article class="account-card">
       <div><h2>{{ user.name }}</h2><p>{{ user.fullname or '' }}</p><p>{{ user.email or '' }}</p></div>
       <div><span class="account-state">{{ _('Active') if user.state == 'active' else _('Inactive') }}</span>
-      <a class="btn" href="{{ h.url_for('colab_accounts.edit', ident=user.id) }}">{{ _('Edit account') if user.state == 'active' else _('View account') }}</a></div>
+      <a class="btn" href="{{ h.url_for('colab_accounts.edit', ident=user.id) }}">{{ _('Edit account') if user.state == 'active' else _('View account') }}</a>
+      {% if user.state == 'active' %}<a class="btn" href="{{ h.url_for('colab_accounts.reset_link', ident=user.id) }}">{{ _('Password reset link') }}</a>{% endif %}</div>
     </article>
   {% else %}<p>{{ _('No accounts match your search.') }}</p>{% endfor %}
   </div>

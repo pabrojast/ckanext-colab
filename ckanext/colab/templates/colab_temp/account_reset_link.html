@@ -1,0 +1,32 @@
+{% extends "account_users.html" %}
+{% block subtitle %}{{ _('Password reset link') }}{% endblock %}
+{% block primary %}
+<section class="account-editor">
+  <nav><a href="{{ h.url_for('colab_accounts.users') }}">{{ _('User accounts') }}</a> · <a href="{{ h.url_for('colab_accounts.edit', ident=account.id) }}">{{ _('Edit account') }}</a></nav>
+  <h1>{{ _('Password reset link') }}</h1>
+  <h2>{{ account.name }}</h2>
+  <p>{{ account.fullname or '' }} · {{ account.email or '' }}</p>
+  <p>{{ _('Generate a link to share directly with this user. No email will be sent and the password will only change when the user completes the reset.') }}</p>
+  <p>{{ _('This resets the IHP-WINS password, also used to sign in to the linked Toolbox account.') }}</p>
+  <p>{{ _('The link has no time limit. It stops working after use or when replaced by another IHP-WINS reset link. Share it only with the account owner.') }}</p>
+  {% if errors %}<div class="alert alert-error" role="alert"><ul>
+    {% for field, messages in errors.items() %}{% for message in messages %}<li>{{ message }}</li>{% endfor %}{% endfor %}
+  </ul></div>{% endif %}
+  {% if account.state != 'active' %}<p class="alert" role="status">{{ _('Only active accounts can receive a password reset link.') }}</p>{% endif %}
+  {% if pending %}<p class="alert" role="status">{{ _('Finish the pending Toolbox synchronization before generating a reset link.') }}</p>{% endif %}
+  {% if reset_link %}
+  <section class="account-reset-result" aria-labelledby="reset-link-label">
+    <label id="reset-link-label" for="password-reset-link">{{ _('Generated link') }}</label>
+    <input id="password-reset-link" type="text" readonly value="{{ reset_link }}" autocomplete="off" spellcheck="false" dir="ltr">
+    <button id="copy-reset-link" class="btn btn-primary" type="button" data-success="{{ _('Link copied.') }}" data-fallback="{{ _('Select and copy the link manually.') }}">{{ _('Copy link') }}</button>
+    <p id="reset-copy-status" role="status" aria-live="polite"></p>
+  </section>
+  {% endif %}
+  <form method="post" action="{{ h.url_for('colab_accounts.reset_link', ident=account.id) }}" class="account-reset-form">
+    {{ h.csrf_input() }}<input type="hidden" name="version" value="{{ reset_version }}">
+    <p>{{ _('Generating a new link invalidates any previous IHP-WINS reset link for this user.') }}</p>
+    <button class="btn" type="submit" {% if account.state != 'active' or pending %}disabled{% endif %}>{{ _('Generate new reset link') }}</button>
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}{{ super() }}<script src="{{ h.url_for_static('/account-reset-link.js') }}"></script>{% endblock %}

@@ -12,6 +12,7 @@ A CKAN extension that provides user management and organization approval workflo
 - **Multi-Tab Interface**: Efficiently handle pending, approved, and rejected requests.
 - **Organization Support**: Compatible with both new and existing organizations.
 - **Demographic Data Collection**: Gather age, gender, and nationality information.
+- **Password reset links**: System administrators can open **User accounts → Password reset link**, generate a CKAN recovery link and copy it for the account owner. No email is sent. This uses the native IHP-WINS password recovery flow; the link has no time-based expiry and is invalidated after use or replacement. Generation is audited without storing the link in the audit log. Inactive accounts and accounts awaiting Toolbox synchronization are blocked.
 
 ## Requirements
 

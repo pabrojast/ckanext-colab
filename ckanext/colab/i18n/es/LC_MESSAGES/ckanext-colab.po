@@ -2707,3 +2707,63 @@ msgstr "La aprobación también incorpora a esta persona como miembro de la orga
 
 msgid "Any existing higher role is preserved."
 msgstr "Se conserva cualquier rol superior que ya tenga."
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Password reset link"
+msgstr "Enlace para restablecer la contraseña"
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Generate a link to share directly with this user. No email will be sent and the password will only change when the user completes the reset."
+msgstr "Genera un enlace para compartir directamente con este usuario. No se enviará ningún correo y la contraseña solo cambiará cuando el usuario complete el restablecimiento."
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "This resets the IHP-WINS password, also used to sign in to the linked Toolbox account."
+msgstr "Esto restablece la contraseña de IHP-WINS, que también se usa para entrar a la cuenta vinculada de Toolbox."
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "The link has no time limit. It stops working after use or when replaced by another IHP-WINS reset link. Share it only with the account owner."
+msgstr "El enlace no caduca por tiempo. Deja de funcionar después de usarlo o al reemplazarlo por otro enlace de IHP-WINS. Compártelo solo con el titular de la cuenta."
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Generating a new link invalidates any previous IHP-WINS reset link for this user."
+msgstr "Generar un enlace nuevo invalida cualquier enlace anterior de IHP-WINS para este usuario."
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Generated link"
+msgstr "Enlace generado"
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Copy link"
+msgstr "Copiar enlace"
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Link copied."
+msgstr "Enlace copiado."
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Select and copy the link manually."
+msgstr "Selecciona y copia el enlace manualmente."
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Generate new reset link"
+msgstr "Generar nuevo enlace de restablecimiento"
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Only active accounts can receive a password reset link."
+msgstr "Solo se pueden generar enlaces para cuentas activas."
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "This account or its reset link changed. Reload the page before generating a link."
+msgstr "La cuenta o su enlace de restablecimiento cambió. Recarga la página antes de generar un enlace."
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Finish the pending Toolbox synchronization before generating a reset link."
+msgstr "Completa la sincronización pendiente con Toolbox antes de generar un enlace."
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "User accounts"
+msgstr "Cuentas de usuario"
+
+#: ckanext/colab/templates/colab_temp/account_reset_link.html
+msgid "Edit account"
+msgstr "Editar cuenta"
