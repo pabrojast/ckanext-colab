@@ -15,7 +15,7 @@ def inbox(monkeypatch):
     app.register_blueprint(reviews.blueprint)
     app.add_url_rule('/colab/admin', 'colab.show_admin', reviews.show)
     actor = SimpleNamespace(name='project-reviewer', sysadmin=False)
-    allowed = {'managers': False, 'projects': False, 'joins': True}
+    allowed = {'managers': False, 'projects': False, 'joins': True, 'manager_joins': False}
     calls = []
     @app.before_request
     def identity():
@@ -32,6 +32,8 @@ def inbox(monkeypatch):
     def action(name):
         def run(ctx, data):
             calls.append((name, ctx.get('user'), data))
+            if name == 'csunesco_pathway_requests':
+                return [{'id':'pending-pm','requested_role':'project_manager','status':'pending','review_state':'waiting_for_account_approval'}]
             if name == 'csunesco_admin_pending_list':
                 return {'join_requests': [{'project_id':'own-project'}], 'project_requests': [],
                         'counts': {'join_requests':1,'project_requests':0}}
@@ -88,3 +90,14 @@ def test_domain_permission_failure_cannot_be_overridden_by_colab(inbox, monkeypa
     monkeypatch.setattr(tk, 'get_action', lambda name: denied)
     response = app.test_client().post('/colab/admin/citizen-science/joins/other/u/approve')
     assert response.status_code == 403
+
+
+def test_pm_project_queue_is_admin_only_and_keeps_waiting_state(inbox):
+    app, actor, allowed, calls = inbox
+    client=app.test_client()
+    assert client.get('/colab/admin?tab=manager_joins').status_code==403
+    allowed['manager_joins']=True
+    response=client.get('/colab/admin?tab=manager_joins')
+    assert response.status_code==200
+    assert response.json['data']['manager_joins'][0]['review_state']=='waiting_for_account_approval'
+    assert response.json['data']['count']==1

@@ -1,0 +1,7 @@
+<h2>{{ _('Project Manager project requests') }}</h2>
+{% for row in manager_joins %}
+<article class="cs-review-account"><h3>{{ row.fullname or row.username }} · {{ row.project_name }}</h3><p>{{ row.note }}</p>
+{% if row.review_state == 'waiting_for_account_approval' %}<p role="status">{{ _('Approve the Project Manager account first.') }}</p>{% endif %}
+<form method="post" action="{{ h.url_for('colab_cs.manager_join_decision', request_id=row.id, decision='reject') }}">{{ h.csrf_input() }}<label>{{ _('Reason') }}<textarea name="reason" maxlength="1000"></textarea></label><button class="cs-btn cs-btn-secondary">{{ _('Reject') }}</button></form>
+<form method="post" action="{{ h.url_for('colab_cs.manager_join_decision', request_id=row.id, decision='approve') }}">{{ h.csrf_input() }}<button class="cs-btn cs-btn-primary" {% if row.review_state == 'waiting_for_account_approval' %}disabled{% endif %}>{{ _('Approve') }}</button></form></article>
+{% else %}<p>{{ _('No join requests are awaiting review.') }}</p>{% endfor %}

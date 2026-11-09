@@ -7,7 +7,7 @@ import ckan.plugins.toolkit as tk
 
 log = logging.getLogger(__name__)
 blueprint = Blueprint('colab_cs', __name__, url_prefix='/colab/admin/citizen-science')
-TABS = ('managers', 'joins', 'projects')
+TABS = ('managers', 'joins', 'projects', 'manager_joins')
 PAGE_SIZE = 20
 
 
@@ -35,6 +35,7 @@ def capabilities():
     from ckanext.csunesco.logic import auth
     ctx = context()
     return {'managers': auth._is_sysadmin(ctx),
+            'manager_joins': auth._is_sysadmin(ctx),
             'projects': auth._is_sysadmin(ctx) or auth._is_any_initiative_admin(ctx),
             'joins': auth.is_reviewer(ctx)}
 
@@ -51,6 +52,8 @@ def pending_count():
             db.CsCitizenScientist.profile_type == 'manager',
             db.CsCitizenScientist.email_verified.is_(True),
             db.CsCitizenScientist.manager_decision.is_(None)).count()
+    if capabilities()["manager_joins"]:
+        total += model.Session.query(db.CsJoinRequest).filter_by(requested_role="project_manager", status="pending").count()
     return total
 
 
@@ -96,9 +99,15 @@ def show():
         values.update(result=managers, organizations=managers.get('organizations', []))
     else:
         values.update(result={'count': 0, 'results': []}, organizations=[])
+    manager_joins = []
+    if allowed['manager_joins']:
+        manager_joins = [row for row in tk.get_action('csunesco_pathway_requests')(context(), {'review': True}) if row['requested_role'] == 'project_manager' and row['status'] == 'pending']
+    values['manager_joins'] = manager_joins[offset:offset+PAGE_SIZE]
     values['counts'] = dict(data['counts'])
+    values['counts']['manager_joins'] = len(manager_joins)
     values['counts']['managers'] = values['result']['count']
     values['count'] = values['result']['count'] if tab == 'managers' else data['counts']['join_requests' if tab == 'joins' else 'project_requests']
+    if tab == 'manager_joins': values['count'] = len(manager_joins)
     return tk.render('colab_cs/inbox.html', extra_vars=values)
 
 
@@ -172,3 +181,11 @@ def private_reviews(response):
     if request.endpoint == 'colab.show_admin' or (request.endpoint or '').startswith('colab_cs.'):
         response.headers['Cache-Control'] = 'private, no-store'
     return response
+
+
+@blueprint.route('/manager-joins/<request_id>/<decision>', methods=['POST'])
+def manager_join_decision(request_id, decision):
+    if decision not in ('approve', 'reject'):
+        tk.abort(404)
+    return decide('csunesco_pathway_decide', {'id': request_id, 'decision': decision,
+        'reason': request.form.get('reason', '')}, 'manager_joins')
