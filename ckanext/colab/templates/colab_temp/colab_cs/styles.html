@@ -6,6 +6,8 @@
 .colab-review-content .cs-review-account-actions{flex-wrap:wrap;align-items:flex-end}
 .colab-review-content .cs-join-reject{flex:1 1 18rem}
 .colab-review-content .cs-join-reject button{margin-top:.5rem}
+/* The panel breaks long words anywhere, which split "APPROVED" across two lines in the decided table. */
+.colab-review-content .cs-status-badge{white-space:nowrap;overflow-wrap:normal}
 /* CKAN hides account labels far off-screen; RTL turns that into page overflow. */
 [dir=rtl] .account-masthead .text {left:auto!important;right:auto!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
 </style>

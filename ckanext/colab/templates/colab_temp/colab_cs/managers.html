@@ -1,7 +1,7 @@
   <form method="get" class="cs-review-filters"><input type="hidden" name="tab" value="managers">
     <label>{{ _('Search applicants') }}<input type="search" name="q" value="{{ q }}" placeholder="{{ _('Name, username or email') }}"></label>
     <label>{{ _('Status') }}<select name="status">{% for key, label in [('pending',_('Pending review')),('unverified',_('Email not verified')),('approved',_('Approved')),('rejected',_('Rejected')),('all',_('All requests'))] %}<option value="{{ key }}" {% if status == key %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
-    <button class="cs-btn cs-btn-primary" type="submit">{{ _('Search') }}</button><span class="cs-results-count">{{ result.count }}</span>
+    <button class="cs-btn cs-btn-primary" type="submit">{{ _('Search') }}</button>
   </form>
   <div class="cs-review-cards">
   {% for person in result.results %}
