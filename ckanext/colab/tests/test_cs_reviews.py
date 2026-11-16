@@ -101,3 +101,21 @@ def test_pm_project_queue_is_admin_only_and_keeps_waiting_state(inbox):
     assert response.status_code==200
     assert response.json['data']['manager_joins'][0]['review_state']=='waiting_for_account_approval'
     assert response.json['data']['count']==1
+
+
+def test_join_rejection_needs_a_reason_and_passes_it_to_the_portal(inbox, monkeypatch):
+    app, _, _, calls = inbox
+    errors = []
+    monkeypatch.setattr(tk, 'h', SimpleNamespace(flash_success=lambda value: None,
+        flash_error=errors.append, flash_notice=lambda value: None))
+    client = app.test_client()
+    url = '/colab/admin/citizen-science/joins/p/u/reject'
+    for reason in ('', '   ', 'too short'):
+        response = client.post(url, data={'reason': reason})
+        assert response.status_code == 302
+        assert response.location.endswith('/colab/admin?tab=joins')
+    assert calls == [] and len(errors) == 3
+    response = client.post(url, data={'reason': '  The project is full this season.  '})
+    assert response.status_code == 302
+    assert calls == [('csunesco_join_reject', 'project-reviewer',
+                      {'project_id': 'p', 'user_id': 'u', 'reason': 'The project is full this season.'})]

@@ -1,4 +1,11 @@
 <style>.colab-review-nav{display:flex;flex-wrap:wrap;gap:.7rem;margin-block:1rem 2rem}.colab-review-nav a{padding:.65rem 1rem;border:1px solid #ccd6df;border-radius:.5rem}.colab-review-nav a[aria-current=page]{background:#006b99;color:white}.colab-review-content{max-width:1100px;margin:auto;padding:clamp(12px,3vw,28px);overflow-wrap:anywhere}.colab-review-content .cs-review-filters{flex-wrap:wrap}.colab-review-content input,.colab-review-content select,.colab-review-content textarea{max-width:100%}
+/* CKAN's main.css appends a block ":" to every label, which landed on a line of its own. */
+.colab-review-content label::after{content:none}
+.colab-review-content .cs-review-decision>label,.colab-review-content .cs-join-reject>label{display:block;font-weight:600;margin-block:.75rem .25rem}
+.colab-review-content .cs-review-decision textarea,.colab-review-content .cs-join-reject textarea{display:block;width:100%;min-height:4.5rem;box-sizing:border-box}
+.colab-review-content .cs-review-account-actions{flex-wrap:wrap;align-items:flex-end}
+.colab-review-content .cs-join-reject{flex:1 1 18rem}
+.colab-review-content .cs-join-reject button{margin-top:.5rem}
 /* CKAN hides account labels far off-screen; RTL turns that into page overflow. */
 [dir=rtl] .account-masthead .text {left:auto!important;right:auto!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
 </style>

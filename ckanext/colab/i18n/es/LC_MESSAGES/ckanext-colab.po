@@ -2767,3 +2767,7 @@ msgstr "Cuentas de usuario"
 #: ckanext/colab/templates/colab_temp/account_reset_link.html
 msgid "Edit account"
 msgstr "Editar cuenta"
+
+#: ckanext/colab/cs_reviews.py
+msgid "Write the reason for the person (at least 10 characters)."
+msgstr "Escribe el motivo para la persona (al menos 10 caracteres)."

@@ -2403,3 +2403,7 @@ msgstr ""
 #: ckanext/colab/templates/colab_temp/account_reset_link.html
 msgid "Edit account"
 msgstr ""
+
+#: ckanext/colab/cs_reviews.py
+msgid "Write the reason for the person (at least 10 characters)."
+msgstr ""

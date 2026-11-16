@@ -161,11 +161,23 @@ def manager_decision(username, decision):
         'organization_role': request.form.get('organization_role')}, 'managers')
 
 
+REJECT_REASON_MIN = 10
+
+
 @blueprint.route('/joins/<project_id>/<user_id>/<decision>', methods=['POST'])
 def join_decision(project_id, user_id, decision):
     if decision not in ('approve', 'reject'):
         tk.abort(404)
-    return decide('csunesco_join_' + decision, {'project_id': project_id, 'user_id': user_id}, 'joins')
+    payload = {'project_id': project_id, 'user_id': user_id}
+    if decision == 'reject':
+        # The person reads this in the decision e-mail and in the Toolbox, as
+        # when their project manager rejects them there (same minimum).
+        reason = (request.form.get('reason') or '').strip()
+        if len(reason) < REJECT_REASON_MIN:
+            tk.h.flash_error(tk._('Write the reason for the person (at least 10 characters).'))
+            return tk.redirect_to(inbox_url('joins'))
+        payload['reason'] = reason
+    return decide('csunesco_join_' + decision, payload, 'joins')
 
 
 @blueprint.route('/projects/<project_id>/<decision>', methods=['POST'])
