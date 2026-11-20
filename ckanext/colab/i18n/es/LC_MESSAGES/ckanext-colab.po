@@ -2771,3 +2771,19 @@ msgstr "Editar cuenta"
 #: ckanext/colab/cs_reviews.py
 msgid "Write the reason for the person (at least 10 characters)."
 msgstr "Escribe el motivo para la persona (al menos 10 caracteres)."
+
+#. Citizen Science portal registration options
+msgid "Want to take part in a citizen science project near you, or lead your own?"
+msgstr "¿Quieres participar en un proyecto de ciencia ciudadana cerca de ti o dirigir tu propio proyecto?"
+
+#. Citizen Science portal registration options
+msgid "Citizen Scientist"
+msgstr "Científico ciudadano"
+
+#. Citizen Science portal registration options
+msgid "Project Manager"
+msgstr "Gestor de proyecto"
+
+#. Citizen Science portal registration options
+msgid "Leave the button fields empty to show both registration options."
+msgstr "Deja vacíos los campos del botón para mostrar las dos opciones de registro."

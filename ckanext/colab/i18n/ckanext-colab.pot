@@ -2407,3 +2407,19 @@ msgstr ""
 #: ckanext/colab/cs_reviews.py
 msgid "Write the reason for the person (at least 10 characters)."
 msgstr ""
+
+#. Citizen Science portal registration options
+msgid "Want to take part in a citizen science project near you, or lead your own?"
+msgstr ""
+
+#. Citizen Science portal registration options
+msgid "Citizen Scientist"
+msgstr ""
+
+#. Citizen Science portal registration options
+msgid "Project Manager"
+msgstr ""
+
+#. Citizen Science portal registration options
+msgid "Leave the button fields empty to show both registration options."
+msgstr ""
