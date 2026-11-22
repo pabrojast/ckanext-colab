@@ -2799,3 +2799,51 @@ msgstr "Responsable de projet"
 #. Citizen Science portal registration options
 msgid "Leave the button fields empty to show both registration options."
 msgstr "Laissez les champs du bouton vides pour afficher les deux options d’inscription."
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Citizens4Water project claims"
+msgstr "Revendications de projets Citizens4Water"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "People asking to manage a Citizens4Water project page. Approving makes them editors of that project."
+msgstr "Personnes qui demandent à gérer la page d'un projet Citizens4Water. L'approbation en fait des éditeurs de ce projet."
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "All"
+msgstr "Tous"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Deleted project"
+msgstr "Projet supprimé"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Cancelled"
+msgstr "Annulé"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Evidence"
+msgstr "Justificatif"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Requested"
+msgstr "Demandé"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Reject this request?"
+msgstr "Rejeter cette demande ?"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Make this person an editor of the project?"
+msgstr "Faire de cette personne un éditeur du projet ?"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "No project claims match this filter."
+msgstr "Aucune revendication de projet ne correspond à ce filtre."
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Invalid filter"
+msgstr "Filtre non valide"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "That item could not be updated."
+msgstr "Cet élément n'a pas pu être mis à jour."

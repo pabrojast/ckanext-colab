@@ -2733,3 +2733,51 @@ msgstr "مدير مشروع"
 #. Citizen Science portal registration options
 msgid "Leave the button fields empty to show both registration options."
 msgstr "اترك حقول الزر فارغة لعرض خيارَي التسجيل."
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Citizens4Water project claims"
+msgstr "طلبات المطالبة بمشاريع Citizens4Water"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "People asking to manage a Citizens4Water project page. Approving makes them editors of that project."
+msgstr "أشخاص يطلبون إدارة صفحة مشروع في Citizens4Water. الموافقة تجعلهم محررين لهذا المشروع."
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "All"
+msgstr "الكل"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Deleted project"
+msgstr "مشروع محذوف"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Cancelled"
+msgstr "ملغى"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Evidence"
+msgstr "الدليل"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Requested"
+msgstr "تاريخ الطلب"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Reject this request?"
+msgstr "رفض هذا الطلب؟"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Make this person an editor of the project?"
+msgstr "جعل هذا الشخص محرراً للمشروع؟"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "No project claims match this filter."
+msgstr "لا توجد طلبات مطالبة بمشاريع تطابق هذا المرشح."
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Invalid filter"
+msgstr "مرشح غير صالح"
+
+#: ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "That item could not be updated."
+msgstr "تعذّر تحديث هذا العنصر."

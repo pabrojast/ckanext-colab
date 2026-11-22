@@ -119,3 +119,53 @@ def test_join_rejection_needs_a_reason_and_passes_it_to_the_portal(inbox, monkey
     assert response.status_code == 302
     assert calls == [('csunesco_join_reject', 'project-reviewer',
                       {'project_id': 'p', 'user_id': 'u', 'reason': 'The project is full this season.'})]
+
+
+def test_claims_tab_is_hidden_without_the_c4w_permission(inbox):
+    app, _, allowed, calls = inbox
+    client = app.test_client()
+    assert client.get('/colab/admin?tab=claims').status_code == 403
+    assert not [c for c in calls if c[0].startswith('c4w_')]
+
+
+def test_c4w_admin_without_cs_role_sees_only_claims(inbox, monkeypatch):
+    app, _, allowed, calls = inbox
+    allowed.update(joins=False, claims=True)
+    monkeypatch.setattr(reviews, 'claims_pending_count', lambda: 3)
+    response = app.test_client().get('/colab/admin')
+    assert response.status_code == 200
+    data = response.json['data']
+    assert data['tab'] == 'claims' and data['counts'] == {'claims': 3}
+    assert [c[0] for c in calls] == ['c4w_project_claim_list']
+    assert calls[0][2] == {'status': 'pending', 'limit': 20, 'offset': 0}
+
+
+def test_claims_status_filter_is_validated(inbox):
+    app, _, allowed, calls = inbox
+    allowed['claims'] = True
+    client = app.test_client()
+    assert client.get('/colab/admin?tab=claims&status=approved').status_code == 200
+    listed = [c for c in calls if c[0] == 'c4w_project_claim_list']
+    assert listed[-1][2]['status'] == 'approved'
+    assert client.get('/colab/admin?tab=claims&status=bogus').status_code == 400
+
+
+def test_claim_decisions_go_to_the_c4w_action_and_reject_needs_a_reason(inbox, monkeypatch):
+    app, _, _, calls = inbox
+    errors = []
+    monkeypatch.setattr(tk, 'h', SimpleNamespace(flash_success=lambda value: None,
+        flash_error=errors.append, flash_notice=lambda value: None))
+    client = app.test_client()
+    assert client.get('/colab/admin/citizen-science/claims/c1/approve').status_code == 405
+    assert client.post('/colab/admin/citizen-science/claims/c1/maybe').status_code == 404
+    response = client.post('/colab/admin/citizen-science/claims/c1/reject', data={'reason': 'short'})
+    assert response.location.endswith('/colab/admin?tab=claims')
+    assert calls == [] and errors
+    client.post('/colab/admin/citizen-science/claims/c1/reject',
+                data={'reason': ' We could not verify your role. '})
+    client.post('/colab/admin/citizen-science/claims/c2/approve')
+    assert calls == [
+        ('c4w_project_claim_decide', 'project-reviewer',
+         {'id': 'c1', 'decision': 'reject', 'reason': 'We could not verify your role.'}),
+        ('c4w_project_claim_decide', 'project-reviewer',
+         {'id': 'c2', 'decision': 'approve', 'reason': ''})]

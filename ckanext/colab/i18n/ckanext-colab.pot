@@ -2423,3 +2423,51 @@ msgstr ""
 #. Citizen Science portal registration options
 msgid "Leave the button fields empty to show both registration options."
 msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Citizens4Water project claims"
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "People asking to manage a Citizens4Water project page. Approving makes them editors of that project."
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "All"
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Deleted project"
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Cancelled"
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Evidence"
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Requested"
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Reject this request?"
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Make this person an editor of the project?"
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "No project claims match this filter."
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "Invalid filter"
+msgstr ""
+
+#: ckanext/colab/cs_reviews.py ckanext/colab/templates/colab_temp/colab_cs/claims.html
+msgid "That item could not be updated."
+msgstr ""
